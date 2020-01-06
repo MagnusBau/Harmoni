@@ -1,0 +1,1 @@
+Concert-planning software under specifications from Scrum Project in the subject TDAT2003 Systemutvikling 2.
