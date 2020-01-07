@@ -11,7 +11,7 @@ variables:
 
 # Install node libraries
 before_script:
-  - cd ../client/
+  - cd client/
   - npm install
   - cd ..
 
