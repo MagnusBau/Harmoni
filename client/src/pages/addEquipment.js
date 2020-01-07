@@ -15,7 +15,7 @@ export class AddEquipment extends Component <{match: {params: {id: number}}}> {
         super(props, context);
     }
 
-    mounted(): void {
+    mounted() {
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment)
@@ -25,6 +25,7 @@ export class AddEquipment extends Component <{match: {params: {id: number}}}> {
             .getEquipmentByEvent(1)
             .then(eventEquipment => this.eventEquipment = eventEquipment)
             .catch((error: Error) => console.log(error.message));
+        console.log(this.equipment);
     }
 
     render() {
