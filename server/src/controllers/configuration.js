@@ -7,7 +7,7 @@ try {
     config = null;
 }
 
-var defaultConfig = require("./config.default.json");
+var defaultConfig = require("../../config.default.json");
 
 export function getProductionDatabase(): {host: string, database: string, user: string, password: string} {
     let database
