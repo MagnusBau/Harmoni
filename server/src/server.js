@@ -1,5 +1,4 @@
 // @flow
-//yo
 
 import {EquipmentDAO} from "./dao/equipmentDao";
 
