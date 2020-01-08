@@ -12,7 +12,7 @@ export class Event {
     category: string;
     capacity: number;
     organizer: number;
-    cancelled: boolean;
+    canceled: boolean;
 
     constructor(
         eventId: number,

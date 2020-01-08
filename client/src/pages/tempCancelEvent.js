@@ -6,7 +6,7 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 import { Button } from '../components/widgets';
 import { Modal } from 'react-bootstrap';
-import { cancelEventSerivce, Event} from "../services/TempCancelEventService";
+import { cancelEventService, Event} from "../services/TempCancelEventService";
 
 const history = createHashHistory();
 
@@ -69,9 +69,11 @@ class CancelEvent extends Component < { match: { params: { id: number } } }> {
     }
 
     cancelEvent() {
-        cancelEventSerivce
+        cancelEventService
             .cancelEvent(this.event.event_id)
             .catch((error: Error) => console.log(error));
     }
 
 }
+
+export default CancelEvent;
