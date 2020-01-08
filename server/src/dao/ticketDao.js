@@ -29,6 +29,14 @@ export class ticketDAO extends Dao {
         val,callback);
     }
 
+    removeOneTicket(id: number, callback:()=> void){
+        super.query(
+            "CALL delete_one_ticket(?)",
+            [id],
+            callback
+        )
+    }
+
 
 
 }

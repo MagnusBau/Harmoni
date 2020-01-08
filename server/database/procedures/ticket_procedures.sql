@@ -26,7 +26,6 @@ END //
 
 DELIMITER ;
 
-
 DELIMITER //
 
 
@@ -46,6 +45,18 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE delete_one_ticket(IN ticket_id_in INT)
+BEGIN
+    DELETE FROM ticket WHERE ticket_id = ticket_id_in;
+END //
+
+DELIMITER ;
+
 
 
 

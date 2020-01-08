@@ -74,6 +74,13 @@ app.put("/ticket/:id", (req, res) => {
     });
 });
 
+app.delete("/ticket/:id", (req, res) => {
+    console.log("/person: fikk /ticket/:id request fra klient");
+    ticketDao.removeOneTicket(Number.parseInt(req.params.id),(status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
 
 
 
