@@ -55,3 +55,14 @@ BEGIN
 end //
 
 DELIMITER ;
+
+/**
+  insert a new event in table
+ */
+
+ DELIMITER //
+
+ CREATE PROCEDURE create_event(IN event_title_in VARCHAR(50), event_location_in VARCHAR(100), event_start_time_in DATETIME, event_end_time_in DATETIME, event_category_in VARCHAR(50), event_capacity_in int, event_organizer_in int)
+BEGIN
+    INSERT INTO event VALUES (DEFAULT, event_title_in, event_location_in, event_start_time_in, event_end_time_in, event_category_in, event_capacity_in, event_organizer_in);
+end //
