@@ -1,5 +1,7 @@
 // @flow
 
+import {ticketDAO} from "./dao/ticketDao";
+import {ticket} from "../../client/src/services/ticketService";
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -47,3 +49,15 @@ export let listen = new Promise<void>((resolve, reject) => {
         });
     });
 });
+
+let ticketDao = new ticketDAO(pool);
+
+app.post("/ticket", (req , res) => {
+    console.log("Fikk POST-request fra klienten");
+    ticketDao.createOne(req.body, (err, rows) => {
+        res.send(rows);
+    });
+});
+
+
+

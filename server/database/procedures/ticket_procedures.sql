@@ -7,7 +7,7 @@ DELIMITER //
 
 CREATE PROCEDURE create_one_ticket(IN tile_in VARCHAR(50), IN info_in varchar(250), IN price_in integer, IN count_in integer)
 BEGIN
-insert into ticket ( title, info, price, count) value ( title = tile_in, info = info_in, price = price_in, count = count_in);
+insert into ticket ( ticket_id ,title, info, price, count) value (default, title = tile_in, info = info_in, price = price_in, count = count_in);
 END //
 
 DELIMITER ;

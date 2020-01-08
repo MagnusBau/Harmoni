@@ -1,19 +1,4 @@
 
-class ticket {
-    ticket_id: number;
-    title: string;
-    info: string;
-    price: number;
-    count: number;
-
-    constructor(ticket_id: number, title: string, info: string, price: number, count: number) {
-        this.ticket_id = ticket_id;
-        this.title = title;
-        this.info = info;
-        this.price = price;
-        this.count = count;
-    }
-}
 
 class addTicketType {
     ticketTypeList: ticket[]=[];
