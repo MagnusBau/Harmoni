@@ -3,11 +3,11 @@
 import axios from 'axios';
 
 export class Equipment {
-    name: string;
+    item: string;
 }
 
 export class EventEquipment extends Equipment{
-    event: number;
+    item: string;
     amount: number;
 }
 
@@ -18,6 +18,13 @@ class EquipmentService {
 
     getEquipmentByEvent(eventId: number): EventEquipment[] {
         return axios.get<EventEquipment[]>(`http://localhost:4000/api/equipment?event=${eventId}`).then(response => response.data);
+    }
+
+    addEquipmentToEvent(eventId: number, equipment: EventEquipment): void {
+        return axios.post('http://localhost:4000/api/event/equipment',
+            {event: eventId,
+                  item: equipment.item,
+                  amount: equipment.amount});
     }
 }
 

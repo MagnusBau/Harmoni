@@ -36,7 +36,7 @@ const pool = mysql.createPool({
 const equipmentDao = new EquipmentDAO(pool);
 
 app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:3000' );
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next(); // http://expressjs.com/guide.html#passing-route control
 });
 
@@ -64,6 +64,10 @@ app.get("/api/equipment", (req, res) => {
         equipmentDao.getEquipmentByName(req.query.name, (err, rows) => {
             res.json(rows);
         })
+    } else if (req.query.event) {
+        equipmentDao.getEquipmentByEvent(req.query.event, (err, rows) => {
+            res.json(rows);
+        })
     } else {
         equipmentDao.getAllEquipment((err, rows) => {
             res.json(rows);
@@ -77,6 +81,14 @@ app.get("/api/equipment/:equipmentId", (req, res) => {
     equipmentDao.getEquipmentById(req.params.equipmentId, (err, rows) => {
         res.json(rows);
     })
+});
+
+app.post("/api/event/equipment", (req, res) => {
+    console.log(`Got request from client: POST /api/event/equipment`);
+
+    equipmentDao.addEquipmentToEvent(req.body.event, req.body.item, req.body.amount,(err, rows) => {
+        res.send(rows);
+    });
 });
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)

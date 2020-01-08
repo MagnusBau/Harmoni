@@ -64,4 +64,23 @@ export class EquipmentDAO extends Dao {
                 values,
                 callback);
     }
+
+    /**
+     * Get equipment by an event
+     * @param event
+     * @param callback
+     */
+    getEquipmentByEvent(event: number, callback: (status: string, data: string) => void) {
+        let values = [event];
+        super.query("CALL get_equipment_by_event(?)",
+            values,
+            callback);
+    }
+
+    addEquipmentToEvent(event: number, item: string, amount: number, callback: (status: string, data: string) => void) {
+        let values = [event, item, amount];
+        super.query("CALL add_equipment_to_event(?, ?, ?)",
+            values,
+            callback);
+    }
 }
