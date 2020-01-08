@@ -1,5 +1,7 @@
 // @flow
 
+import {CancelEventDao} from "./dao/canceleventDao";
+
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -32,6 +34,17 @@ const pool = mysql.createPool({
     debug: false,
     multipleStatements: true
 });
+
+const cancelEventDao = new CancelEventDao(pool);
+
+app.put("/api/cancelevent/:eventId", (req, res) => {
+   console.log("/cancelevent/:eventId got PUT-request from client");
+
+   cancelEventDao.cancelEvent(req.body, (err, rows) => {
+       res.send(rows);
+   });
+});
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

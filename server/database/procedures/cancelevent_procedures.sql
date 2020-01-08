@@ -8,7 +8,7 @@ DROP PROCEDURE IF EXISTS cancel_event_by_id;
 
   IN event_id_in: Id of the event
 
-  Issued by:
+  Issued by: cancelEvent(eventId: number)
  */
 DELIMITER //
 
