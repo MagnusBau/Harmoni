@@ -6,13 +6,12 @@ const path = require('path');
 const mysql = require("mysql");
 const reload = require('reload');
 const fs = require('fs');
-const logger = require('./middleware/logger');
 const PORT = process.env.port || 4000;
 
 let app = express();
 
 const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../client/public');
+const public_path = path.join(__dirname, '/../../client/public');
 
 const config = require("./controllers/configuration.js");
 
@@ -20,8 +19,6 @@ const config = require("./controllers/configuration.js");
 app.use(express.static(public_path));
 app.use(bodyParser.json()); // for å tolke JSON
 app.use('/public', express.static('public'));
-
-app.use(logger);
 
 // Create MySql connection pool
 let database = config.getProductionDatabase();
@@ -61,6 +58,19 @@ app.get("/event/:event_id", (req:Request, res:Response) => {
 });
 
 //get all events or event by name
+app.get("/events", (req, res) => {
+    console.log(`Got request from client: /equipment`);
+    if (req.query.name) {
+        eventDao.getEventByName(req.query.name, (err, rows) => {
+            res.json(rows);
+        })
+    } else {
+        eventDao.getAllEvents((err, rows) => {
+            res.json(rows);
+        })
+    }
+});
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
