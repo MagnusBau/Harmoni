@@ -23,7 +23,8 @@ export class Event {
         category: string,
         capacity: number,
         organizer: number,
-        cancelled: true) {
+        canceled: true)
+    {
 
         this.event_id = eventId;
         this.title = title;
@@ -33,7 +34,7 @@ export class Event {
         this.category = category;
         this.capacity = capacity;
         this.organizer = organizer;
-        this.cancelled = cancelled;
+        this.canceled = canceled;
     }
 
 }
@@ -46,4 +47,4 @@ class CancelEventService {
 
 }
 
-export let cancelEventSerivce = new CancelEventService();
+export let cancelEventService = new CancelEventService();

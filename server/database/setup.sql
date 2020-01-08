@@ -51,6 +51,7 @@ CREATE TABLE event (
   category VARCHAR(50),
   capacity INT NOT NULL,
   organizer INT NOT NULL,
+  canceled BOOLEAN NOT NULL,
   CONSTRAINT event_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
 );
 

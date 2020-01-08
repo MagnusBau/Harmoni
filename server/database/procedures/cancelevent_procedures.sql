@@ -14,7 +14,7 @@ DELIMITER //
 
 CREATE PROCEDURE cancel_event_by_id(IN event_id_in INT)
 BEGIN
-  UPDATE event SET cancelled=true WHERE event_id=event_id_in;
+  UPDATE event SET canceled=true WHERE event_id=event_id_in;
 END //
 
 DELIMITER ;
