@@ -49,4 +49,13 @@ export class roleDAO extends DAO {
         let remove = [json.role.id, json.event];
         super.query("CALL remove_from_event(?)", remove, callback);
     }
+
+    /**
+     * Removes role completely
+     * @param role_id
+     * @param callback
+     */
+    removeRole(role_id: number, callback: (status: string, data: string) => void){
+        super.query("CALL remove_role(?)", role_id, callback);
+    }
 };

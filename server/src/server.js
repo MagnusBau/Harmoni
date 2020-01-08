@@ -35,7 +35,7 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-const roleDao = new roleDAO(pool);
+const roleDAO = new roleDAO(pool);
 
 //Returns all roles
 app.get("/role", (req, res) => {
@@ -73,6 +73,14 @@ app.put("/role/:roleId", (req, res) => {
 app.put("/role/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
     roleDAO.removeFromEvent(req.body, (err, rows) => {
+        res.send(rows);
+    })
+});
+
+//Removes role completely
+app.delete("/role/:roleId", (req, res) => {
+    console.log("Got delete request from client: /role/:roleId");
+    roleDAO.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);
     })
 });

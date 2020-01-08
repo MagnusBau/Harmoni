@@ -53,3 +53,14 @@ BEGIN
 END //
 
 DELIMITER ;
+/**
+  Removes role from list
+ */
+DELIMITER //
+
+CREATE PROCEDURE remove_role(IN role_id_in INT)
+BEGIN
+    DELETE FROM role WHERE role_id = role_id_in;
+END //
+
+DELIMITER ;
