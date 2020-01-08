@@ -1,6 +1,6 @@
 // @flow
 
-import {roleDAO} from "./dao/roleDao";
+import {roleDAO} from './dao/roleDao';
 
 const express = require('express');
 const path = require('path');

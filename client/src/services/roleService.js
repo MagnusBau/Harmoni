@@ -11,10 +11,10 @@ class RoleService {
         return axios.get<Role[]>('http://localhost:4000/api/role').then(response => response.data);
     }
     getEventRoles(eventId: number) {
-        return axios.get<Role[]>('http://localhost:4000/api/role?event=${eventId}').then(response => response.data);
+        return axios.get<Role[]>('http://localhost:4000/api/role?event=$' + eventId).then(response => response.data);
     }
-    createRol() {
-        return axios.post<Role, void>('')
+    createRol(role: Role) {
+        return axios.post<Role, void>('http://localhost:4000/api/role', role).then(response => response.data);
     }
 
 
