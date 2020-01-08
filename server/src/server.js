@@ -1,5 +1,6 @@
 // @flow
 
+import {EventDao} from "./dao/eventDao"
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -32,6 +33,8 @@ const pool = mysql.createPool({
     debug: false,
     multipleStatements: true
 });
+
+const eventDao = new EventDao(pool);
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
