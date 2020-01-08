@@ -75,6 +75,10 @@ var signOptions = {
     algorithm:  "RS256"
 };
 
+function register() {
+
+}
+
 function login(bool: boolean, username: string, res: Response) {
     if (bool) {
         console.log("Brukernavn & passord ok");
@@ -97,6 +101,61 @@ function login(bool: boolean, username: string, res: Response) {
         console.log("Passord IKKE ok");
         res.status(401);
         res.json({ error: "Not authorized" });
+    }
+}
+
+function validateUsername(username: string) {
+    if(username.match("^[A-Za-z0-9]+$") && 2 < username.length < 50) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validatePassword(password: string) {
+    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length < 50) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validateEmail(email: string) {
+    if(email.length < 50) {
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    } else {
+        return false;
+    }
+}
+
+function validateFirstName(firstName: string) {
+    if(firstName.match("^[A-Za-z]+$") && 2 < firstName.length < 50) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validateLastName(lastName: string) {
+    if(lastName.match("^[A-Za-z]+$") && 2 < lastName.length < 50) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validatePhone(phone: string) {
+    if(phone.match("^[0-9]+$")) {
+        if(phone.length === 8) {
+            return true;
+        } else if(phone.length === 12 && phone.substring(0, 3) === "0047") {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
 }
 
@@ -125,9 +184,62 @@ app.get("/login", (req, res) => {
     }
 });
 
+app.post("/register", (req, res) => {
+    if(validateUsername(req.body.username)) {
+        if(validatePassword(req.body.password)) {
+            if(validateEmail(req.body.email)) {
+                if(validateFirstName(req.body.first_name)) {
+                    if(validateLastName(req.body.last_name)) {
+                        if(validatePhone(req.body.phone)) {
+                            bcrypt.genSalt(10, function(err, salt) {
+                                bcrypt.hash(savedHash, salt, function(err, hash) {
+                                    console.log("hashed");
+                                    let data = {
+                                        "username": req.body.username,
+                                        "password": hash,
+                                        "email": req.body.email,
+                                        "first_name": req.body.first_name,
+                                        "last_name": req.body.last_name,
+                                        "phone": req.body.phone
+                                    }
+                                    if(userDao.register(data)) {
+                                        login(true, req.body.username, res);
+                                    } else {
+                                        res.status(401);
+                                        res.json({ error: "It failed somehow. Blame the db" });
+                                    }
+
+                                })
+                            });
+                        } else {
+                            res.status(401);
+                            res.json({ error: "Invalid phone" });
+                        }
+                    } else {
+                        res.status(401);
+                        res.json({ error: "Invalid last_name" });
+                    }
+                } else {
+                    res.status(401);
+                    res.json({ error: "Invalid first_name" });
+                }
+            } else {
+                res.status(401);
+                res.json({ error: "Invalid email" });
+            }
+        } else {
+            res.status(401);
+            res.json({ error: "Invalid password" });
+        }
+    } else {
+        res.status(401);
+        res.json({ error: "Invalid username" });
+    }
+});
+
 // Plasserer denne MÌDDLEWARE-funksjonen
 // foran alle endepunktene under samme path
-app.use("/api", (req, res, next) => {
+app.use("/api/:id", (req, res, next) => {
     var token = req.headers["x-access-token"];
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
@@ -135,33 +247,30 @@ app.use("/api", (req, res, next) => {
             res.status(401);
             res.json({ error: "Not authorized" });
         } else {
-            console.log("Token ok: " + decoded.username);
-            next();
+            userDao.getUsername(req.params.id).then((res) => {
+                if(res === decoded.username) {
+                    if(req.body.username) {
+                        if(req.body.username === decoded.username) {
+                            console.log("Token ok: " + decoded.username);
+                            next();
+                        }
+                    }
+                }
+                console.log("Token IKKE ok");
+                res.status(401);
+                res.json({ error: "Not authorized" });
+            });
+
         }
     });
 });
 
-app.get("/api/person", (req, res) => {
-    console.log("Skal returnere en liste med personer");
-    res.json([{ name: "Hei Sveisen" }]);
-});
-
-app.post("/api/token", (req, res) => {
+app.post("/api/:id/token", (req, res) => {
     console.log("Skal returnere en ny token");
     let token = jwt.sign({ username: req.body.username }, privateKey, signOptions, {
         expiresIn: 60
     });
     res.json({ jwt: token });
-});
-
-app.get("/api/person/:personId", (req, res) => {
-    console.log("Skal returnere personen med id " + req.params.personId);
-    res.json({ name: "Hei Sveisen" });
-});
-
-app.post("/api/person", (req, res) => {
-    console.log("Skal legge til en ny person i DB");
-    res.send("");
 });
 
 var server = app.listen(8080);
