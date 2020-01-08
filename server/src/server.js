@@ -1,6 +1,5 @@
 // @flow
 
-import {EventDao} from "./dao/eventDao"
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -22,19 +21,9 @@ app.use('/public', express.static('public'));
 
 app.use(logger);
 
-// Create MySql connection pool
-let database = config.getProductionDatabase();
-const pool = mysql.createPool({
-    connectionLimit: 2,
-    host: database.host,
-    user: database.user,
-    password: database.password,
-    database: database.database,
-    debug: false,
-    multipleStatements: true
-});
+const event = require('../api/event');
 
-const eventDao = new EventDao(pool);
+app.use('/event', event);
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

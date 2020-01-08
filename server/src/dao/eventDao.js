@@ -1,6 +1,6 @@
 const Dao = require('./Dao.js');
 
-module.exports = class eventDao extends Dao {
+export class EventDao extends Dao {
     createEvent(json: Object, callback: (status: string, data: string) => void) {
         let newEvent = [json.title, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer];
         console.log('event', newEvent);
