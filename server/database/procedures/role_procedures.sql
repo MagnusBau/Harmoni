@@ -25,9 +25,9 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE set_role(IN role_id_in INT, IN type_in VARCHAR(50), IN event_id_in INT)
+CREATE PROCEDURE set_role(IN type_in VARCHAR(50), IN event_id_in INT)
 BEGIN
-    INSERT INTO role(role_id, type, event) VALUES (?, ?, ?);
+    INSERT INTO role(role_id, type, event) VALUES (DEFAULT, ?, ?);
 END //
 
 DELIMITER ;
@@ -36,9 +36,20 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE assign_to_event(IN role_id_in INT, IN event_id_in INT)
+CREATE PROCEDURE assign_to_event(IN role_id_in INT, IN event_in INT)
 BEGIN
-    UPDATE role SET event = event_id_in WHERE role_id = role_id_in;
+    UPDATE role SET event = event_in WHERE role_id = role_id_in;
+END //
+
+DELIMITER ;
+/**
+  Removes staff from event
+ */
+DELIMITER //
+
+CREATE PROCEDURE remove_from_event(IN role_id_in INT, IN event_id_in INT)
+BEGIN
+    UPDATE role SET event = NULL WHERE role_id = role_id_in AND event = event_id_in;
 END //
 
 DELIMITER ;

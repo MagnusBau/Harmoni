@@ -1,4 +1,6 @@
-@flow
+// @flow
+
+import {roleDAO} from "./dao/roleDao";
 
 const express = require('express');
 const path = require('path');
@@ -33,112 +35,45 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
+const roleDao = new roleDAO(pool);
+
+//Returns all roles
 app.get("/role", (req, res) => {
-    console.log("got get request from client, /role");
-    pool.getConnection((err, connection) => {
-        console.log("connected");
-        if (err) {
-            console.log("error connecting");
-            res.json({error: "error connecting"});
-        } else {
-            console.log("connected2");
-            connection.query(
-                "call get_all_roles()",
-                (err, rows) => {
-                    connection.release();
-                    if (err) {
-                        console.log(err);
-                        res.json({error: "error querying"});
-                    } else {
-                        console.log(rows);
-                        res.json(rows);
-                    }
-                }
-            );
-        }
+    console.log("Got get request from client: /role");
+    roleDAO.getRoles((err, rows) => {
+        res.json(rows);
     })
 });
 
+//Returns roles assigned to event
 app.get("/role/:eventId", (req, res) => {
-    console.log("got get request from client, /role/:eventId");
-    pool.getConnection((err, connection) => {
-        console.log("connected");
-        if (err) {
-            console.log("error connecting");
-            res.json({error: "error connecting"});
-        } else {
-            console.log("connected2");
-            connection.query(
-                "call get_staff_in_event(event_id)",
-                req.params.event,
-                (err, rows) => {
-                    connection.release();
-                    if (err) {
-                        console.log(err);
-                        res.json({error:"error querying"});
-                    } else {
-                        console.log(rows);
-                        res.json(rows);
-                    }
-                }
-            );
-        }
+    console.log("Got get request from client: /role/:eventId");
+    roleDAO.getStaffInEvent(req.query.event, (err, rows) => {
+        res.json(rows);
     })
 });
 
+//Creates new role
 app.post("/role", (req, res) => {
-    console.log("got post request from client, /role");
-    pool.getConnection((err, connection) => {
-        console.log("connected");
-        if (err) {
-            console.log("error connecting");
-            res.json({error: "error connecting"});
-        } else {
-            console.log("connected2");
-            let val = [req.body.role_id, req.body.type, req.body.event_id];
-            connection.query(
-                "call set_role(role_id, type, event_id",
-                val,
-                (err, rows) => {
-                    connection.release();
-                    if (err) {
-                        console.log(err);
-                        res.json({error: "error querying"});
-                    } else {
-                        console.log(rows);
-                        res.json(rows);
-                    }
-                }
-            );
-        }
+    console.log("Got post request from client: /role");
+    roleDAO.createRole(req.body, (err, rows) => {
+        res.send(rows);
     })
 });
 
+//Assigns role to an event
 app.put("/role/:roleId", (req, res) => {
-    console.log("got update request from client, /role/:roleId");
-    pool.getConnection((err, connection) => {
-        console.log("connected");
-        if (err) {
-            console.log("error connecting");
-            res.json({error: "error connecting"});
-        } else {
-            console.log("connected2");
-            let val = [req.body.role_id, req.body.event_id];
-            connection.query(
-                "call assign_to_event(role_id, event_id)",
-                val,
-                (err, rows) => {
-                    connection.release();
-                    if (err) {
-                        console.log(err);
-                        res.json({error: "error querying"});
-                    } else {
-                        console.log(rows);
-                        res.json(rows);
-                    }
-                }
-            );
-        }
+    console.log("Got put request from client: /role/:roleId");
+    roleDAO.assignToEvent(req.body, (err, rows) => {
+        res.send(rows);
+    })
+});
+
+//Removes role from event
+app.put("/role/:roleId", (req, res) => {
+    console.log("Got put request from client: /role/:roleId");
+    roleDAO.removeFromEvent(req.body, (err, rows) => {
+        res.send(rows);
     })
 });
 
