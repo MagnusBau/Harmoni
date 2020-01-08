@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import {Event, eventService} from "../services/eventService";
 
 /**
  * Class for the view of Home-page
@@ -9,19 +10,28 @@ import { Component } from 'react-simplified';
  * @author Victoria Blichfeldt
  */
 class Home extends Component {
+    events: Event[] = [];
+
     render(){
         return (
             <div>
                 <div id="carouselWithControls" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <div className="container">
-                                <img  className="card-img" src="from database" alt"" style=""/>
-                                <div className="card-img-overlay text-center">
-                                    arrangement title hentes fra db
+                        {this.events.map(events => (
+                            <div className="carousel-item">
+                                <div className="card">
+                                    <img  className="card-img" src="from database" alt="" style=""/>
+                                    <div className="card-img-overlay text-center">
+                                        <h5 className="card-title">
+                                        {events.title}
+                                        </h5>
+                                        <p className="card-subtitle">
+                                            {events.start_time}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ))})}
                     </div>
                     <a className="carousel-control-prev" href="#carouselWithControls" role="button" data-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"/>
@@ -51,7 +61,9 @@ class Home extends Component {
     }
 
     mounted(){
-        //hente forskjellig arrangementer i dra service
+        eventService.getEvents()
+            .then(events => (this.events = events))
+            .catch((error: Error) => console.log(error.message))
     }
 }
 

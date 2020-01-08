@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Component } from "react-simplified";
-import Footer from "../Footer/Footer";
 
 /**
  * Class for NavBar
