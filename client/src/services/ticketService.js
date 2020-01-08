@@ -1,4 +1,4 @@
-
+// @flow
 import axios from "axios";
 
 
@@ -30,7 +30,6 @@ class TicketService{
     updateTicket(ticket: ticket, id : number){
         return axios.put('/ticket/' + id, ticket).then(response => response.data);
     }
-
 }
 
 export let ticketService = new TicketService();

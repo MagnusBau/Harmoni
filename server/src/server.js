@@ -15,7 +15,7 @@ let app = express();
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../client/public');
 
-const config = require("./config/config.js");
+const config = require("./controllers/configuration");
 
 app.use(express.static(public_path));
 app.use(bodyParser.json()); // for å tolke JSON
