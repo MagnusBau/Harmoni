@@ -58,4 +58,4 @@ export class roleDAO extends DAO {
     removeRole(role_id: number, callback: (status: string, data: string) => void){
         super.query("CALL remove_role(?)", role_id, callback);
     }
-};
+}

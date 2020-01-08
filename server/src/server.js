@@ -7,21 +7,18 @@ const path = require('path');
 const mysql = require("mysql");
 const reload = require('reload');
 const fs = require('fs');
-const logger = require('./middleware/logger');
 const PORT = process.env.port || 4000;
 
 let app = express();
 
 const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../client/public');
+const public_path = path.join(__dirname, '../../client/public');
 
-const config = require("./config/config.js");
+const config = require("./controllers/configuration.js");
 
 app.use(express.static(public_path));
-app.use(bodyParser.json()); // for å tolke JSON
+app.use(bodyParser.json());
 app.use('/public', express.static('public'));
-
-app.use(logger);
 
 // Create MySql connection pool
 let database = config.getProductionDatabase();
@@ -35,12 +32,12 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-const roleDAO = new roleDAO(pool);
+const roleDAo = new roleDAO(pool);
 
 //Returns all roles
 app.get("/role", (req, res) => {
     console.log("Got get request from client: /role");
-    roleDAO.getRoles((err, rows) => {
+    roleDAo.getRoles((err, rows) => {
         res.json(rows);
     })
 });
@@ -48,7 +45,7 @@ app.get("/role", (req, res) => {
 //Returns roles assigned to event
 app.get("/role/:eventId", (req, res) => {
     console.log("Got get request from client: /role/:eventId");
-    roleDAO.getStaffInEvent(req.query.event, (err, rows) => {
+    roleDAo.getStaffInEvent(req.query.event, (err, rows) => {
         res.json(rows);
     })
 });
@@ -56,7 +53,7 @@ app.get("/role/:eventId", (req, res) => {
 //Creates new role
 app.post("/role", (req, res) => {
     console.log("Got post request from client: /role");
-    roleDAO.createRole(req.body, (err, rows) => {
+    roleDAo.createRole(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -64,7 +61,7 @@ app.post("/role", (req, res) => {
 //Assigns role to an event
 app.put("/role/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
-    roleDAO.assignToEvent(req.body, (err, rows) => {
+    roleDAo.assignToEvent(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -72,7 +69,7 @@ app.put("/role/:roleId", (req, res) => {
 //Removes role from event
 app.put("/role/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
-    roleDAO.removeFromEvent(req.body, (err, rows) => {
+    roleDAo.removeFromEvent(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -80,7 +77,7 @@ app.put("/role/:roleId", (req, res) => {
 //Removes role completely
 app.delete("/role/:roleId", (req, res) => {
     console.log("Got delete request from client: /role/:roleId");
-    roleDAO.removeRole(req.body.role_id, (err, rows) => {
+    roleDAo.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);
     })
 });
