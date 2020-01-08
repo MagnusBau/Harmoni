@@ -19,9 +19,18 @@ export class ticket {
 }
 
 class TicketService{
+    getAllTicket(){
+        return axios.get<ticket[]>('/ticket').then(response => response.data);
+    }
+
     postTicket(ticket: ticket){
         return axios.post('/ticket', ticket).then(response => response.data);
     }
+
+    updateTicket(ticket: ticket, id : number){
+        return axios.put('/ticket/' + id, ticket).then(response => response.data);
+    }
+
 }
 
 export let ticketService = new TicketService();

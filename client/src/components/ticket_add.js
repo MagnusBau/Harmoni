@@ -1,7 +1,17 @@
 
 
-class addTicketType {
-    ticketTypeList: ticket[]=[];
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import {Component} from "react-simplified";
+import { createHashHistory } from 'history';
+import {ticketService, ticket} from '../services/ticketService'
+
+const history = createHashHistory();
+
+
+export class addTicketType extends Component <{match: {params: {id: number}}}> {
+
+    ticketTypeList: ticket[] = [];
     ticket = new ticket(
         '',
         '',
@@ -13,8 +23,8 @@ class addTicketType {
     render(){
         return(
             <div>
-                <Column>Bilett </Column>
-                <Column>
+                <div>Bilett </div>
+
                     <select
                         required
                         aria-required={"true"}
@@ -25,17 +35,16 @@ class addTicketType {
                         }}>
 
                         <option key={"bilettType"} defaultValue="default" hidden >Velg Bletttype</option>
-                        {this.ticketTypeListe.map(t => (
+                        {this.ticketTypeList.map(t => (
                             <option key={t.title + t.ticket_id} value={t.title}>{t.title}</option>
                         ))}
                     </select>
-                </Column>
-
-            </div>
+                </div>
 
         );
     }
     mounted(){
+        ticketService.getAllTicket().then(ticketTypeList => this.ticketTypeList = ticketTypeList).catch((error: Error) => console.log(error.message));
 
     }
 }

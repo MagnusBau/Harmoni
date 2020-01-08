@@ -60,4 +60,20 @@ app.post("/ticket", (req , res) => {
 });
 
 
+app.get("/ticket", (req, res) => {
+    console.log(`Got request from client: /ticket`);
+    ticketDao.getAll((err, rows) => {
+        res.json(rows);
+    })
+});
+
+app.put("/ticket/:id", (req, res) => {
+    console.log("Fikk POST-request fra /ticket/:id");
+    ticketDao.updateOneTicket(req.body, (err, rows) => {
+        res.json(rows);
+    });
+});
+
+
+
 
