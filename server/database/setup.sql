@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS rider;
 DROP TABLE IF EXISTS contract;
 DROP TABLE IF EXISTS document;
+DROP TABLE IF EXISTS event_role;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS event_equipment;
 DROP TABLE IF EXISTS ticket;
@@ -9,7 +10,6 @@ DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
-
 
 CREATE TABLE contact (
   contact_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,13 +45,14 @@ CREATE TABLE equipment (
 CREATE TABLE event (
   event_id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(50) NOT NULL,
+  description LONGTEXT NOT NULL,
   location VARCHAR(100) NOT NULL,
   start_time DATETIME NOT NULL,
   end_time DATETIME NOT NULL,
   category VARCHAR(50),
   capacity INT NOT NULL,
   organizer INT NOT NULL,
-  canceled BOOLEAN NOT NULL,
+  cancelled BOOLEAN NOT NULL DEFAULT FALSE,
   CONSTRAINT event_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
 );
 

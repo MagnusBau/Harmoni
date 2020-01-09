@@ -7,21 +7,18 @@ const path = require('path');
 const mysql = require("mysql");
 const reload = require('reload');
 const fs = require('fs');
-const logger = require('./middleware/logger');
 const PORT = process.env.port || 4000;
 
 let app = express();
 
 const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../client/public');
+const public_path = path.join(__dirname, '/../../client/public');
 
-const config = require("./config/config.js");
+const config = require("./controllers/configuration.js");
 
 app.use(express.static(public_path));
 app.use(bodyParser.json()); // for å tolke JSON
 app.use('/public', express.static('public'));
-
-app.use(logger);
 
 // Create MySql connection pool
 let database = config.getProductionDatabase();
@@ -37,12 +34,29 @@ const pool = mysql.createPool({
 
 const cancelEventDao = new CancelEventDao(pool);
 
-app.put("/api/cancelevent/:eventId", (req, res) => {
+app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next(); // http://expressjs.com/guide.html#passing-route control
+});
+
+app.get("/cancelledevent", (req, res) => {
+
+    console.log("/cancelledevent got GET-request from client");
+
+    cancelEventDao.getCancelledEvents((err, rows) => {
+        res.json(rows);
+    });
+
+});
+
+app.put("/cancelevent/:eventId", (req, res) => {
+
    console.log("/cancelevent/:eventId got PUT-request from client");
 
    cancelEventDao.cancelEvent(req.body, (err, rows) => {
-       res.send(rows);
+       res.json(rows);
    });
+
 });
 
 
