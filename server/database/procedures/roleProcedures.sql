@@ -11,7 +11,7 @@ DELIMITER //
 
 CREATE PROCEDURE get_all_roles()
 BEGIN
-    SELECT role_id, type FROM role;
+    SELECT role_id, type, event FROM role;
 END //
 
 DELIMITER ;
@@ -20,9 +20,9 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE get_staff_in_event(IN event_id_in INT)
+CREATE PROCEDURE get_staff_in_event(IN event_in INT)
 BEGIN
-    SELECT role_id, type, event FROM role WHERE event=event_id_in;
+    SELECT role_id, type, event FROM role WHERE event=event_in;
 END //
 
 DELIMITER ;

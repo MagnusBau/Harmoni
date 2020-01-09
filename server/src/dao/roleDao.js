@@ -23,11 +23,11 @@ export class roleDAO extends DAO {
 
     /**
      * Returns roles assigned to event
-     * @param event_id
+     * @param event
      * @param callback
      */
-    getStaffInEvent(event_id: number, callback: (status: string, data: string) => void){
-        super.query("CALL get_staff_in_event(?)", [event_id], callback);
+    getStaffInEvent(event: number, callback: (status: string, data: string) => void){
+        super.query("CALL get_staff_in_event(?)", [event], callback);
     }
 
     /**
@@ -56,6 +56,6 @@ export class roleDAO extends DAO {
      * @param callback
      */
     removeRole(role_id: number, callback: (status: string, data: string) => void){
-        super.query("CALL remove_role(?)", role_id, callback);
+        super.query("CALL remove_role(?)", [role_id], callback);
     }
 }
