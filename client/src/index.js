@@ -6,7 +6,7 @@ import { HashRouter, Route, Redirect } from 'react-router-dom';
 import { AddEvent} from "./pages/addEvent";
 
 const root = document.getElementById('app');
-if (root) {
+if (root)
     ReactDOM.render(
         <HashRouter>
             <div>
@@ -15,4 +15,3 @@ if (root) {
         </HashRouter>,
         root
     );
-}

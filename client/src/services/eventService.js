@@ -2,12 +2,18 @@
 
 import axios from 'axios';
 import {TEvent} from "../Types/TEvent";
-import {TCreateEvent} from "../Types/TCreateEvent";
 
 axios.interceptors.response.use(response => response.data);
 
 type EventContainer = TEvent;
-type CreateEvent = TCreateEvent;
+export class CreateEvent {
+    title: string;
+    location: string;
+    description: string;
+    start_time: string;
+    end_time: string;
+    capacity: number;
+}
 
 export class EventService {
     getEventID(eventID: number): Event[] {
