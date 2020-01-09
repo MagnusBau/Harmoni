@@ -59,13 +59,24 @@ export class AddEquipment extends Component <{match: {params: {id: number}}}> {
                     </div>
                     <button type="submit" className="btn btn-primary m-2">Legg til</button>
                 </form>
-                <ul className="list-group w-50">
-                    {this.eventEquipment.map((eventEquipment =>
-                            <li className="list-group-item">{eventEquipment.item}
-                                <span className="badge badge-primary badge-pill float-right">{eventEquipment.amount}</span>
-                            </li>
-                    ))}
-                </ul>
+                <table className="table w-50">
+                    <thead>
+                        <tr>
+                            <th>Utstyr</th>
+                            <th>Antall</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.eventEquipment.map((eventEquipment =>
+                                <tr key={}>
+                                    <td>{eventEquipment.item}</td>
+                                    <td>{eventEquipment.amount}</td>
+                                    <td><button type="button" className="btn btn-danger">Fjern</button></td>
+                                </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         )
     }
