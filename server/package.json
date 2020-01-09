@@ -31,9 +31,9 @@
     "@babel/preset-flow": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.9.0",
+    "fs": "^0.0.1-security",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
-    "reload": "^3.0.3",
-    "fs": "^0.0.1-security"
+    "reload": "^3.0.3"
   }
 }

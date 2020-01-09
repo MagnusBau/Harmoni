@@ -26,8 +26,10 @@ const pool2 = mysql.createPool({
 let eventDao = new EventDao(pool);
 
 beforeAll(done => {
-    runsqlfile("../src/dao/createTables.sql", pool, () => {
-        runsqlfile("../src/dao/testData.sql",pool,done);
+    runsqlfile("./src/dao/createTables.sql", pool, () => {
+        runsqlfile("./database/procedures/event_procedures.sql", pool, () => {
+            runsqlfile("./src/dao/testData.sql",pool,done);
+        });
     });
 });
 
