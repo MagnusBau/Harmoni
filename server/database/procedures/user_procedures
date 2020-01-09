@@ -1,0 +1,62 @@
+/**
+  Delete all procedures for recreation
+ */
+DROP PROCEDURE IF EXISTS register_user;
+DROP PROCEDURE IF EXISTS get_username;
+DROP PROCEDURE IF EXISTS get_password;
+
+/**
+  Inserts a new user and an accompanying contact
+
+  IN username_in: the users username
+  IN password_in: the users hashed password
+  IN email_in: the contacts email
+  In first_name_in: the contacts first name
+  IN last_name_in: the contacts last name
+  In phone_in: the contacts phone number
+
+  Issued by: register(data: Object)
+ */
+DELIMITER //
+
+CREATE PROCEDURE register_user(IN username_in VARCHAR(50), IN password_in VARCHAR(256), IN email_in VARCHAR(50), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN phone_in VARCHAR(12))
+BEGIN
+    INSERT INTO user (username, password)
+    VALUES (username_in, password_in);
+    INSERT INTO contact(email, first_name, last_name, phone)
+    VALUES (email_in, first_name_in, last_name_in, phone_in);
+END //
+
+DELIMITER ;
+
+/**
+  Fetches username based on an id
+
+  IN user_id_in: Id of the user
+
+  Issued by: getUsername(userId: number)
+ */
+DELIMITER //
+
+CREATE PROCEDURE get_username(IN user_id_in INT(11))
+BEGIN
+    SELECT username FROM user WHERE user_id=user_id_in;
+END //
+
+DELIMITER ;
+
+/**
+  Fetches hashed password based on username
+
+  IN username_in: username of the user
+
+  Issued by: getPassword(username: string)
+ */
+DELIMITER //
+
+CREATE PROCEDURE get_password(IN username_in VARCHAR(50))
+BEGIN
+    SELECT password FROM user WHERE username=username_in;
+END //
+
+DELIMITER ;
