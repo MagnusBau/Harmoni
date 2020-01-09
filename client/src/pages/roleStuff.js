@@ -10,7 +10,7 @@ const history = createHashHistory();
 export class AddRole extends Component <{match: {params: {id: number}}}> {
     event: number = 1;
     roles: Role[] = [];
-    newRole: Role;
+    newRole: Role = null;
     mounted() {
         roleService
             .getAllRoles()
@@ -18,7 +18,7 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
             .catch((error: Error) => console.log(error.message));
     }
     onChange(e) {
-        
+
     }
     onSubmit(e) {
         e.preventDefault();
@@ -31,8 +31,9 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
             <div className="m-2">
                 <form className={"form-inline"} onSubmit={this.onSubmit}>
                     <div className="form-group m-2">
-                        <input type="text" className="form-control" placeholder="Rolle"/>
+                        <input type="text" className="form-control" placeholder="Rollenavn"/>
                     </div>
+                    <button type="submit" className="btn-primary m-2">Legg til</button>
                 </form>
                 <table className="table w-50">
                     <thead>
