@@ -6,6 +6,7 @@ import {TEvent} from "../Types/TEvent";
 axios.interceptors.response.use(response => response.data);
 
 type EventContainer = TEvent;
+
 export class CreateEvent {
     title: string;
     location: string;
@@ -19,15 +20,18 @@ export class CreateEvent {
 
 export class EventService {
     getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>("http://localhost:4000/event/?event_id=${eventID}").then(response => response.data);;
+        return axios.get<Event[]>("http://localhost:4000/event/?event_id=${eventID}").then(response => response.data);
+        ;
     }
 
     getEventByName(name: string): Promise<Event[]> {
-        return axios.get('/' + name).then(response => response.data);;
+        return axios.get('/' + name).then(response => response.data);
+        ;
     }
 
     createEvent(createEvent: CreateEvent): Promise<void> {
-        return axios.post('/', createEvent).then(response => response.data);;
+        return axios.post('/', createEvent).then(response => response.data);
+        ;
     }
 }
 

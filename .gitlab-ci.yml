@@ -20,3 +20,11 @@ build_client:
   script:
     - cd client/
     - npm run build-prod
+    - cd ..
+
+test_server:
+  stage: test
+  script:
+    - cd server/
+    - npm run test
+    - cd ..
