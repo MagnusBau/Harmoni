@@ -1,7 +1,7 @@
 // @flow
 var config;
 try {
-    config = require("./config.json");
+    config = require("../../config.json");
     // do stuff
 } catch (ex) {
     config = null;

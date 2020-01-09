@@ -32,20 +32,20 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-const roleDAo = new roleDAO(pool);
+const roleDao = new roleDAO(pool);
 
 //Returns all roles
 app.get("/role", (req, res) => {
     console.log("Got get request from client: /role");
-    roleDAo.getRoles((err, rows) => {
+    roleDao.getRoles((err, rows) => {
         res.json(rows);
     })
 });
 
 //Returns roles assigned to event
-app.get("/role/:eventId", (req, res) => {
+app.get("/role/event/:eventId", (req, res) => {
     console.log("Got get request from client: /role/:eventId");
-    roleDAo.getStaffInEvent(req.query.event, (err, rows) => {
+    roleDao.getStaffInEvent(req.body.event, (err, rows) => {
         res.json(rows);
     })
 });
@@ -53,7 +53,7 @@ app.get("/role/:eventId", (req, res) => {
 //Creates new role
 app.post("/role", (req, res) => {
     console.log("Got post request from client: /role");
-    roleDAo.createRole(req.body, (err, rows) => {
+    roleDao.createRole(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -61,7 +61,7 @@ app.post("/role", (req, res) => {
 //Assigns role to an event
 app.put("/role/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
-    roleDAo.assignToEvent(req.body, (err, rows) => {
+    roleDao.assignToEvent(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -69,7 +69,7 @@ app.put("/role/:roleId", (req, res) => {
 //Removes role from event
 app.put("/role/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
-    roleDAo.removeFromEvent(req.body, (err, rows) => {
+    roleDao.removeFromEvent(req.body, (err, rows) => {
         res.send(rows);
     })
 });
@@ -77,7 +77,7 @@ app.put("/role/:roleId", (req, res) => {
 //Removes role completely
 app.delete("/role/:roleId", (req, res) => {
     console.log("Got delete request from client: /role/:roleId");
-    roleDAo.removeRole(req.body.role_id, (err, rows) => {
+    roleDao.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);
     })
 });

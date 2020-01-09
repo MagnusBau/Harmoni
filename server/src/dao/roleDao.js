@@ -10,7 +10,7 @@ export class roleDAO extends DAO {
      */
     createRole(json: Object, callback: (status: string, data: string) => void) {
         let newRole = [json.type, json.event];
-        super.query("CALL set_role(?)", newRole, callback);
+        super.query("CALL set_role(?, ?)", newRole, callback);
     }
 
     /**
@@ -27,7 +27,7 @@ export class roleDAO extends DAO {
      * @param callback
      */
     getStaffInEvent(event_id: number, callback: (status: string, data: string) => void){
-        super.query("CALL get_staff_in_event(?)", event_id, callback);
+        super.query("CALL get_staff_in_event(?)", [event_id], callback);
     }
 
     /**
@@ -37,7 +37,7 @@ export class roleDAO extends DAO {
      */
     assignToEvent(json: Object, callback: (status: string, data: string) => void){
         let roleEvent = [json.role_id, json.event];
-        super.query("CALL assign_to_event(?)", roleEvent, callback);
+        super.query("CALL assign_to_event(?, ?)", roleEvent, callback);
     }
 
     /**
@@ -47,7 +47,7 @@ export class roleDAO extends DAO {
      */
     removeFromEvent(json: Object, callback: (status: string, data: string) => void){
         let remove = [json.role.id, json.event];
-        super.query("CALL remove_from_event(?)", remove, callback);
+        super.query("CALL remove_from_event(?, ?)", remove, callback);
     }
 
     /**
