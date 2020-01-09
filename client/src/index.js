@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Redirect } from 'react-router-dom';
 import { AddEquipment} from "./pages/addEquipment";
-import {UserLogin, UserRegister} from "./pages/user";
+import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
 
 const root = document.getElementById('app');
 if (root)

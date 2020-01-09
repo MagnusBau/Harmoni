@@ -16,6 +16,9 @@ export class UserLogin extends Component {
     attemptLogin() {
         userService.postLogin(this.username, this.password).then(response => {
             if(response.user != null) {
+                console.log(response.token);
+                console.log(response.user);
+                console.log(response.user.user_id);
                 localStorage.setItem("user", response.user);
                 localStorage.setItem("token", response.token);
                 this.errorMessage = "success";
@@ -118,9 +121,9 @@ export class UserRegister extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            value={this.email}
+                            value={this.phone}
                             placeholder=""
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.email = event.target.value)}
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.phone = event.target.value)}
                             required
                             minLength={8}
                             maxLength={12}
@@ -212,7 +215,7 @@ export class TokenBoi extends Component{
                 "token": localStorage.getItem("token")
             })
             .then(response => {
-                console.log(localStorage.setItem("token", response.token));
+                console.log(localStorage.setItem("token", response));
             });
 
     }

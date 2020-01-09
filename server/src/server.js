@@ -89,16 +89,17 @@ function login(bool: boolean, username: string, res: Response) {
         });
 
         userDao.getUser(username, (err, user) => {
-            let clientUser = {
-                "user_id": user[0][0].user_id,
-                "username": user[0][0].username,
-                "image": user[0][0].image,
-                "first_name": user[0][0].first_name,
-                "last_name": user[0][0].last_name,
-                "email": user[0][0].email,
-                "phone": user[0][0].phone
-            };
-            res.json({ user: clientUser, token: token });
+            res.json({
+                user: {
+                    "user_id": user[0][0].user_id,
+                    "username": user[0][0].username,
+                    "image": user[0][0].image,
+                    "first_name": user[0][0].first_name,
+                    "last_name": user[0][0].last_name,
+                    "email": user[0][0].email,
+                    "phone": user[0][0].phone
+                },
+                token: token });
         });
 
 
@@ -205,10 +206,8 @@ app.post("/register", (req, res) => {
                                         "phone": req.body.phone
                                     }
                                     userDao.postContact(data, (err, contactData) => {
-                                        console.log(contactData.insertId);
                                         if(contactData.insertId != null || contactData.insertId === false || contactData.insertId === 0) {
                                             userDao.postUser(data, contactData.insertId, (err, userData) => {
-                                                console.log(userData);
                                                 if(userData.insertId != null || userData.insertId === false || userData.insertId === 0) {
                                                     login(true, req.body.username, res);
                                                 } else {
@@ -244,13 +243,14 @@ app.post("/register", (req, res) => {
 // Plasserer denne MÌDDLEWARE-funksjonen
 // foran alle endepunktene under samme path
 app.use("/api/:id", (req, res, next) => {
-    var token = req.headers["x-access-token"];
+    let token = req.headers["x-access-token"];
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");
             res.json({ error: "Not authorized" });
         } else {
-            userDao.getUsername(req.params.id, (err, rows) => {
+            console.log(req.params.id);
+            userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
                 console.log(rows[0][0].username);
                 console.log(decoded.username);
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {

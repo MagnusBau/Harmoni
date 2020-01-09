@@ -2,26 +2,6 @@ import axios from 'axios';
 
 let ip = "localhost";
 
-/*export class User {
-    user_id: number;
-    username: string;
-    image: any;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    token: string;
-
-    constructor(username: string, image: any, first_name: string, last_name: string, email: string, phone: string) {
-        this.username = username;
-        this.image = image;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email = email;
-        this.phone = phone;
-    }
-}*/
-
 class UserService {
     postLogin(username: string, password: string) {
         let data = {
@@ -32,25 +12,29 @@ class UserService {
 
     }
 
-    postRegister(user: Object) {
+    postRegister(input: Object) {
         let data = {
-            "username": user.username,
-            "password": user.password,
-            "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "phone": user.phone
+            "username": input.username,
+            "password": input.password,
+            "email": input.email,
+            "first_name": input.first_name,
+            "last_name": input.last_name,
+            "phone": input.phone
         }
-        return axios.get('http://' + ip +':8080/register', data).then(response => response.data);
+        return axios.post('http://' + ip +':8080/register', data).then(response => response.data);
     }
 
     postToken(input: Object) {
         let data = {
             "user_id": input.user.user_id,
-            "username": input.user.username,
-            "token": input.token
+            "username": input.user.username
         }
-        return axios.post('http://' + ip +':8080/api/' + user.user_id + '/token', data).then(response => response.data);
+        console.log("input user");
+        console.log(input.user.user_id);
+        return axios.post('http://' + ip +':8080/api/' + input.user.user_id + '/token', data, {
+            'headers': {
+                'x-access-token': input.token
+            }}).then(response => response.data);
     }
 }
 
