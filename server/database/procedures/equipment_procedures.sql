@@ -18,15 +18,11 @@ DROP PROCEDURE IF EXISTS update_equipment_on_event;
 
   Issued by: insertEquipment(name: string)
  */
-DELIMITER //
-
 CREATE PROCEDURE insert_equipment(IN item_in VARCHAR(50))
 BEGIN
   INSERT INTO equipment (item)
   VALUES (item_in);
-END //
-
-DELIMITER ;
+END;
 
 /**
   Deletes a piece of equipment
@@ -35,28 +31,20 @@ DELIMITER ;
 
   Issued by: deleteEquipment(equipmentId: number)
  */
-DELIMITER //
-
 CREATE PROCEDURE delete_equipment(IN equipment_id_in INT)
 BEGIN
   DELETE FROM equipment WHERE equipment_id=equipment_id_in;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Fetches all equipment
 
   Issued by: getAllEquipment()
  */
-DELIMITER //
-
 CREATE PROCEDURE get_all_equipment()
 BEGIN
   SELECT equipment_id, item FROM equipment;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Fetches equipment based on an id
@@ -65,14 +53,10 @@ DELIMITER ;
 
   Issued by: getEquipmentById(equipmentId: number)
  */
-DELIMITER //
-
 CREATE PROCEDURE get_equipment_by_id(IN equipment_id_in INT)
 BEGIN
   SELECT equipment_id, item FROM equipment WHERE equipment_id=equipment_id_in;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Fetches equipment based on name search
@@ -81,14 +65,11 @@ DELIMITER ;
 
   Issued by: getEquipmentByName(name: string)
  */
-DELIMITER //
 
 CREATE PROCEDURE get_equipment_by_name(IN equipment_name_in VARCHAR(50))
 BEGIN
   SELECT equipment_id, item FROM equipment WHERE item LIKE CONCAT('%', equipment_name_in, '%');
-END //
-
-DELIMITER ;
+END;
 
 /**
   Fetches equipment based on an event id
@@ -97,16 +78,13 @@ DELIMITER ;
 
   Issued by: getEquipmentByEvent(event: number)
  */
-DELIMITER //
 
 CREATE PROCEDURE get_equipment_by_event(IN event_id_in INT)
 BEGIN
   SELECT ee.event, ee.equipment, e.item, ee.amount FROM equipment e
-                                                  JOIN event_equipment ee on e.equipment_id = ee.equipment
+                                                          JOIN event_equipment ee on e.equipment_id = ee.equipment
   WHERE ee.event = event_id_in;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Adds a piece of equipment to an event. If the piece is already registered to this event, add to the amount
@@ -117,7 +95,6 @@ DELIMITER ;
 
   Issued by: addEquipmentToEvent(event: number, item: string, amount: number)
  */
-DELIMITER //
 
 CREATE PROCEDURE add_equipment_to_event(IN event_id_in INT, IN item_in VARCHAR(50), IN amount_in INT)
 BEGIN
@@ -133,9 +110,7 @@ BEGIN
   ELSE
     UPDATE event_equipment SET amount=(amount+amount_in) WHERE equipment=equipment_id_in AND event = event_id_in;
   END IF;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Removes a piece of equipment from an event
@@ -145,14 +120,10 @@ DELIMITER ;
 
   Issued by: addEquipmentToEvent(event: number, equipment: number)
  */
-DELIMITER //
-
 CREATE PROCEDURE remove_equipment_from_event(IN event_id_in INT, IN equipment_id_in INT)
 BEGIN
   DELETE FROM event_equipment WHERE event=event_id_in AND equipment=equipment_id_in;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Updates existing equipment registered on an event
@@ -163,11 +134,7 @@ DELIMITER ;
 
   Issued by: updateEquipmentOnEvent(event: number, equipment: number, amount: number)
  */
-DELIMITER //
-
 CREATE PROCEDURE update_equipment_on_event(IN event_id_in INT, IN equipment_id_in INT, IN amount_in INT)
 BEGIN
   UPDATE event_equipment SET amount=amount_in WHERE event=event_id_in AND equipment=equipment_id_in;
-END //
-
-DELIMITER ;
+END;
