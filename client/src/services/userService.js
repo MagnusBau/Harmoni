@@ -23,7 +23,7 @@ let ip = "localhost";
 }*/
 
 class UserService {
-    getLogin(username: string, password: string) {
+    postLogin(username: string, password: string) {
         let data = {
             "username": username,
             "password": password
@@ -32,11 +32,19 @@ class UserService {
 
     }
 
-    postRegister(data: User) {
+    postRegister(user: Object) {
+        let data = {
+            "username": user.username,
+            "password": user.password,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "phone": user.phone
+        }
         return axios.get('http://' + ip +':8080/register', data).then(response => response.data);
     }
 
-    getToken(user: User) {
+    getToken(user: Object) {
         let data = {
             "user_id": user.user_id,
             "username": user.username,
