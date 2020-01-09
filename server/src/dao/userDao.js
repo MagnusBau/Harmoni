@@ -28,5 +28,12 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    getUser(username: string, callback: (status: string, data: string) => void){
+        let values = [username];
+        super.query("CALL get_user(?)",
+            values,
+            callback);
+    }
+
 
 }

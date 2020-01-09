@@ -60,3 +60,22 @@ BEGIN
 END //
 
 DELIMITER ;
+
+/**
+  Fetches a user based on username
+
+  IN username_in: username of the user
+
+  Issued by: getUser(username: string)
+ */
+DELIMITER //
+
+CREATE PROCEDURE get_user(IN username_in VARCHAR(50))
+BEGIN
+    SELECT * FROM user LEFT JOIN contact ON user.contact = contact.contact_id
+    UNION
+    SELECT * FROM user RIGHT JOIN contact ON user.contact = contact.contact_id
+    WHERE user.username=username_in;
+END //
+
+DELIMITER ;
