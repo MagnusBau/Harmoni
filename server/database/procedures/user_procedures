@@ -1,7 +1,6 @@
 /**
   Delete all procedures for recreation
  */
-DROP PROCEDURE IF EXISTS register_user;
 DROP PROCEDURE IF EXISTS post_contact;
 DROP PROCEDURE IF EXISTS post_user;
 DROP PROCEDURE IF EXISTS get_username;
