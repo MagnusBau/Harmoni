@@ -4,7 +4,7 @@ export class EventDao extends Dao {
     createEvent(json: Object, callback: (status: string, data: string) => void) {
         let newEvent = [json.title, json.description, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer];
         console.log('event', newEvent);
-        super.query("CALL create_event(?)", newEvent, callback)
+        super.query("CALL create_event(?,?,?,?,?,?,?,?)", newEvent, callback)
     }
 
     getAllEvents(callback: (status: string, data: string) => void) {

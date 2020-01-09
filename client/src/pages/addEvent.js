@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-import {EventService, CreateEvent} from "../services/eventService";
+import {eventService, CreateEvent} from "../services/eventService";
 import {Alert} from "../widgets";
 
 
@@ -24,6 +24,8 @@ export class AddEvent extends Component {
             <div className={"m-2"}>
                 <form className="form-group">
                     <div className={"form-group m-2"}>
+                        <label>Navn på arrangement:</label>
+                        <br></br>
                         <input type={"text"}
                                className={"form-control"}
                                id={"event-title"}
@@ -33,6 +35,19 @@ export class AddEvent extends Component {
                                    (this.createEvent.title = event.target.value)}/>
                     </div>
                     <div className={"form-group m-2"}>
+                        <label>Beskrivelse:</label>
+                        <br></br>
+                        <textarea rows={4} cols={50}
+                                  className={"form-control"}
+                                  id={"event-description"}
+                                  placeholder={"Beskrivelse av arrangement"}
+                                  onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                      (this.createEvent.description = event.target.value)}
+                        />
+                    </div>
+                    <div className={"form-group m-2"}>
+                        <label>Lokasjon:</label>
+                        <br></br>
                         <input type={"text"}
                                className={"form-control"}
                                id={"event-location"}
@@ -42,32 +57,27 @@ export class AddEvent extends Component {
                         />
                     </div>
                     <div className={"form-group m-2"}>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"event-description"}
-                               placeholder={"Beskrivelse av arrangement"}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.description = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
+                        <label>Start tidspunkt:</label>
+                        <br></br>
                         <input type="datetime-local" id="event-start-time"
-                               name="start-time" value="2020-06-12T19:30"
-                               min="2020-01-01T00:00" max="2022-06-14T00:00"
+                               name="start-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.start_time = event.target.value)}
                         />
                     </div>
                     <div className={"form-group m-2"}>
+                        <label>Slutt tidspunkt:</label>
+                        <br></br>
                         <input type="datetime-local" id="event-end-time"
-                               name="end-time" value="2020-06-12T19:30"
-                               min="2020-01-01T00:00" max="2022-06-14T00:00"
+                               name="end-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.end_time = event.target.value)}
                         />
                     </div>
                     <div className={"form-group m-2"}>
-                        <select name={"ticket-types"} size={"5"}>
+                        <label>Antall billettyper:</label>
+                        <br></br>
+                        <select name={"ticket-types"} size={"1"}>
                             <option value={"1"}>1</option>
                             <option value={"2"}>2</option>
                             <option value={"3"}>3</option>
@@ -76,12 +86,36 @@ export class AddEvent extends Component {
                         </select>
                     </div>
                     <div className={"form-group m-2"}>
+                        <label>Type arrangement:</label>
+                        <br></br>
+                        <input type={"text"}
+                               className={"form-control"}
+                               id={"category"}
+                               placeholder={"konsert"}
+                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                   (this.createEvent.category = event.target.value)}
+                        />
+                    </div>
+                    <div className={"form-group m-2"}>
+                        <label>Total kapasitet:</label>
+                        <br></br>
                         <input type={"text"}
                                className={"form-control"}
                                id={"ticket-amount"}
                                placeholder={"1"}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.capacity = event.target.value)}
+                        />
+                    </div>
+                    <div className={"form-group m-2"}>
+                        <label>Organizer:</label>
+                        <br></br>
+                        <input type={"text"}
+                               className={"form-control"}
+                               id={"organizer"}
+                               placeholder={"1"}
+                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                   (this.createEvent.organizer = event.target.value)}
                         />
                     </div>
                 </form>
@@ -97,23 +131,24 @@ export class AddEvent extends Component {
     }
 
     register() {
-        if (!this.form || !this.form.checkValidity()) {
+        /*if (!this.form || !this.form.checkValidity()) {
             return Alert.danger('Please fill empty fields');
-        }
-        EventService
+        }*/
+        eventService
             .createEvent(this.createEvent)
             .then(() => {
-                Alert.success('You have created a new article!!!!');
+                Alert.success('You have created a new event!!!!');
             })
             .catch((error: Error) => Alert.danger(error.message));
+        history.push('/' + this.createEvent.title);
     }
 
 
     mounted() {
-        /*EventService
+        eventService
             .getEventByName()
             .then(event => (this.allEvents  = event))
-            .catch((error: Error) => Alert.danger(error.message));*/
+            .catch((error: Error) => Alert.danger(error.message));
     }
 
 }

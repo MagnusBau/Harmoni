@@ -12,19 +12,23 @@ export class CreateEvent {
     description: string;
     start_time: string;
     end_time: string;
+    category: string;
     capacity: number;
+    organizer: number;
 }
 
 export class EventService {
     getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>("http://localhost:4000/event/?event_id=${eventID}");
+        return axios.get<Event[]>("http://localhost:4000/event/?event_id=${eventID}").then(response => response.data);;
     }
 
     getEventByName(name: string): Promise<Event[]> {
-        return axios.get('/event' + name);
+        return axios.get('/' + name).then(response => response.data);;
     }
 
     createEvent(createEvent: CreateEvent): Promise<void> {
-        return axios.post('/event', createEvent);
+        return axios.post('/', createEvent).then(response => response.data);;
     }
 }
+
+export let eventService = new EventService();

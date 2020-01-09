@@ -42,9 +42,9 @@ app.get('/*',function(req,res,next){
 //Insert new event
 app.post("/", (req:Request, res: Response) => {
     console.log("Post request from client");
-
-    eventDao.createEvent(req.body,(err, rows) => {
-        res.send(rows);
+    eventDao.createEvent(req.body,(status, data) => {
+        res.status(status);
+        res.json(data);
     });
 });
 
