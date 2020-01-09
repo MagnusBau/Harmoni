@@ -22,7 +22,9 @@ const equipmentDao = new EquipmentDAO(pool);
 beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
-            runSqlFile("database/testData.sql", pool, done);
+            runSqlFile("database/procedures/equipment_procedures.sql", pool, () => {
+                runSqlFile("database/testData.sql", pool, done);
+            })
         });
 });
 
