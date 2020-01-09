@@ -43,13 +43,10 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
-        console.log(this.equipment.map((equipment) => equipment.item));
     }
 
     deleteEquipment(eventEquipment) {
-        console.log(eventEquipment.event + " " + eventEquipment.equipment);
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        eventEquipment = null;
         window.location.reload();
     }
 
