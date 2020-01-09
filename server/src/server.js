@@ -1,6 +1,7 @@
 // @flow
 
 import {EquipmentDAO} from "./dao/equipmentDao";
+import {UserDAO} from "./dao/userDao";
 
 const express = require('express');
 const path = require('path');
@@ -32,6 +33,7 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
+const userDao = new UserDAO(pool);
 
 const equipmentDao = new EquipmentDAO(pool);
 
