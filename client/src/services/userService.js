@@ -44,13 +44,13 @@ class UserService {
         return axios.get('http://' + ip +':8080/register', data).then(response => response.data);
     }
 
-    getToken(user: Object) {
+    postToken(user: Object) {
         let data = {
             "user_id": user.user_id,
             "username": user.username,
             "token": user.token
         }
-        return axios.get('http://' + ip +':8080/api/' + user.user_id + '/token', data).then(response => response.data);
+        return axios.post('http://' + ip +':8080/api/' + user.user_id + '/token', data).then(response => response.data);
     }
 }
 
