@@ -8,6 +8,8 @@ DROP PROCEDURE IF EXISTS get_equipment_by_id;
 DROP PROCEDURE IF EXISTS get_equipment_by_name;
 DROP PROCEDURE IF EXISTS get_equipment_by_event;
 DROP PROCEDURE IF EXISTS add_equipment_to_event;
+DROP PROCEDURE IF EXISTS remove_equipment_from_event;
+DROP PROCEDURE IF EXISTS update_equipment_on_event;
 
 /**
   Inserts a new piece of equipment
@@ -99,7 +101,7 @@ DELIMITER //
 
 CREATE PROCEDURE get_equipment_by_event(IN event_id_in INT)
 BEGIN
-  SELECT e.equipment_id, e.item, ee.amount FROM equipment e
+  SELECT ee.event, ee.equipment, e.item, ee.amount FROM equipment e
                                                   JOIN event_equipment ee on e.equipment_id = ee.equipment
   WHERE ee.event = event_id_in;
 END //
@@ -107,9 +109,11 @@ END //
 DELIMITER ;
 
 /**
-  Fetches equipment based on an event id
+  Adds a piece of equipment to an event. If the piece is already registered to this event, add to the amount
 
   IN event_id_in: Id of the event
+  IN item_in: Name of the equipment
+  IN amount_in: Amount of this equipment
 
   Issued by: addEquipmentToEvent(event: number, item: string, amount: number)
  */
@@ -129,6 +133,41 @@ BEGIN
   ELSE
     UPDATE event_equipment SET amount=(amount+amount_in) WHERE equipment=equipment_id_in AND event = event_id_in;
   END IF;
+END //
+
+DELIMITER ;
+
+/**
+  Removes a piece of equipment from an event
+
+  IN event_id_in: Id of the event
+  IN equipment_id_in: Id of the equipment
+
+  Issued by: addEquipmentToEvent(event: number, equipment: number)
+ */
+DELIMITER //
+
+CREATE PROCEDURE remove_equipment_from_event(IN event_id_in INT, IN equipment_id_in INT)
+BEGIN
+  DELETE FROM event_equipment WHERE event=event_id_in AND equipment=equipment_id_in;
+END //
+
+DELIMITER ;
+
+/**
+  Updates existing equipment registered on an event
+
+  IN event_id_in: Id of the event
+  IN equipment_id_in: Id of the equipment
+  IN amount_in: Amount to update to
+
+  Issued by: updateEquipmentOnEvent(event: number, equipment: number, amount: number)
+ */
+DELIMITER //
+
+CREATE PROCEDURE update_equipment_on_event(IN event_id_in INT, IN equipment_id_in INT, IN amount_in INT)
+BEGIN
+  UPDATE event_equipment SET amount=amount_in WHERE event=event_id_in AND equipment=equipment_id_in;
 END //
 
 DELIMITER ;

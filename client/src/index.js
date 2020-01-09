@@ -10,7 +10,7 @@ if (root)
     ReactDOM.render(
         <HashRouter>
             <div>
-                <Route exact path="/" component={AddEquipment} />
+                <Route path="/event/:eventId/equipment" component={AddEquipment} />
             </div>
         </HashRouter>,
         root

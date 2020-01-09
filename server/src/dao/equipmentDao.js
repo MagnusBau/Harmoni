@@ -83,4 +83,18 @@ export class EquipmentDAO extends Dao {
             values,
             callback);
     }
+
+    removeEquipmentFromEvent(event: number, equipment: number, callback: (status: string, data: string) => void) {
+        let values = [event, equipment];
+        super.query("CALL remove_equipment_from_event(?, ?)",
+            values,
+            callback);
+    }
+
+    updateEquipmentOnEvent(event: number, equipment: number, amount: number, callback: (status: string, data: string) => void) {
+        let values = [event, equipment, amount];
+        super.query("CALL update_equipment_on_event(?, ?, ?)",
+            values,
+            callback);
+    }
 }

@@ -83,10 +83,26 @@ app.get("/api/equipment/:equipmentId", (req, res) => {
     })
 });
 
-app.post("/api/event/equipment", (req, res) => {
+app.post("/api/event/:eventId/equipment", (req, res) => {
     console.log(`Got request from client: POST /api/event/equipment`);
 
-    equipmentDao.addEquipmentToEvent(req.body.event, req.body.item, req.body.amount,(err, rows) => {
+    equipmentDao.addEquipmentToEvent(req.params.eventId, req.body.item, req.body.amount,(err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.delete("/api/event/:eventId/equipment/:equipmentId", (req, res) => {
+    console.log(`Got request from client: DELETE /api/event/equipment`);
+
+    equipmentDao.removeEquipmentFromEvent(req.params.eventId, req.params.equipmentId,(err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.put("/api/event/:eventId/equipment/:equipmentId", (req, res) => {
+    console.log(`Got request from client: PUT /api/event/equipment`);
+
+    equipmentDao.updateEquipmentOnEvent(req.params.eventId, req.params.equipmentId, req.body.amount,(err, rows) => {
         res.send(rows);
     });
 });
