@@ -96,10 +96,9 @@ function login(bool: boolean, username: string, res: Response) {
                 "first_name": user[0][0].first_name,
                 "last_name": user[0][0].last_name,
                 "email": user[0][0].email,
-                "phone": user[0][0].phone,
-                "token": token
+                "phone": user[0][0].phone
             };
-            res.json({ user: clientUser });
+            res.json({ user: clientUser, token: token });
         });
 
 
@@ -281,7 +280,7 @@ app.post("/api/:id/token", (req, res) => {
     let token = jwt.sign({ username: req.body.username }, privateKey, signOptions, {
         expiresIn: 60
     });
-    res.json({ jwt: token });
+    res.json({ token: token });
 });
 
 app.get('/*',function(req,res,next){
