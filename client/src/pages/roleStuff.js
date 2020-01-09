@@ -8,6 +8,7 @@ import {roleService, Role} from "../services/roleService";
 const history = createHashHistory();
 
 export class AddRole extends Component <{match: {params: {id: number}}}> {
+    event: number = 1;
     roles: Role[] = [];
     newRole: Role;
     mounted() {
@@ -16,12 +17,23 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
             .then(roles => this.roles = roles)
             .catch((error: Error) => console.log(error.message));
     }
+    onChange(e) {
+        
+    }
     onSubmit(e) {
-
+        e.preventDefault();
+        roleService.createRole(this.newRole.type, this.event);
+        this.newRole = null;
+        window.location.reload();
     }
     render() {
         return(
             <div className="m-2">
+                <form className={"form-inline"} onSubmit={this.onSubmit}>
+                    <div className="form-group m-2">
+                        <input type="text" className="form-control" placeholder="Rolle"/>
+                    </div>
+                </form>
                 <table className="table w-50">
                     <thead>
                     <tr>
@@ -32,7 +44,6 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
                     {this.roles.map((role =>
                             <tr>
                                 <td>{role.type}</td>
-                                <td><button type="button" className="btn btn-danger">Fjern</button></td>
                             </tr>
                     ))}
                     </tbody>
