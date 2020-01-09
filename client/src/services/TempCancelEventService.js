@@ -6,43 +6,47 @@ import axios from 'axios';
 export class Event {
     event_id: number;
     title: string;
+    description: string;
     location: string;
     start_time: string;
     end_time: string;
     category: string;
     capacity: number;
     organizer: number;
-    canceled: boolean;
+    cancelled: number;
 
     constructor(
-        eventId: number,
         title: string,
+        description: string,
         location: string,
         startTime: string,
         endTime: string,
         category: string,
         capacity: number,
         organizer: number,
-        canceled: true)
+        cancelled: 0)
     {
-
-        this.event_id = eventId;
         this.title = title;
+        this.description = description;
         this.location = location;
         this.start_time = startTime;
         this.end_time = endTime;
         this.category = category;
         this.capacity = capacity;
         this.organizer = organizer;
-        this.canceled = canceled;
+        this.cancelled = cancelled;
     }
 
 }
 
 class CancelEventService {
 
+    getCancelledEvents() {
+        return axios.get<Event[]>('http://localhost:4000/cancelledevent').then(response => response.data);
+    }
+
     cancelEvent(event: Event, eventId: number) {
-        return axios.put('http://localhost:4000/api/event/' + eventId, event).then(response => response.data);
+        return axios.put('http://localhost:4000/cancelevent/' + eventId, event).then(response => response.data);
     }
 
 }

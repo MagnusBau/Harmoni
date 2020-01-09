@@ -4,13 +4,13 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import { Button } from '../components/widgets';
+import { Button, Column, Row, Alert } from '../components/widgets';
 import { Modal } from 'react-bootstrap';
 import { cancelEventService, Event} from "../services/TempCancelEventService";
 
 const history = createHashHistory();
 
-class CancelEvent extends Component < { match: { params: { id: number } } }> {
+export class CancelEvent extends Component < { match: { params: { id: number } } }> {
 
     event: Event = null;
 
@@ -33,7 +33,12 @@ class CancelEvent extends Component < { match: { params: { id: number } } }> {
 
             <div>
 
-                <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
+
+                <Column width={2}>
+
+                    <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
+
+                </Column>
 
                 <Modal
                     show={this.state.setModalShow}
@@ -42,21 +47,28 @@ class CancelEvent extends Component < { match: { params: { id: number } } }> {
                 >
 
                     <Modal.Header>
+
                         <Modal.Title>Advarsel</Modal.Title>
+
                     </Modal.Header>
 
                     <Modal.Body>
+
                         <p>
                             Er du sikker på at du vil avlyse dette arrangementet?
                         </p>
+
                     </Modal.Body>
 
                     <Modal.Footer>
+
                         <Button.Light onClick={this.close}>Lukk</Button.Light>
                         <Button.Red onClick={this.cancelEvent}>Avlys</Button.Red>
+
                     </Modal.Footer>
 
                 </Modal>
+
             </div>
 
         )
@@ -65,13 +77,28 @@ class CancelEvent extends Component < { match: { params: { id: number } } }> {
     mounted(): void {
 
         // GET EVENT BY ID METHOD HERE
+        /*
+        EventService
+            .getEventID(this.props.match.params.id)
+            .then(event => this.event = event)
+            .catch((error: Error) => Alert(error.message));
+
+         */
 
     }
 
     cancelEvent() {
+
+        /*
+        //Temp
+        history.push("/");
+        console.log("Arrangement avlyst");
+         */
+
         cancelEventService
             .cancelEvent(this.event.event_id)
             .catch((error: Error) => console.log(error));
+
     }
 
 }
