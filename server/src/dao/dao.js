@@ -19,7 +19,7 @@ module.exports = class Dao {
                         console.log(err);
                         callback(500, {error: 'error querying'});
                     } else {
-                        console.log('dao: returing rows');
+                        console.log('dao: returning rows');
                         callback(200, rows);
                     }
                 });

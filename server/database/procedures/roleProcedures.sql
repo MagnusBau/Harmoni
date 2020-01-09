@@ -1,3 +1,9 @@
+DROP PROCEDURE IF EXISTS get_all_roles;
+DROP PROCEDURE IF EXISTS get_staff_in_event;
+DROP PROCEDURE IF EXISTS set_role;
+DROP PROCEDURE IF EXISTS assign_to_event;
+DROP PROCEDURE IF EXISTS remove_from_event;
+DROP PROCEDURE IF EXISTS remove_role;
 /**
   returns all staff-types
  */
@@ -27,7 +33,7 @@ DELIMITER //
 
 CREATE PROCEDURE set_role(IN type_in VARCHAR(50), IN event_id_in INT)
 BEGIN
-    INSERT INTO role(role_id, type, event) VALUES (DEFAULT, ?, ?);
+    INSERT INTO role(type, event) VALUES (type_in, event_id_in);
 END //
 
 DELIMITER ;
