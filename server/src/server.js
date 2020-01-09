@@ -88,7 +88,9 @@ function login(bool: boolean, username: string, res: Response) {
             expiresIn: 60
         });
 
-        let user = new User(1, "Me", "secret", "", 1, "Me", "Me", "me@me.me", "12345678")/*getUser(username)*/;
+        let user = userDao.getUser(username, (err, rows) => {
+            res.json(rows);
+        });
         let clientUser = {
             "user_id": user.user_id,
             "username": user.username,
@@ -167,24 +169,20 @@ app.use(express.static("public"));
 
 // Håndterer login og sender JWT-token tilbake som JSON
 app.get("/login", (req, res) => {
-    let savedHash = userDao.getPassword(req.body.username);
-    if(savedHash != null) {
-        let response = res;
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(savedHash, salt, function(err, hash) {
-                let savedHash = hash;
-                console.log("hashed");
-                bcrypt.compare(req.body.password, savedHash, function(err, res) {
-                    console.log("sjekker");
-                    login(res, req.body.username, response);
-                })
+    userDao.getPassword(req.body.username, (err, rows) => {
+        let savedHash = rows[0][0].password;
+        console.log(savedHash);
+        if(savedHash != null) {
+            bcrypt.compare(req.body.password, savedHash, function(err, response) {
+                console.log("sjekker: " + response);
+                login(response, req.body.username, res);
             })
-        });
-    } else {
-        console.log("Brukernavn IKKE ok");
-        res.status(401);
-        res.json({ error: "Not authorized" });
-    }
+        } else {
+            console.log("Brukernavn IKKE ok");
+            res.status(401);
+            res.json({ error: "Not authorized" });
+        }
+    });
 });
 
 app.post("/register", (req, res) => {
@@ -205,13 +203,14 @@ app.post("/register", (req, res) => {
                                         "last_name": req.body.last_name,
                                         "phone": req.body.phone
                                     }
-                                    if(userDao.register(data)) {
-                                        login(true, req.body.username, res);
-                                    } else {
-                                        res.status(401);
-                                        res.json({ error: "It failed somehow. Blame the db" });
-                                    }
-
+                                    userDao.register(data, (err, rows) => {
+                                        if(rows[0]) {
+                                            login(true, req.body.username, res);
+                                        } else {
+                                            res.status(401);
+                                            res.json({ error: "It failed somehow. Blame the db" });
+                                        }
+                                    })
                                 })
                             });
                         } else {
@@ -250,8 +249,8 @@ app.use("/api/:id", (req, res, next) => {
             res.status(401);
             res.json({ error: "Not authorized" });
         } else {
-            userDao.getUsername(req.params.id).then((res) => {
-                if(res === decoded.username) {
+            userDao.getUsername(req.params.id, (err, rows) => {
+                if(rows[0] === decoded.username) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
                             console.log("Token ok: " + decoded.username);
@@ -263,7 +262,6 @@ app.use("/api/:id", (req, res, next) => {
                 res.status(401);
                 res.json({ error: "Not authorized" });
             });
-
         }
     });
 });
