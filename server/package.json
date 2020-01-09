@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "exit 0"
+    "test": "jest --runInBand"
   },
   "jest": {
     "verbose": true,

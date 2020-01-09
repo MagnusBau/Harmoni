@@ -22,8 +22,8 @@ DELIMITER //
 
 CREATE PROCEDURE insert_equipment(IN item_in VARCHAR(50))
 BEGIN
-  INSERT INTO equipment (item, organizer)
-  VALUES (item_in, 1);
+  INSERT INTO equipment (item)
+  VALUES (item_in);
 END //
 
 DELIMITER ;
@@ -124,12 +124,12 @@ BEGIN
   DECLARE equipment_id_in INT;
   SET equipment_id_in = IFNULL((SELECT equipment_id FROM equipment WHERE item=item_in LIMIT 1), 0);
   IF (equipment_id_in = 0) THEN
-    INSERT INTO equipment (item, organizer) VALUES(item_in, 1);
+    INSERT INTO equipment (item) VALUES(item_in);
     SET equipment_id_in = LAST_INSERT_ID();
   END IF;
   IF ((SELECT COUNT(*) FROM event_equipment WHERE equipment=equipment_id_in AND event=event_id_in) = 0) THEN
-    INSERT INTO event_equipment (equipment, event, amount, canceled)
-    VALUES (equipment_id_in, event_id_in, amount_in, 0);
+    INSERT INTO event_equipment (equipment, event, amount)
+    VALUES (equipment_id_in, event_id_in, amount_in);
   ELSE
     UPDATE event_equipment SET amount=(amount+amount_in) WHERE equipment=equipment_id_in AND event = event_id_in;
   END IF;
