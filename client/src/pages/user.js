@@ -8,21 +8,60 @@ import { User, userService} from "../services/userService";
 const history = createHashHistory();
 
 export class UserLogin extends Component {
+    form: any = null;
+    username: string = "";
+    password: string = "";
+    errorMessage: string = "";
 
-    attemptLogin(username: string, password: string) {
-        let user = userService.getLogin(username, password);
-        if(user.user_id != null) {
-            localStorage.setItem("user", user);
-            //use token to go to profile page
-        } else {
-            //report failure
-        }
+    attemptLogin() {
+        userService.getLogin(this.username, this.password).then(response => {
+            if(response.user != null) {
+                localStorage.setItem("user", response.user);
+                this.errorMessage = "success";
+                history.push("/");
+                return;
+            }
+            this.errorMessage = "You failed";
+        });
+
     }
 
     render() {
         return(
             <div>
-                yo
+                <div className="card" style={{width: "25%"}}>
+                    <form ref={e => (this.form = e)}>
+                        <p>Brukernavn:</p>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={this.username}
+                            placeholder="Brukernavn"
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
+                            required
+                            maxLength={50}
+                        />
+                        <br/>
+                        <input
+                            type="password"
+                            className="form-control"
+                            value={this.password}
+                            placeholder="Passord"
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
+                            required
+                            maxLength={256}
+                        />
+                    </form>
+                    <br/>
+                    <button
+                        type="button"
+                        className="btn btn-dark"
+                        style={{}}
+                        onClick={this.attemptLogin}
+                    >Login</button>
+                    <br/>
+                    <p>{this.errorMessage}</p>
+                </div>
             </div>
         )
     }

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export class User {
+let ip = "localhost";
+
+/*export class User {
     user_id: number;
     username: string;
     image: any;
@@ -10,7 +12,7 @@ export class User {
     phone: string;
     token: string;
 
-    constructor(user_id: number, username: string, image: any, first_name: string, last_name: string, email: string, phone: string) {
+    constructor(username: string, image: any, first_name: string, last_name: string, email: string, phone: string) {
         this.username = username;
         this.image = image;
         this.first_name = first_name;
@@ -18,7 +20,7 @@ export class User {
         this.email = email;
         this.phone = phone;
     }
-}
+}*/
 
 class UserService {
     getLogin(username: string, password: string) {
@@ -26,25 +28,12 @@ class UserService {
             "username": username,
             "password": password
         };
-        let res = axios.get('http://' + ip +':8080/login', data).then(response => response.data);
-        if(res.jwt && res.user) {
-            let user = res.user;
-            user.token = res.jwt;
-            return user;
-        } else {
-            return res;
-        }
+        return axios.post('http://' + ip +':8080/login', data).then(response => response.data);
+
     }
 
     postRegister(data: User) {
-        let res = axios.get('http://' + ip +':8080/register', data).then(response => response.data);
-        if(res.jwt && res.user) {
-            let user = res.user;
-            user.token = res.jwt;
-            return user;
-        } else {
-            return res;
-        }
+        return axios.get('http://' + ip +':8080/register', data).then(response => response.data);
     }
 
     getToken(user: User) {

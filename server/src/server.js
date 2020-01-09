@@ -88,29 +88,29 @@ function login(bool: boolean, username: string, res: Response) {
             expiresIn: 60
         });
 
-        let user = userDao.getUser(username, (err, rows) => {
-            res.json(rows);
+        userDao.getUser(username, (err, user) => {
+            let clientUser = {
+                "user_id": user[0][0].user_id,
+                "username": user[0][0].username,
+                "image": user[0][0].image,
+                "first_name": user[0][0].first_name,
+                "last_name": user[0][0].last_name,
+                "email": user[0][0].email,
+                "phone": user[0][0].phone,
+                "token": token
+            };
+            res.json({ user: clientUser });
         });
-        let clientUser = {
-            "user_id": user.user_id,
-            "username": user.username,
-            "image": user.image,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "phone": user.phone
-        };
-        res.json({ jwt: token, user: clientUser });
+
 
     } else {
         console.log("Passord IKKE ok");
-        res.status(401);
         res.json({ error: "Not authorized" });
     }
 }
 
 function validateUsername(username: string) {
-    if(username.match("^[A-Za-z0-9]+$") && 2 < username.length < 50) {
+    if(username.match("^[A-Za-z0-9]+$") && 2 < username.length <= 50) {
         return true;
     } else {
         return false;
@@ -118,7 +118,7 @@ function validateUsername(username: string) {
 }
 
 function validatePassword(password: string) {
-    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length < 50) {
+    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length <= 256) {
         return true;
     } else {
         return false;
@@ -168,10 +168,14 @@ function validatePhone(phone: string) {
 app.use(express.static("public"));
 
 // Håndterer login og sender JWT-token tilbake som JSON
-app.get("/login", (req, res) => {
+app.post("/login", (req, res) => {
+    console.log(req.body);
     userDao.getPassword(req.body.username, (err, rows) => {
-        let savedHash = rows[0][0].password;
-        console.log(savedHash);
+        let savedHash = null;
+        if(rows[0][0]) {
+            savedHash = rows[0][0].password;
+        }
+        console.log("u: " + req.body.username + " p: " + req.body.password + " hp: " + savedHash);
         if(savedHash != null) {
             bcrypt.compare(req.body.password, savedHash, function(err, response) {
                 console.log("sjekker: " + response);
@@ -179,7 +183,6 @@ app.get("/login", (req, res) => {
             })
         } else {
             console.log("Brukernavn IKKE ok");
-            res.status(401);
             res.json({ error: "Not authorized" });
         }
     });
@@ -193,8 +196,7 @@ app.post("/register", (req, res) => {
                     if(validateLastName(req.body.last_name)) {
                         if(validatePhone(req.body.phone)) {
                             bcrypt.genSalt(10, function(err, salt) {
-                                bcrypt.hash(savedHash, salt, function(err, hash) {
-                                    console.log("hashed");
+                                bcrypt.hash(req.body.password, salt, function(err, hash) {
                                     let data = {
                                         "username": req.body.username,
                                         "password": hash,
@@ -203,38 +205,36 @@ app.post("/register", (req, res) => {
                                         "last_name": req.body.last_name,
                                         "phone": req.body.phone
                                     }
-                                    userDao.register(data, (err, rows) => {
-                                        if(rows[0]) {
-                                            login(true, req.body.username, res);
-                                        } else {
-                                            res.status(401);
-                                            res.json({ error: "It failed somehow. Blame the db" });
+                                    userDao.postContact(data, (err, rows) => {
+                                        console.log(rows);
+                                        if(rows[0].insertId) {
+                                            userDao.postUser(data, rows[1].insertId, (err, rows) => {
+                                                console.log(rows);
+                                                if(rows[0].insertId) {
+                                                    login(true, req.body.username, req.body.password, res);
+                                                }
+                                            })
                                         }
                                     })
+                                    res.json({ error: "Invalid something" });
                                 })
                             });
                         } else {
-                            res.status(401);
                             res.json({ error: "Invalid phone" });
                         }
                     } else {
-                        res.status(401);
                         res.json({ error: "Invalid last_name" });
                     }
                 } else {
-                    res.status(401);
                     res.json({ error: "Invalid first_name" });
                 }
             } else {
-                res.status(401);
                 res.json({ error: "Invalid email" });
             }
         } else {
-            res.status(401);
             res.json({ error: "Invalid password" });
         }
     } else {
-        res.status(401);
         res.json({ error: "Invalid username" });
     }
 });
@@ -246,7 +246,6 @@ app.use("/api/:id", (req, res, next) => {
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok");
-            res.status(401);
             res.json({ error: "Not authorized" });
         } else {
             userDao.getUsername(req.params.id, (err, rows) => {
@@ -259,7 +258,6 @@ app.use("/api/:id", (req, res, next) => {
                     }
                 }
                 console.log("Token IKKE ok");
-                res.status(401);
                 res.json({ error: "Not authorized" });
             });
         }
