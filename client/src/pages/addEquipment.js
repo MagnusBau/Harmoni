@@ -5,6 +5,41 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 import { equipmentService, Equipment, EventEquipment} from "../services/equipmentService";
+import Autosuggest from 'react-autosuggest';
+
+// Imagine you have a list of languages that you'd like to autosuggest.
+const languages = [
+    {
+        name: 'C',
+        year: 1972
+    },
+    {
+        name: 'Elm',
+        year: 2012
+    }
+];
+
+// Teach Autosuggest how to calculate suggestions for any given input value.
+const getSuggestions = value => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : languages.filter(lang =>
+        lang.name.toLowerCase().slice(0, inputLength) === inputValue
+    );
+};
+
+// When suggestion is clicked, Autosuggest needs to populate the input
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+const getSuggestionValue = suggestion => suggestion.item;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion => (
+    <div>
+        {suggestion.item}
+    </div>
+);
 
 export class AddEquipment extends Component <{match: {params: {eventId: number}}}> {
     currentEvent: number = 0;
@@ -16,7 +51,11 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
         super(props, context);
 
         this.newEquipment = {item: '',
-                             amount: 1}
+                             amount: 1};
+        this.state = {
+            value: '',
+            suggestions: []
+        };
     }
 
     onChange(e) {
@@ -64,25 +103,66 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
         }
     }
 
+    onChange = (event, { newValue }) => {
+        this.setState({
+            value: newValue
+        });
+        this.newEquipment.item = newValue;
+    };
+
+    getSuggestions = value => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0 ? [] : this.equipment.filter(equipment =>
+            equipment.item.toLowerCase().slice(0, inputLength) === inputValue
+        );
+    };
+
+    // Autosuggest will call this function every time you need to update suggestions.
+    // You already implemented this logic above, so just use it.
+    onSuggestionsFetchRequested = ({ value }) => {
+        this.setState({
+            suggestions: this.getSuggestions(value)
+        });
+    };
+
+    // Autosuggest will call this function every time you need to clear suggestions.
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
+
     render() {
+        const { value, suggestions } = this.state;
+
+        // Autosuggest will pass through all these props to the input.
+        const inputProps = {
+            placeholder: 'Fyll inn utstyr...',
+            value: this.newEquipment.item,
+            onChange: this.onChange,
+            className: "form-control"
+        };
         return(
-            <div className="m-2">
+            <div className="w-50 m-2">
+                <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
                 <form className="form-inline" onSubmit={this.onSubmit}>
                     <div className="form-group m-2">
-                        <select className="custom-select" name="item" onChange={this.onChange} required>
-                            <option selected value="">Velg...</option>
-                            {this.equipment.map(equipment =>
-                                <option value={equipment.item}>{equipment.item}</option>
-                            )}
-                        </select>
+                        <Autosuggest suggestions={suggestions}
+                                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                     getSuggestionValue={getSuggestionValue}
+                                     renderSuggestion={renderSuggestion}
+                                     inputProps={inputProps}/>
                     </div>
                     <div className="form-group m-2">
                         <input width="32px" type="number" name="amount" min="1" className="form-control" id="equipmentType"
                                placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
                     </div>
-                    <button type="submit" className="btn btn-primary m-2">Legg til</button>
+                    <button type="submit" className="btn btn-primary m-2 col-1">Legg til</button>
                 </form>
-                <table className="table w-50">
+                <table className="table">
                     <thead>
                         <tr className="d-flex">
                             <th className="col-7">Utstyr</th>

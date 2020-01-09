@@ -22,8 +22,8 @@ DELIMITER //
 
 CREATE PROCEDURE insert_equipment(IN item_in VARCHAR(50))
 BEGIN
-  INSERT INTO equipment (item)
-  VALUES (item_in);
+  INSERT INTO equipment (item, organizer)
+  VALUES (item_in, 1);
 END //
 
 DELIMITER ;
