@@ -1,4 +1,4 @@
-const Dao = require('./Dao.js');
+const Dao = require('./dao.js');
 
 export class EventDao extends Dao {
     createEvent(json: Object, callback: (status: string, data: string) => void) {
