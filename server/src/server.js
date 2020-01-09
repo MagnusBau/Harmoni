@@ -1,6 +1,6 @@
 // @flow
 
-import {CancelEventDao} from "./dao/canceleventDao";
+import {CancelEventDao} from "./dao/CancelEventDao";
 
 const express = require('express');
 const path = require('path');
