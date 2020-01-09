@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS rider;
 DROP TABLE IF EXISTS contract;
 DROP TABLE IF EXISTS document;
+DROP TABLE IF EXISTS event_role;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS event_equipment;
 DROP TABLE IF EXISTS ticket;
@@ -15,7 +16,6 @@ CREATE TABLE contact (
   contact_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NULL,
-  image LONGBLOB,
   email VARCHAR(50) NOT NULL,
   phone VARCHAR(12)
 );
@@ -23,7 +23,6 @@ CREATE TABLE contact (
 CREATE TABLE user (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL,
-  salt VARCHAR(256) NOT NULL,
   password VARCHAR(256) NOT NULL,
   image LONGBLOB,
   contact INT NOT NULL,
@@ -39,7 +38,9 @@ CREATE  TABLE artist (
 
 CREATE TABLE equipment (
   equipment_id INT AUTO_INCREMENT PRIMARY KEY,
-  item VARCHAR(50) NOT NULL
+  item VARCHAR(50) NOT NULL,
+  organizer INT NOT NULL,
+  CONSTRAINT equipment_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
 );
 
 CREATE TABLE event (
@@ -51,6 +52,7 @@ CREATE TABLE event (
   category VARCHAR(50),
   capacity INT NOT NULL,
   organizer INT NOT NULL,
+  cancelled BOOLEAN NOT NULL DEFAULT FALSE,
   CONSTRAINT event_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
 );
 
@@ -76,6 +78,14 @@ CREATE TABLE role (
   type VARCHAR(50) NOT NULL,
   event INT NOT NULL,
   CONSTRAINT role_fk1 FOREIGN KEY(event) REFERENCES event(event_id)
+);
+
+CREATE TABLE event_role (
+  role INT,
+  event INT NOT NULL,
+  CONSTRAINT event_role_pk PRIMARY KEY(role, event),
+  CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
+  CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
 );
 
 CREATE TABLE document (

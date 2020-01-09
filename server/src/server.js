@@ -88,6 +88,7 @@ function login(bool: boolean, username: string, res: Response) {
 
         let user = new User(1, "Me", "secret", "", 1, "Me", "Me", "me@me.me", "12345678")/*getUser(username)*/;
         let clientUser = {
+            "user_id": user.user_id,
             "username": user.username,
             "image": user.image,
             "first_name": user.first_name,
@@ -164,7 +165,7 @@ app.use(express.static("public"));
 
 // Håndterer login og sender JWT-token tilbake som JSON
 app.get("/login", (req, res) => {
-    let savedHash = "secret"/*Yo! Get this from tha base, tha datebase. get only password field, yo.*/;
+    let savedHash = userDao.getPassword(req.body.username);
     if(savedHash != null) {
         let response = res;
         bcrypt.genSalt(10, function(err, salt) {
@@ -273,14 +274,12 @@ app.post("/api/:id/token", (req, res) => {
     res.json({ jwt: token });
 });
 
-var server = app.listen(8080);
-
-
-
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:3000' );
     next(); // http://expressjs.com/guide.html#passing-route control
 });
+
+
 
 // Insert equipment
 app.post("/api/equipment", (req, res) => {
@@ -335,3 +334,5 @@ export let listen = new Promise<void>((resolve, reject) => {
         });
     });
 });
+
+var server = app.listen(8080);
