@@ -142,7 +142,8 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
             placeholder: 'Fyll inn utstyr...',
             value: this.newEquipment.item,
             onChange: this.onChange,
-            className: "form-control"
+            className: "form-control",
+            required: "true"
         };
         return(
             <div className="w-50 m-2">

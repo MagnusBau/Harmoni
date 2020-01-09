@@ -18,6 +18,10 @@
     border-radius: 0.25rem;
 }
 
+.react-autosuggest__container {
+    position: relative;
+}
+
 .react-autosuggest__suggestions-container--open {
     display: block;
     position: absolute;
