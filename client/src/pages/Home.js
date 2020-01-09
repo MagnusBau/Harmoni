@@ -15,13 +15,12 @@ class Home extends Component {
     render(){
         return (
             <div>
-                <div id="carouselWithControls" className="carousel slide" data-ride="carousel">
-                    <div className="carousel-inner">
-                        {this.events.map(events => (
-                            <div className="carousel-item">
-                                <div className="card">
-                                    <img  className="card-img" src="from database" alt="" style=""/>
-                                    <div className="card-img-overlay text-center">
+                <div>
+                    <div id="carouselWithControls" className="carousel slide " data-ride="carousel">
+                        <div className="carousel-inner">
+                            {this.events.map(events => (
+                                <div className="carousel-item active">
+                                    <div className="card text-center">
                                         <h5 className="card-title">
                                         {events.title}
                                         </h5>
@@ -30,30 +29,33 @@ class Home extends Component {
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                        ))})}
+                            ))}
+                        </div>
+
+                        <a className="carousel-control-prev" href="#carouselWithControls" role="button" data-slide="prev">
+                            <span className="carousel-control-prev-icon" aria-hidden="true"/>
+                            <span className="sr-only">Previous</span>
+                        </a>
+                        <a className="carousel-control-next" href="#carouselWithControls" role="button" data-slide="next">
+                            <span className="carousel-control-next-icon" aria-hidden="true"/>
+                            <span className="sr-only">Next</span>
+                        </a>
+
                     </div>
-                    <a className="carousel-control-prev" href="#carouselWithControls" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"/>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#carouselWithControls" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"/>
-                        <span className="sr-only">Next</span>
-                    </a>
                 </div>
                 <div className="container">
                     <div className="card-columns">
-                        //hente fra db
+                        {this.events.map(events => (
                         <div className="card">
-                            <img className="card-img-top img-fluid" src="img fra db" alt=""/>
+                            <img className="card-img-top img-fluid" src="" alt=""/>
                             <div className="card-body">
                                 <h5>
-                                    fra db arrangement tittel
+                                    {events.title} {events.start_time}
                                 </h5>
                             </div>
 
                         </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -63,7 +65,7 @@ class Home extends Component {
     mounted(){
         eventService.getEvents()
             .then(events => (this.events = events))
-            .catch((error: Error) => console.log(error.message))
+            .catch((error: Error) => console.log(error.message));
     }
 }
 

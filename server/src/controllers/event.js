@@ -11,7 +11,7 @@ const eventDao = new EventDAO(pool);
 
 exports.getEvents = (req, res, next) => {
     console.log('Got request from client: /event');
-    eventDao.getAllEvent((err, rows) => {
+    eventDao.getAllEvent((err, [rows]) => {
         res.json(rows);
     })
 };

@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/home.css"/>
     <title>Harmoni</title>
+    <script src="jquery.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
 </head>
 <body>
     <div id="root"></div>
+    <script src="bundle.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover({
+                placement : 'left',
+                container: 'body'
+            });
+        });
+    </script>
 </body>
 </html>

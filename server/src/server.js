@@ -10,7 +10,7 @@ const PORT = process.env.port || 4000;
 let app = express();
 
 const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../client/public');
+const public_path = path.join(__dirname, '/../../client/public');
 
 const config = require("./controllers/configuration");
 
@@ -47,7 +47,7 @@ app.use("/event", eventRoutes);
 
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
-/*export let listen = new Promise<void>((resolve, reject) => {
+export let listen = new Promise<void>((resolve, reject) => {
     // Setup hot reload (refresh web page on client changes)
     reload(app).then(reloader => {
         app.listen(PORT, (error: ?Error) => {
@@ -60,8 +60,3 @@ app.use("/event", eventRoutes);
         });
     });
 });
-
-
- */
-
-app.listen(4000);
