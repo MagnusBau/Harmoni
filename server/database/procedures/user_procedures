@@ -2,8 +2,11 @@
   Delete all procedures for recreation
  */
 DROP PROCEDURE IF EXISTS register_user;
+DROP PROCEDURE IF EXISTS post_contact;
+DROP PROCEDURE IF EXISTS post_user;
 DROP PROCEDURE IF EXISTS get_username;
 DROP PROCEDURE IF EXISTS get_password;
+DROP PROCEDURE IF EXISTS get_user;
 
 /**
   Inserts a new user and an accompanying contact
@@ -17,17 +20,27 @@ DROP PROCEDURE IF EXISTS get_password;
 
   Issued by: register(data: Object)
  */
+
 DELIMITER //
 
-CREATE PROCEDURE register_user(IN username_in VARCHAR(50), IN password_in VARCHAR(256), IN email_in VARCHAR(50), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN phone_in VARCHAR(12))
+CREATE PROCEDURE post_contact(IN email_in VARCHAR(50), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN phone_in VARCHAR(12))
 BEGIN
-    INSERT INTO user (username, password)
-    VALUES (username_in, password_in);
     INSERT INTO contact(email, first_name, last_name, phone)
     VALUES (email_in, first_name_in, last_name_in, phone_in);
 END //
 
 DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE post_user(IN username_in VARCHAR(50), IN password_in VARCHAR(256), IN contact_id_in int(11))
+BEGIN
+    INSERT INTO user(username, password, contact)
+    VALUES(username_in, password_in, contact_id_in);
+END //
+
+DELIMITER ;
+
 
 /**
   Fetches username based on an id

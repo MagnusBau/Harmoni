@@ -35,5 +35,19 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    postContact(data: Object, callback: (status: string, data: string) => void){
+        let values = [data.email, data.first_name, data.last_name, data.phone];
+        super.query("CALL post_contact(?,?,?,?)",
+            values,
+            callback);
+    }
+
+    postUser(data: Object, contactId: number, callback: (status: string, data: string) => void){
+        let values = [data.username, data.password, data.email, data.first_name, data.last_name, data.phone, contactId];
+        super.query("CALL post_user(?,?,?)",
+            values,
+            callback);
+    }
+
 
 }
