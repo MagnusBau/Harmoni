@@ -96,10 +96,9 @@ function login(bool: boolean, username: string, res: Response) {
                 "first_name": user[0][0].first_name,
                 "last_name": user[0][0].last_name,
                 "email": user[0][0].email,
-                "phone": user[0][0].phone,
-                "token": token
+                "phone": user[0][0].phone
             };
-            res.json({ user: clientUser });
+            res.json({ user: clientUser, token: token });
         });
 
 
@@ -205,18 +204,21 @@ app.post("/register", (req, res) => {
                                         "last_name": req.body.last_name,
                                         "phone": req.body.phone
                                     }
-                                    userDao.postContact(data, (err, rows) => {
-                                        console.log(rows);
-                                        if(rows[0].insertId) {
-                                            userDao.postUser(data, rows[1].insertId, (err, rows) => {
-                                                console.log(rows);
-                                                if(rows[0].insertId) {
-                                                    login(true, req.body.username, req.body.password, res);
+                                    userDao.postContact(data, (err, contactData) => {
+                                        console.log(contactData.insertId);
+                                        if(contactData.insertId != null || contactData.insertId === false || contactData.insertId === 0) {
+                                            userDao.postUser(data, contactData.insertId, (err, userData) => {
+                                                console.log(userData);
+                                                if(userData.insertId != null || userData.insertId === false || userData.insertId === 0) {
+                                                    login(true, req.body.username, res);
+                                                } else {
+                                                    res.json({ error: "Invalid something" });
                                                 }
                                             })
+                                        } else {
+                                            res.json({ error: "Invalid something" });
                                         }
                                     })
-                                    res.json({ error: "Invalid something" });
                                 })
                             });
                         } else {
@@ -245,20 +247,29 @@ app.use("/api/:id", (req, res, next) => {
     var token = req.headers["x-access-token"];
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok");
+            console.log("Token IKKE ok 1");
             res.json({ error: "Not authorized" });
         } else {
             userDao.getUsername(req.params.id, (err, rows) => {
-                if(rows[0] === decoded.username) {
+                console.log(rows[0][0].username);
+                console.log(decoded.username);
+                if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
                             console.log("Token ok: " + decoded.username);
                             next();
+                        } else {
+                            console.log("Token IKKE ok 2");
+                            res.json({ error: "Not authorized" });
                         }
+                    } else {
+                        console.log("Token ok: " + decoded.username);
+                        next();
                     }
+                } else {
+                    console.log("Token IKKE ok 2");
+                    res.json({ error: "Not authorized" });
                 }
-                console.log("Token IKKE ok");
-                res.json({ error: "Not authorized" });
             });
         }
     });
@@ -269,7 +280,7 @@ app.post("/api/:id/token", (req, res) => {
     let token = jwt.sign({ username: req.body.username }, privateKey, signOptions, {
         expiresIn: 60
     });
-    res.json({ jwt: token });
+    res.json({ token: token });
 });
 
 app.get('/*',function(req,res,next){
