@@ -42,7 +42,7 @@ export class Event {
 class CancelEventService {
 
     cancelEvent(event: Event, eventId: number) {
-        return axios.put('http://localhost:4000/api/cancelevent/' + eventId, event).then(response => response.data);
+        return axios.put('http://localhost:4000/api/event/' + eventId, event).then(response => response.data);
     }
 
 }
