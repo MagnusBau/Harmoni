@@ -44,7 +44,7 @@ DELIMITER //
 
 CREATE PROCEDURE get_all_ticket()
 BEGIN
-    SELECT *FROM ticket;
+    SELECT * FROM ticket;
 END //
 
 DELIMITER ;

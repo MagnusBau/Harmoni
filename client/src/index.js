@@ -12,7 +12,7 @@ if (root) {
                 <div>
                     <Route exact path="/" component={listTicketType}/>
                     <Route exact path="/" component={addTicketType}/>
-                    <Route exact path="/:id" component={editTicketType}/>
+                    <Route exact path="/:id/rediger" component={editTicketType}/>
 
 
 

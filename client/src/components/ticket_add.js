@@ -9,6 +9,11 @@ const history = createHashHistory();
 
 
 export class listTicketType extends Component <{match: {params: {id: number}}}> {
+    ticket = new Ticket(
+        '',
+        '',
+        '',
+        '');
 
     ticketTypeList: Ticket[] = [];
     render(){
@@ -16,18 +21,27 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
             <form>
                 <div>Bilett </div>
                 <div>
-                <select>
+                    <select
+                        id="select"
+                        value={this.ticket.title}
+                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                            if (this.ticket) this.ticket.title = event.target.value;
+                        }}>
                         <option value="" hidden >Velg Bletttype</option>
                         {this.ticketTypeList.map(t => (
-
                             <option value={t.title} key={t.title + t.ticket_id}> {t.title} </option>
                         ))}
                     </select>
                 </div>
-                </form>
-
+                <button onClick={this.edit} type={"button"}>edit ticket Type</button>
+            </form>
         );
     }
+
+    edit() {
+        if (!this.ticket) return null;
+        if (this.ticket) history.push('/' + this.ticket.ticket_id + 'rediger');
+        }
 
     mounted(){
        // ticketService.getArticleId(1).then(t => (this.ticket = t[0])).catch((error: Error) => console.log(error.message));
@@ -36,7 +50,6 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
                 this.ticketTypeList = t[0];
             })
             .catch(error => error.message);
-
     }
 }
 
@@ -139,7 +152,10 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
     render() {
         if (!this.ticket) return null;
         return (
+
+
             <form>
+
                 <div>title</div>
                 <div>
                     <input
@@ -193,22 +209,23 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
     }
 
     mounted() {
-        ticketService.getTicketId(this.props.match.params.id).then(t => (this.ticket = t[0])).catch((error: Error) => console.log(error.message));
+        ticketService.getTicketId(this.props.match.params.id).then(t => (this.ticket = t[0][0])).catch((error: Error) => console.log(error.message));
+        console.log(this.props.match.params.id);
     //    ticketService.getAllTicket().then(t => {this.ticketTypeList = t[0];}).catch(error => error.message);
     }
 
     delete(){
-        if(!this.article) return null;
+        if(!this.ticket) return null;
 
         ticketService.removeTicket(this.props.match.params.id).then(() => {
-            if (this.article) history.push('/');
+            if (this.ticket) history.push('/');
         }).catch(error => error.message);
     }
 
     save() {
-        if (!this.article) return null;
+        if (!this.ticket) return null;
         ticketService.updateTicket(this.ticket, this.props.match.params.id).then(() => {
-            if (this.article) history.push('/' + this.props.match.params.id);
+            if (this.ticket) history.push('/');
         }).catch(error => error.message);
     }
 }
