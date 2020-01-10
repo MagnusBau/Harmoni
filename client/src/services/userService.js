@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let ip = "localhost";
 
-export function attemptLogin(username: string, password: string) {
+export function attemptLogin(username: string, password: string, history: any) {
     userService.postLogin(username, password).then(response => {
         if(response.user != null) {
             localStorage.setItem("user_id", response.user.user_id);
@@ -13,6 +13,9 @@ export function attemptLogin(username: string, password: string) {
             localStorage.setItem("email", response.user.email);
             localStorage.setItem("phone", response.user.phone);
             localStorage.setItem("token", response.token);
+            console.log("success:" + username + response.user.user_id + response.user.username);
+            console.log(response.token);
+            history.push("/");
             return true;
         }
         return false;
@@ -20,7 +23,7 @@ export function attemptLogin(username: string, password: string) {
 
 }
 
-export function attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string){
+export function attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string, history: any){
     let data = {
         "username": username,
         "password": password,
@@ -32,6 +35,11 @@ export function attemptRegister(username: string, password: string, email: strin
     userService
         .postRegister(data)
         .then(response => {
+            if(response.error != null) {
+                console.log(response.error);
+                console.log("failed");
+                return false;
+            }
             if(response.user != null) {
                 localStorage.setItem("user_id", response.user.user_id);
                 localStorage.setItem("username", response.user.username);
@@ -41,9 +49,8 @@ export function attemptRegister(username: string, password: string, email: strin
                 localStorage.setItem("email", response.user.email);
                 localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("token", response.token);
+                history.push("/");
                 return true;
-            } else {
-                return false;
             }
         });
 
@@ -58,6 +65,7 @@ export function updateToken() {
         })
         .then(response => {
             localStorage.setItem("token", response.token);
+            console.log(response.token);
         });
 
 }
