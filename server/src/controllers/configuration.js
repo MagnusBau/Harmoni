@@ -1,12 +1,12 @@
 // @flow
-/*var config;
+var config;
 try {
     config = require("../../config.json");
     // do stuff
 } catch (ex) {
     config = null;
-}*/
-var config = require("../../config.json");
+}
+
 var defaultConfig = require("../../config.default.json");
 
 export function getProductionDatabase(): {host: string, database: string, user: string, password: string} {
