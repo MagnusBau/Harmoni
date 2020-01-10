@@ -8,7 +8,7 @@
 }
 
  */
-const config = require("../../config");
+const config = require("../../config.json");
 const defaultConfig = require("../../config.default.json");
 
 export function getProductionDatabase(): {host: string, database: string, user: string, password: string} {
