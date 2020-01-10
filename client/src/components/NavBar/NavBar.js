@@ -21,26 +21,31 @@ class NavBar extends Component {
                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                    </form>
 
-                   <div className="well">
-                       <button type="button" className="btn btn-outline-dark" data-toggle="popover" data-html="true"
-                       data-content='<div className="form-group">
-                               <label htmlFor="username">Brukernavn</label>
-                               <input type="text" className="form-control" placeholder="Brukernavn" id="username"/>
-                           </div>
-                           <div className="form-group">
-                               <label htmlFor="inputPassword">Passord</label>
-                               <input type="password" className="form-control" placeholder="Passord"
-                                      id="inputPassword"/>
-                           </div>
-                           <button type="button" className="btn btn-outline-dark"></button>
-                           <div>
-                               <p>
-                                   Har du ikke en bruker?
-                               </p>
-                               <a href="/register">Registrer deg her</a>
-                           </div>'>
-                           icon her login
+                   <div className="dropdown m-1">
+                       <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
+                       data-content=''>
+                           <img src="./img/icons/person.svg" alt="login" width="20" height="20"/>
                        </button>
+                       <div className="dropdown-menu dropdown-menu-right">
+                           <form className="px-4 py-3">
+                               <div className="form-group form-inline">
+                                   <label htmlFor="username">Brukernavn</label>
+                                   <input type="text" className="form-control" placeholder="Brukernavn" id="username"/>
+                               </div>
+                               <div className="form-group">
+                                   <label htmlFor="inputPassword">Passord</label>
+                                   <input type="password" className="form-control" placeholder="Passord"
+                                          id="inputPassword"/>
+                               </div>
+                               <button type="submit" className="btn btn-outline-dark"> LOGIN</button>
+                               <div>
+                                   <p>
+                                       Har du ikke en bruker?
+                                   </p>
+                                   <a href="/register">Registrer deg her</a>
+                               </div>
+                           </form>
+                       </div>
                    </div>
                </div>
            </nav>

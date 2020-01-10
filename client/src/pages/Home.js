@@ -18,8 +18,18 @@ class Home extends Component {
                 <div>
                     <div id="carouselWithControls" className="carousel slide" data-ride="carousel">
                         <div className="carousel-inner">
+                            <div className="carousel-item active">
+                                <div className="card text-center">
+                                    <h5 className="card-title">
+                                        test slide
+                                    </h5>
+                                    <p className="card-subtitle">
+                                        ( for at karousellen skal snurre :( )
+                                    </p>
+                                </div>
+                            </div>
                             {this.events.map(events => (
-                                <div className="carousel-item active">
+                                <div className="carousel-item">
                                     <div className="card text-center">
                                         <h5 className="card-title">
                                         {events.title}
@@ -40,7 +50,6 @@ class Home extends Component {
                             <span className="carousel-control-next-icon" aria-hidden="true"/>
                             <span className="sr-only">Next</span>
                         </a>
-
                     </div>
                 </div>
                 <div className="container">
