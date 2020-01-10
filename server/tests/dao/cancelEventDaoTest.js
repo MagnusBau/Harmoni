@@ -24,7 +24,7 @@ beforeAll(done => {
     runsqlfile("database/setup.sql",
         pool, () => {
             runsqlfile("database/procedures/cancelevent_procedures.sql", pool, () => {
-                runsqlfile("database/create_testdata.sql", pool, done);
+                runsqlfile("database/create_testdata", pool, done);
         });
     });
 
