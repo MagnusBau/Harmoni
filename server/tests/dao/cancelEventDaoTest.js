@@ -1,10 +1,11 @@
 // @flow
 
+const mysql = require("mysql");
+
 import { CancelEventDAO } from "../../src/dao/canceleventDao";
 
-const mysql = require("mysql");
-const runsqlfile = require("../../database/runsqlfile");
-const config = require("../../src/controllers/configuration");
+const runsqlfile = require("../../database/runsqlfile.js");
+const config = require("../../src/controllers/configuration.js");
 
 let database = config.getTestingDatabase();
 const pool = mysql.createPool({
@@ -22,8 +23,8 @@ let cancelEventDao = new CancelEventDAO(pool);
 beforeAll(done => {
     runsqlfile("database/setup.sql",
         pool, () => {
-            runsqlfile("database/procedures/cancelevent_procedures", pool, () => {
-            runsqlfile("database/create_testdata.sql", pool, done);
+            runsqlfile("database/procedures/cancelevent_procedures.sql", pool, () => {
+                runsqlfile("database/create_testdata.sql", pool, done);
         });
     });
 
@@ -41,7 +42,10 @@ test("get cancelled events from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
 
-        expect(data[0].length).toBe(2);
+        data = data[0];
+
+        expect(data.length).toBe(2);
+        expect(data[0].title).toBe('EM Håndball');
 
         done();
     }
