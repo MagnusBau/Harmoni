@@ -79,7 +79,7 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                 <div>price</div>
                 <div>
                     <input
-                        type="text"
+                        type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                             if (this.ticket) this.ticket.price = Number.parseInt(event.target.value);
@@ -90,7 +90,7 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                 <div>count</div>
                 <div>
                     <input
-                        type="text"
+                        type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                             if (this.ticket) this.ticket.count = Number.parseInt(event.target.value);
@@ -98,7 +98,7 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                     />
                 </div>
 
-                <button onClick={this.send} type={"button"}>Save</button>
+                <button onClick={this.send} type={"button"}>Add ticket Type</button>
             </div>
         </form>
         );}
@@ -167,7 +167,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
                 <div>price</div>
                 <div>
                     <input
-                        type="text"
+                        type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                             if (this.ticket) this.ticket.price = Number.parseInt(event.target.value);
@@ -178,7 +178,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
                 <div>count</div>
                 <div>
                     <input
-                        type="text"
+                        type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                             if (this.ticket) this.ticket.count = Number.parseInt(event.target.value);
