@@ -4,6 +4,7 @@ import {ticketDAO} from "../src/dao/ticketDao"
 let mysql = require("mysql");
 const runsqlfile = require("../database/runsqlfile.js");
 
+
 let pool = mysql.createPool({
     connectionLimit: 1,
     host: "mysql",
@@ -17,8 +18,11 @@ let pool = mysql.createPool({
 let ticketDao = new ticketDAO(pool);
 
 beforeAll(done => {
-    runsqlfile("../database/procedures/ticket_procedure.sql", pool, () => {
+    runsqlfile("database/setup.sql",
+    pool,() =>{
+        runsqlfile("../database/procedures/ticket_procedure.sql", pool, () => {
         runsqlfile("../database/create_testdata.sql", pool, done);
+    });
     });
 });
 
