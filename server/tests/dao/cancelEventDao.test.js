@@ -45,7 +45,8 @@ test("get cancelled events from db", done => {
         data = data[0];
 
         expect(data.length).toBe(2);
-        expect(data[0].title).toBe('EM Håndball');
+        expect(data[0].title).toBe('Konsert');
+        expect(data[1].title).toBe('Konsert2');
 
         done();
     }
