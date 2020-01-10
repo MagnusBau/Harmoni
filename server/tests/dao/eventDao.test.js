@@ -35,7 +35,7 @@ afterAll(() => {
 test("Get all events", done => {
    function callback(status, data) {
        console.log(
-           `Test callback: status=${status}, data=${data}`
+           `Test callback: status=${status}, data=${[data]}`
        );
        data = data[0];
        expect(data.length).toBe(2);
