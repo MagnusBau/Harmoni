@@ -1,27 +1,21 @@
 import {EventDao} from "../src/dao/eventDao";
+const config = require("../src/controllers/configuration.js");
 
 var mysql = require("mysql");
 
 const runsqlfile = require("../src/dao/runSqlFile.js");
+let database: {} = config.getTestingDatabase();
 
-const pool = mysql.createPool({
+let pool = mysql.createPool({
     connectionLimit: 1,
-    host: "mysql",
-    user: "root",
-    password: "root",
-    database: "School",
+    host: database.host,
+    user: database.user,
+    password: database.password,
+    database: database.database,
     debug: false,
     multipleStatements: true
 });
-const pool2 = mysql.createPool({
-    connectionLimit: 5,
-    host: "mysql.stud.iie.ntnu.no",
-    user: "torstehs",
-    password: "Pzp58gsc",
-    database: "torstehs",
-    debug: false,
-    multipleStatements: true
-});
+
 
 let eventDao = new EventDao(pool);
 
@@ -39,8 +33,8 @@ afterAll(() => {
 
 test("create event", done => {
     function callback(status, data) {
-        console.log("Test callback: status " + status + ", data: " + data + JSON.stringify(data));
-        expect(data.affectedRows).toBeGreaterThanOrEqual(1);
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data.affectedRows).toEqual(1);
         done();
     }
     eventDao.createEvent({
