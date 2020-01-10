@@ -2,14 +2,16 @@
 import axios from 'axios';
 
 
-export class Ticket {
+export class Ticket_ID {
     ticket_id: number;
     title: string;
     info: string;
     price: number;
     count: number;
 
-    constructor(title: string, info: string, price: number, count: number) {
+
+    constructor(ticket_id : number, title: string, info: string, price: number, count: number) {
+        this.ticket_id = ticket_id;
         this.title = title;
         this.info = info;
         this.price = price;
@@ -17,6 +19,23 @@ export class Ticket {
     }
 }
 
+
+export class Ticket {
+
+    title: string;
+    info: string;
+    price: number;
+    count: number;
+
+
+    constructor( title: string, info: string, price: number, count: number) {
+
+        this.title = title;
+        this.info = info;
+        this.price = price;
+        this.count = count;
+    }
+}
 class TicketService{
     getAllTicket(){
         return axios.get<Ticket[]>('/ticket').then(response => response.data);

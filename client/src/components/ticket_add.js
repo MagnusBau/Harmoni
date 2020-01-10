@@ -3,13 +3,15 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import {ticketService, Ticket} from '../services/ticketService'
+import {ticketService, Ticket, Ticket_ID} from '../services/ticketService'
 
 const history = createHashHistory();
 
 
 export class listTicketType extends Component <{match: {params: {id: number}}}> {
-    ticket = new Ticket(
+    id_temp : number = 0;
+    ticket = new Ticket_ID(
+        '',
         '',
         '',
         '',
@@ -25,11 +27,16 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
                         id="select"
                         value={this.ticket.title}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.title = event.target.value;
+                            if (this.ticket) {
+                                this.ticket.title = event.target.value;
+                                this.ticket.ticket_id = event.target.value;
+                            }
+
                         }}>
                         <option value="" hidden >Velg Bletttype</option>
                         {this.ticketTypeList.map(t => (
-                            <option value={t.title} key={t.title + t.ticket_id}> {t.title} </option>
+                            <option value={t.ticket_id} key={t.title + t.ticket_id}> {t.title}</option>
+
                         ))}
                     </select>
                 </div>
@@ -40,7 +47,9 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
 
     edit() {
         if (!this.ticket) return null;
-        if (this.ticket) history.push('/' + this.ticket.ticket_id + 'rediger');
+        if (this.ticket) history.push('/' + this.ticket.ticket_id + '/' + 'rediger');
+
+
         }
 
     mounted(){
