@@ -20,9 +20,9 @@ let ticketDao = new ticketDAO(pool);
 beforeAll(done => {
     runsqlfile("database/setup.sql",
     pool,() =>{
-        runsqlfile("database/procedures/ticket_procedure.sql", pool, () => {
-        runsqlfile("database/create_testdata.sql", pool, done);
-    });
+        runsqlfile("database/procedures/ticket_procedures.sql", pool, () => {
+          runsqlfile("database/create_testdata.sql", pool, done);
+         });
     });
 });
 
