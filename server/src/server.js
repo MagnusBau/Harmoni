@@ -109,10 +109,13 @@ function login(bool: boolean, username: string, res: Response) {
 
 function validateUsername(username: string) {
     if(username.match("^[A-Za-z0-9]+$") && 2 < username.length <= 50) {
-        return true;
-    } else {
-        return false;
+        userDao.checkUsername(username, (err, rows) => {
+            if(rows[0][0].count < 1) {
+                return true;
+            }
+        });
     }
+    return false;
 }
 
 function validatePassword(password: string) {
