@@ -33,4 +33,3 @@ test_server:
     - npm install
     - npm run test
     - cd ..
-  npm run build-prod
