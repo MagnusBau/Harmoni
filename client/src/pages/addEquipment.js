@@ -42,6 +42,7 @@ const renderSuggestion = suggestion => (
 );
 
 export class AddEquipment extends Component <{match: {params: {eventId: number}}}> {
+    // TODO: Verify that event exists before loading page
     currentEvent: number = 0;
     equipment: Equipment[] = [];
     eventEquipment: EventEquipment[] = [];
