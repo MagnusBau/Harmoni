@@ -26,11 +26,11 @@ class UserService {
 
     postToken(input: Object) {
         let data = {
-            "user_id": input.user.user_id,
-            "username": input.user.username
-        }
+            "user_id": input.user_id,
+            "username": input.username
+        };
         console.log("input user");
-        console.log(input.user.user_id);
+        console.log(input.user_id);
         return axios.post('http://' + ip +':8080/api/' + input.user.user_id + '/token', data, {
             'headers': {
                 'x-access-token': input.token

@@ -89,6 +89,7 @@ function login(bool: boolean, username: string, res: Response) {
         });
 
         userDao.getUser(username, (err, user) => {
+            console.log(user[0][0].user_id);
             res.json({
                 user: {
                     "user_id": user[0][0].user_id,
@@ -172,8 +173,10 @@ app.post("/login", (req, res) => {
     console.log(req.body);
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
-        if(rows[0][0]) {
-            savedHash = rows[0][0].password;
+        if(rows[0]) {
+            if(rows[0][0]) {
+                savedHash = rows[0][0].password;
+            }
         }
         console.log("u: " + req.body.username + " p: " + req.body.password + " hp: " + savedHash);
         if(savedHash != null) {

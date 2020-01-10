@@ -19,7 +19,13 @@ export class UserLogin extends Component {
                 console.log(response.token);
                 console.log(response.user);
                 console.log(response.user.user_id);
-                localStorage.setItem("user", response.user);
+                localStorage.setItem("user_id", response.user.user_id);
+                localStorage.setItem("username", response.user.username);
+                localStorage.setItem("image", response.user.image);
+                localStorage.setItem("first_name", response.user.first_name);
+                localStorage.setItem("last_name", response.user.last_name);
+                localStorage.setItem("email", response.user.email);
+                localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("token", response.token);
                 this.errorMessage = "success";
                 history.push("/");
@@ -182,7 +188,13 @@ export class UserRegister extends Component {
             .postRegister(data)
             .then(response => {
                 if(response.user != null) {
-                    localStorage.setItem("user", response.user);
+                    localStorage.setItem("user_id", response.user.user_id);
+                    localStorage.setItem("username", response.user.username);
+                    localStorage.setItem("image", response.user.image);
+                    localStorage.setItem("first_name", response.user.first_name);
+                    localStorage.setItem("last_name", response.user.last_name);
+                    localStorage.setItem("email", response.user.email);
+                    localStorage.setItem("phone", response.user.phone);
                     localStorage.setItem("token", response.token);
                     this.errorMessage = "success";
                     history.push("/");
@@ -211,7 +223,8 @@ export class TokenBoi extends Component{
     getToken(){
         userService
             .postToken({
-                "user": localStorage.getItem("user"),
+                "user_id": localStorage.getItem("user_id"),
+                "username": localStorage.getItem("username"),
                 "token": localStorage.getItem("token")
             })
             .then(response => {
