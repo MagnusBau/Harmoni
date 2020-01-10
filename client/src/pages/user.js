@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import { userService, getToken, updateToken, attemptLogin, attemptRegister } from "../services/userService";
+import { userService } from "../services/userService";
 
 const history = createHashHistory();
 
@@ -59,7 +59,7 @@ export class UserLogin extends Component {
     }
 
     attemptLogin() {
-        attemptLogin(this.username, this.password, history)
+        userService.attemptLogin(this.username, this.password, history)
     }
 
     register() {
@@ -165,7 +165,7 @@ export class UserRegister extends Component {
             this.errorMessage = "Fyll ut de røde feltene";
             return;
         }
-        attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
+        userService.attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
     }
 }
 
@@ -177,7 +177,7 @@ export class TokenBoi extends Component{
                     type="button"
                     className="btn btn-dark"
                     style={{}}
-                    onClick={updateToken}
+                    onClick={userService.updateToken}
                 >Lag ny token</button>
             </div>
         )
