@@ -31,7 +31,7 @@ afterAll(() => {
 });
 
 
-test("get all article from db", done => {
+test("get all ticket from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status=" + status + ", data=" + JSON.stringify(data)
@@ -44,11 +44,13 @@ test("get all article from db", done => {
 
 
 
-test("get one Article from db", done => {
+test("get one ticket from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status=" + status + ", data=" + JSON.stringify(data)
         );
+
+        data = data[0];
         expect(data.length).toBe(1);
         expect(data[0].title).toBe('enTittel');
         done();
@@ -84,7 +86,7 @@ test("update one ticket from db", done => {
         done();
     }
 
-    ticketDao.updateOneTicket({title: 'endreTittel', info: 'endreInfo_in', price: 99, count: 99}, callback);
+    ticketDao.updateOneTicket({ticket_id: '2',title: 'endreTittel', info: 'endreInfo_in', price: 99, count: 99}, callback);
 });
 
 
