@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
-    "test": "exit 0"
+    "start": "nodemon --exec babel-node src/server.js",
+    "test": "jest --runInBand"
   },
   "jest": {
     "verbose": true,
@@ -20,7 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "mysql-native": "^0.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
