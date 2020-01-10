@@ -42,8 +42,11 @@ CREATE TABLE artist
 CREATE TABLE equipment
 (
   equipment_id INT AUTO_INCREMENT PRIMARY KEY,
-  item         VARCHAR(50) NOT NULL
+  item         VARCHAR(50) NOT NULL,
+  organizer    INT         NOT NULL,
+  CONSTRAINT equipment_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
+
 
 CREATE TABLE event
 (

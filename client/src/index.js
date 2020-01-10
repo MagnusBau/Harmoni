@@ -1,16 +1,28 @@
-//@flow
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter, Route, Redirect } from 'react-router-dom';
+// @flow
+
+import React from "react";
+import ReactDOM from "react-dom";
+import { HashRouter } from 'react-router-dom';
+import {Route, Switch} from "react-router";
+import Home from "./pages/Home";
 import { AddEquipment} from "./pages/addEquipment";
 
-const root = document.getElementById('app');
+import Footer from "./components/Footer/Footer";
+import NavBar from "./components/NavBar/NavBar";
+
+
+const root = document.getElementById("root");
 if (root)
     ReactDOM.render(
         <HashRouter>
             <div>
-                <Route path="/event/:eventId/equipment" component={AddEquipment} />
+                <NavBar />
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/event/:eventId/equipment" component={AddEquipment} />
+                </Switch>
+                <Footer />
             </div>
         </HashRouter>,
         root

@@ -1,7 +1,5 @@
 // @flow
 
-import {EquipmentDAO} from "./dao/equipmentDao";
-
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -32,80 +30,18 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-
-const equipmentDao = new EquipmentDAO(pool);
+module.exports = pool;
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next(); // http://expressjs.com/guide.html#passing-route control
 });
 
-// Insert equipment
-app.post("/api/equipment", (req, res) => {
-    console.log(`Got request from client: POST /api/equipment`);
+const equipmentRoutes = require("./routes/equipment");
+const eventRoutes = require("./routes/event");
 
-    equipmentDao.insertEquipment(req.body.name,(err, rows) => {
-        res.send(rows);
-    });
-});
-
-app.delete("/api/equipment/:equipmentId", (req, res) => {
-    console.log(`Got request from client: DELETE /api/equipment/${req.params.equipmentId}`);
-
-    equipmentDao.deleteEquipment(req.params.equipmentId,(err, rows) => {
-        res.send(rows);
-    });
-});
-
-// Get all equipment or all equipment by name
-app.get("/api/equipment", (req, res) => {
-    console.log(`Got request from client: /equipment`);
-    if (req.query.name) {
-        equipmentDao.getEquipmentByName(req.query.name, (err, rows) => {
-            res.json(rows);
-        })
-    } else if (req.query.event) {
-        equipmentDao.getEquipmentByEvent(req.query.event, (err, rows) => {
-            res.json(rows);
-        })
-    } else {
-        equipmentDao.getAllEquipment((err, rows) => {
-            res.json(rows);
-        })
-    }
-});
-
-// Get equipment by id
-app.get("/api/equipment/:equipmentId", (req, res) => {
-    console.log(`Got request from client: /equipment/${req.params.equipmentId}`);
-    equipmentDao.getEquipmentById(req.params.equipmentId, (err, rows) => {
-        res.json(rows);
-    })
-});
-
-app.post("/api/event/:eventId/equipment", (req, res) => {
-    console.log(`Got request from client: POST /api/event/equipment`);
-
-    equipmentDao.addEquipmentToEvent(req.params.eventId, req.body.item, req.body.amount,(err, rows) => {
-        res.send(rows);
-    });
-});
-
-app.delete("/api/event/:eventId/equipment/:equipmentId", (req, res) => {
-    console.log(`Got request from client: DELETE /api/event/equipment`);
-
-    equipmentDao.removeEquipmentFromEvent(req.params.eventId, req.params.equipmentId,(err, rows) => {
-        res.send(rows);
-    });
-});
-
-app.put("/api/event/:eventId/equipment/:equipmentId", (req, res) => {
-    console.log(`Got request from client: PUT /api/event/equipment`);
-
-    equipmentDao.updateEquipmentOnEvent(req.params.eventId, req.params.equipmentId, req.body.amount,(err, rows) => {
-        res.send(rows);
-    });
-});
+app.use("/api/event", eventRoutes);
+app.use("/api/equipment", equipmentRoutes);
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
