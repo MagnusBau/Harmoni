@@ -22,7 +22,7 @@ const userDao = new UserDAO(pool);
 beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
-            runSqlFile("database/procedures/user_procedures.sql", pool, () => {
+            runSqlFile("database/procedures/user_procedures", pool, () => {
                 runSqlFile("database/testData.sql", pool, done);
             })
         });
