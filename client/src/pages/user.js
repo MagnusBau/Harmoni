@@ -59,11 +59,7 @@ export class UserLogin extends Component {
     }
 
     attemptLogin() {
-        if(attemptLogin(this.username, this.password)) {
-            this.errorMessage = "You failed";
-        } else {
-            history.push("/");
-        }
+        attemptLogin(this.username, this.password, history)
     }
 
     register() {
@@ -170,11 +166,7 @@ export class UserRegister extends Component {
             this.mounted();
             return;
         }
-        if(attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone)) {
-            this.errorMessage = "You failed";
-        } else {
-            history.push("/");
-        }
+        attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
     }
 }
 
