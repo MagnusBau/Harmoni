@@ -21,8 +21,10 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
     render(){
         return(
             <form>
-                <div>Bilett </div>
                 <div>
+                    <h2>
+                        Velg en bilett og rediger denne
+                    </h2>
                     <select
                         id="select"
                         value={this.ticket.title}
@@ -40,13 +42,14 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
                         ))}
                     </select>
                 </div>
-                <button onClick={this.edit} type={"button"}>edit ticket Type</button>
+                <button onClick={this.edit} type={"button"}>rediger bilett type</button>
             </form>
         );
     }
 
     edit() {
         if (!this.ticket) return null;
+        if (this.ticket.ticket_id === '') return null;
         if (this.ticket) history.push('/' + this.ticket.ticket_id + '/' + 'rediger');
 
 
@@ -75,6 +78,9 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
         if (!this.ticket) return null;
         return(
         <form ref={e => {this.form = e}}>
+            <h2>
+                Opprett en bilett type
+            </h2>
             <div>
                 <div>Title</div>
                 <div>
@@ -104,7 +110,7 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                         type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.price = Number.parseInt(event.target.value);
+                            if (this.ticket) this.ticket.price = event.target.value;
                         }}
                     />
                 </div>
@@ -115,12 +121,12 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                         type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.count = Number.parseInt(event.target.value);
+                            if (this.ticket) this.ticket.count = event.target.value;
                         }}
                     />
                 </div>
 
-                <button onClick={this.send} type={"button"}>Add ticket Type</button>
+                <button onClick={this.send} type={"button"}>legg til bilett type</button>
             </div>
         </form>
         );}
@@ -130,9 +136,16 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
     send() {
       if (!this.form || !this.form.checkValidity()) return;
       if (!this.ticket) return null;
+      if(this.ticket.count < 0 || this.ticket.price < 0 ) {
+          alert('pris eller antall kan ikke være under 0!');
+          return;
+      }
       ticketService.postTicket(this.ticket)
           .then(() => {
-              if(this.ticket) history.push('/')
+              if(this.ticket) {
+                  history.push('/');
+                  window.location.reload();
+              }
           })
           .catch((error: Error) => console.log(error.message));
   }
@@ -195,7 +208,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
                         type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.price = Number.parseInt(event.target.value);
+                            if (this.ticket) this.ticket.price = event.target.value;
                         }}
                     />
                 </div>
@@ -206,7 +219,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
                         type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.count = Number.parseInt(event.target.value);
+                            if (this.ticket) this.ticket.count = event.target.value;
                         }}
                     />
                 </div>
@@ -219,8 +232,6 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
 
     mounted() {
         ticketService.getTicketId(this.props.match.params.id).then(t => (this.ticket = t[0][0])).catch((error: Error) => console.log(error.message));
-        console.log(this.props.match.params.id);
-    //    ticketService.getAllTicket().then(t => {this.ticketTypeList = t[0];}).catch(error => error.message);
     }
 
     delete(){
@@ -233,6 +244,10 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
 
     save() {
         if (!this.ticket) return null;
+        if(this.ticket.count < 0 || this.ticket.price < 0 ) {
+            alert('pris eller antall kan ikke være under 0!');
+            return;
+        }
         ticketService.updateTicket(this.ticket, this.props.match.params.id).then(() => {
             if (this.ticket) history.push('/');
         }).catch(error => error.message);
