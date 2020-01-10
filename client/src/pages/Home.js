@@ -16,7 +16,7 @@ class Home extends Component {
         return (
             <div>
                 <div>
-                    <div id="carouselWithControls" className="carousel slide " data-ride="carousel">
+                    <div id="carouselWithControls" className="carousel slide" data-ride="carousel">
                         <div className="carousel-inner">
                             {this.events.map(events => (
                                 <div className="carousel-item active">

@@ -39,11 +39,8 @@ class NavBar extends Component {
                                </p>
                                <a href="/register">Registrer deg her</a>
                            </div>'>
-                           icon her
+                           icon her login
                        </button>
-                       <div id="loginform">
-
-                       </div>
                    </div>
                </div>
            </nav>
