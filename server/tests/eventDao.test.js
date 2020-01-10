@@ -2,7 +2,7 @@ import {EventDao} from "../src/dao/eventDao";
 
 var mysql = require("mysql");
 
-const runsqlfile = require("../src/dao/runsqlfile.js");
+const runsqlfile = require("../src/dao/runSqlFile.js");
 
 const pool = mysql.createPool({
     connectionLimit: 1,
