@@ -208,13 +208,13 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
     save() {
         if (!this.article) return null;
         ticketService.updateTicket(this.ticket, this.props.match.params.id).then(() => {
-            if (this.article) history.push('/artikler/' + this.props.match.params.id);
+            if (this.article) history.push('/' + this.props.match.params.id);
         }).catch(error => error.message);
     }
 }
 
 
 
-export default listTicketType;
+
 
 
