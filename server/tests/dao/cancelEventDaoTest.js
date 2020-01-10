@@ -20,9 +20,13 @@ const pool = mysql.createPool({
 let cancelEventDao = new CancelEventDAO(pool);
 
 beforeAll(done => {
-    runsqlfile("database/procedures/cancelevent_procedures", pool, () => {
-        runsqlfile("database/create_testdata.sql", pool, done);
+    runsqlfile("database/setup.sql",
+        pool, () => {
+            runsqlfile("database/procedures/cancelevent_procedures", pool, () => {
+            runsqlfile("database/create_testdata.sql", pool, done);
+        });
     });
+
 });
 
 afterAll(() => {
