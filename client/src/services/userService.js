@@ -103,7 +103,7 @@ class UserService {
         };
         return axios.post('http://' + ip +':8080/api/' + data.user_id + '/token', data, {
             'headers': {
-                'x-access-token': input.token
+                'x-access-token': getToken()
             }}).then(response => response.data);
     }
 }

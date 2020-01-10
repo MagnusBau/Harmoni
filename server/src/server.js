@@ -69,11 +69,11 @@ let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 var verifyOptions = {
-    expiresIn:  "15M",
+    expiresIn:  "5S",
     algorithm:  ["RS256"]
 };
 var signOptions = {
-    expiresIn:  "15M",
+    expiresIn:  "5S",
     algorithm:  "RS256"
 };
 

@@ -163,7 +163,6 @@ export class UserRegister extends Component {
     attemptRegister(){
         if(!this.form || !this.form.checkValidity()) {
             this.errorMessage = "Fyll ut de røde feltene";
-            this.mounted();
             return;
         }
         attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
