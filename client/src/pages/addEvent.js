@@ -41,6 +41,7 @@ export class AddEvent extends Component {
                                   className={"form-control"}
                                   id={"event-description"}
                                   placeholder={"Beskrivelse av arrangement"}
+                                  required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.createEvent.description = event.target.value)}
                         />
@@ -52,6 +53,7 @@ export class AddEvent extends Component {
                                className={"form-control"}
                                id={"event-location"}
                                placeholder={"Lokasjon"}
+                               required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.location = event.target.value)}
                         />
@@ -60,6 +62,7 @@ export class AddEvent extends Component {
                         <label>Start tidspunkt:</label>
                         <br></br>
                         <input type="datetime-local" id="event-start-time"
+                               required={true}
                                name="start-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.start_time = event.target.value)}
@@ -69,6 +72,7 @@ export class AddEvent extends Component {
                         <label>Slutt tidspunkt:</label>
                         <br></br>
                         <input type="datetime-local" id="event-end-time"
+                               required={true}
                                name="end-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.end_time = event.target.value)}
@@ -92,6 +96,7 @@ export class AddEvent extends Component {
                                className={"form-control"}
                                id={"category"}
                                placeholder={"konsert"}
+                               required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.category = event.target.value)}
                         />
@@ -103,6 +108,7 @@ export class AddEvent extends Component {
                                className={"form-control"}
                                id={"ticket-amount"}
                                placeholder={"1"}
+                               required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.capacity = event.target.value)}
                         />
@@ -114,6 +120,7 @@ export class AddEvent extends Component {
                                className={"form-control"}
                                id={"organizer"}
                                placeholder={"1"}
+                               required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.createEvent.organizer = event.target.value)}
                         />
@@ -131,9 +138,9 @@ export class AddEvent extends Component {
     }
 
     register() {
-        /*if (!this.form || !this.form.checkValidity()) {
+        if (!this.form || !this.form.checkValidity()) {
             return Alert.danger('Please fill empty fields');
-        }*/
+        }
         eventService
             .createEvent(this.createEvent)
             .then(() => {
