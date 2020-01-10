@@ -9,5 +9,6 @@
     <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="popper" level="application" />
+    <orderEntry type="library" name="@types/jest" level="application" />
   </component>
 </module>
