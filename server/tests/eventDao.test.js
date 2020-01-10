@@ -17,6 +17,7 @@ let pool = mysql.createPool({
 });
 
 
+
 let eventDao = new EventDao(pool);
 
 beforeAll(done => {
@@ -57,7 +58,6 @@ test("event fail", done => {
         done();
     }
     eventDao.createEvent({
-            "title": "",
             "description": "test",
             "location": "test",
             "start_time": "2020-01-01",
