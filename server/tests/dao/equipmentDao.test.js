@@ -138,7 +138,7 @@ test("Add new equipment to event", done =>  {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.addEquipmentToEvent(3, "3/4 Jack", 3, callback);
+    equipmentDao.addEquipmentToEvent(2, "3/4 Jack", 3, callback);
 });
 
 test("Remove equipment from event", done =>  {

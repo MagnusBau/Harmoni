@@ -1,44 +1,13 @@
-// @flow
+//@flow
 
-import {UserDAO} from "./dao/userDao";
-
-const express = require('express');
-const path = require('path');
-const mysql = require("mysql");
-const reload = require('reload');
+const pool = require("../server");
 const fs = require('fs');
-const PORT = process.env.port || 4000;
+import {UserDAO} from "../dao/userDao";
 
-let app = express();
+const userDao = new UserDAO(pool);
 
-const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../../client/public');
-
-const config = require("./controllers/configuration.js");
-
-app.use(express.static(public_path));
-app.use(bodyParser.json()); // for å tolke JSON
-app.use('/public', express.static('public'));
-
-// Create MySql connection pool
-let database = config.getProductionDatabase();
-const pool = mysql.createPool({
-    connectionLimit: 2,
-    host: database.host,
-    user: database.user,
-    password: database.password,
-    database: database.database,
-    debug: false,
-    multipleStatements: true
-});
-
-module.exports = pool;
-
-/*const userDao = new UserDAO(pool);
-
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-app.use(bodyParser.json()); // for å tolke JSON i body
+let jwt = require("jsonwebtoken");
+let bcrypt = require("bcryptjs");
 
 class User {
     user_id: number;
@@ -67,11 +36,11 @@ class User {
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
-var verifyOptions = {
+const verifyOptions = {
     expiresIn:  "5S",
     algorithm:  ["RS256"]
 };
-var signOptions = {
+const signOptions = {
     expiresIn:  "5S",
     algorithm:  "RS256"
 };
@@ -205,11 +174,8 @@ function register(data: Object, res: Response) {
     });
 }
 
-// Server klientapplikasjonen (i public-mappa) på rot-url'en http://localhost:8080
-app.use(express.static("public"));
-
 // Håndterer login og sender JWT-token tilbake som JSON
-app.post("/login", (req, res) => {
+exports.loginUser = (req, res, next) => {
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
         if(rows[0]) {
@@ -226,9 +192,9 @@ app.post("/login", (req, res) => {
             res.json({ error: "Not authorized" });
         }
     });
-});
+};
 
-app.post("/register", (req, res) => {
+exports.registerUser = (req, res, next) => {
     let data = {
         "username": req.body.username,
         "password": req.body.password,
@@ -240,11 +206,11 @@ app.post("/register", (req, res) => {
     if(validateUsername(data, req.body.username, req.body.password, req.body.email, req.body.first_name, req.body.last_name, req.body.phone, res)) {
         console.log("yo");
     }
-});
+};
 
 // Plasserer denne MÌDDLEWARE-funksjonen
 // foran alle endepunktene under samme path
-app.use("/api/:id", (req, res, next) => {
+exports.tokenCheck = (req, res, next) => {
     let token = req.headers["x-access-token"];
     console.log(token);
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
@@ -274,45 +240,10 @@ app.use("/api/:id", (req, res, next) => {
             });
         }
     });
-});
+};
 
-app.post("/api/:id/token", (req, res) => {
+exports.getToken = (req, res, next) => {
     console.log("Skal returnere en ny token");
     let token = jwt.sign({ username: req.body.username }, privateKey, signOptions);
     res.json({ token: token });
-});
-
-app.get('/!*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next(); // http://expressjs.com/guide.html#passing-route control
-});*/
-
-const equipmentRoutes = require("./routes/equipment");
-const eventRoutes = require("./routes/event");
-const userRoutes = require("./routes/user");
-
-app.use("/api/event", eventRoutes);
-app.use("/api/equipment", equipmentRoutes);
-app.use("/api", userRoutes);
-
-app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next(); // http://expressjs.com/guide.html#passing-route control
-});
-
-// The listen promise can be used to wait for the web server to start (for instance in your tests)
-export let listen = new Promise<void>((resolve, reject) => {
-    // Setup hot reload (refresh web page on client changes)
-    reload(app).then(reloader => {
-        app.listen(PORT, (error: ?Error) => {
-            if (error) reject(error.message);
-            console.log('Express server started');
-            // Start hot reload (refresh web page on client changes)
-            reloader.reload(); // Reload application on server restart
-            fs.watch(public_path, () => reloader.reload());
-            resolve();
-        });
-    });
-});
-
-var server = app.listen(8080);
+};
