@@ -7,12 +7,12 @@ export class UserDAO extends Dao {
         super(pool);
     }
 
-    register(data: Object, callback: (status: string, data: string) => void){
-        let values = [data.username, data.password, data.email, data.first_name, data.last_name, data.phone];
-        super.query("CALL register_user(?,?,?,?,?,?)",
-            values,
-            callback);
-}
+//     register(data: Object, callback: (status: string, data: string) => void){
+//         let values = [data.username, data.password, data.email, data.first_name, data.last_name, data.phone];
+//         super.query("CALL register_user(?,?,?,?,?,?)",
+//             values,
+//             callback);
+// }
 
     getUsername(userId: number, callback: (status: string, data: string) => void){
         let values = [userId];
@@ -22,7 +22,7 @@ export class UserDAO extends Dao {
     }
 
     checkUsername(username: string, callback: (status: string, data: string) => void){
-        let values = [userId];
+        let values = [username];
         super.query("CALL check_username(?)",
             values,
             callback);

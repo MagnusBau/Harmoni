@@ -9,14 +9,27 @@ variables:
   MYSQL_DATABASE: supertestdb
   MYSQL_ROOT_PASSWORD: secret
 
-# Install node libraries
-before_script:
-  - cd client/
-  - npm install
-  - cd ..
+  # Install node libraries
+  #before_script:
+  # - cd client/
+  #- npm install
+  #- cd ..
+  #- cd server/
+  #- npm install
+  #- cd ..
 
 build_client:
   stage: build
   script:
     - cd client/
+    - npm install
     - npm run build-prod
+    - cd ..
+
+test_server:
+  stage: test
+  script:
+    - cd server/
+    - npm install
+    - npm run test
+    - cd ..
