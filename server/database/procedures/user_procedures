@@ -8,16 +8,14 @@ DROP PROCEDURE IF EXISTS get_password;
 DROP PROCEDURE IF EXISTS get_user;
 
 /**
-  Inserts a new user and an accompanying contact
+  Inserts a new contact
 
-  IN username_in: the users username
-  IN password_in: the users hashed password
   IN email_in: the contacts email
   In first_name_in: the contacts first name
   IN last_name_in: the contacts last name
   In phone_in: the contacts phone number
 
-  Issued by: register(data: Object)
+  Issued by: postContact(data: Object)
  */
 
 DELIMITER //
@@ -29,6 +27,16 @@ BEGIN
 END //
 
 DELIMITER ;
+
+/**
+  Inserts a new user
+
+  IN username_in: the users username
+  IN password_in: the users hashed password
+  IN contact_id_in: id to the users contact information
+
+  Issued by: postUser(data: Object)
+ */
 
 DELIMITER //
 
@@ -53,6 +61,23 @@ DELIMITER //
 CREATE PROCEDURE get_username(IN user_id_in INT(11))
 BEGIN
     SELECT username FROM user WHERE user_id=user_id_in;
+END //
+
+DELIMITER ;
+
+/**
+  Fetches count of a username in the user table
+
+  IN username_in: username being counted
+
+  Issued by: checkUsername(username: string)
+ */
+
+DELIMITER //
+
+CREATE PROCEDURE check_username(IN username_in VARCHAR(50))
+BEGIN
+    SELECT COUNT(*) AS count FROM user WHERE username=username_in;
 END //
 
 DELIMITER ;
