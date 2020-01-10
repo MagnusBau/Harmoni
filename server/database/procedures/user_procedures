@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS post_user;
 DROP PROCEDURE IF EXISTS get_username;
 DROP PROCEDURE IF EXISTS get_password;
 DROP PROCEDURE IF EXISTS get_user;
+DROP PROCEDURE IF EXISTS check_username;
 
 /**
   Inserts a new contact

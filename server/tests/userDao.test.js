@@ -21,9 +21,12 @@ let pool = mysql.createPool({
 const userDao = new UserDao(pool);
 
 beforeAll(done => {
-    runsqlfile("database/setup.sql",
+    runSqlFile("database/setup.sql",
         pool, () => {
-        
-        })
-})
+            runSqlFile("database/procedures/user_procedures.sql", pool, () => {
+                runSqlFile("database/testData.sql", pool, done);
+            })
+        });
+});
+
 
