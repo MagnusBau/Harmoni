@@ -69,11 +69,11 @@ let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 var verifyOptions = {
-    expiresIn:  "12h",
+    expiresIn:  "15M",
     algorithm:  ["RS256"]
 };
 var signOptions = {
-    expiresIn:  "12h",
+    expiresIn:  "15M",
     algorithm:  "RS256"
 };
 
@@ -84,12 +84,9 @@ function register() {
 function login(bool: boolean, username: string, res: Response) {
     if (bool) {
         console.log("Brukernavn & passord ok");
-        let token = jwt.sign({ username: username}, privateKey, signOptions, {
-            expiresIn: 60
-        });
+        let token = jwt.sign({ username: username}, privateKey, signOptions);
 
         userDao.getUser(username, (err, user) => {
-            console.log(user[0][0].user_id);
             res.json({
                 user: {
                     "user_id": user[0][0].user_id,
@@ -170,7 +167,6 @@ app.use(express.static("public"));
 
 // Håndterer login og sender JWT-token tilbake som JSON
 app.post("/login", (req, res) => {
-    console.log(req.body);
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
         if(rows[0]) {
@@ -178,10 +174,8 @@ app.post("/login", (req, res) => {
                 savedHash = rows[0][0].password;
             }
         }
-        console.log("u: " + req.body.username + " p: " + req.body.password + " hp: " + savedHash);
         if(savedHash != null) {
             bcrypt.compare(req.body.password, savedHash, function(err, response) {
-                console.log("sjekker: " + response);
                 login(response, req.body.username, res);
             })
         } else {
@@ -252,10 +246,7 @@ app.use("/api/:id", (req, res, next) => {
             console.log("Token IKKE ok 1");
             res.json({ error: "Not authorized" });
         } else {
-            console.log(req.params.id);
             userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
-                console.log(rows[0][0].username);
-                console.log(decoded.username);
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
@@ -280,9 +271,7 @@ app.use("/api/:id", (req, res, next) => {
 
 app.post("/api/:id/token", (req, res) => {
     console.log("Skal returnere en ny token");
-    let token = jwt.sign({ username: req.body.username }, privateKey, signOptions, {
-        expiresIn: 60
-    });
+    let token = jwt.sign({ username: req.body.username }, privateKey, signOptions);
     res.json({ token: token });
 });
 

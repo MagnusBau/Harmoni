@@ -2,6 +2,70 @@ import axios from 'axios';
 
 let ip = "localhost";
 
+export function attemptLogin(username: string, password: string) {
+    userService.postLogin(username, password).then(response => {
+        if(response.user != null) {
+            localStorage.setItem("user_id", response.user.user_id);
+            localStorage.setItem("username", response.user.username);
+            localStorage.setItem("image", response.user.image);
+            localStorage.setItem("first_name", response.user.first_name);
+            localStorage.setItem("last_name", response.user.last_name);
+            localStorage.setItem("email", response.user.email);
+            localStorage.setItem("phone", response.user.phone);
+            localStorage.setItem("token", response.token);
+            return true;
+        }
+        return false;
+    });
+
+}
+
+export function attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string){
+    let data = {
+        "username": username,
+        "password": password,
+        "email": email,
+        "first_name": firstName,
+        "last_name": lastName,
+        "phone": phone
+    };
+    userService
+        .postRegister(data)
+        .then(response => {
+            if(response.user != null) {
+                localStorage.setItem("user_id", response.user.user_id);
+                localStorage.setItem("username", response.user.username);
+                localStorage.setItem("image", response.user.image);
+                localStorage.setItem("first_name", response.user.first_name);
+                localStorage.setItem("last_name", response.user.last_name);
+                localStorage.setItem("email", response.user.email);
+                localStorage.setItem("phone", response.user.phone);
+                localStorage.setItem("token", response.token);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+}
+
+export function updateToken() {
+    userService
+        .postToken({
+            "user_id": localStorage.getItem("user_id"),
+            "username": localStorage.getItem("username"),
+            "token": localStorage.getItem("token")
+        })
+        .then(response => {
+            localStorage.setItem("token", response.token);
+        });
+
+}
+
+export function getToken() {
+    return localStorage.getItem("token");
+}
+
 class UserService {
     postLogin(username: string, password: string) {
         let data = {
@@ -29,9 +93,7 @@ class UserService {
             "user_id": input.user_id,
             "username": input.username
         };
-        console.log("input user");
-        console.log(input.user_id);
-        return axios.post('http://' + ip +':8080/api/' + input.user.user_id + '/token', data, {
+        return axios.post('http://' + ip +':8080/api/' + data.user_id + '/token', data, {
             'headers': {
                 'x-access-token': input.token
             }}).then(response => response.data);

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import { User, userService} from "../services/userService";
+import { userService, getToken, updateToken, attemptLogin, attemptRegister } from "../services/userService";
 
 const history = createHashHistory();
 
@@ -12,29 +12,6 @@ export class UserLogin extends Component {
     username: string = "";
     password: string = "";
     errorMessage: string = "";
-
-    attemptLogin() {
-        userService.postLogin(this.username, this.password).then(response => {
-            if(response.user != null) {
-                console.log(response.token);
-                console.log(response.user);
-                console.log(response.user.user_id);
-                localStorage.setItem("user_id", response.user.user_id);
-                localStorage.setItem("username", response.user.username);
-                localStorage.setItem("image", response.user.image);
-                localStorage.setItem("first_name", response.user.first_name);
-                localStorage.setItem("last_name", response.user.last_name);
-                localStorage.setItem("email", response.user.email);
-                localStorage.setItem("phone", response.user.phone);
-                localStorage.setItem("token", response.token);
-                this.errorMessage = "success";
-                history.push("/");
-                return;
-            }
-            this.errorMessage = "You failed";
-        });
-
-    }
 
     render() {
         return(
@@ -68,12 +45,29 @@ export class UserLogin extends Component {
                         className="btn btn-dark"
                         style={{}}
                         onClick={this.attemptLogin}
-                    >Login</button>
-                    <br/>
+                    >Logg inn</button>
                     <p>{this.errorMessage}</p>
+                    <button
+                        type="button"
+                        className="btn btn-light"
+                        style={{}}
+                        onClick={this.register}
+                    >Registrer</button>
                 </div>
             </div>
         )
+    }
+
+    attemptLogin() {
+        if(attemptLogin(this.username, this.password)) {
+            this.errorMessage = "You failed";
+        } else {
+            history.push("/");
+        }
+    }
+
+    register() {
+        history.push("/register");
     }
 }
 
@@ -83,8 +77,8 @@ export class UserRegister extends Component {
     username: string = "";
     password: string = "";
     email: string = "";
-    firstname: string = "";
-    lastname: string = "";
+    firstName: string = "";
+    lastName: string = "";
     phone: string = "";
     errorMessage: string = "";
 
@@ -107,9 +101,9 @@ export class UserRegister extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            value={this.firstname}
+                            value={this.firstName}
                             placeholder="Mario"
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstname = event.target.value)}
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
                             required
                             maxLength={50}
                         />
@@ -117,9 +111,9 @@ export class UserRegister extends Component {
                         <input
                             type="text"
                             className="form-control"
-                            value={this.lastname}
+                            value={this.lastName}
                             placeholder="Bros"
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastname = event.target.value)}
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastName = event.target.value)}
                             required
                             maxLength={50}
                         />
@@ -171,40 +165,17 @@ export class UserRegister extends Component {
         )
     }
     attemptRegister(){
-        if(!this.form || !this.form.checkValidity()){
+        if(!this.form || !this.form.checkValidity()) {
             this.errorMessage = "Fyll ut de røde feltene";
             this.mounted();
             return;
         }
-        let data = {
-            "username": this.username,
-            "password": this.password,
-            "email": this.email,
-            "first_name": this.firstname,
-            "last_name": this.lastname,
-            "phone": this.phone
-        };
-        userService
-            .postRegister(data)
-            .then(response => {
-                if(response.user != null) {
-                    localStorage.setItem("user_id", response.user.user_id);
-                    localStorage.setItem("username", response.user.username);
-                    localStorage.setItem("image", response.user.image);
-                    localStorage.setItem("first_name", response.user.first_name);
-                    localStorage.setItem("last_name", response.user.last_name);
-                    localStorage.setItem("email", response.user.email);
-                    localStorage.setItem("phone", response.user.phone);
-                    localStorage.setItem("token", response.token);
-                    this.errorMessage = "success";
-                    history.push("/");
-                    return;
-                }
-                this.errorMessage = "Noe gikk galt";
-            });
-
+        if(attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone)) {
+            this.errorMessage = "You failed";
+        } else {
+            history.push("/");
+        }
     }
-    mounted(){}
 }
 
 export class TokenBoi extends Component{
@@ -215,21 +186,9 @@ export class TokenBoi extends Component{
                     type="button"
                     className="btn btn-dark"
                     style={{}}
-                    onClick={this.getToken}
+                    onClick={updateToken}
                 >Lag ny token</button>
             </div>
         )
-    }
-    getToken(){
-        userService
-            .postToken({
-                "user_id": localStorage.getItem("user_id"),
-                "username": localStorage.getItem("username"),
-                "token": localStorage.getItem("token")
-            })
-            .then(response => {
-                console.log(localStorage.setItem("token", response));
-            });
-
     }
 }
