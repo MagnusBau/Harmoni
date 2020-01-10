@@ -137,7 +137,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
 
 
     render() {
-        if (!this.article) return null;
+        if (!this.ticket) return null;
         return (
             <form>
                 <div>title</div>
