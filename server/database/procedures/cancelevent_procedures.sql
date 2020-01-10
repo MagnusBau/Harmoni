@@ -3,6 +3,8 @@
  */
 DROP PROCEDURE IF EXISTS get_cancelled_events;
 DROP PROCEDURE IF EXISTS cancel_event_by_id;
+DROP PROCEDURE IF EXISTS get_frontpage_events;
+DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
 
 /**
 
@@ -34,4 +36,11 @@ CREATE PROCEDURE get_frontpage_events()
 BEGIN
     SELECT event_id, title, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
            DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event;
+END;
+
+CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
+BEGIN
+    SELECT first_name, last_name, email FROM contact
+        INNER JOIN event ON contact.contact_id = event.organizer
+    WHERE cancelled = 1 AND event_id = event_id_in;
 END;

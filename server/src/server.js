@@ -39,9 +39,9 @@ app.get('/*',function(req,res,next){
     next(); // http://expressjs.com/guide.html#passing-route control
 });
 
-app.get("/cancelledevent", (req, res) => {
+app.get("/cancelledEvent", (req, res) => {
 
-    console.log("/cancelledevent got GET-request from client");
+    console.log("/cancelledEvent got GET-request from client");
 
     cancelEventDao.getCancelledEvents((err, rows) => {
         res.json(rows);
@@ -49,9 +49,30 @@ app.get("/cancelledevent", (req, res) => {
 
 });
 
-app.put("/cancelevent/:eventId", (req, res) => {
+// temp. /frontpageevents
+app.get("/frontpage", (req, res) => {
 
-   console.log("/cancelevent/:eventId got PUT-request from client");
+    console.log("/frontpage got GET-request from client");
+
+    cancelEventDao.getFrontpageEvents((err, rows) => {
+        res.json(rows);
+    });
+
+});
+
+app.get("/emailInfo/:id", (req, res) => {
+
+    console.log("/emailInfo/:id got GET-request from client");
+
+    cancelEventDao.getCancelledEventInfo(req.params.id, (err, rows) => {
+        res.json(rows);
+    });
+
+});
+
+app.put("/cancelEvent/:id", (req, res) => {
+
+   console.log("/cancelEvent/:eventId got PUT-request from client");
 
    cancelEventDao.cancelEvent(req.body, (err, rows) => {
        res.json(rows);

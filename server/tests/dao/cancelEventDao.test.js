@@ -64,6 +64,7 @@ test("cancel event from db", done => {
         );
 
         expect(data.affectedRows).toBe(1);
+
         done();
 
     }
@@ -74,4 +75,45 @@ test("cancel event from db", done => {
         }
         , callback
     );
+});
+
+test("get frontpage events from db", done => {
+
+    function callback(status, data) {
+
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(1);
+        expect(data[0].title).toBe('EM Håndball');
+
+        done();
+
+    }
+
+    cancelEventDao.getFrontpageEvents(callback);
+});
+
+test("get cancelled event information", done => {
+
+    function callback(status, data) {
+
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(2);
+        expect(data[0].first_name).toBe('Mia');
+        expect(data[1].first_name).toBe('Mia');
+
+        done();
+
+    }
+
+    cancelEventDao.getCancelledEventInfo(1, callback);
 });

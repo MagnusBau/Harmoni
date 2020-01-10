@@ -23,4 +23,20 @@ export class CancelEventDAO extends Dao {
             callback);
 
     }
+
+    getFrontpageEvents(callback: (status: string, data: string) => void) {
+
+        super.query("CALL get_frontpage_events()",
+            [],
+            callback);
+    }
+
+    getCancelledEventInfo(event_id: number, callback: (status: string, data: string) => void) {
+
+        let values = [event_id];
+        super.query("CALL get_cancelled_event_email_info(?)",
+            values,
+            callback);
+
+    }
 }

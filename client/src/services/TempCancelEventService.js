@@ -39,6 +39,19 @@ export class Event {
 
 }
 
+export class Contact {
+    first_name: string;
+    last_name: string;
+    email: string;
+
+    constructor(first_name: string, last_name: string, email: string) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+    }
+}
+
+
 class CancelEventService {
 
     getCancelledEvents() {
@@ -52,6 +65,10 @@ class CancelEventService {
     //Temp add
     getFrontpageEvents() {
         return axios.get<Event[]>('http://localhost:4000/event').then(response => response.data);
+    }
+
+    getCancelledEventInfo(eventId: number) {
+        return axios.get<Contact>('http://localhost:4000/emailinfo/' + eventId).then(response => response.data);
     }
 
 }
