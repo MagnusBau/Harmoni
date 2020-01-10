@@ -40,7 +40,7 @@ CREATE TABLE equipment (
   equipment_id INT AUTO_INCREMENT PRIMARY KEY,
   item VARCHAR(50) NOT NULL,
   organizer INT NOT NULL,
-  CONSTRAINT equipment_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
+  CONSTRAINT equipment_fk1 FOREIGN KEY(organizer) REFERENCES contact(contact_id)
 );
 
 CREATE TABLE event (
@@ -54,7 +54,7 @@ CREATE TABLE event (
   capacity INT NOT NULL,
   organizer INT NOT NULL,
   cancelled BOOLEAN NOT NULL DEFAULT FALSE,
-  CONSTRAINT event_fk1 FOREIGN KEY(organizer) REFERENCES user(user_id)
+  CONSTRAINT event_fk1 FOREIGN KEY(organizer) REFERENCES contact(contact_id)
 );
 
 CREATE TABLE ticket (
