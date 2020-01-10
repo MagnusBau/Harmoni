@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
 
+DROP PROCEDURE IF EXISTS raise;
 
 CREATE TABLE contact
 (
@@ -42,7 +43,9 @@ CREATE TABLE artist
 CREATE TABLE equipment
 (
   equipment_id INT AUTO_INCREMENT PRIMARY KEY,
-  item         VARCHAR(50) NOT NULL
+  item         VARCHAR(50) NOT NULL,
+  organizer    INT         NOT NULL,
+  CONSTRAINT equipment_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
 
 CREATE TABLE event
@@ -57,7 +60,7 @@ CREATE TABLE event
   capacity    INT          NOT NULL,
   organizer   INT          NOT NULL,
   cancelled   BOOLEAN      NOT NULL DEFAULT FALSE,
-  CONSTRAINT event_fk1 FOREIGN KEY (organizer) REFERENCES user (user_id)
+  CONSTRAINT event_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
 
 CREATE TABLE ticket
@@ -120,3 +123,12 @@ CREATE TABLE rider
   document    INT                NOT NULL,
   CONSTRAINT rider_fk1 FOREIGN KEY (document) REFERENCES document (document_id)
 );
+
+CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))
+BEGIN
+  SIGNAL SQLSTATE
+    'ERR0R'
+    SET
+      MESSAGE_TEXT = `message`,
+      MYSQL_ERRNO = `errno`;
+END

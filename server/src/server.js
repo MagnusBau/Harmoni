@@ -1,6 +1,7 @@
 // @flow
 
 import {EquipmentDAO} from "./dao/equipmentDao";
+import {ArtistDAO} from "./dao/artistDao";
 
 const express = require('express');
 const path = require('path');
@@ -32,8 +33,8 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-
 const equipmentDao = new EquipmentDAO(pool);
+const artistDao = new ArtistDAO(pool);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
@@ -103,6 +104,30 @@ app.put("/api/event/:eventId/equipment/:equipmentId", (req, res) => {
     console.log(`Got request from client: PUT /api/event/equipment`);
 
     equipmentDao.updateEquipmentOnEvent(req.params.eventId, req.params.equipmentId, req.body.amount,(err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.post("/api/artist", (req, res) => {
+    console.log(`Got request from client: POST /api/artist`);
+
+    artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.put("/api/artist/:artistId", (req, res) => {
+    console.log(`Got request from client: PUT /api/artist/${req.params.artistId}`);
+
+    artistDao.updateArtist(req.params.artistId, req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.delete("api/artist/:artistId", (req, res) => {
+    console.log(`Got request from client: DELETE /api/artist/${req.params.artistId}`);
+
+    artistDao.deleteArtist(req.params.artistId, (err, rows) => {
         res.send(rows);
     });
 });

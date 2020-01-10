@@ -19,14 +19,14 @@ VALUES ('Salg av laken', 'I dag selger jeg mine laken velkommen', 'Der', NOW(), 
 INSERT INTO event (title, description, location, start_time, end_time, capacity, organizer, cancelled)
 VALUES ('Salg av sofaputer', 'I dag selger jeg mine sofaputer velkommen', 'Overalt', NOW(), NOW(), 1189, 1, 0);
 
-INSERT INTO equipment (item)
-VALUES ('Trommesett');
-INSERT INTO equipment (item)
-VALUES ('Gitarforsterker');
-INSERT INTO equipment (item)
-VALUES ('Bassforsterker');
-INSERT INTO equipment (item)
-VALUES ('XLR-kabel');
+INSERT INTO equipment (item, organizer)
+VALUES ('Trommesett', 1);
+INSERT INTO equipment (item, organizer)
+VALUES ('Gitarforsterker', 1);
+INSERT INTO equipment (item, organizer)
+VALUES ('Bassforsterker', 1);
+INSERT INTO equipment (item, organizer)
+VALUES ('XLR-kabel', 1);
 
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (1, 1, 1);
