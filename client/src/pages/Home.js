@@ -73,7 +73,7 @@ class Home extends Component {
 
     mounted(){
         eventService.getEvents()
-            .then(events => (this.events = events))
+            .then(events => (this.events = events[0]))
             .catch((error: Error) => console.log(error.message));
     }
 }

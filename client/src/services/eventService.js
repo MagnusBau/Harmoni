@@ -5,6 +5,7 @@ import axios from "axios";
 export class Event {
     event_id: number;
     title: string;
+    description: string;
     location: string;
     start_time: string;
     end_time: string;
@@ -13,10 +14,12 @@ export class Event {
     organizer: string;
 }
 
+
+
 class EventService {
-    getEvents() {
+    getEvents(): Event[] {
         return axios
-            .get("http://localhost:4000/api/event/")
+            .get<Event[]>("http://localhost:4000/api/event/")
             .then(response => response.data)
             .catch(error => console.log("error" + error));
     }
