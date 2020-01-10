@@ -10,14 +10,11 @@ DROP PROCEDURE IF EXISTS cancel_event_by_id;
 
   Issued by: getCanceledEvents()
  */
-DELIMITER //
 
 CREATE PROCEDURE get_cancelled_events()
 BEGIN
     SELECT * FROM event WHERE cancelled=1;
-END //
-
-DELIMITER ;
+END;
 
 /**
   Cancels event based on an id
@@ -26,14 +23,10 @@ DELIMITER ;
 
   Issued by: cancelEvent(eventId: number)
  */
-DELIMITER //
 
 CREATE PROCEDURE cancel_event_by_id(IN event_id_in INT)
 BEGIN
   UPDATE event SET cancelled = 1 WHERE event_id=event_id_in;
-END //
-
-DELIMITER ;
-
+END;
 
 
