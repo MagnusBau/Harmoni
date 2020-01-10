@@ -7,9 +7,19 @@
     config = null;
 }
 
- */
-const config = require("../../config.json");
+const config = require("../../config");
 const defaultConfig = require("../../config.default.json");
+
+ */
+
+try {
+    config = require("../../config.json");
+    // do stuff
+} catch (ex) {
+    config = null;
+}
+let config = require("../../config");
+var defaultConfig = require("../../config.default.json");
 
 export function getProductionDatabase(): {host: string, database: string, user: string, password: string} {
     let database;
