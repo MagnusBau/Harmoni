@@ -49,6 +49,11 @@ class CancelEventService {
         return axios.put('http://localhost:4000/cancelevent/' + eventId, event).then(response => response.data);
     }
 
+    //Temp add
+    getFrontpageEvents() {
+        return axios.get<Event[]>('http://localhost:4000/event').then(response => response.data);
+    }
+
 }
 
 export let cancelEventService = new CancelEventService();
