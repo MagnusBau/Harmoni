@@ -43,6 +43,25 @@ test("Get all events", done => {
        expect(data[1].title).toBe("Konsert");
        done();
    }
-   eventDao.getAllEvent(callback);
+   eventDao.getAllEvents(callback);
+});
+
+test("create event", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data.affectedRows).toEqual(1);
+        done();
+    }
+    eventDao.createEvent({
+            "title": "test",
+            "description": "test",
+            "location": "test",
+            "start_time": "2020-01-01",
+            "end_time": "2020-01-01",
+            "category": "test",
+            "capacity": "100",
+            "organizer": "1"
+        },
+        callback);
 });
 
