@@ -30,3 +30,8 @@ BEGIN
 END;
 
 
+CREATE PROCEDURE get_frontpage_events()
+BEGIN
+    SELECT event_id, title, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+           DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event;
+END;
