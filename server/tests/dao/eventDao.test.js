@@ -1,9 +1,9 @@
 // @flow
 
 const mysql = require("mysql");
-import {EventDAO} from "../../src/dao/eventDao";
-const runSqlFile = require("../../database/runSqlFile");
-const config = require("../../src/controllers/configuration");
+import {EventDAO} from "../../src/dao/eventDao.js";
+const runSqlFile = require("../../database/runSqlFile.js");
+const config = require("../../src/controllers/configuration.js");
 
 // Create pool for test database
 let database: {} = config.getTestingDatabase();
