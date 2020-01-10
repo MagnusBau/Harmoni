@@ -2,8 +2,7 @@
 
 const mysql = require("mysql");
 import {UserDAO} from "../src/dao/userDao.js";
-const UserDao = require("../src/dao/userDao.js");
-const runsqlfile = require("../database/runSqlFile.js");
+const runSqlFile = require("../database/runSqlFile.js");
 const config = require("../src/controllers/configuration.js");
 
 // Create pool for test database
