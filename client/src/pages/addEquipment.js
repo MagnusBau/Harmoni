@@ -104,13 +104,14 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
         }
     }
 
-    onChange = (event, { newValue }) => {
+    onDropdownChange = (event, { newValue }) => {
         this.setState({
             value: newValue
         });
         this.newEquipment.item = newValue;
     };
 
+    // Filter method for getting suggestions
     getSuggestions = value => {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
@@ -135,6 +136,14 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
         });
     };
 
+    onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (event.keyCode) {
+            case 13: {
+                event.preventDefault();
+            }
+        }
+    };
+
     render() {
         const { value, suggestions } = this.state;
 
@@ -142,9 +151,10 @@ export class AddEquipment extends Component <{match: {params: {eventId: number}}
         const inputProps = {
             placeholder: 'Fyll inn utstyr...',
             value: this.newEquipment.item,
-            onChange: this.onChange,
+            onChange: this.onDropdownChange,
             className: "form-control",
-            required: "true"
+            required: "true",
+            onKeyDown: this.onKeyDown
         };
         return(
             <div className="w-50 m-2">
