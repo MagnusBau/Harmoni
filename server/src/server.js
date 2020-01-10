@@ -1,6 +1,6 @@
 // @flow
 
-import {CancelEventDao} from "./dao/CancelEventDao";
+import {CancelEventDAO} from "./dao/canceleventDao";
 
 const express = require('express');
 const path = require('path');
@@ -32,7 +32,7 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-const cancelEventDao = new CancelEventDao(pool);
+const cancelEventDao = new CancelEventDAO(pool);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );

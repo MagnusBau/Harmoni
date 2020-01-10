@@ -2,7 +2,7 @@
 
 const Dao = require("./dao.js");
 
-export class CancelEventDao extends Dao {
+export class CancelEventDAO extends Dao {
     constructor(pool) {
         super(pool);
     }

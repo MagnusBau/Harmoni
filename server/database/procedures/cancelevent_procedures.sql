@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS cancel_event_by_id;
 
 /**
 
-  Fetch canceled events
+  Fetch cancelled events
 
   Issued by: getCanceledEvents()
  */

@@ -89,15 +89,14 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
 
     cancelEvent() {
 
-        /*
-        //Temp
-        history.push("/");
-        console.log("Arrangement avlyst");
-         */
-
         cancelEventService
             .cancelEvent(this.event.event_id)
             .catch((error: Error) => console.log(error));
+
+        /* //Temp
+        history.push("/");
+        console.log("Arrangement avlyst");
+         */
 
     }
 
