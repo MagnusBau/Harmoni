@@ -50,6 +50,10 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         roleService.removeRoleFromEvent(role);
         window.location.reload();
     }
+    incrementRole(eventRole) {
+        eventRole.count++
+
+    }
     render(){
         console.log(this.eventRoles);
         return(
@@ -70,8 +74,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                         {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
                                 <td className="col-7">{role.type}</td>
-                                <td><button className="btn-primary m-2" onClick={this.addToEvent}>Legg til i arrangement</button></td>
-                                <td><button className="btn-danger" onClick={this.remove}>Fjern</button></td>
+                                <td><button className="btn-primary m-2" onClick={this.addToEvent(role)}>Legg til</button></td>
+                                <td><button className="btn-danger" onClick={this.remove(role)}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -82,7 +86,9 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                         {this.eventRoles.map((eventRole =>
                             <tr key={eventRole.role_id} className="d-flex">
                                 <td className="col-7">{eventRole.type}</td>
-                                <td><button className="btn-danger" onClick={this.removeFromEvent}>Fjern</button></td>
+                                <td><button type="button" className="btn-link" onClick={this.incrementRole(eventRole)}>INC</button></td>
+                                <td><button type="button" className="btn-link" onClick={this.decrementRole(eventRole)}>DEC</button></td>
+                                <td><button type="button" className="btn-danger" onClick={this.removeFromEvent(eventRole)}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>

@@ -8,6 +8,7 @@ export class Role {
 }
 export class EventRole extends Role{
     role: number;
+    count: number;
     event: number;
 }
 

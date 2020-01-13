@@ -42,9 +42,9 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE assign_to_event(IN role_in INT, IN event_in INT)
+CREATE PROCEDURE assign_to_event(IN role_in INT, IN event_in INT, IN count_in INT)
 BEGIN
-    INSERT INTO event_role(role, event) VALUES (role_in, event_in);
+    INSERT INTO event_role(role, event, count) VALUES (role_in, event_in, count_in);
     /*UPDATE role SET event = event_in WHERE role_id = role_id_in;*/
 END //
 

@@ -36,7 +36,7 @@ const roleDao = new roleDAO(pool);
 
 //Returns all roles
 app.get("/event/role", (req, res) => {
-    console.log("Got get request from client: /role");
+    console.log("Got get request from client: event/role");
     roleDao.getRoles((err, rows) => {
         res.json(rows);
     })
@@ -44,7 +44,7 @@ app.get("/event/role", (req, res) => {
 
 //Returns roles assigned to event
 app.get("/event/role/:eventId", (req, res) => {
-    console.log("Got get request from client: /role/:eventId");
+    console.log("Got get request from client: event/role/:eventId");
     roleDao.getRolesInEvent(req.body.event, (err, rows) => {
         res.json(rows);
     })
@@ -52,7 +52,7 @@ app.get("/event/role/:eventId", (req, res) => {
 
 //Creates new role
 app.post("/event/role", (req, res) => {
-    console.log("Got post request from client: /role");
+    console.log("Got post request from client: event/role");
     roleDao.createRole(req.body, (err, rows) => {
         res.send(rows);
     })
@@ -60,7 +60,7 @@ app.post("/event/role", (req, res) => {
 
 //Assigns role to an event
 app.post("/event/role/:eventId/:roleId", (req, res) => {
-    console.log("Got put request from client: /role/:roleId");
+    console.log("Got put request from client: event/role/:roleId");
     roleDao.assignToEvent(req.body, (err, rows) => {
         res.send(rows);
     })
@@ -68,7 +68,7 @@ app.post("/event/role/:eventId/:roleId", (req, res) => {
 
 //Removes role from event
 app.delete("/event/role/:eventId/:roleId", (req, res) => {
-    console.log("Got put request from client: /role/:roleId");
+    console.log("Got put request from client: event/role/:roleId");
     roleDao.removeFromEvent(req.body, (err, rows) => {
         res.send(rows);
     })
@@ -76,7 +76,7 @@ app.delete("/event/role/:eventId/:roleId", (req, res) => {
 
 //Removes role completely
 app.delete("/event/role/:roleId", (req, res) => {
-    console.log("Got delete request from client: /role/:roleId");
+    console.log("Got delete request from client: event/role/:roleId");
     roleDao.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);
     })
