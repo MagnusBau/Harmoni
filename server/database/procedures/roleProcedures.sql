@@ -20,9 +20,9 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE get_staff_in_event(IN event_in INT)
+CREATE PROCEDURE get_roles_in_event(IN event_in INT)
 BEGIN
-    SELECT role_id, type, event FROM role WHERE event=event_in;
+    SELECT role, event FROM event_role WHERE event=event_in;
 END //
 
 DELIMITER ;
@@ -42,9 +42,10 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE assign_to_event(IN role_id_in INT, IN event_in INT)
+CREATE PROCEDURE assign_to_event(IN role_in INT, IN event_in INT)
 BEGIN
-    UPDATE role SET event = event_in WHERE role_id = role_id_in;
+    INSERT INTO event_role(role, event) VALUES (role_in, event_in);
+    /*UPDATE role SET event = event_in WHERE role_id = role_id_in;*/
 END //
 
 DELIMITER ;
@@ -53,9 +54,10 @@ DELIMITER ;
  */
 DELIMITER //
 
-CREATE PROCEDURE remove_from_event(IN role_id_in INT, IN event_id_in INT)
+CREATE PROCEDURE remove_from_event(IN role_in INT, IN event_in INT)
 BEGIN
-    UPDATE role SET event = NULL WHERE role_id = role_id_in AND event = event_id_in;
+    DELETE FROM event_role WHERE role = role_in AND event = event_in;
+    /*UPDATE role SET event = NULL WHERE role_id = role_id_in AND event = event_id_in;*/
 END //
 
 DELIMITER ;

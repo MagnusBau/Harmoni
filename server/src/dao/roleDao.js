@@ -27,7 +27,7 @@ export class roleDAO extends DAO {
      * @param callback
      */
     getStaffInEvent(event: number, callback: (status: string, data: string) => void){
-        super.query("CALL get_staff_in_event(?)", [event], callback);
+        super.query("CALL get_roles_in_event(?)", [event], callback);
     }
 
     /**

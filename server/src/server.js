@@ -35,7 +35,7 @@ const pool = mysql.createPool({
 const roleDao = new roleDAO(pool);
 
 //Returns all roles
-app.get("/role", (req, res) => {
+app.get("/event/role", (req, res) => {
     console.log("Got get request from client: /role");
     roleDao.getRoles((err, rows) => {
         res.json(rows);
@@ -43,7 +43,7 @@ app.get("/role", (req, res) => {
 });
 
 //Returns roles assigned to event
-app.get("/role/event/:eventId", (req, res) => {
+app.get("/event/role/:eventId", (req, res) => {
     console.log("Got get request from client: /role/:eventId");
     roleDao.getStaffInEvent(req.params.event, (err, rows) => {
         res.json(rows);
@@ -51,7 +51,7 @@ app.get("/role/event/:eventId", (req, res) => {
 });
 
 //Creates new role
-app.post("/role", (req, res) => {
+app.post("/event/role", (req, res) => {
     console.log("Got post request from client: /role");
     roleDao.createRole(req.body, (err, rows) => {
         res.send(rows);
@@ -59,7 +59,7 @@ app.post("/role", (req, res) => {
 });
 
 //Assigns role to an event
-app.put("/role/:roleId", (req, res) => {
+app.put("/event/role/:eventId/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
     roleDao.assignToEvent(req.body, (err, rows) => {
         res.send(rows);
@@ -67,7 +67,7 @@ app.put("/role/:roleId", (req, res) => {
 });
 
 //Removes role from event
-app.put("/role/:roleId", (req, res) => {
+app.put("/event/role/:eventId/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
     roleDao.removeFromEvent(req.body, (err, rows) => {
         res.send(rows);
@@ -75,7 +75,7 @@ app.put("/role/:roleId", (req, res) => {
 });
 
 //Removes role completely
-app.delete("/role/:roleId", (req, res) => {
+app.delete("/event/role/:roleId", (req, res) => {
     console.log("Got delete request from client: /role/:roleId");
     roleDao.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);

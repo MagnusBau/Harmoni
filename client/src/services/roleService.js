@@ -9,22 +9,22 @@ export class Role {
 
 class RoleService {
     getAllRoles() {
-        return axios.get<Role[]>('http://localhost:4000/role').then(response => response.data);
+        return axios.get<Role[]>('http://localhost:4000/event/role').then(response => response.data);
     }
     getEventRoles(eventId: number) {
-        return axios.get<Role[]>('http://localhost:4000/role?event=$' + eventId).then(response => response.data);
+        return axios.get<Role[]>('http://localhost:4000/event/role?event=$' + eventId).then(response => response.data);
     }
     createRole(role: Role) {
-        return axios.post<Role, void>('http://localhost:4000/role', {type: role.type, event: role.event});
+        return axios.post<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});
     }
     assignRole(role: Role) {
-        return axios.put<Role, void>('http://localhost:4000/role', {type: role.type, event: role.event});
+        return axios.put<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});
     }
     removeRoleFromEvent(role: Role) {
-        return axios.put<Role, void>('http://localhost:4000/role', {type: role.type, event: role.event});
+        return axios.put<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});
     }
-    removeRol(roleId: number) {
-        return axios.delete<void>('http://localhost:4000/role', {role_id: roleId});
+    removeRole(roleId: number) {
+        return axios.delete('http://localhost:4000/event/role', {role_id: roleId});
     }
 }
 

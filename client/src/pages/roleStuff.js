@@ -7,8 +7,8 @@ import {roleService, Role} from "../services/roleService";
 
 const history = createHashHistory();
 
-export class AddRole extends Component <{match: {params: {id: number}}}> {
-    event: number = 1;
+export class AddRole extends Component <{match: {params: {eventId: number}}}> {
+    event: number = 0;
     roles: Role[] = [];
     newRole: Role = null;
 
@@ -16,6 +16,7 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
         super(props, context);
     }
     mounted() {
+        this.event = this.props.match.params.eventId;
         roleService
             .getAllRoles()
             .then(roles => this.roles = roles)
@@ -33,10 +34,11 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
         window.location.reload();
     }
     remove(role){
-        roleService.removeRol({roleId: role.role_id});
+        roleService.removeRole({roleId: role.role_id});
         window.location.reload();
     }
     render() {
+        console.log(this.roles)
         return(
             <div className="m-2">
                 <form className={"form-inline"} onSubmit={this.onSubmit}>
@@ -53,9 +55,10 @@ export class AddRole extends Component <{match: {params: {id: number}}}> {
                     <thead><tr><th>Personell</th></tr></thead>
                     <tbody>
                     {this.roles.map((role =>
-                            <tr>
-                                <td>{role.type}</td>
-                                <button className="btn-danger" onClick={this.remove}>Fjern</button>
+                            <tr className="d-flex">
+                                <td className="col-7">{role.type}
+                                    <button className="btn-danger" onClick={this.remove}>Fjern</button>
+                                </td>
                             </tr>
                     ))}
                     </tbody>
