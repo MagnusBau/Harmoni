@@ -3,13 +3,14 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-import {roleService, Role} from "../services/roleService";
+import {roleService, Role, EventRole} from "../services/roleService";
 
 const history = createHashHistory();
 
 export class AddRole extends Component <{match: {params: {eventId: number}}}> {
-    event: number = 0;
+    event: number = 1;
     roles: Role[] = [];
+    eventRoles: EventRole[] = []
     newRole: Role = null;
 
     constructor(props, context) {
@@ -21,11 +22,14 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
             .getAllRoles()
             .then(roles => this.roles = roles)
             .catch((error: Error) => console.log(error.message));
+        roleService
+            .getEventRoles(this.event)
+            .then(eventRoles => this.eventRoles = eventRoles)
+            .catch((error: Error) => console.log(error.message));
     }
     onChange(e) {
         const type = e.target.name;
         this.newRole[type] = e.target.name;
-
     }
     onSubmit(e) {
         e.preventDefault();
@@ -33,12 +37,19 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         this.newRole = null;
         window.location.reload();
     }
-    remove(role){
+    remove(role) {
         roleService.removeRole({roleId: role.role_id});
         window.location.reload();
     }
-    render() {
-        console.log(this.roles)
+    addToEvent(role) {
+        roleService.assignRole({role: role.role_id, event: this.event});
+        window.location.reload();
+    }
+    removeFromEvent(role) {
+        roleService.removeRoleFromEvent({role: role.role, event: this.event});
+        window.location.reload();
+    }
+    render(){
         return(
             <div className="m-2">
                 <form className={"form-inline"} onSubmit={this.onSubmit}>
@@ -54,13 +65,26 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                 <table className="table w-50">
                     <thead><tr><th>Personell</th></tr></thead>
                     <tbody>
-                    {this.roles.map((role =>
+                        {this.roles.map((role =>
                             <tr className="d-flex">
                                 <td className="col-7">{role.type}
+                                    <button className="btn-primary m-2" onClick={this.addToEvent}>Legg til i arrangement</button>
                                     <button className="btn-danger" onClick={this.remove}>Fjern</button>
                                 </td>
                             </tr>
-                    ))}
+                        ))}
+                    </tbody>
+                </table>
+                <table className="table w-50">
+                    <thead><tr><th>Personell i arrangementet</th></tr></thead>
+                    <tbody>
+                        {this.eventRoles.map((eventRole =>
+                            <tr className="d-flex">
+                                <td className="col-7">{eventRole.type}
+                                    <button className="btn-danger" onClick={this.removeFromEvent}>Fjern</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

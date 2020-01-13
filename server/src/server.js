@@ -59,7 +59,7 @@ app.post("/event/role", (req, res) => {
 });
 
 //Assigns role to an event
-app.put("/event/role/:eventId/:roleId", (req, res) => {
+app.post("/event/role/:eventId/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
     roleDao.assignToEvent(req.body, (err, rows) => {
         res.send(rows);
@@ -67,7 +67,7 @@ app.put("/event/role/:eventId/:roleId", (req, res) => {
 });
 
 //Removes role from event
-app.put("/event/role/:eventId/:roleId", (req, res) => {
+app.delete("/event/role/:eventId/:roleId", (req, res) => {
     console.log("Got put request from client: /role/:roleId");
     roleDao.removeFromEvent(req.body, (err, rows) => {
         res.send(rows);
