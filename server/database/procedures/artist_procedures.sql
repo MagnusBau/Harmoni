@@ -7,6 +7,7 @@ DROP PROCEDURE IF EXISTS delete_artist;
 DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
 DROP PROCEDURE IF EXISTS get_artist_by_query;
+DROP PROCEDURE IF EXISTS get_artist_by_search;
 
 /**
   Inserts a new artist with contact information

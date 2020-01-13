@@ -17,15 +17,14 @@ CREATE TABLE contact
 (
   contact_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
-  last_name  VARCHAR(50) NULL,
-  email      VARCHAR(50) NOT NULL,
-  phone      VARCHAR(12)
+  last_name VARCHAR(50) NULL,
+  email VARCHAR(50) NOT NULL,
+  phone VARCHAR(12)
 );
 
-CREATE TABLE user
-(
-  user_id  INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50)  NOT NULL,
+CREATE TABLE user (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   password VARCHAR(256) NOT NULL,
   image    LONGBLOB,
   contact  INT          NOT NULL,
@@ -90,17 +89,15 @@ CREATE TABLE role
   CONSTRAINT role_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
 
-CREATE TABLE event_role
-(
-  role  INT,
+CREATE TABLE event_role (
+  role INT,
   event INT NOT NULL,
-  CONSTRAINT event_role_pk PRIMARY KEY (role, event),
-  CONSTRAINT event_role_fk1 FOREIGN KEY (role) REFERENCES role (role_id),
-  CONSTRAINT event_role_fk2 FOREIGN KEY (event) REFERENCES event (event_id)
+  CONSTRAINT event_role_pk PRIMARY KEY(role, event),
+  CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
+  CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
 );
 
-CREATE TABLE document
-(
+CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   file        LONGBLOB           NOT NULL,
   event       INT                NOT NULL,

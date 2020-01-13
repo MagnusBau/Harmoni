@@ -32,144 +32,84 @@ afterAll(() => {
     pool.end();
 });
 
-test("Get all equipment from database", done => {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        data = data[0];
-        expect(data.length).toBe(4);
-        expect(data[0].item).toBe("Trommesett");
-        expect(data[1].item).toBe("Gitarforsterker");
-        expect(data[2].item).toBe("Bassforsterker");
-        expect(data[3].item).toBe("XLR-kabel");
-        done();
-    }
-    equipmentDao.getAllEquipment(callback);
+test("Get all artists from database", done => {
+   function callback(status, data) {
+       console.log(
+           `Test callback: status=${status}, data=${data}`
+       );
+
+       data = data[0];
+       expect(data.length).toBe(2);
+       expect(data[0].artist_name).toBe("Geir Lippestad");
+       expect(data[0].first_name).toBe("Geir");
+       expect(data[1].artist_name).toBe("Svein Blipp");
+       expect(data[1].first_name).toBe("Mia");
+       done();
+   }
+   artistDao.getAllArtists(callback);
 });
 
-test("Get one equipment from database by id", done => {
+test("Get one artist from database by id", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
         );
-        data = data[0];
-        expect(data.length).toBe(1);
-        expect(data[0].item).toBe("Gitarforsterker");
-        done();
-    }
-    equipmentDao.getEquipmentById(2, callback);
-});
 
-test("Get one equipment from database by name", done => {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
         data = data[0];
         expect(data.length).toBe(1);
-        expect(data[0].equipment_id).toBe(4);
+        expect(data[0].artist_name).toBe("Geir Lippestad");
+        expect(data[0].first_name).toBe("Geir");
         done();
     }
-    equipmentDao.getEquipmentByName("XLR-kabel", callback);
+    artistDao.getArtistById(1, callback);
 });
 
-test("Add new equipment", done => {
+test("Get artists from database by search #1", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
         );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-    equipmentDao.insertEquipment("Mikrofonstativ", callback);
-});
 
-test("Delete equipment", done => {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-    equipmentDao.deleteEquipment(5, callback);
-});
-
-test("Get equipment by event", done =>  {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
         data = data[0];
-        expect(data.length).toBe(4);
+        expect(data.length).toBe(2);
         done();
     }
-    equipmentDao.getEquipmentByEvent(1, callback);
+    artistDao.getArtistBySearch("lipp", callback);
 });
 
-test("Add equipment to event", done =>  {
+test("Get artists from database by search #2", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
         );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        done();
+    }
+    artistDao.getArtistBySearch("Ge", callback);
+});
+
+test("Insert new artist", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.addEquipmentToEvent(2, "Bassforsterker", 1, callback);
+    artistDao.insertArtist("Bob Dylling", "Bob", "Dylling", "bob@d.no", "56723456", callback);
 });
 
-test("Add existing equipment to event", done =>  {
+test("Insert new artist with existing contact", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
         );
+
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.addEquipmentToEvent(1, "Bassforsterker", 3, callback);
-});
-
-test("Add new equipment to event", done =>  {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-    equipmentDao.addEquipmentToEvent(3, "3/4 Jack", 3, callback);
-});
-
-test("Remove equipment from event", done =>  {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-    equipmentDao.removeEquipmentFromEvent(1, 2, callback);
-});
-
-test("Update equipment on event", done =>  {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-    equipmentDao.updateEquipmentOnEvent(2, 4, 9, callback);
-});
-
-test("Update non-existing equipment on event", done =>  {
-    function callback(status, data) {
-        console.log(
-            `Test callback: status=${status}, data=${data}`
-        );
-        expect(data.affectedRows).toBe(0);
-        done();
-    }
-    equipmentDao.updateEquipmentOnEvent(2, 2, 9, callback);
+    artistDao.insertArtist("Svigers Eraller Verst", "Geir", "Lippestad", "geir@lips.no", "12345678", callback);
 });
