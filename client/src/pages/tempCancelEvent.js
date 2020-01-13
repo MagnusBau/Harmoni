@@ -6,7 +6,8 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 import { Button, Column, Row, Alert } from '../components/widgets';
 import { Modal } from 'react-bootstrap';
-import { cancelEventService, Event} from "../services/TempCancelEventService";
+//import { cancelEventService, Event} from "../services/TempCancelEventService";
+import { eventService, Event} from "../services/eventService";
 
 const history = createHashHistory();
 
@@ -77,19 +78,16 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
     mounted(): void {
 
         // GET EVENT BY ID METHOD HERE
-        /*
-        EventService
+
+        eventService
             .getEventID(this.props.match.params.id)
-            .then(event => this.event = event)
+            .then(event => this.event = event[0])
             .catch((error: Error) => Alert(error.message));
-
-         */
-
     }
 
     cancelEvent() {
-
-        cancelEventService
+        console.log(this.event.event_id + ": " + this.event);
+        eventService
             .cancelEvent(this.event.event_id)
             .catch((error: Error) => console.log(error));
 

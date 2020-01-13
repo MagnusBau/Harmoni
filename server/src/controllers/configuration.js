@@ -1,6 +1,7 @@
 // @flow
 
-var config;
+let config;
+
 try {
     config = require("../../config.json");
     // do stuff
@@ -8,10 +9,10 @@ try {
     config = null;
 }
 
-var defaultConfig = require("../../config.default.json");
+let defaultConfig = require("../../config.default.json");
 
 export function getProductionDatabase(): {host: string, database: string, user: string, password: string} {
-    let database
+    let database;
     if (config) {
         database = config.database.production;
     } else {

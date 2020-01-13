@@ -1,7 +1,5 @@
 // @flow
 
-import {CancelEventDAO} from "./dao/canceleventDao";
-
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
@@ -32,54 +30,22 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-const cancelEventDao = new CancelEventDAO(pool);
+module.exports = pool;
+
+const equipmentRoutes = require("./routes/equipment");
+const eventRoutes = require("./routes/event");
+const ticketRoutes = require("./routes/ticket");
+const userRoutes = require("./routes/user");
+
+app.use("/api/event", eventRoutes);
+app.use("/api/equipment", equipmentRoutes);
+app.use("/api", userRoutes);
+app.use("/api/ticket", ticketRoutes);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next(); // http://expressjs.com/guide.html#passing-route control
 });
-
-app.get("/cancelledEvent", (req, res) => {
-
-    console.log("/cancelledEvent got GET-request from client");
-
-    cancelEventDao.getCancelledEvents((err, rows) => {
-        res.json(rows);
-    });
-
-});
-
-// temp. /frontpageevents
-app.get("/frontpage", (req, res) => {
-
-    console.log("/frontpage got GET-request from client");
-
-    cancelEventDao.getFrontpageEvents((err, rows) => {
-        res.json(rows);
-    });
-
-});
-
-app.get("/emailInfo/:id", (req, res) => {
-
-    console.log("/emailInfo/:id got GET-request from client");
-
-    cancelEventDao.getCancelledEventInfo(req.params.id, (err, rows) => {
-        res.json(rows);
-    });
-
-});
-
-app.put("/cancelEvent/:id", (req, res) => {
-
-   console.log("/cancelEvent/:eventId got PUT-request from client");
-
-   cancelEventDao.cancelEvent(req.params.id, (err, rows) => {
-       res.json(rows);
-   });
-
-});
-
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
@@ -95,3 +61,5 @@ export let listen = new Promise<void>((resolve, reject) => {
         });
     });
 });
+
+const server = app.listen(8080);

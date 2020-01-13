@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Harmoni</title>
-        <link rel="stylesheet" href="./css/bootstrap.min.css"/>
-
-    </head>
-
-    <body>
-        <div id="root"></div>
-        <script src="bundle.js"></script>
-    </body>
-
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/home.css"/>
+    <link rel="stylesheet" href="./css/harmoni.css"/>
+    <title>Harmoni</title>
+    <script src="jquery.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="bundle.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover({
+                placement : 'bottom',
+                content: 'body'
+            });
+        });
+    </script>
+</body>
 </html>

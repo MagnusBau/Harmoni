@@ -1,4 +1,5 @@
 /.idea/*
 **/node_modules/
-node_modules/
 server/config.json
+client/src/bundle.js
+server/coverage/
