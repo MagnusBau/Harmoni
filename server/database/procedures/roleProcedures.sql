@@ -1,5 +1,5 @@
 DROP PROCEDURE IF EXISTS get_all_roles;
-DROP PROCEDURE IF EXISTS get_staff_in_event;
+DROP PROCEDURE IF EXISTS get_roles_in_event;
 DROP PROCEDURE IF EXISTS set_role;
 DROP PROCEDURE IF EXISTS assign_to_event;
 DROP PROCEDURE IF EXISTS remove_from_event;

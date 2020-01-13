@@ -15,8 +15,8 @@ class RoleService {
     getAllRoles() {
         return axios.get<Role[]>('http://localhost:4000/event/role').then(response => response.data);
     }
-    getEventRoles(eventId: number) {
-        return axios.get<EventRole[]>('http://localhost:4000/event/role?event=$' + eventId).then(response => response.data);
+    getEventRoles(eventId: number): EventRole[] {
+        return axios.get<EventRole[]>('http://localhost:4000/event/role/' + eventId).then(response => response.data);
     }
     createRole(role: Role) {
         return axios.post<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});

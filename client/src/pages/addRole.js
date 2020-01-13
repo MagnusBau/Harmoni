@@ -15,16 +15,17 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
 
     constructor(props, context) {
         super(props, context);
+        this.newRole = {type: "", event: 0};
     }
     mounted() {
         this.currentEvent = this.props.match.params.eventId;
         roleService
             .getAllRoles()
-            .then(roles => this.roles = roles)
+            .then(roles => this.roles = roles[0])
             .catch((error: Error) => console.log(error.message));
         roleService
             .getEventRoles(this.currentEvent)
-            .then(eventRoles => this.eventRoles = eventRoles)
+            .then(eventRoles => this.eventRoles = eventRoles[0])
             .catch((error: Error) => console.log(error.message));
     }
     onChange(e) {
@@ -38,19 +39,18 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         window.location.reload();
     }
     remove(role) {
-        roleService.removeRole({roleId: role.role_id});
+        roleService.removeRole(role);
         window.location.reload();
     }
     addToEvent(role) {
-        roleService.assignRole({role: role.role_id, event: this.event});
+        roleService.assignRole(role);
         window.location.reload();
     }
     removeFromEvent(role) {
-        roleService.removeRoleFromEvent({role: role.role, event: this.event});
+        roleService.removeRoleFromEvent(role);
         window.location.reload();
     }
     render(){
-        console.log(this.roles);
         console.log(this.eventRoles);
         return(
             <div className="m-2">
