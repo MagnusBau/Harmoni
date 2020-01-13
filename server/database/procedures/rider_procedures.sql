@@ -54,7 +54,7 @@ END;
 
   Issued by: updateRider(description: string, id: number)
  */
-CREATE PROCEDURE update_rider(IN rider_id_in INT(11), IN description_in VARCHAR(100))
+CREATE PROCEDURE update_rider(IN description_in VARCHAR(100), IN rider_id_in INT(11))
 BEGIN
     UPDATE rider SET description=description_in WHERE rider_id=rider_id_in;
 END;
