@@ -19,6 +19,10 @@ class ArtistService {
     getArtistById(artistId: number): Artist {
         return axios.get<Artist>(`http://localhost:4000/api/artist/${artistId}`).then(response => response.data);
     }
+
+    getArtistByEvent(eventId: number): Artist[] {
+        return axios.get<Artist[]>(`http://localhost:4000/api/event/${eventId}/artist`).then(response => response.data);
+    }
 }
 
 export let artistService = new ArtistService();

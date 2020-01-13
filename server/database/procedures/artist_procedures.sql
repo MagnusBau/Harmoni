@@ -192,3 +192,12 @@ BEGIN
   INSERT INTO contract (artist, document)
   VALUES (artist_id_in, document_id_in);
 END;
+
+CREATE PROCEDURE get_artist_by_event (IN event_id_in INT)
+BEGIN
+  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone FROM artist a
+  JOIN contact c ON a.contact = c.contact_id
+  JOIN contract cr ON cr.artist=a.artist_id
+  JOIN document d ON cr.document = d.document_id
+  WHERE d.event=event_id_in;
+END;

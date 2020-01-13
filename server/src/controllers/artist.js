@@ -49,3 +49,11 @@ exports.getArtistById = (req, res, next) => {
         res.send(rows);
     })
 };
+
+exports.getArtistByEvent = (req, res, next) => {
+    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
+
+    artistDao.getArtistByEvent(req.params.eventId, (err, rows) => {
+        res.send(rows);
+    })
+}
