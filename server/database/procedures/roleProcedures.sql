@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS set_role;
 DROP PROCEDURE IF EXISTS assign_to_event;
 DROP PROCEDURE IF EXISTS remove_from_event;
 DROP PROCEDURE IF EXISTS remove_role;
+DROP PROCEDURE IF EXISTS update_role_count;
 /**
   returns all staff-types
  */
@@ -69,6 +70,17 @@ DELIMITER //
 CREATE PROCEDURE remove_role(IN role_id_in INT)
 BEGIN
     DELETE FROM role WHERE role_id = role_id_in;
+END //
+
+DELIMITER ;
+/**
+  Updates number of specified role
+ */
+DELIMITER //
+
+CREATE PROCEDURE update_role_count(IN role_id_in INT, IN event_in INT, IN count_in INT)
+BEGIN
+    UPDATE event_role SET count=count_in WHERE role=role_id_in AND event=event_in;
 END //
 
 DELIMITER ;

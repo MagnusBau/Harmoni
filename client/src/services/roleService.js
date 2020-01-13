@@ -23,13 +23,16 @@ class RoleService {
         return axios.post<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});
     }
     assignRole(role: EventRole) {
-        return axios.put<Role, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
+        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
     }
     removeRoleFromEvent(role: EventRole) {
-        return axios.put<Role, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
+        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
     }
     removeRole(roleId: number) {
         return axios.delete('http://localhost:4000/event/role', {role_id: roleId});
+    }
+    updateRoleCount(role: EventRole) {
+        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event, count: role.count});
     }
 }
 

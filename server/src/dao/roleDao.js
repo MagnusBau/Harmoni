@@ -58,4 +58,16 @@ export class roleDAO extends DAO {
     removeRole(role_id: number, callback: (status: string, data: string) => void){
         super.query("CALL remove_role(?)", [role_id], callback);
     }
+
+    /**
+     * Updates count of specified role
+     * @param role_id
+     * @param event
+     * @param count
+     * @param callback
+     */
+    updateRoleCount(role_id: number, event: number, count: number, callback: (status: string, data: string) => void){
+        let update = [role_id, event, count];
+        super.query("CALL update_role_count(?, ?, ?)", update, callback);
+    }
 }
