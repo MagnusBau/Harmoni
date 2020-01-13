@@ -49,3 +49,42 @@ end;
 BEGIN
     INSERT INTO event VALUES (DEFAULT, event_title_in, event_description_in, event_location_in, event_start_time_in, event_end_time_in, event_category_in, event_capacity_in, event_organizer_in, DEFAULT);
 end ;
+
+/**
+
+  Fetch cancelled events
+
+  Issued by: getCanceledEvents()
+ */
+
+CREATE PROCEDURE get_events_by_cancelled(IN cancelled_in BIT)
+BEGIN
+    SELECT * FROM event WHERE cancelled=cancelled_in;
+END;
+
+/**
+  Cancel event based on an id
+
+  IN event_id_in: Id of the event
+
+  Issued by: cancelEvent(eventId: number)
+ */
+
+CREATE PROCEDURE cancel_event_by_id(IN event_id_in INT)
+BEGIN
+    UPDATE event SET cancelled = 1 WHERE event_id=event_id_in;
+END;
+
+/**
+  Fetch cancelled event information
+
+  IN event_id_in: Id of the event
+
+  Issued by: getCancelledEventInfo(eventId: number)
+ */
+CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
+BEGIN
+    SELECT first_name, last_name, email FROM contact
+                                                 INNER JOIN event ON contact.contact_id = event.organizer
+    WHERE event_id = event_id_in;
+END;

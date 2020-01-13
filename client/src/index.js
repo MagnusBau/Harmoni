@@ -9,6 +9,7 @@ import {AddEquipment} from "./pages/addEquipment";
 import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
 import { AddEvent} from "./pages/addEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
+import { CancelEvent } from './pages/tempCancelEvent'
 
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
@@ -21,11 +22,12 @@ if (root)
                 <NavBar />
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route path="/event/edit/:eventId/equipment" component={AddEquipment} />
+                    <Route path="/event/:eventId/edit/equipment" component={AddEquipment} />
                     <Route path="/event/new" component={AddEvent}/>
-                    <Route exact path="/event/edit/:eventId/ticket" component={listTicketType}/>
-                    <Route exact path="/event/edit/:eventId/ticket" component={addTicketType}/>
-                    <Route exact path="/event/edit/:eventId/ticket/:ticketId/edit" component={editTicketType}/>
+                    <Route exact path="/event/:eventId/edit/ticket" component={listTicketType}/>
+                    <Route exact path="/event/:eventId/edit/ticket" component={addTicketType}/>
+                    <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
+                    <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
