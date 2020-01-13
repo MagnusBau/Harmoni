@@ -39,7 +39,7 @@ test("Get all events", done => {
        );
        data = data[0];
        expect(data.length).toBe(2);
-       expect(data[0].title).toBe("EM Håndball 2020");
+       expect(data[0].title).toBe("EM Håndball");
        expect(data[1].title).toBe("Konsert");
        done();
    }
@@ -64,4 +64,35 @@ test("create event", done => {
         },
         callback);
 });
+
+test("update event", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data[2].title).toBe("Test00");
+        expect(data[2].description).toBe("Test00Description");
+        done();
+    }
+    eventDao.updateEvent(2, {
+        "title": "Test00",
+        "description": "Test00description",
+        "location": "test",
+        "start_time": "2020-01-01",
+        "end_time": "2020-01-01",
+        "category": "test",
+        "capacity": "100",
+        "organizer": "1"
+    })
+});
+
+test("update event title", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data[2].title).toBe("Test01");
+        done();
+
+    }
+    eventDao.updateEventTitle({"title": "Test01"}, callback);
+});
+
+
 
