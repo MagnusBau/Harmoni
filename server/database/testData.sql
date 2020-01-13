@@ -13,6 +13,13 @@ INSERT INTO user(user_id, username, password, image, contact) VALUES(DEFAULT, 'c
 INSERT INTO contact (first_name, last_name, email, phone) VALUES ('Mia', 'Fornes', 'mia@test.com', 12345678);
 INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'passord', 'bilde', 1);
 
+INSERT INTO contact(first_name, last_name, email, phone)
+VALUES ('Geir', 'Lippestad', 'geir@lips.no', '12345678');
+INSERT INTO artist(artist_name, contact)
+VALUES ('Geir Lippestad', 4);
+INSERT INTO artist(artist_name, contact)
+VALUES ('Svein Blipp', 3);
+
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', NOW(), NOW(), 'Sport', 7000, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)

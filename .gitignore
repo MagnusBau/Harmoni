@@ -1,5 +1,5 @@
 /.idea/*
 **/node_modules/
 server/config.json
-client/src/bundle.js
+client/public/bundle.js
 server/coverage/
