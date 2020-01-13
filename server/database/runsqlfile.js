@@ -1,8 +1,7 @@
+// @flow
 
-//@flow
-
-let mysql = require("mysql");
-let fs = require("fs");
+var mysql = require("mysql");
+var fs = require("fs");
 
 module.exports = function run(filename, pool, done) {
     console.log("runsqlfile: reading file " + filename);
@@ -26,4 +25,3 @@ module.exports = function run(filename, pool, done) {
         }
     });
 };
-
