@@ -1,0 +1,74 @@
+// @flow
+import axios from 'axios';
+
+
+export class Ticket_ID {
+    ticket_id: number;
+    title: string;
+    info: string;
+    price: number;
+    count: number;
+    event : number;
+
+
+    constructor(ticket_id : number, title: string, info: string, price: number, count: number, event : number) {
+        this.ticket_id = ticket_id;
+        this.title = title;
+        this.info = info;
+        this.price = price;
+        this.count = count;
+        this.event = event;
+    }
+}
+
+
+export class Ticket {
+
+    title: string;
+    info: string;
+    price: number;
+    count: number;
+    event: number;
+
+
+    constructor( title: string, info: string, price: number, count: number, event : number) {
+
+        this.title = title;
+        this.info = info;
+        this.price = price;
+        this.count = count;
+        this.event = event;
+    }
+
+
+}
+class TicketService{
+    getAllTicket(eventId : number){
+        return axios
+            .get<Ticket[]>('http://localhost:4000/api/ticket/all/' + eventId)
+            .then(response => response.data)
+            .catch(error => console.log("error" + error));
+    }
+
+    getTicketId(eventId: number) {
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticketTest/' + eventId).then(response => response.data);
+    }
+
+    postTicket(ticket: Ticket){
+        return axios.post('http://localhost:4000/ticket', ticket).then(response => response.data);
+    }
+
+    updateTicket(ticket: Ticket, id : number){
+        return axios.put('http://localhost:4000/ticket/' + id, ticket).then(response => response.data);
+    }
+
+    removeTicket(id: number) {
+        return axios.delete<Ticket>('http://localhost:4000/ticket/' + id).then(response => response.data);
+    }
+
+
+
+
+}
+
+export let ticketService = new TicketService();

@@ -32,7 +32,7 @@ class Home extends Component {
                                 <div className="carousel-item">
                                     <div className="card text-center">
                                         <h5 className="card-title">
-                                        {events.title}
+                                            {events.title}
                                         </h5>
                                         <p className="card-subtitle">
                                             {events.start_time}
@@ -55,15 +55,15 @@ class Home extends Component {
                 <div className="container">
                     <div className="card-columns">
                         {this.events.map(events => (
-                        <div className="card">
-                            <img className="card-img-top img-fluid" src="" alt=""/>
-                            <div className="card-body">
-                                <h5>
-                                    {events.title} {events.start_time}
-                                </h5>
-                            </div>
+                            <div className="card">
+                                <img className="card-img-top img-fluid" src="" alt=""/>
+                                <div className="card-body">
+                                    <h5>
+                                        {events.title} {events.start_time}
+                                    </h5>
+                                </div>
 
-                        </div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -72,8 +72,8 @@ class Home extends Component {
     }
 
     mounted(){
-        eventService.getEvents()
-            .then(events => (this.events = events[0]))
+        eventService.getAllEvents()
+            .then(events => (this.events = events))
             .catch((error: Error) => console.log(error.message));
     }
 }

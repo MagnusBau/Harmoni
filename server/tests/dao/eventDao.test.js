@@ -1,5 +1,6 @@
 // @flow
 
+//TODO skrive test for get event by id
 const mysql = require("mysql");
 import {EventDAO} from "../../src/dao/eventDao.js";
 const runSqlFile = require("../../database/runSqlFile.js");

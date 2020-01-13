@@ -39,9 +39,14 @@ app.get('/*',function(req,res,next){
 
 const equipmentRoutes = require("./routes/equipment");
 const eventRoutes = require("./routes/event");
+const ticketRoutes = require("./routes/ticket");
+//const userRoutes = require("./routes/user");
 
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
+//app.use("/auth", userRoutes);
+app.use("/api/ticket", ticketRoutes);
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

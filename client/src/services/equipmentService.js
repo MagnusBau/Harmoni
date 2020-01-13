@@ -18,8 +18,8 @@ class EquipmentService {
         return axios.get<Equipment[]>(`http://localhost:4000/api/equipment`).then(response => response.data);
     }
 
-    getEquipmentByEvent(eventId: number): EventEquipment[] {
-        return axios.get<EventEquipment[]>(`http://localhost:4000/api/equipment?event=${eventId}`).then(response => response.data);
+    getEquipmentByEvent(event: number): EventEquipment[] {
+        return axios.get<EventEquipment[]>(`http://localhost:4000/api/equipment/${event}`).then(response => response.data);
     }
 
     addEquipmentToEvent(eventId: number, equipment: Equipment, amount: number): void {
