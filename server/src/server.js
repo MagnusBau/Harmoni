@@ -44,40 +44,6 @@ const eventRoutes = require("./routes/event");
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 
-const eventDao = new EventDAO(pool);
-
-//Insert new event
-app.post("/event/new", (req:Request, res: Response) => {
-    console.log("Post request from client");
-    eventDao.createEvent(req.body,(status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-//Get event by id
-app.get("/event/:event_id", (req:Request, res:Response) => {
-    console.log('Get-request from client /event/${req.params.event_id}' );
-
-    eventDao.getEventById(req.params.event_id, (err, rows) => {
-    res.json(rows)
-    })
-});
-
-//get all events or event by name
-app.get("/events", (req, res) => {
-    console.log(`Got request from client: /equipment`);
-    if (req.query.name) {
-        eventDao.getEventByName(req.query.name, (err, rows) => {
-            res.json(rows);
-        })
-    } else {
-        eventDao.getAllEvents((err, rows) => {
-            res.json(rows);
-        })
-    }
-});
-
 
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)

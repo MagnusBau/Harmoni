@@ -3,15 +3,15 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from "history";
-import {eventService, Event} from "../services/eventService";
+import {eventService, Event, CreateEvent} from "../services/eventService";
 import {Alert} from "../widgets.js";
 
 const history = createHashHistory();
 
 export class EditEvent extends Component<{match: { params: {event_id: number}}}> {
     allEvents = [];
-    event : Event[] = [];
-    updateEvent = new Event();
+    event = new Event();
+    updateEvent = new CreateEvent();
 
     constructor(props, context) {
         super(props, context);
@@ -27,7 +27,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type={"text"}
                                className={"form-control"}
                                id={"event-title"}
-                               value={this.event.title}
+                               defaultValue={this.event.title}
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.title = event.target.value)}/>
@@ -38,7 +38,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <textarea rows={4} cols={50}
                                   className={"form-control"}
                                   id={"event-description"}
-                                  value={this.event.description}
+                                  defaultValue={this.event.description}
                                   required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.event.description = event.target.value)}
@@ -50,7 +50,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type={"text"}
                                className={"form-control"}
                                id={"event-location"}
-                               value={this.event.location}
+                               defaultValue={this.event.location}
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.location = event.target.value)}
@@ -62,7 +62,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type="datetime-local" id="event-start-time"
                                required={true}
                                name="start-time"
-                               value={this.event.start_time}
+                               defaultValue={this.event.start_time}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.start_time = event.target.value)}
                         />
@@ -73,7 +73,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type="datetime-local" id="event-end-time"
                                required={true}
                                name="end-time"
-                               value={this.event.end_time}
+                               defaultValue={this.event.end_time}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.end_time = event.target.value)}
                         />
@@ -95,7 +95,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type={"text"}
                                className={"form-control"}
                                id={"category"}
-                               value={this.event.category}
+                               defaultValue={this.event.category}
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.category = event.target.value)}
@@ -107,7 +107,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type={"text"}
                                className={"form-control"}
                                id={"ticket-amount"}
-                               value={this.event.capacity}
+                               defaultValue={this.event.capacity}
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.capacity = event.target.value)}
@@ -119,7 +119,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <input type={"text"}
                                className={"form-control"}
                                id={"organizer"}
-                               value={this.event.organizer}
+                               defaultValue={this.event.organizer}
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.organizer = event.target.value)}
@@ -129,7 +129,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                 <div className="text-center">
                     <button type="button"
                             className="btn btn-ghost btn-ghost-bordered center-block"
-                            onClick={this.register}>
+                            onClick={this.update}>
                         {' '}Lagre{' '}
                     </button>
                 </div>
@@ -137,21 +137,21 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
         )
     }
 
-    register() {
+    update() {
         eventService
-            .updateEvent(this.updateEvent)
+            .updateEvent(this.props.match.params.event_id, this.event)
             .then(() => {
                 Alert.success('You have updated your event');
             })
             .catch((error: Error) => Alert.danger(error.message));
-        history.push('/event/' + this.updateEvent.event_id);
+        /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
     }
 
     mounted() {
 
         eventService
             .getEventIDUpdate(this.props.match.params.event_id)
-            .then(event => (this.event = event[0]))
+            .then(event => (this.event = event[0][0]))
             .catch((error: Error) => Alert.danger(error.message));
     }
 }

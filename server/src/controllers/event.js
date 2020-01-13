@@ -117,7 +117,15 @@ exports.updateCapacity = (req, res, next) => {
 //Update entire event
 exports.updateEvent = (req, res, next) => {
     console.log("PUT request from client");
-    eventDao.updateEvent(req.params.body, (status, data) => {
+    eventDao.updateEvent(req.params.event_id, req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+};
+//Insert new event
+exports.createEvent = (req, res, next) => {
+    console.log("Post request from client");
+    eventDao.createEvent(req.body,(status, data) => {
         res.status(status);
         res.json(data);
     })

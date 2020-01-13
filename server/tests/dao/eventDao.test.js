@@ -39,7 +39,7 @@ test("Get all events", done => {
        );
        data = data[0];
        expect(data.length).toBe(2);
-       expect(data[0].title).toBe("EM Håndball");
+       expect(data[0].title).toBe("EM Håndball 2020");
        expect(data[1].title).toBe("Konsert");
        done();
    }

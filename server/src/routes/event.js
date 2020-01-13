@@ -10,7 +10,8 @@ router.post("/", eventController.insertEvent);
 router.post("/:eventId/equipment", equipmentController.addEquipmentToEvent);
 router.delete("/:eventId/equipment/:equipmentId", equipmentController.removeEquipmentFromEvent);
 router.put("/:eventId/equipment/:equipmentId", equipmentController.updateEquipmentOnEvent);
-router.put("/event/edit/:event_id", eventController.updateEvent);
-router.get("/event/edit/:event_id", eventController.getEventByIdUpdate);
+router.put("/edit/:event_id", eventController.updateEvent);
+router.get("/edit/:event_id", eventController.getEventByIdUpdate);
+router.post("/new", eventController.createEvent);
 
 module.exports = router;
