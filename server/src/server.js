@@ -42,7 +42,7 @@ const userRoutes = require("./routes/user");
 
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-app.use("/api", userRoutes);
+app.use("/auth", userRoutes);
 app.use("/api/ticket", ticketRoutes);
 
 app.get('/*',function(req,res,next){

@@ -8,14 +8,16 @@ export class Ticket_ID {
     info: string;
     price: number;
     count: number;
+    event : number;
 
 
-    constructor(ticket_id : number, title: string, info: string, price: number, count: number) {
+    constructor(ticket_id : number, title: string, info: string, price: number, count: number, event : number) {
         this.ticket_id = ticket_id;
         this.title = title;
         this.info = info;
         this.price = price;
         this.count = count;
+        this.event = event;
     }
 }
 
@@ -26,23 +28,25 @@ export class Ticket {
     info: string;
     price: number;
     count: number;
+    event: number;
 
 
-    constructor( title: string, info: string, price: number, count: number) {
+    constructor( title: string, info: string, price: number, count: number, event : number) {
 
         this.title = title;
         this.info = info;
         this.price = price;
         this.count = count;
+        this.event = event;
     }
 }
 class TicketService{
-    getAllTicket(){
-        return axios.get<Ticket[]>('/ticket').then(response => response.data);
+    getAllTicket(event : number){
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/' + event).then(response => response.data);
     }
 
     getTicketId(id: number) {
-        return axios.get<Ticket[]>('http://localhost:4000/ticket/' + id).then(response => response.data);
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticketTest/' + id).then(response => response.data);
     }
 
     postTicket(ticket: Ticket){

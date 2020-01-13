@@ -8,9 +8,10 @@ import {ticketService, Ticket, Ticket_ID} from '../services/ticketService'
 const history = createHashHistory();
 
 
-export class listTicketType extends Component <{match: {params: {id: number}}}> {
+export class listTicketType extends Component <{match: {params: {eventId: number}}}> {
     id_temp : number = 0;
     ticket = new Ticket_ID(
+        '',
         '',
         '',
         '',
@@ -57,7 +58,7 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
 
     mounted(){
        // ticketService.getArticleId(1).then(t => (this.ticket = t[0])).catch((error: Error) => console.log(error.message));
-        ticketService.getAllTicket()
+        ticketService.getAllTicket(this.props.match.params.eventId)
             .then(t => {
                 this.ticketTypeList = t[0];
             })
@@ -66,12 +67,13 @@ export class listTicketType extends Component <{match: {params: {id: number}}}> 
 }
 
 
-export class addTicketType extends Component <{match: {params: {id: number}}}> {
+export class addTicketType extends Component <{match: {params: {eventId: number}}}> {
     ticket = new Ticket(
         '',
         '',
         '',
         '',
+        ''
 
     );
     render(){
@@ -126,6 +128,17 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
                     />
                 </div>
 
+                <div>event</div>
+                <div>
+                    <input
+                        type="number"
+                        value={this.ticket.event}
+                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                            if (this.ticket) this.ticket.event = event.target.value;
+                        }}
+                    />
+                </div>
+
                 <button onClick={this.send} type={"button"}>legg til bilett type</button>
             </div>
         </form>
@@ -150,14 +163,12 @@ export class addTicketType extends Component <{match: {params: {id: number}}}> {
           .catch((error: Error) => console.log(error.message));
   }
     mounted(){
-        ticketService.getAllTicket()
+        ticketService.getAllTicket(this.props.match.params.eventId)
             .then(t => {
                 this.ticketTypeList = t[0];
             })
             .catch(error => error.message);
-
     }
-
 }
 
 export class editTicketType extends Component <{match: {params: {id: number}}}> {
@@ -167,9 +178,9 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
         '',
         '',
         '',
+        ''
 
     );
-
 
     render() {
         if (!this.ticket) return null;
@@ -224,6 +235,17 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
                     />
                 </div>
 
+                <div>event</div>
+                <div>
+                    <input
+                        type="number"
+                        value={this.ticket.event}
+                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                            if (this.ticket) this.ticket.event = event.target.value;
+                        }}
+                    />
+                </div>
+
                 <button onClick={this.save} type={"button"}>Save</button>
                 <button onClick={this.delete} type={"button"}>delete</button>
             </form>
@@ -231,13 +253,13 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
     }
 
     mounted() {
-        ticketService.getTicketId(this.props.match.params.id).then(t => (this.ticket = t[0][0])).catch((error: Error) => console.log(error.message));
+        ticketService.getTicketId(this.props.match.params.ticketId).then(t => (this.ticket = t[0][0])).catch((error: Error) => console.log(error.message));
     }
 
     delete(){
         if(!this.ticket) return null;
 
-        ticketService.removeTicket(this.props.match.params.id).then(() => {
+        ticketService.removeTicket(this.props.match.params.ticketId).then(() => {
             if (this.ticket) history.push('/');
         }).catch(error => error.message);
     }
@@ -248,7 +270,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
             alert('pris eller antall kan ikke være under 0!');
             return;
         }
-        ticketService.updateTicket(this.ticket, this.props.match.params.id).then(() => {
+        ticketService.updateTicket(this.ticket, this.props.match.params.ticketId).then(() => {
             if (this.ticket) history.push('/');
         }).catch(error => error.message);
     }
