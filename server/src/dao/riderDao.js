@@ -14,7 +14,7 @@ export class RiderDAO extends Dao{
      */
     postRider(data: Object, callback: (status: string, data: string) => void){
         let values = [data.description, data.document];
-        super.query("CALL post_rider(?)",
+        super.query("CALL post_rider(?,?)",
             values,
             callback);
     }
