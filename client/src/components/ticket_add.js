@@ -33,6 +33,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
                             if (this.ticket) {
                                 this.ticket.title = event.target.value;
                                 this.ticket.ticket_id = event.target.value;
+                                this.ticket.event = event.target.value;
                             }
 
                         }}>
@@ -51,8 +52,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
     edit() {
         if (!this.ticket) return null;
         if (this.ticket.ticket_id === '') return null;
-        if (this.ticket) history.push('/' + this.ticket.ticket_id + '/' + 'rediger');
-
+        if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/ticket/'+ this.ticket.ticket_id + '/edit');
 
         }
 
@@ -171,7 +171,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
     }
 }
 
-export class editTicketType extends Component <{match: {params: {id: number}}}> {
+export class editTicketType extends Component <{match: {params: {ticketId: number}}}> {
     ticketTypeList: Ticket[] = [];
     ticket = new Ticket(
         '',
@@ -186,9 +186,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
         if (!this.ticket) return null;
         return (
 
-
             <form>
-
                 <div>title</div>
                 <div>
                     <input
@@ -248,6 +246,7 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
 
                 <button onClick={this.save} type={"button"}>Save</button>
                 <button onClick={this.delete} type={"button"}>delete</button>
+                <button onClick={this.ToBack} type={"button"}>ToBack</button>
             </form>
         );
     }
@@ -271,8 +270,12 @@ export class editTicketType extends Component <{match: {params: {id: number}}}> 
             return;
         }
         ticketService.updateTicket(this.ticket, this.props.match.params.ticketId).then(() => {
-            if (this.ticket) history.push('/');
+            if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
+
         }).catch(error => error.message);
+    }
+    ToBack(){
+        if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
     }
 }
 

@@ -23,8 +23,11 @@ if (root)
                     <Route exact path="/" component={Home} />
                     <Route path="/event/edit/:eventId/equipment" component={AddEquipment} />
                     <Route path="/event/new" component={AddEvent}/>
+
+                    <Route exact path="/event/:eventId/ticket" component={addTicketType}/>
                     <Route exact path="/event/edit/:eventId/ticket" component={listTicketType}/>
-                    <Route exact path="/event/edit/:eventId/ticket" component={addTicketType}/>
+
+
                     <Route exact path="/event/edit/:eventId/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/register" component={UserRegister} />

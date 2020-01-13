@@ -42,23 +42,23 @@ export class Ticket {
 }
 class TicketService{
     getAllTicket(event : number){
-        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/' + event).then(response => response.data);
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/all/' + event).then(response => response.data);
     }
 
     getTicketId(id: number) {
-        return axios.get<Ticket[]>('http://localhost:4000/api/ticketTest/' + id).then(response => response.data);
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/' + id).then(response => response.data);
     }
 
     postTicket(ticket: Ticket){
-        return axios.post('http://localhost:4000/ticket', ticket).then(response => response.data);
+        return axios.post('http://localhost:4000/api/ticket', ticket).then(response => response.data);
     }
 
     updateTicket(ticket: Ticket, id : number){
-        return axios.put('http://localhost:4000/ticket/' + id, ticket).then(response => response.data);
+        return axios.put('http://localhost:4000/api/ticket/' + id, ticket).then(response => response.data);
     }
 
     removeTicket(id: number) {
-        return axios.delete<Ticket>('http://localhost:4000/ticket/' + id).then(response => response.data);
+        return axios.delete<Ticket>('http://localhost:4000/api/ticket/' + id).then(response => response.data);
     }
 
 
