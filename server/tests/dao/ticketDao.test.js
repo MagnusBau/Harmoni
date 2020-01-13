@@ -2,7 +2,7 @@
 import {TicketDAO} from "../../src/dao/ticketDao"
 
 let mysql = require("mysql");
-const runsqlfile = require("../../database/runsqlfile.js");
+const runsqlfile = require("../../database/runSqlFile.js");
 const config = require("../../src/controllers/configuration.js");
 
 // Create pool for test database
