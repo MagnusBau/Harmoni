@@ -67,7 +67,8 @@ CREATE TABLE ticket
   title     VARCHAR(50)        NOT NULL,
   info      LONGTEXT           NOT NULL,
   price     INT                NOT NULL,
-  count     INT                NOT NULL
+  count     INT                NOT NULL,
+  event     INT                NOT NULL
 );
 
 CREATE TABLE event_equipment

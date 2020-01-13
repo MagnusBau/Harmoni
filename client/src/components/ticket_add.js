@@ -45,6 +45,8 @@ export class listTicketType extends Component <{match: {params: {eventId: number
                     </select>
                 </div>
                 <button onClick={this.edit} type={"button"}>rediger bilett type</button>
+                <button onClick={this.opprettSide} type={"button"}>opprett ny billettype</button>
+
             </form>
         );
     }
@@ -63,6 +65,10 @@ export class listTicketType extends Component <{match: {params: {eventId: number
                 this.ticketTypeList = t[0];
             })
             .catch(error => error.message);
+    }
+
+    opprettSide(){
+        if (this.ticket) history.push('/' + 'event/ticket');
     }
 }
 
@@ -140,6 +146,8 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
                 </div>
 
                 <button onClick={this.send} type={"button"}>legg til bilett type</button>
+
+
             </div>
         </form>
         );}
@@ -162,13 +170,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
           })
           .catch((error: Error) => console.log(error.message));
   }
-    mounted(){
-        ticketService.getAllTicket(this.props.match.params.eventId)
-            .then(t => {
-                this.ticketTypeList = t[0];
-            })
-            .catch(error => error.message);
-    }
+
 }
 
 export class editTicketType extends Component <{match: {params: {ticketId: number}}}> {

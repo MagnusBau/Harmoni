@@ -38,10 +38,10 @@ test("get all ticket from db", done => {
         console.log(
             "Test callback: status=" + status + ", data=" + JSON.stringify(data)
         );
-        expect(data.length).toBeGreaterThanOrEqual(2);
+        expect(data.length).toBe(2);
         done();
     }
-    ticketDao.getAll(callback);
+    ticketDao.getAll(1,callback);
 });
 
 
@@ -55,6 +55,7 @@ test("get one ticket from db", done => {
         data = data[0];
         expect(data.length).toBe(1);
         expect(data[0].title).toBe('enTittel');
+        expect(data[0].event).toBe(1);
         done();
     }
     ticketDao.getOne(1, callback);
@@ -72,7 +73,7 @@ test("add ticket to db", done => {
     }
 
     ticketDao.createOne(
-        {title: 'tredjendreTittel', info: 'TredjeInfo_in', price: 3, count: 3},
+        {title: 'tredjendreTittel', info: 'TredjeInfo_in', price: 3, count: 3, event: 2},
         callback
     );
 });
