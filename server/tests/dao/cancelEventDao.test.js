@@ -44,14 +44,39 @@ test("get cancelled events from db", done => {
 
         data = data[0];
 
-        expect(data.length).toBe(2);
-        expect(data[0].title).toBe('Konsert');
-        expect(data[1].title).toBe('Konsert2');
+        expect(data.length).toBe(1);
+        expect(data[0].title).toBe('Konsert2');
+        expect(data[0].description).toBe('Konsertbeskrivelse2');
+        expect(data[0].location).toBe('Trondheim');
+        expect(data[0].organizer).toBe(1);
 
         done();
     }
 
     cancelEventDao.getCancelledEvents(callback);
+
+});
+
+test("get cancelled event information", done => {
+
+    function callback(status, data) {
+
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(1);
+        expect(data[0].first_name).toBe('Mia');
+        expect(data[0].last_name).toBe('Fornes');
+        expect(data[0].email).toBe('mia@test.com');
+
+        done();
+
+    }
+
+    cancelEventDao.getCancelledEventInfo(3, callback);
 
 });
 
@@ -69,12 +94,10 @@ test("cancel event from db", done => {
 
     }
 
-    cancelEventDao.cancelEvent(
-        {
-            event_id: 2
-        }
-        , callback
+    cancelEventDao.cancelEvent(2
+    , callback
     );
+
 });
 
 test("get frontpage events from db", done => {
@@ -89,31 +112,14 @@ test("get frontpage events from db", done => {
 
         expect(data.length).toBe(1);
         expect(data[0].title).toBe('EM Håndball');
+        expect(data[0].description).toBe('EM i håndball 2020');
+        expect(data[0].organizer).toBe(2);
 
         done();
 
     }
 
     cancelEventDao.getFrontpageEvents(callback);
+
 });
 
-test("get cancelled event information", done => {
-
-    function callback(status, data) {
-
-        console.log(
-            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
-        );
-
-        data = data[0];
-
-        expect(data.length).toBe(2);
-        expect(data[0].first_name).toBe('Mia');
-        expect(data[1].first_name).toBe('Mia');
-
-        done();
-
-    }
-
-    cancelEventDao.getCancelledEventInfo(1, callback);
-});

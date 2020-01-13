@@ -19,7 +19,7 @@ BEGIN
 END;
 
 /**
-  Cancels event based on an id
+  Cancel event based on an id
 
   IN event_id_in: Id of the event
 
@@ -31,13 +31,25 @@ BEGIN
   UPDATE event SET cancelled = 1 WHERE event_id=event_id_in;
 END;
 
+/**
+  Fetch frontpage events
 
+  Issued by: getFrontpageEvents()
+ */
 CREATE PROCEDURE get_frontpage_events()
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
-           DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event;
+    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+           DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event
+    WHERE cancelled = 0;
 END;
 
+/**
+  Fetch cancelled event information
+
+  IN event_id_in: Id of the event
+
+  Issued by: getCancelledEventInfo(eventId: number)
+ */
 CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
 BEGIN
     SELECT first_name, last_name, email FROM contact

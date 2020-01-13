@@ -3,14 +3,16 @@ DELETE FROM user;
 DELETE FROM contact;
 
 INSERT INTO contact (first_name, last_name, email, phone) VALUES ('Mia', 'Fornes', 'mia@test.com', 12345678);
+INSERT INTO contact (first_name, last_name, email, phone) VALUES ('Ola', 'Nordmann', 'ola@test.com', 12345678);
 
 INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'passord', 'bilde', 1);
+INSERT INTO user (username, password, image, contact) VALUES ('olanordmann', 'hemmelig', 'profilbilde', 2);
 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', NOW(), NOW(), 'Sport', 7000, 1, 0);
+VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', NOW(), NOW(), 'Sport', 7000, 2, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert', 'Konstertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 1);
+VALUES ('Konsert', 'Konstertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert2', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 50, 1, 1);
+VALUES ('Konsert2', 'Konsertbeskrivelse2', 'Trondheim', NOW(), NOW(), 'Kategori', 50, 1, 1);
 
 

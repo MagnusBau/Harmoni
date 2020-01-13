@@ -74,7 +74,7 @@ app.put("/cancelEvent/:id", (req, res) => {
 
    console.log("/cancelEvent/:eventId got PUT-request from client");
 
-   cancelEventDao.cancelEvent(req.body, (err, rows) => {
+   cancelEventDao.cancelEvent(req.params.id, (err, rows) => {
        res.json(rows);
    });
 

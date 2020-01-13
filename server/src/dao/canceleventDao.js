@@ -15,9 +15,9 @@ export class CancelEventDAO extends Dao {
 
     }
 
-    cancelEvent(json : Object, callback: (status: string, data: string) => void) {
+    cancelEvent(event_id : number, callback: (status: string, data: string) => void) {
 
-        let values = [json.event_id];
+        let values = [event_id];
         super.query("CALL cancel_event_by_id(?)",
             values,
             callback);
