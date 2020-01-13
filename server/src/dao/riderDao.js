@@ -14,7 +14,7 @@ export class RiderDAO extends Dao{
      */
     postRider(data: Object, callback: (status: string, data: string) => void){
         let values = [data.description, data.document];
-        super.query("CALL post_rider",
+        super.query("CALL post_rider(?)",
             values,
             callback);
     }
@@ -26,7 +26,7 @@ export class RiderDAO extends Dao{
      */
     getRider(id: number, callback: (status: string, data: string) => void){
         let values = [id];
-        super.query("CALL get_rider",
+        super.query("CALL get_rider(?)",
             values,
             callback);
     }
@@ -38,7 +38,7 @@ export class RiderDAO extends Dao{
      */
     getAllRiders(document: number, callback: (status: string, data: string) => void){
         let values = [document];
-        super.query("CALL get_all_riders",
+        super.query("CALL get_all_riders(?)",
             values,
             callback);
     }
@@ -51,7 +51,7 @@ export class RiderDAO extends Dao{
      */
     updateRider(description: string, id: number, callback: (status: string, data: string) => void){
         let values = [description, id];
-        super.query("CALL update_rider",
+        super.query("CALL update_rider(?,?)",
             values,
             callback);
     }
@@ -63,7 +63,7 @@ export class RiderDAO extends Dao{
      */
     deleteRider(id: number, callback: (status: string, data: string) => void){
         let values = [id];
-        super.query("CALL delete_rider",
+        super.query("CALL delete_rider(?)",
             values,
             callback);
     }
@@ -75,7 +75,7 @@ export class RiderDAO extends Dao{
      */
     deleteAllRiders(document: number, callback: (status: string, data: string) => void){
         let values = [document];
-        super.query("CALL delete_all_riders",
+        super.query("CALL delete_all_riders(?)",
             values,
             callback);
     }
