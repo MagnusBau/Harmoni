@@ -39,11 +39,13 @@ const equipmentRoutes = require("./routes/equipment");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const userRoutes = require("./routes/user");
+const riderRoutes = require("./routes/riders");
 
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/api", userRoutes);
 app.use("/api/ticket", ticketRoutes);
+app.use("/api/rider", riderRoutes);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
