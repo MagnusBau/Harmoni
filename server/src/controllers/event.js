@@ -38,9 +38,9 @@ exports.insertEvent = (req, res, next) => {
 
 //Get event by id
 exports.getEventById = (req, res, next) => {
-    console.log(`Get-request from client /event/${req.params.event_id}` );
+    console.log(`Get-request from client /event/${req.params.eventId}` );
 
-    eventDao.getEventById(req.params.eventId, (err, rows) => {
+    eventDao.getEventById(req.params.eventId, (err, [rows]) => {
         res.json(rows)
     })
 };

@@ -7,13 +7,13 @@ import { createHashHistory } from 'history';
 import { Button, Column, Row, Alert } from '../components/widgets';
 import { Modal } from 'react-bootstrap';
 //import { cancelEventService, Event} from "../services/TempCancelEventService";
-import { eventService, Event} from "../services/eventService";
+import { eventService, Event } from "../services/eventService";
 
 const history = createHashHistory();
 
-export class CancelEvent extends Component < { match: { params: { id: number } } }> {
+export class CancelEvent extends Component < { match: { params: { eventId: number } } }> {
 
-    event: Event = null;
+    event : Event = null;
 
     state = {
         showModal: false,
@@ -21,11 +21,11 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
     };
 
     show = () => {
-        this.setState({ setModalShow: true });
+        this.setState({ setShowModal: true });
     };
 
     close = () => {
-        this.setState({ setModalShow: false });
+        this.setState({ setShowModal: false });
     };
 
     render() {
@@ -42,7 +42,7 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
                 </Column>
 
                 <Modal
-                    show={this.state.setModalShow}
+                    show={this.state.setShowModal}
                     onHide={this.close}
                     centered
                 >
@@ -77,24 +77,39 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
 
     mounted(): void {
 
-        // GET EVENT BY ID METHOD HERE
-
         eventService
-            .getEventID(this.props.match.params.id)
-            .then(event => this.event = event[0])
+            .getEventById(this.props.match.params.eventId)
+            .then(event => (this.event = event))
             .catch((error: Error) => Alert(error.message));
+
     }
 
     cancelEvent() {
-        console.log(this.event.event_id + ": " + this.event);
-        eventService
-            .cancelEvent(this.event.event_id)
-            .catch((error: Error) => console.log(error));
 
-        /* //Temp
-        history.push("/");
-        console.log("Arrangement avlyst");
-         */
+        if(!this.event) return null;
+
+        //console.log(this.props.match.params.eventId + ": " + this.event[0].title);
+
+        if(this.event[0].cancelled === 0) {
+
+            eventService
+                .cancelEvent(this.props.match.params.eventId)
+                .then(history.push("/"))
+                //.then(Alert.success("Arrangementet er avlyst! Email sendt."))
+                .then(console.log("Arrangementet er avlyst! Epost sendt."))
+                .catch((error: Error) => console.log(error));
+
+        } else if (this.event[0].cancelled === 1) {
+
+            console.log("Dette arrangementet er allerede avlyst");
+            //return (Alert.info("Dette arrangementet er allerede avlyst"));
+
+        } else {
+
+            console.log("Noe gikk galt!");
+            //return Alert.danger("Noe gikk galt!");
+
+        }
 
     }
 

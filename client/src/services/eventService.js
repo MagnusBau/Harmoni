@@ -19,6 +19,8 @@ export class Event {
     capacity: number;
     organizer: number;
     organizer_name: string;
+    cancelled: number;
+
 }
 
 class EventService {
@@ -29,8 +31,8 @@ class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>(`http://localhost:4000/api/event/?event_id=${eventID}`).then(response => response.data);
+    getEventById(eventId: number): Event[] {
+        return axios.get<Event[]>(`http://localhost:4000/api/event/` + eventId).then(response => response.data);
     }
 
     getEventByName(name: string): Promise<Event[]> {
