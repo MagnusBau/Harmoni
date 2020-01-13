@@ -8,6 +8,8 @@ DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
 DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
+DROP PROCEDURE IF EXISTS add_new_artist_to_event;
+DROP PROCEDURE IF EXISTS add_existing_artist_to_event;
 
 /**
   Inserts a new artist with contact information
@@ -157,3 +159,36 @@ BEGIN
   OR phone LIKE CONCAT('%',search_string,'%');
 END;
 
+CREATE PROCEDURE add_new_artist_to_event (IN event_id_in INT, IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
+                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12), IN file_in BLOB)
+BEGIN
+  DECLARE artist_id_in INT;
+  DECLARE document_id_in INT;
+  CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in);
+  SET artist_id_in=LAST_INSERT_ID();
+
+  IF (file_in IN (SELECT file FROM document WHERE event=event_id_in)) THEN
+    SET document_id_in = (SELECT document_id FROM document WHERE file = file_in AND event=event_id_in LIMIT 1);
+  ELSE
+    INSERT INTO document (file, event)
+    VALUES (file_in, event_id_in);
+  END IF;
+
+  INSERT INTO contract (artist, document)
+  VALUES (artist_id_in, document_id_in);
+END;
+
+CREATE PROCEDURE add_existing_artist_to_event (IN event_id_in INT, IN artist_id_in INT, IN file_in BLOB)
+BEGIN
+  DECLARE document_id_in INT;
+
+  IF (file_in IN (SELECT file FROM document WHERE event=event_id_in)) THEN
+    SET document_id_in = (SELECT document_id FROM document WHERE file = file_in AND event=event_id_in LIMIT 1);
+  ELSE
+    INSERT INTO document (file, event)
+    VALUES (file_in, event_id_in);
+  END IF;
+
+  INSERT INTO contract (artist, document)
+  VALUES (artist_id_in, document_id_in);
+END;
