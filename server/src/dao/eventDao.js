@@ -26,4 +26,46 @@ export class EventDAO extends Dao {
         let values = [name];
         super.query("CALL get_event_by_name(?)", values, callback);
     }
+
+    updateEventTitle(json: Object, callback: (status: string, data: string) => void ) {
+        let newTitle = [json.title];
+        console.log("new title: ", newTitle);
+        super.query("CALL update_event_title(?)", newTitle, callback);
+    }
+
+    updateEventDescription(json: Object, callback: (status: string, data: string) => void) {
+        let newDescription = [json.description];
+        console.log("New description: ", newDescription);
+        super.query("CALL update_event_description(?)", newDescription, callback);
+    }
+
+    updateEventLocation(json: Object, callback: (status: string, data: string) => void) {
+        let newLocation = [json.location];
+        console.log("New location: ", newLocation);
+        super.query("CALL update_event_location(?)", newLocation, callback);
+    }
+
+    updateEventStartTime(json: Object, callback: (status: string, data:string) => void) {
+        let newStartTime = [json.start_time];
+        console.log("New Start time: ", newStartTime);
+        super.query("CALL update_event_start_time(?)", newStartTime, callback);
+    }
+
+    updateEventEndTime(json: Object, callback: (status: string, data: string) => void) {
+        let newEndTime = [json.end_time];
+        console.log("New end time: ", newEndTime);
+        super.query("CALL update_event_end_time(?)", newEndTime, callback);
+    }
+
+    updateEventCategory(json: Object, callback: (status: string, data: string) => void) {
+        let newCategory = [json.category];
+        console.log("New Category: ", newCategory);
+        super.query("CALL update_event_category(?)", newCategory, callback);
+    }
+
+    updateEventCapacity(json: Object, callback: (status: string, data: string) => void) {
+        let newCapacity = [json.capacity];
+        console.log("New capacity: ", newCapacity);
+        super.query("CALL update_event_capacity(?)", newCapacity, callback);
+    }
 }
