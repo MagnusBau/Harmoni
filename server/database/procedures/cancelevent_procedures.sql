@@ -54,5 +54,5 @@ CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
 BEGIN
     SELECT first_name, last_name, email FROM contact
         INNER JOIN event ON contact.contact_id = event.organizer
-    WHERE cancelled = 1 AND event_id = event_id_in;
+    WHERE event_id = event_id_in;
 END;
