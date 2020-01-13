@@ -47,7 +47,7 @@ app.use("/api/equipment", equipmentRoutes);
 const eventDao = new EventDAO(pool);
 
 //Insert new event
-app.post("/", (req:Request, res: Response) => {
+app.post("/event/new", (req:Request, res: Response) => {
     console.log("Post request from client");
     eventDao.createEvent(req.body,(status, data) => {
         res.status(status);
@@ -77,6 +77,8 @@ app.get("/events", (req, res) => {
         })
     }
 });
+
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

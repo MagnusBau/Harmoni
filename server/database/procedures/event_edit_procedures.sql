@@ -8,6 +8,7 @@ DROP PROCEDURE IF EXISTS update_event_start_time;
 DROP PROCEDURE IF EXISTS update_event_end_time;
 DROP PROCEDURE IF EXISTS update_event_category;
 DROP PROCEDURE IF EXISTS update_event_capacity;
+DROP PROCEDURE IF EXISTS update_event;
  /*
   Update event title
   */
@@ -69,5 +70,22 @@ END;
  end;
 
 /*
-
+Update entire event
  */
+
+ CREATE PROCEDURE update_event(IN event_title_in VARCHAR(50),
+ event_description_in VARCHAR(500), event_location_in VARCHAR(100),
+ event_start_time_in DATETIME, event_end_time_in DATETIME,
+ event_category_in VARCHAR(50), event_capacity_in int,
+ event_organizer_in int, event_id_in int)
+BEGIN
+    UPDATE event SET title = event_title_in,
+                     description = event_description_in,
+                     location = event_location_in,
+                     start_time = event_start_time_in,
+                     end_time = event_end_time_in,
+                     category = event_category_in,
+                     capacity = event_capacity_in,
+                     organizer = event_organizer_in
+    WHERE event_id = event_id_in;
+end;

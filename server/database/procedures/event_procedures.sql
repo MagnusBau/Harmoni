@@ -13,7 +13,7 @@ DROP PROCEDURE IF EXISTS get_event_by_month;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer FROM event where event_id = event_id_in;
+    SELECT event_id, title, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer FROM event where event_id = event_id_in;
 END;
 
 /**
@@ -21,7 +21,7 @@ END;
  */
 CREATE PROCEDURE get_event_by_name(IN event_name_in VARCHAR(100))
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer from event where title like CONCAT('%', event_name_in, '%');
+    SELECT event_id, title, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer from event where title like CONCAT('%', event_name_in, '%');
 end ;
 
 
@@ -31,7 +31,7 @@ end ;
  */
 CREATE PROCEDURE get_all_events()
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer from event;
+    SELECT event_id, title, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer from event;
 end;
 
 /**
@@ -39,7 +39,7 @@ end;
  */
 CREATE PROCEDURE get_event_by_month(IN event_month_in int)
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer from event where MONTH(start_time) = event_month_in;
+    SELECT event_id, title, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer from event where MONTH(start_time) = event_month_in;
 end;
 
 /**

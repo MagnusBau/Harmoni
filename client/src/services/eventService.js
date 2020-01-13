@@ -39,6 +39,10 @@ class EventService {
     createEvent(createEvent: Event): Promise<void> {
         return axios.post("http://localhost:4000/api/event", createEvent).then(response => response.data);
     }
+
+    updateEvent(eventID: number): Promise<void> {
+        return axios.put('/event/edit/' + eventID).then(response => response.data);
+    }
 }
 
 export let eventService = new EventService();
