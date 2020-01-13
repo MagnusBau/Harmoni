@@ -35,3 +35,12 @@ INSERT INTO event_equipment (event, equipment, amount)
 VALUES (1, 4, 4);
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (2, 4, 8);
+
+INSERT INTO rider (description, document)
+VALUES ('Mathias må ha tre kameler og syv geiter', 2);
+INSERT INTO rider (description, document)
+VALUES ('Mathias må ha en full size yobama statue', 2);
+INSERT INTO rider (description, document)
+VALUES ('Mathias har problemer, han trenger hjelp', 2);
+INSERT INTO rider (description, document)
+VALUES ('Magnus trenger ikke noe, han er ikke kravstor', 1);
