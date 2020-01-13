@@ -30,7 +30,7 @@ class EventService {
     }
 
     getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>(`http://localhost:4000/api/event/?event_id=${eventID}`).then(response => response.data);
+        return axios.get<Event[]>(`http://localhost:4000/api/event/${eventID}`).then(response => response.data);
     }
 
     getEventByName(name: string): Promise<Event[]> {

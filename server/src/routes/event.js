@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/", eventController.getEvents);
 router.get("/:eventId/email", eventController.getEventEmail);
+router.get("/:eventId", eventController.getEventById);
 router.post("/", eventController.insertEvent);
 router.post("/:eventId/equipment", equipmentController.addEquipmentToEvent);
 router.delete("/:eventId/equipment/:equipmentId", equipmentController.removeEquipmentFromEvent);
