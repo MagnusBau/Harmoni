@@ -1,5 +1,4 @@
-
-//@flow
+// @flow
 
 let mysql = require("mysql");
 let fs = require("fs");
@@ -26,4 +25,3 @@ module.exports = function run(filename, pool, done) {
         }
     });
 };
-
