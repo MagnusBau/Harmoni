@@ -11,8 +11,7 @@ DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
 
-CREATE TABLE contact
-(
+CREATE TABLE contact (
   contact_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NULL,
@@ -44,7 +43,6 @@ CREATE TABLE equipment
   organizer    INT         NOT NULL,
   CONSTRAINT equipment_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
-
 
 CREATE TABLE event
 (

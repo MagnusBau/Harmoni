@@ -1,8 +1,5 @@
 // @flow
 
-import {UserDAO} from "./dao/userDao";
-import {ticketDAO} from "./dao/ticketDao";
-
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");

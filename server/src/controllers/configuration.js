@@ -1,6 +1,7 @@
 // @flow
 
 let config;
+
 try {
     config = require("../../config.json");
     // do stuff

@@ -1,9 +1,0 @@
-SET FOREIGN_KEY_CHECKS=0;
-DELETE FROM event_equipment;
-DELETE FROM equipment;
-DELETE FROM event;
-DELETE FROM user;
-DELETE FROM contact;
-SET FOREIGN_KEY_CHECKS=1;
-
-
