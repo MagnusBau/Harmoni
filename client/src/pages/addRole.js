@@ -8,7 +8,7 @@ import {roleService, Role, EventRole} from "../services/roleService";
 const history = createHashHistory();
 
 export class AddRole extends Component <{match: {params: {eventId: number}}}> {
-    event: number = 1;
+    currentEvent: number = 1;
     roles: Role[] = [];
     eventRoles: EventRole[] = []
     newRole: Role = null;
@@ -17,13 +17,13 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         super(props, context);
     }
     mounted() {
-        this.event = this.props.match.params.eventId;
+        this.currentEvent = this.props.match.params.eventId;
         roleService
             .getAllRoles()
             .then(roles => this.roles = roles)
             .catch((error: Error) => console.log(error.message));
         roleService
-            .getEventRoles(this.event)
+            .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles)
             .catch((error: Error) => console.log(error.message));
     }
@@ -50,6 +50,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         window.location.reload();
     }
     render(){
+        console.log(this.roles);
+        console.log(this.eventRoles);
         return(
             <div className="m-2">
                 <form className={"form-inline"} onSubmit={this.onSubmit}>
@@ -66,11 +68,10 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                     <thead><tr><th>Personell</th></tr></thead>
                     <tbody>
                         {this.roles.map((role =>
-                            <tr className="d-flex">
-                                <td className="col-7">{role.type}
-                                    <button className="btn-primary m-2" onClick={this.addToEvent}>Legg til i arrangement</button>
-                                    <button className="btn-danger" onClick={this.remove}>Fjern</button>
-                                </td>
+                            <tr key={role.role_id} className="d-flex">
+                                <td className="col-7">{role.type}</td>
+                                <td><button className="btn-primary m-2" onClick={this.addToEvent}>Legg til i arrangement</button></td>
+                                <td><button className="btn-danger" onClick={this.remove}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -79,10 +80,9 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                     <thead><tr><th>Personell i arrangementet</th></tr></thead>
                     <tbody>
                         {this.eventRoles.map((eventRole =>
-                            <tr className="d-flex">
-                                <td className="col-7">{eventRole.type}
-                                    <button className="btn-danger" onClick={this.removeFromEvent}>Fjern</button>
-                                </td>
+                            <tr key={eventRole.role_id} className="d-flex">
+                                <td className="col-7">{eventRole.type}</td>
+                                <td><button className="btn-danger" onClick={this.removeFromEvent}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>

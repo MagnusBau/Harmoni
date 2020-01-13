@@ -45,7 +45,7 @@ app.get("/event/role", (req, res) => {
 //Returns roles assigned to event
 app.get("/event/role/:eventId", (req, res) => {
     console.log("Got get request from client: /role/:eventId");
-    roleDao.getStaffInEvent(req.params.event, (err, rows) => {
+    roleDao.getRolesInEvent(req.body.event, (err, rows) => {
         res.json(rows);
     })
 });
