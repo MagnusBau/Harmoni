@@ -12,10 +12,12 @@ const eventDao = new EventDAO(pool);
 exports.getEvents = (req, res, next) => {
     console.log(`Got request from client: GET /event`);
     if (req.query.name) {
+        console.log("this");
         eventDao.getEventByName(req.query.name, (err, rows) => {
             res.json(rows);
         })
     } else {
+        console.log("that");
         eventDao.getAllEvents((err, [rows]) => {
             res.json(rows);
         })
@@ -36,6 +38,15 @@ exports.getEventById = (req, res, next) => {
     console.log(`Get-request from client /event/${req.params.event_id}` );
 
     eventDao.getEventById(req.params.event_id, (err, rows) => {
+        res.json(rows)
+    })
+};
+
+//Get event by id for update
+exports.getEventByIdUpdate = (req, res, next) => {
+    console.log(`Get-request from client /event/edit/${req.params.event_id}` );
+
+    eventDao.getEventByIdUpdate(req.params.event_id, (err, rows) => {
         res.json(rows)
     })
 };

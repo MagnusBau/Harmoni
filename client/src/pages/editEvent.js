@@ -10,9 +10,12 @@ const history = createHashHistory();
 
 export class EditEvent extends Component<{match: { params: {event_id: number}}}> {
     allEvents = [];
-    event = new Event();
+    event : Event[] = [];
+    updateEvent = new Event();
 
-
+    constructor(props, context) {
+        super(props, context);
+    }
 
     render() {
         return(
@@ -138,17 +141,16 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
         eventService
             .updateEvent(this.updateEvent)
             .then(() => {
-                Alert.success('You have created a new event!!!!');
+                Alert.success('You have updated your event');
             })
             .catch((error: Error) => Alert.danger(error.message));
-        history.push('/' + this.createEvent.title);
+        history.push('/event/' + this.updateEvent.event_id);
     }
 
     mounted() {
 
-
         eventService
-            .getEventID(this.props.match.params.event_id)
+            .getEventIDUpdate(this.props.match.params.event_id)
             .then(event => (this.event = event[0]))
             .catch((error: Error) => Alert.danger(error.message));
     }

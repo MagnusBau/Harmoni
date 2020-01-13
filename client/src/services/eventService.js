@@ -20,7 +20,7 @@ export class Event {
     organizer_name: string;
 }
 
-class EventService {
+export class EventService {
     getAllEvents() {
         return axios
             .get("http://localhost:4000/api/event")
@@ -30,6 +30,10 @@ class EventService {
 
     getEventID(eventID: number): Event[] {
         return axios.get<Event[]>("http://localhost:4000/api/event/?event_id=${eventID}").then(response => response.data);
+    }
+
+    getEventIDUpdate(eventID: number): Promise<Event[]> {
+        return axios.get('/event/edit/' + eventID).then(response => response.data);
     }
 
     getEventByName(name: string): Promise<Event[]> {
