@@ -36,6 +36,11 @@ VALUES (1, 4, 4);
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (2, 4, 8);
 
+INSERT INTO document (name, file, event)
+VALUES ('thrud', 'thrud', 1);
+INSERT INTO document (name, file, event)
+VALUES ('faor', 'faor', 1);
+
 INSERT INTO rider (description, document)
 VALUES ('Mathias må ha tre kameler og syv geiter', 2);
 INSERT INTO rider (description, document)
