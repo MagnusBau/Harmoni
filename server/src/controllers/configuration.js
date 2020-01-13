@@ -1,5 +1,5 @@
 // @flow
-/*
+
 var config;
 try {
     config = require("../../config.json");
@@ -7,8 +7,6 @@ try {
 } catch (ex) {
     config = null;
 }
-
- */
 
 let config =require("../../config");
 var defaultConfig = require("../../config.default.json");
