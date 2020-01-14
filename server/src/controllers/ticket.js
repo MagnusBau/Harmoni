@@ -1,7 +1,7 @@
 //@flow
 
-import {TicketDAO} from '../dao/ticketDao.js';
 const pool = require('../server.js');
+import {TicketDAO} from '../dao/ticketDao.js';
 
 const ticketDao = new TicketDAO(pool);
 
@@ -15,14 +15,14 @@ exports.insertTicket = (req, res, next) => {
 
 exports.getAllTickets = (req, res, next) => {
     console.log(`Got request from client: /ticket`);
-    ticketDao.getAll((err, rows) => {
+    ticketDao.getAll(req.params.event,(err, rows) => {
         res.json(rows);
     })
 };
 
 exports.getTicketById = (req, res, next) => {
     console.log(`Got request from client: /ticket`);
-    ticketDao.getOne(req.params.id,(err, rows) => {
+    ticketDao.getOne(req.params.ticketId,(err, rows) => {
         res.json(rows);
     });
 };
@@ -36,7 +36,7 @@ exports.updateTicket = (req, res, next) => {
 
 exports.deleteTicket = (req, res, next) => {
     console.log("/person: fikk /ticket/:id request fra klient");
-    ticketDao.removeOneTicket(Number.parseInt(req.params.id),(status, data) => {
+    ticketDao.removeOneTicket(Number.parseInt(req.params.ticketId),(status, data) => {
         res.status(status);
         res.json(data);
     });

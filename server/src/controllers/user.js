@@ -37,11 +37,11 @@ let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "5S",
+    expiresIn:  "1H",
     algorithm:  ["RS256"]
 };
 const signOptions = {
-    expiresIn:  "5S",
+    expiresIn:  "1H",
     algorithm:  "RS256"
 };
 
@@ -176,6 +176,7 @@ function register(data: Object, res: Response) {
 
 // Håndterer login og sender JWT-token tilbake som JSON
 exports.loginUser = (req, res, next) => {
+    console.log("yo");
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
         if(rows[0]) {
@@ -208,42 +209,10 @@ exports.registerUser = (req, res, next) => {
     }
 };
 
-// Plasserer denne MÌDDLEWARE-funksjonen
-// foran alle endepunktene under samme path
-exports.tokenCheck = (req, res, next) => {
-    let token = req.headers["x-access-token"];
-    console.log(token);
-    jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
-        if (err) {
-            console.log("Token IKKE ok 1");
-            res.json({ error: "Not authorized" });
-        } else {
-            userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
-                console.log(req.body.username + decoded.username + rows[0][0].username);
-                if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
-                    if(req.body.username) {
-                        if(req.body.username === decoded.username) {
-                            console.log("Token ok: " + decoded.username);
-                            next();
-                        } else {
-                            console.log("Token IKKE ok 2");
-                            res.json({ error: "Not authorized" });
-                        }
-                    } else {
-                        console.log("Token ok: " + decoded.username);
-                        next();
-                    }
-                } else {
-                    console.log("Token IKKE ok 3");
-                    res.json({ error: "Not authorized" });
-                }
-            });
-        }
-    });
-};
-
 exports.getToken = (req, res, next) => {
     console.log("Skal returnere en ny token");
-    let token = jwt.sign({ username: req.body.username }, privateKey, signOptions);
-    res.json({ token: token });
+    userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
+        let token = jwt.sign({username: req.body.username}, privateKey, signOptions);
+        res.json({token: token});
+    });
 };
