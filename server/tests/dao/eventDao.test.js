@@ -99,8 +99,9 @@ test("get new event details by id", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
         data = data[0];
-        expect(data[3].title).toBe("Test01");
-        expect(data[3].description).toBe("Test00description");
+        expect(data.length).toBe(3);
+        expect(data[2].title).toBe("Test01");
+        expect(data[2].description).toBe("Test00description");
         done();
     }
     eventDao.getAllEvents(callback);
