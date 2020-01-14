@@ -22,8 +22,62 @@ export class EventDAO extends Dao {
         super.query("CALL get_event_by_id(?)", values, callback);
     }
 
+    getEventByIdUpdate(event_id: number, callback: (status: string, data:string) => void) {
+        let values = [event_id];
+        super.query("CALL get_event_by_id_update(?)", values, callback);
+    }
+
     getEventByName(name: string, callback: (status: string, data: string) => void) {
         let values = [name];
         super.query("CALL get_event_by_name(?)", values, callback);
+    }
+
+    updateEvent(event_id: number, json: Object, callback: (status: string, data: string) => void) {
+        let eventUpdate = [json.title, json.description, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer, json.event_id];
+        console.log("Updated entire event: ", eventUpdate);
+        super.query("CALL update_event(?,?,?,?,?,?,?,?,?)", eventUpdate, callback);
+
+    }
+
+    updateEventTitle(json: Object, event_id: number, callback: (status: string, data: string) => void ) {
+        let newTitle = [json.title, event_id];
+        console.log("new title: ", newTitle);
+        super.query("CALL update_event_title(?, ?)", newTitle, callback);
+    }
+
+    updateEventDescription(json: Object, event_id: number, callback: (status: string, data: string) => void) {
+        let newDescription = [json.description, event_id];
+        console.log("New description: ", newDescription);
+        super.query("CALL update_event_description(?, ?)", newDescription, callback);
+    }
+
+    updateEventLocation(json: Object, event_id: number, callback: (status: string, data: string) => void) {
+        let newLocation = [json.location, event_id];
+        console.log("New location: ", newLocation);
+        super.query("CALL update_event_location(?, ?)", newLocation, callback);
+    }
+
+    updateEventStartTime(json: Object, event_id: number, callback: (status: string, data:string) => void) {
+        let newStartTime = [json.start_time, event_id];
+        console.log("New Start time: ", newStartTime);
+        super.query("CALL update_event_start_time(?, ?)", newStartTime, callback);
+    }
+
+    updateEventEndTime(json: Object, event_id: number, callback: (status: string, data: string) => void) {
+        let newEndTime = [json.end_time, event_id];
+        console.log("New end time: ", newEndTime);
+        super.query("CALL update_event_end_time(?, ?)", newEndTime, callback);
+    }
+
+    updateEventCategory(json: Object, event_id: number, callback: (status: string, data: string) => void) {
+        let newCategory = [json.category, event_id];
+        console.log("New Category: ", newCategory);
+        super.query("CALL update_event_category(?, ?)", newCategory, callback);
+    }
+
+    updateEventCapacity(json: Object, event_id: number, callback: (status: string, data: string) => void) {
+        let newCapacity = [json.capacity, event_id];
+        console.log("New capacity: ", newCapacity);
+        super.query("CALL update_event_capacity(?, ?)", newCapacity, callback);
     }
 }

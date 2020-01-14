@@ -23,7 +23,9 @@ beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
             runSqlFile("database/procedures/event_procedures.sql", pool, () => {
-                runSqlFile("database/event_testData.sql", pool, done);
+                runSqlFile("database/event_testData.sql", pool,() => {
+                    runSqlFile("database/procedures/event_edit_procedures.sql", pool, done)
+                });
             })
         });
 });
@@ -64,4 +66,37 @@ test("create event", done => {
         },
         callback);
 });
+
+test("update event", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.updateEvent(3, {
+        "title": "Test00",
+        "description": "Test00description",
+        "location": "test",
+        "start_time": "2020-01-01",
+        "end_time": "2020-01-01",
+        "category": "test",
+        "capacity": "100",
+        "organizer": "1",
+        "event_id": "3"
+    }, callback);
+});
+
+test("get new event details by id", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        data = data[0];
+        expect(data.length).toBe(3);
+        expect(data[2].title).toBe("Test00");
+        expect(data[2].description).toBe("Test00description");
+        done();
+    }
+    eventDao.getAllEvents(callback);
+});
+
+
 
