@@ -1,5 +1,6 @@
 // @flow
 import axios from 'axios';
+import { userService } from "../services/userService";
 
 
 export class Ticket_ID {
@@ -42,26 +43,39 @@ export class Ticket {
 }
 class TicketService{
     getAllTicket(event : number){
-        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/all/' + event).then(response => response.data);
+        return axios.get<Ticket[]>('http://localhost:4000/auth/:id/ticket/all/' + event).then(response => response.data, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }});
     }
 
     getTicketId(id: number) {
-        return axios.get<Ticket[]>('http://localhost:4000/api/ticket/' + id).then(response => response.data);
+        return axios.get<Ticket[]>('http://localhost:4000/auth/:id/ticket/' + id).then(response => response.data, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }});
     }
 
     postTicket(ticket: Ticket){
-        return axios.post('http://localhost:4000/api/ticket', ticket).then(response => response.data);
+        return axios.post('http://localhost:4000/auth/:id/ticket', ticket).then(response => response.data, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }});
     }
 
     updateTicket(ticket: Ticket, id : number){
-        return axios.put('http://localhost:4000/api/ticket/' + id, ticket).then(response => response.data);
+        return axios.put('http://localhost:4000/auth/:id/ticket/' + id, ticket).then(response => response.data, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }});
     }
 
     removeTicket(id: number) {
-        return axios.delete<Ticket>('http://localhost:4000/api/ticket/' + id).then(response => response.data);
+        return axios.delete<Ticket>('http://localhost:4000/auth/:id/ticket/' + id).then(response => response.data, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }});
     }
-
-
 
 
 }

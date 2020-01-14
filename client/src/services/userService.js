@@ -80,7 +80,7 @@ class UserService {
             "username": username,
             "password": password
         };
-        return axios.post('http://' + ip +':4000/api/login', data).then(response => response.data);
+        return axios.post('http://' + ip + ':4000/auth/login', data).then(response => response.data);
 
     }
 
@@ -92,8 +92,8 @@ class UserService {
             "first_name": input.first_name,
             "last_name": input.last_name,
             "phone": input.phone
-        }
-        return axios.post('http://' + ip +':4000/api/register', data).then(response => response.data);
+        };
+        return axios.post('http://' + ip +':4000/auth/register', data).then(response => response.data);
     }
 
     postToken(input: Object) {
@@ -101,7 +101,7 @@ class UserService {
             "user_id": input.user_id,
             "username": input.username
         };
-        return axios.post('http://' + ip +':4000/api/' + data.user_id + '/token', data, {
+        return axios.post('http://' + ip +':4000/auth/' + data.user_id + '/token', data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => response.data);

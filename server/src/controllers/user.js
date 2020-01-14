@@ -244,6 +244,8 @@ exports.tokenCheck = (req, res, next) => {
 
 exports.getToken = (req, res, next) => {
     console.log("Skal returnere en ny token");
-    let token = jwt.sign({ username: req.body.username }, privateKey, signOptions);
-    res.json({ token: token });
+    userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
+        let token = jwt.sign({username: req.body.username}, privateKey, signOptions);
+        res.json({token: token});
+    });
 };

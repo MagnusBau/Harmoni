@@ -5,10 +5,12 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 import {ticketService, Ticket, Ticket_ID} from '../services/ticketService'
 
+
+
 const history = createHashHistory();
 
 
-export class listTicketType extends Component <{match: {params: {eventId: number}}}> {
+export class listTicketType extends Component <{match: {params: {eventId: number, id : number}}}> {
     id_temp : number = 0;
     ticket = new Ticket_ID(
         '',
@@ -54,17 +56,18 @@ export class listTicketType extends Component <{match: {params: {eventId: number
     edit() {
         if (!this.ticket) return null;
         if (this.ticket.ticket_id === '') return null;
-        if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/ticket/'+ this.ticket.ticket_id + '/edit');
+        if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/'+ this.ticket.ticket_id + '/edit');
 
         }
 
     mounted(){
-       // ticketService.getArticleId(1).then(t => (this.ticket = t[0])).catch((error: Error) => console.log(error.message));
+
         ticketService.getAllTicket(this.props.match.params.eventId)
             .then(t => {
                 this.ticketTypeList = t[0];
             })
             .catch(error => error.message);
+
     }
 
     opprettSide(){

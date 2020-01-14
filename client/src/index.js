@@ -1,5 +1,4 @@
 // @flow
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from 'react-router-dom';
@@ -18,13 +17,14 @@ if (root)
     ReactDOM.render(
         <HashRouter>
             <div>
-                <NavBar />
+                <NavBar/>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/event/edit/:eventId/equipment" component={AddEquipment} />
                     <Route path="/event/new" component={AddEvent}/>
 
                     <Route exact path="/event/ticket" component={addTicketType}/>
+
                     <Route exact path="/event/edit/:eventId/ticket" component={listTicketType}/>
 
 
@@ -33,7 +33,7 @@ if (root)
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
                 </Switch>
-                <Footer />
+                <Footer/>
             </div>
         </HashRouter>,
         root
