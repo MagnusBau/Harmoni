@@ -5,7 +5,7 @@ import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 
 const history = createHashHistory();
-import {equipmentService, Equipment, EventEquipment} from "../services/equipmentService";
+import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
 
 /*
@@ -32,7 +32,7 @@ const renderSuggestion = suggestion => (
     </div>
 );
 
-export default class AddEquipment extends Component <{ match: { params: { eventId: number } } }> {
+export default class AddEquipment extends Component {
     // TODO: Verify that event exists before loading page
     currentEvent: number = 0;
     equipment: Equipment[] = [];
@@ -68,7 +68,7 @@ export default class AddEquipment extends Component <{ match: { params: { eventI
     }
 
     mounted() {
-        this.currentEvent = this.props.match.params.eventId;
+        this.currentEvent = this.props.eventId;
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
@@ -98,6 +98,7 @@ export default class AddEquipment extends Component <{ match: { params: { eventI
             window.location.reload();
         }
     }
+
 
     onDropdownChange = (event, {newValue}) => {
         this.setState({
@@ -168,7 +169,7 @@ export default class AddEquipment extends Component <{ match: { params: { eventI
                                id="equipmentType"
                                placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
                     </div>
-                    <button type="submit" className="btn btn-primary m-2 col-1">Legg til</button>
+                    <button type="submit" className="btn btn-primary m-2">Legg til</button>
                 </form>
                 <table className="table">
                     <thead>

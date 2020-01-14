@@ -15,7 +15,13 @@ exports.getEvents = (req, res, next) => {
         eventDao.getEventByName(req.query.name, (err, rows) => {
             res.json(rows);
         })
-    } else {
+    } else if (req.query.eventId){
+        eventDao.getEventById(req.query.name, (err, rows) => {
+            res.json(rows);
+        })
+    }
+
+    else {
         eventDao.getAllEvents((err, [rows]) => {
             res.json(rows);
         })

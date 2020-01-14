@@ -29,11 +29,10 @@ class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventByID(eventId: number) {
+    getEventByID(eventId: number): Promise<Event[]>{
         return axios
-            .get<Event[]>("http://localhost:4000/api/event/"+ eventId)
-            .then(response => response.data)
-            .catch(error => console.log("error" + error));
+            .get<Event[]>(`http://localhost:4000/api/event/` + eventId)
+            .then(response => response.data);
     }
 
     getEventByName(name: string): Promise<Event[]> {
