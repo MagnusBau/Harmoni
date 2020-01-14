@@ -1,9 +1,12 @@
 // @flow
 
-import { EventDAO } from "../dao/eventDao";
+import {EventDAO} from "../dao/eventDao";
+import {EmailService} from "../emailService";
+
 const pool = require("../server");
 
 const eventDao = new EventDAO(pool);
+const emailService = new EmailService();
 
 /**
     GET all events
@@ -54,9 +57,39 @@ exports.getEventEmail = (req, res, next) => {
 };
 
 exports.cancelEvent = (req, res, next) => {
+
     console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);
 
-    eventDao.cancelEvent(req.params.eventId, (err, rows) => {
-        res.json(rows);
+    eventDao.cancelEvent(req.params.eventId, (status, data) => {
+
+        if(status === 200) {
+
+            console.log("Kjørte cancelEvent");
+
+            eventDao.getCancelledEventInfo(req.params.eventId, (status, data) => {
+
+                if(status === 200) {
+                    console.log("Kjørte getCancelledEventInfo");
+
+                    if(data[0][0].length > 0) {
+                        let emailList = [data[0][0].email];
+                        console.log(emailList);
+                        emailService.cancelledNotification(emailList);
+                    } else {
+                        console.log("Fant ikke informasjon om avlyst arrangement");
+                    }
+
+
+                } else {
+
+                }
+
+            });
+
+        } else {
+            console.log("Feil");
+        }
+
     });
+
 };
