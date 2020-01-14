@@ -70,10 +70,10 @@ test("create event", done => {
 test("update event", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data.affectedRows).toBe(0);
+        expect(data.affectedRows).toBe(1);
         done();
     }
-    eventDao.updateEvent(4, {
+    eventDao.updateEvent(3, {
         "title": "Test00",
         "description": "Test00description",
         "location": "test",
@@ -81,7 +81,8 @@ test("update event", done => {
         "end_time": "2020-01-01",
         "category": "test",
         "capacity": "100",
-        "organizer": "1"
+        "organizer": "1",
+        "event_id": "3"
     }, callback);
 });
 
