@@ -95,5 +95,16 @@ test("update event title", done => {
     eventDao.updateEventTitle({"title": "Test01"}, 4, callback);
 });
 
+test("get new event details by id", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        data = data [0];
+        expect(data[4].title).toBe("Test01");
+        expect(data[4].description).toBe("Test00description");
+        done();
+    }
+    eventDao.getEventById(4, callback);
+});
+
 
 
