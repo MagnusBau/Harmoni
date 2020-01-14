@@ -103,7 +103,7 @@ test("get new event details by id", done => {
         expect(data[4].description).toBe("Test00description");
         done();
     }
-    eventDao.getEventById(4, callback);
+    eventDao.getAllEvents(callback);
 });
 
 
