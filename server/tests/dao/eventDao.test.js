@@ -23,7 +23,7 @@ beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
             runSqlFile("database/procedures/event_procedures.sql", pool, () => {
-                runSqlFile("database/event_testData.sql", pool,() => {
+                runSqlFile("database/testData.sql", pool,() => {
                     runSqlFile("database/procedures/event_edit_procedures.sql", pool, done)
                 });
             })
@@ -107,7 +107,7 @@ test("update event", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    eventDao.updateEvent(3, {
+    eventDao.updateEvent(4, {
         "title": "Test00",
         "description": "Test00description",
         "location": "test",
@@ -116,9 +116,22 @@ test("update event", done => {
         "category": "test",
         "capacity": "100",
         "organizer": "1",
-        "event_id": "3"
+        "event_id": "4"
     }, callback);
 });
+
+test("get new event details by id", done => {
+    function callback(status, data) {
+        console.log(`Test callback: status=${status}, data=${data}`);
+        data = data[0];
+        expect(data.length).toBe(4);
+        expect(data[3].title).toBe("Test00");
+        expect(data[3].description).toBe("Test00description");
+        done();
+    }
+    eventDao.getAllEvents(callback);
+});
+
 test("cancel event from db", done => {
     function callback(status, data) {
         console.log(
@@ -130,17 +143,6 @@ test("cancel event from db", done => {
     eventDao.cancelEvent(2, callback);
 });
 
-test("get new event details by id", done => {
-    function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data}`);
-        data = data[0];
-        expect(data.length).toBe(3);
-        expect(data[2].title).toBe("Test00");
-        expect(data[2].description).toBe("Test00description");
-        done();
-    }
-    eventDao.getAllEvents(callback);
-});
 
 
 
