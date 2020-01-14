@@ -23,7 +23,9 @@ beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
             runSqlFile("database/procedures/event_procedures.sql", pool, () => {
-                runSqlFile("database/event_testData.sql", pool, done);
+                runSqlFile("database/event_testData.sql", pool,() => {
+                    runSqlFile("database/procedures/event_edit_procedures.sql", pool, done)
+                });
             })
         });
 });
@@ -68,8 +70,8 @@ test("create event", done => {
 test("update event", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data[2].title).toBe("Test00");
-        expect(data[2].description).toBe("Test00Description");
+        expect(data[3].title).toBe("Test00");
+        expect(data[3].description).toBe("Test00Description");
         done();
     }
     eventDao.updateEvent(2, {
@@ -81,13 +83,13 @@ test("update event", done => {
         "category": "test",
         "capacity": "100",
         "organizer": "1"
-    })
+    }, callback);
 });
 
 test("update event title", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data[2].title).toBe("Test01");
+        expect(data[3].title).toBe("Test01");
         done();
 
     }
