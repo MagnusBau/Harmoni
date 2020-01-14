@@ -53,5 +53,5 @@ VALUES (1, 4, 4);
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (2, 4, 8);
 
-insert into ticket (title, info, price, count) values ( 'enTittel',  'enInfo_in',  1, 1);
-insert into ticket (title, info, price, count) values ( 'andreTittel',  'andreInfo_in',  2, 2);
+insert into ticket (title, info, price, count, event) values ( 'enTittel',  'enInfo_in',  1, 1, 1);
+insert into ticket (title, info, price, count, event) values ( 'andreTittel',  'andreInfo_in',  2, 2, 1);
