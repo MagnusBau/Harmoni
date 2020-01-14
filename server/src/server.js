@@ -34,55 +34,60 @@ const pool = mysql.createPool({
 
 const roleDao = new roleDAO(pool);
 
+app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next();
+});
+
 //Returns all roles
-app.get("/event/role", (req, res) => {
-    console.log("Got get request from client: event/role");
+app.get("/role", (req, res) => {
+    console.log("Got get request from client: /role");
     roleDao.getRoles((err, rows) => {
         res.json(rows);
     })
 });
 
 //Returns roles assigned to event
-app.get("/event/role/:eventId", (req, res) => {
-    console.log("Got get request from client: event/role/:eventId");
+app.get("/role/event/:eventId", (req, res) => {
+    console.log("Got get request from client: /role/:eventId");
     roleDao.getRolesInEvent(req.body.event, (err, rows) => {
         res.json(rows);
     })
 });
 
 //Creates new role
-app.post("/event/role", (req, res) => {
-    console.log("Got post request from client: event/role");
-    roleDao.createRole(req.body, (err, rows) => {
+app.post("/role", (req, res) => {
+    console.log("Got post request from client: /role");
+    roleDao.createRole(req.body.type, req.body.event, (err, rows) => {
         res.send(rows);
     })
 });
 
 //Assigns role to an event
-app.post("/event/role/:eventId/:roleId", (req, res) => {
-    console.log("Got post request from client: event/role/:roleId");
-    roleDao.assignToEvent(req.body, (err, rows) => {
+app.post("/event/:eventId", (req, res) => {
+    console.log("Got post request from client: /role/:eventId");
+    roleDao.assignToEvent(req.body.role, req.body.event, req.body.count, (err, rows) => {
         res.send(rows);
     })
 });
-
-app.put("/event/role/:eventId", (req, res) => {
-    console.log("Got put request from client: event/role/:eventId");
-    roleDao.updateRoleCount(req.body.role_id, req.body.event, req.body.count, (err, rows) => {
+//Updates count of role
+app.put("/role/:eventId", (req, res) => {
+    console.log("Got put request from client: /role/:eventId");
+    roleDao.updateRoleCount(req.body.role, req.body.event, req.body.count, (err, rows) => {
         res.send(rows);
     })
 });
 //Removes role from event
-app.delete("/event/role/:eventId/:roleId", (req, res) => {
-    console.log("Got delete request from client: event/role/:roleId");
-    roleDao.removeFromEvent(req.body, (err, rows) => {
+app.delete("/role/:eventId", (req, res) => {
+    console.log("Got delete request from clint: /role/:roleId");
+    roleDao.removeFromEvent(req.body.role, req.body.event, (err, rows) => {
         res.send(rows);
     })
 });
 
 //Removes role completely
-app.delete("/event/role/:roleId", (req, res) => {
-    console.log("Got delete request from client: event/role/:roleId");
+app.delete("/roler", (req, res) => {
+    console.log("Got delete request from client: /role");
     roleDao.removeRole(req.body.role_id, (err, rows) => {
         res.send(rows);
     })

@@ -9,7 +9,7 @@ if(root){
     ReactDOM.render(
         <HashRouter>
             <div>
-                <Route exact path='/event/:eventId' component={AddRole} />
+                <Route exact path='/role/:eventId' component={AddRole} />
             </div>
         </HashRouter>,
         root

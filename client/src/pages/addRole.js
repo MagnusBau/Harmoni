@@ -45,6 +45,7 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         roleService.assignRole(role);
     }
     removeFromEvent(role) {
+        role.count = 1;
         roleService.removeRoleFromEvent(role);
     }
     incrementRole(eventRole) {

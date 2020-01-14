@@ -5,11 +5,12 @@ const DAO = require("./dao.js");
 export class roleDAO extends DAO {
     /**
      * Inserts a new role
-     * @param json
+     * @param type
+     * @param event
      * @param callback
      */
-    createRole(json: Object, callback: (status: string, data: string) => void) {
-        let newRole = [json.type, json.event];
+    createRole(type: string, event: number, callback: (status: string, data: string) => void) {
+        let newRole = [type, event];
         super.query("CALL set_role(?, ?)", newRole, callback);
     }
 
@@ -32,21 +33,24 @@ export class roleDAO extends DAO {
 
     /**
      * Assigns role to event
-     * @param json
+     * @param role
+     * @param event
+     * @param count
      * @param callback
      */
-    assignToEvent(json: Object, callback: (status: string, data: string) => void){
-        let roleEvent = [json.role_id, json.event];
-        super.query("CALL assign_to_event(?, ?)", roleEvent, callback);
+    assignToEvent(role: number, event: number, count: number, callback: (status: string, data: string) => void){
+        let roleEvent = [role, event, count];
+        super.query("CALL assign_to_event(?, ?, ?)", roleEvent, callback);
     }
 
     /**
      * Removes role from event
-     * @param json
+     * @param role
+     * @param event
      * @param callback
      */
-    removeFromEvent(json: Object, callback: (status: string, data: string) => void){
-        let remove = [json.role.id, json.event];
+    removeFromEvent(role: number, event: number, callback: (status: string, data: string) => void){
+        let remove = [role, event];
         super.query("CALL remove_from_event(?, ?)", remove, callback);
     }
 

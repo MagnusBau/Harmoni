@@ -14,25 +14,25 @@ export class EventRole extends Role{
 
 class RoleService {
     getAllRoles() {
-        return axios.get<Role[]>('http://localhost:4000/event/role').then(response => response.data);
+        return axios.get<Role[]>('http://localhost:4000/api/role').then(response => response.data);
     }
     getEventRoles(eventId: number): EventRole[] {
-        return axios.get<EventRole[]>('http://localhost:4000/event/role/' + eventId).then(response => response.data);
+        return axios.get<EventRole[]>('http://localhost:4000/api/role/event/' + eventId).then(response => response.data);
     }
-    createRole(role: Role) {
-        return axios.post<Role, void>('http://localhost:4000/event/role', {type: role.type, event: role.event});
+    createRole(role: Role): void {
+        return axios.post('http://localhost:4000/role', role).then(response => response.data);
     }
-    assignRole(role: EventRole) {
-        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
+    assignRole(role: EventRole): void {
+        return axios.post('http://localhost:4000/event/' + role.event, role).then(response => response.data);
     }
-    removeRoleFromEvent(role: EventRole) {
-        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event});
+    removeRoleFromEvent(role: EventRole): void {
+        return axios.put('http://localhost:4000/role/event/' + role.event, role).then(response => response.data);
     }
     removeRole(roleId: number) {
-        return axios.delete('http://localhost:4000/event/role', {role_id: roleId});
+        return axios.delete('http://localhost:4000/roler', roleId).then(response => response.data);
     }
-    updateRoleCount(role: EventRole) {
-        return axios.put<EventRole, void>('http://localhost:4000/event/role', {role: role.role, event: role.event, count: role.count});
+    updateRoleCount(role: EventRole): void {
+        return axios.put('http://localhost:4000/role/' + role.event, role).then(response => response.data);
     }
 }
 
