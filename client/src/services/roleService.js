@@ -20,23 +20,24 @@ class RoleService {
         return axios.get<EventRole[]>('http://localhost:4000/api/role/event/' + eventId).then(response => response.data);
     }
     createRole(role: Role): void {
-        return axios.post('http://localhost:4000/api/role', role).then(response => response.data);
+        console.log(role.type);
+        return axios.post('http://localhost:4000/api/role',
+            {type: role.type, event: role.event}).then(response => response.data);
     }
     assignRole(role: EventRole): void {
-        return axios.post('http://localhost:4000/api/event/' + role.event, role).then(response => response.data);
+        return axios.post('http://localhost:4000/api/event/' + role.event,
+            {role: role.role_id, event: role.event, count: role.count}).then(response => response.data);
     }
     removeRoleFromEvent(role: EventRole): void {
-        console.log(role.role_id);
-        console.log(role.event);
-        return axios.delete('http://localhost:4000/api/role/event/' + role.event, role).then(response => response.data);
+        return axios.delete('http://localhost:4000/api/role/event/' +
+            role.event + '/' + role.role_id).then(response => response.data);
     }
     removeRole(roleId: number): void {
-        console.log(roleId);
-        return axios.delete('http://localhost:4000/api/roler', roleId).then(response => response.data);
+        return axios.delete('http://localhost:4000/api/roler/' + roleId).then(response => response.data);
     }
-    updateRoleCount(role: EventRole): void {
-        console.log(role.event);
-        return axios.put('http://localhost:4000/api/role/' + role.event, {count: role.count}).then(response => response.data);
+    updateRoleCount(role: Object): void {
+        return axios.put('http://localhost:4000/api/role/' + role.event,
+            {role_id: role.role_id, event: role.event, count: role.count}).then(response => response.data);
     }
 }
 

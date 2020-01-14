@@ -67,29 +67,29 @@ app.post("/api/role", (req, res) => {
 //Assigns role to an event
 app.post("/api/event/:eventId", (req, res) => {
     console.log("Got post request from client: /role/:eventId");
-    roleDao.assignToEvent(req.body.role_id, req.body.event, req.body.count, (err, rows) => {
+    roleDao.assignToEvent(req.body.role, req.body.event, req.body.count, (err, rows) => {
         res.send(rows);
     })
 });
 //Updates count of role
 app.put("/api/role/:eventId", (req, res) => {
     console.log("Got put request from client: /role/:eventId");
-    roleDao.updateRoleCount(req.params.role_id, req.params.event, req.body.count, (err, rows) => {
+    roleDao.updateRoleCount(req.body.role_id, req.body.event, req.body.count, (err, rows) => {
         res.send(rows);
     })
 });
 //Removes role from event
-app.delete("/api/role/event/:eventId", (req, res) => {
+app.delete("/api/role/event/:eventId/:roleId", (req, res) => {
     console.log("Got delete request from clint: /role/:roleId");
-    roleDao.removeFromEvent(req.params.role_id, req.params.event, (err, rows) => {
+    roleDao.removeFromEvent(req.params.roleId, req.params.eventId, (err, rows) => {
         res.send(rows);
     })
 });
 
 //Removes role completely
-app.delete("/api/roler", (req, res) => {
+app.delete("/api/roler/:roleId", (req, res) => {
     console.log("Got delete request from client: /role");
-    roleDao.removeRole(req.params.role_id, (err, rows) => {
+    roleDao.removeRole(req.params.roleId, (err, rows) => {
         res.send(rows);
     })
 });
