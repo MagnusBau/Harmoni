@@ -34,6 +34,7 @@ const renderSuggestion = suggestion => (
 
 export default class AddEquipment extends Component {
     // TODO: Verify that event exists before loading page
+    //TODO: send error message when event is deleted
     currentEvent: number = 0;
     equipment: Equipment[] = [];
     eventEquipment: EventEquipment[] = [];
@@ -49,7 +50,11 @@ export default class AddEquipment extends Component {
         this.state = {
             value: '',
             suggestions: [],
-            equipmentChange: false
+            equipmentS: [],
+            totalEquipment: 0,
+            editEquipment: null,
+            equipmentLoading: true,
+            editLoading: false
         };
     }
 
@@ -65,33 +70,53 @@ export default class AddEquipment extends Component {
             item: '',
             amount: 1
         };
-        this.setChangeState();
+        this.loadEquipment();
         //window.location.reload();
     }
 
+    componentDidMount(){
+        this.loadEquipment();
+    }
+
+    loadEquipment = direction => {
+        if(direction) {
+            this.setState({equipmentLoading: true, posts:[]});
+        }
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(eventEquipment => {this.setState({
+                equipmentS: eventEquipment[0]
+            })})
+            .catch((error: Error) => console.log(error.message));
+    };
+
     mounted() {
         this.currentEvent = this.props.eventId;
+
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
-
+        this.loadEquipment();
+/*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
+
+         */
     }
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.setChangeState();
+        this.loadEquipment();
         //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        this.setChangeState();
+        this.loadEquipment();
         //window.location.reload();
     }
 
@@ -99,20 +124,11 @@ export default class AddEquipment extends Component {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
+            this.loadEquipment();
             //window.location.reload();
         }
-        this.setChangeState();
     }
 
-    setChangeState(){
-        if(this.state.eventEquipment){
-            this.setState({equipmentChange: false});
-            console.log("state" + this.state.eventEquipment)
-        }else {
-            this.setState({equipmentChange: true});
-            console.log("state" + this.state.eventEquipment)
-        }
-    }
 
 
     onDropdownChange = (event, {newValue}) => {
@@ -196,26 +212,27 @@ export default class AddEquipment extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.eventEquipment.map((eventEquipment =>
-                            <tr className="d-flex">
-                                <td className="col-7">{eventEquipment.item}</td>
-                                <td className="col-3">{eventEquipment.amount}
-                                    <div className="btn-group-vertical ml-4" role="group">
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.incrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-up.svg"/></button>
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.decrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-down.svg"/></button>
-                                    </div>
-                                </td>
-                                <td className="col-2">
-                                    <button type="button" className="btn btn-danger"
-                                            onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
-                                    </button>
-                                </td>
-                            </tr>
+                    {this.state.equipmentS.map(eventEquipment => (
+                        <tr className="d-flex">
+                            <td className="col-7">{eventEquipment.item}</td>
+                            <td className="col-3">{eventEquipment.amount}
+                                <div className="btn-group-vertical ml-4" role="group">
+                                    <button type="button" className="btn btn-link"
+                                            onClick={() => this.incrementAmount(eventEquipment)}><img
+                                        src="./img/icons/chevron-up.svg"/></button>
+                                    <button type="button" className="btn btn-link"
+                                            onClick={() => this.decrementAmount(eventEquipment)}><img
+                                        src="./img/icons/chevron-down.svg"/></button>
+                                </div>
+                            </td>
+                            <td className="col-2">
+                                <button type="button" className="btn btn-danger"
+                                        onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
+                                </button>
+                            </td>
+                        </tr>
                     ))}
+                    {!this.state.equipmentLoading}
                     </tbody>
                 </table>
             </div>

@@ -13,7 +13,7 @@ import {EventEdit} from "../components/Event/event_edit";
  *
  * @author Victoria Blichfeldt
  */
-
+//TODO fikse bug med at arrangement overview ikke alltid oppdateres etter at redigering
 //TODO flette utstyr og dokumenter når det er ferdig
 class EventOverview extends Component<{ match: { params: { eventId: number } } }>{
     currentEvent: number = 0;
