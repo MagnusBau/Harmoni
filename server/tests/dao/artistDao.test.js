@@ -113,3 +113,15 @@ test("Insert new newArtist with existing contact", done => {
     }
     artistDao.insertArtist("Svigers Eraller Verst", "Geir", "Lippestad", "geir@lips.no", "12345678", callback);
 });
+
+test("Add an artist to an event", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.addArtistToEvent("Ok Go", "Ok", "Go", "ok.go@oh.no", "12345678", 1, callback);
+});

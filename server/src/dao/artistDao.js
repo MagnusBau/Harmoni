@@ -17,8 +17,8 @@ export class ArtistDAO extends Dao {
      * @param callback
      */
     insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string, callback: (status: string, data: string) => void) {
-        let values = [artistName, firstName, lastName, email, phone, 0];
-        super.query("CALL insert_artist(?, ?, ?, ?, ?, ?)",
+        let values = [artistName, firstName, lastName, email, phone];
+        super.query("CALL insert_artist(?, ?, ?, ?, ?, @a)",
             values,
             callback);
     }
