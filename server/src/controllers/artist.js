@@ -66,3 +66,11 @@ exports.addArtistToEvent = (req, res, next) => {
         res.send(rows);
     })
 };
+
+exports.removeArtistFromEvent = (req, res, next) => {
+    console.log(`Got request from client: DELETE /api/event/${req.params.eventId}/artist/${req.params.artistId}`);
+
+    artistDao.removeArtistFromEvent(req.params.eventId, req.params.artistId, (err, rows) => {
+        res.send(rows);
+    })
+};

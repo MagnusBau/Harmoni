@@ -33,6 +33,10 @@ class ArtistService {
                                                                                   document_id: documentId})
             .then(response => response.data);
     }
+
+    removeArtistFromEvent(eventId: number, artistId: number): void {
+        axios.delete(`http://localhost:4000/api/event/${eventId}/artist/${artistId}`).then(response => response.data);
+    }
 }
 
 export let artistService = new ArtistService();

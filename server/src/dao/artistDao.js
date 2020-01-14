@@ -72,4 +72,11 @@ export class ArtistDAO extends Dao {
             values,
             callback);
     }
+
+    removeArtistFromEvent(eventId: number, artistId: number, callback: (status: string, data: string) => void) {
+        let values = [eventId, artistId];
+        super.query("CALL remove_artist_from_event(?,?)",
+            values,
+            callback);
+    }
 }

@@ -14,7 +14,6 @@ import { CancelEvent } from './pages/tempCancelEvent'
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {AddEventArtist} from "./pages/addEventArtist";
-import {ArtistForm} from "./components/artistForm";
 
 const root = document.getElementById("root");
 if (root)
@@ -30,7 +29,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket" component={addTicketType}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
-                    <Route exact path="/event/:eventId/edit/artist" component={ArtistForm}/>
+                    <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />

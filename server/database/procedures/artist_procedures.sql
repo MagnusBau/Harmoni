@@ -183,3 +183,10 @@ BEGIN
   JOIN document d ON d.document_id = cr.document
   WHERE d.event = event_id_in;
 END;
+
+CREATE PROCEDURE remove_artist_from_event (IN event_id_in INT, IN artist_id_in INT)
+BEGIN
+  DELETE FROM contract
+  WHERE document IN (SELECT document_id FROM document WHERE event_id_in=event)
+  AND artist_id_in=artist;
+END;
