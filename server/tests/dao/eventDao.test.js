@@ -69,8 +69,8 @@ test("create event", done => {
 
 test("update event", done => {
     function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data.affectedRows).toEqual(1);
+        console.log(`Test callback: status=${status}, data=${data[0]}`);
+        expect(data[0].affectedRows).toEqual(1);
         done();
     }
     eventDao.updateEvent(4, {
@@ -88,8 +88,8 @@ test("update event", done => {
 
 test("update event title", done => {
     function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data.affectedRows).toEqual(1);
+        console.log(`Test callback: status=${status}, data=${data[0]}`);
+        expect(data[0].affectedRows).toEqual(1);
         done();
 
     }
