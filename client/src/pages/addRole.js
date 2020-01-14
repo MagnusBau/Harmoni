@@ -28,16 +28,17 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
             .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles[0])
             .catch((error: Error) => console.log(error.message));
-        console.log(this.eventRoles);
     }
     onChange(e) {
-        const type = e.target.type;
+        const type = e.target.name;
         this.newRole[type] = e.target.value;
     }
     onSubmit(e) {
         e.preventDefault();
+        console.log(this.newRole.type);
         roleService.createRole(this.newRole);
         this.newRole.type = '';
+        window.location.reload();
     }
     remove(role) {
         roleService.removeRole(role.role_id);
@@ -45,16 +46,20 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
     addToEvent(eventRole) {
         eventRole.count = 1;
         roleService.assignRole(eventRole);
+        window.location.reload();
     }
     removeFromEvent(eventRole) {
+        eventRole.event = this.currentEvent;
         roleService.removeRoleFromEvent(eventRole);
     }
     incrementRole(eventRole) {
+        eventRole.event = this.currentEvent;
         eventRole.count++;
         roleService.updateRoleCount(eventRole);
     }
     decrementRole(eventRole) {
         if(eventRole.count > 1) {
+            eventRole.event = this.currentEvent;
             eventRole.count--;
             roleService.updateRoleCount(eventRole);
         }
@@ -92,8 +97,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                                 <td className="col-7">{eventRole.type}</td>
                                 <td className="col-7">{eventRole.count}
                                     <div className="btn-group-vertical" role="group">
-                                        <button type="button" className="btn-link" onClick={() => this.incrementRole(eventRole)}>INC</button>
-                                        <button type="button" className="btn-link" onClick={() => this.decrementRole(eventRole)}>DEC</button>
+                                        <button type="button" className="btn-primary" onClick={() => this.incrementRole(eventRole)}>INC</button>
+                                        <button type="button" className="btn-primary" onClick={() => this.decrementRole(eventRole)}>DEC</button>
                                     </div>
                                 </td>
                                 <td><button type="button" className="btn-danger" onClick={() => this.removeFromEvent(eventRole)}>Fjern</button></td>
