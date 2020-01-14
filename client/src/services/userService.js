@@ -104,7 +104,6 @@ class UserService {
     }
 
     postLogin(username: string, password: string) {
-        console.log("yo");
         let data = {
             "username": username,
             "password": password

@@ -28,7 +28,7 @@ END;
 
 CREATE PROCEDURE get_all_ticket(IN event_id_in INT)
 BEGIN
-    SELECT * FROM ticket t INNER JOIN event e on t.ticket_id = e.event_id WHERE t.event = event_id_in;
+    SELECT * FROM ticket  WHERE event = event_id_in;
 END;
 
 

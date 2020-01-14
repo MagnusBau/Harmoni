@@ -56,7 +56,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
     edit() {
         if (!this.ticket) return null;
         if (this.ticket.ticket_id === '') return null;
-        if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/'+ this.ticket.ticket_id + '/edit');
+        if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/ticket/'+ this.ticket.ticket_id + '/edit');
 
         }
 
@@ -166,7 +166,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
       ticketService.postTicket(this.ticket)
           .then(() => {
               if(this.ticket) {
-                  history.push('/');
+                  history.push('/event/edit/' + this.ticket.event + '/ticket');
                   window.location.reload();
               }
           })
@@ -263,7 +263,7 @@ export class editTicketType extends Component <{match: {params: {ticketId: numbe
         if(!this.ticket) return null;
 
         ticketService.removeTicket(this.props.match.params.ticketId).then(() => {
-            if (this.ticket) history.push('/');
+            if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
         }).catch(error => error.message);
     }
 

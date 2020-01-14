@@ -1,7 +1,7 @@
 //@flow
 
-import {TicketDAO} from '../dao/ticketDao.js';
 const pool = require('../server.js');
+import {TicketDAO} from '../dao/ticketDao.js';
 
 const ticketDao = new TicketDAO(pool);
 

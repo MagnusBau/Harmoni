@@ -209,40 +209,6 @@ exports.registerUser = (req, res, next) => {
     }
 };
 
-// Plasserer denne MÌDDLEWARE-funksjonen
-// foran alle endepunktene under samme path
-exports.tokenCheck = (req, res, next) => {
-    let token = req.headers["x-access-token"];
-    console.log(token);
-    jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
-        if (err) {
-            console.log("Token IKKE ok 1");
-            res.json({ error: "Not authorized" });
-        } else {
-            userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
-                console.log(req.body.username + decoded.username + rows[0][0].username);
-                if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
-                    if(req.body.username) {
-                        if(req.body.username === decoded.username) {
-                            console.log("Token ok: " + decoded.username);
-                            next();
-                        } else {
-                            console.log("Token IKKE ok 2");
-                            res.json({ error: "Not authorized" });
-                        }
-                    } else {
-                        console.log("Token ok: " + decoded.username);
-                        next();
-                    }
-                } else {
-                    console.log("Token IKKE ok 3");
-                    res.json({ error: "Not authorized" });
-                }
-            });
-        }
-    });
-};
-
 exports.getToken = (req, res, next) => {
     console.log("Skal returnere en ny token");
     userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
