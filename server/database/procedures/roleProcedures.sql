@@ -23,7 +23,7 @@ DELIMITER //
 
 CREATE PROCEDURE get_roles_in_event(IN event_in INT)
 BEGIN
-    SELECT role, event FROM event_role WHERE event=event_in;
+    SELECT role_id, type, count FROM role r JOIN event_role er on r.role_id = er.role WHERE er.event=event_in;
 END //
 
 DELIMITER ;

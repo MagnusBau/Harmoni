@@ -15,10 +15,11 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
 
     constructor(props, context) {
         super(props, context);
-        this.newRole = {type: "", event: 0};
+        this.newRole = {type: '', event: 0};
     }
     mounted() {
         this.currentEvent = this.props.match.params.eventId;
+        this.newRole.event = this.currentEvent;
         roleService
             .getAllRoles()
             .then(roles => this.roles = roles[0])
@@ -27,37 +28,37 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
             .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles[0])
             .catch((error: Error) => console.log(error.message));
+        console.log(this.eventRoles);
     }
     onChange(e) {
-        const type = e.target.name;
-        this.newRole[type] = e.target.name;
+        this.newRole.type = e.target.name;
     }
     onSubmit(e) {
         e.preventDefault();
-        roleService.createRole({type: this.newRole.type, event: this.event});
-        this.newRole = {type: "", event: 0};
-        window.location.reload();
+        roleService.createRole(this.newRole);
+        this.newRole.type = '';
     }
     remove(role) {
         roleService.removeRole(role);
     }
-    addToEvent(role) {
-        roleService.assignRole(role);
+    addToEvent(eventRole) {
+        eventRole.count = 1;
+        roleService.assignRole(eventRole);
     }
-    removeFromEvent(role) {
-        role.count = 1;
-        roleService.removeRoleFromEvent(role);
+    removeFromEvent(eventRole) {
+        roleService.removeRoleFromEvent(eventRole);
     }
     incrementRole(eventRole) {
         eventRole.count++;
         roleService.updateRoleCount(eventRole);
     }
     decrementRole(eventRole) {
-        eventRole.count--;
-        roleService.updateRoleCount(eventRole);
+        if(eventRole.count > 1) {
+            eventRole.count--;
+            roleService.updateRoleCount(eventRole);
+        }
     }
     render(){
-        console.log(this.eventRoles);
         return(
             <div className="m-2">
                 <form className={"form-inline"} onSubmit={this.onSubmit}>
@@ -76,8 +77,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                         {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
                                 <td className="col-7">{role.type}</td>
-                                <td><button className="btn-primary m-2" onClick={this.addToEvent(role)}>Legg til</button></td>
-                                <td><button className="btn-danger" onClick={this.remove(role)}>Fjern</button></td>
+                                <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
+                                <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -86,15 +87,15 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                     <thead><tr><th>Personell i arrangementet</th></tr></thead>
                     <tbody>
                         {this.eventRoles.map((eventRole =>
-                            <tr key={eventRole.role_id} className="d-flex">
+                            <tr key={eventRole.role} className="d-flex">
                                 <td className="col-7">{eventRole.type}</td>
                                 <td className="col-7">{eventRole.count}
                                     <div className="btn-group-vertical" role="group">
-                                        <button type="button" className="btn-link" onClick={this.incrementRole(eventRole)}>INC</button>
-                                        <button type="button" className="btn-link" onClick={this.decrementRole(eventRole)}>DEC</button>
+                                        <button type="button" className="btn-link" onClick={() => this.incrementRole(eventRole)}>INC</button>
+                                        <button type="button" className="btn-link" onClick={() => this.decrementRole(eventRole)}>DEC</button>
                                     </div>
                                 </td>
-                                <td><button type="button" className="btn-danger" onClick={this.removeFromEvent(eventRole)}>Fjern</button></td>
+                                <td><button type="button" className="btn-danger" onClick={() => this.removeFromEvent(eventRole)}>Fjern</button></td>
                             </tr>
                         ))}
                     </tbody>
