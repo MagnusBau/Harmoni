@@ -74,7 +74,7 @@ test("update event", done => {
         expect(data[3].description).toBe("Test00Description");
         done();
     }
-    eventDao.updateEvent(2, {
+    eventDao.updateEvent(4, {
         "title": "Test00",
         "description": "Test00description",
         "location": "test",
@@ -93,7 +93,7 @@ test("update event title", done => {
         done();
 
     }
-    eventDao.updateEventTitle({"title": "Test01"}, callback);
+    eventDao.updateEventTitle({"title": "Test01"}, 4, callback);
 });
 
 
