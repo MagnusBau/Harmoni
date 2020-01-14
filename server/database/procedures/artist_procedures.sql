@@ -8,28 +8,26 @@ DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
 DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
-DROP PROCEDURE IF EXISTS add_new_artist_to_event;
+DROP PROCEDURE IF EXISTS get_artist_by_event;
+DROP PROCEDURE IF EXISTS add_artist_to_event;
 DROP PROCEDURE IF EXISTS add_existing_artist_to_event;
 
 /**
-  Inserts a new artist with contact information
+  Inserts a new newArtist with contact information
 
-  IN artist_name_in: Name of the artist
-  IN first_name_in: First name of artist contact
-  IN last_name_in: Last name of artist contact
-  IN email_in: Email of artist contact
-  IN phone: Phone number of artist contact
-  OUT result_out: 0 if successful, -1 if artist already exists
+  IN artist_name_in: Name of the newArtist
+  IN first_name_in: First name of newArtist contact
+  IN last_name_in: Last name of newArtist contact
+  IN email_in: Email of newArtist contact
+  IN phone: Phone number of newArtist contact
+  OUT result_out: 0 if successful, -1 if newArtist already exists
 
   Issued by: insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string)
  */
 CREATE PROCEDURE insert_artist(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50), last_name_in VARCHAR(50),
-                               IN email_in VARCHAR(50), IN phone_in VARCHAR(50))
+                               IN email_in VARCHAR(50), IN phone_in VARCHAR(50), OUT artist_id INT)
 proc_label:BEGIN
   DECLARE contact_id_in INT;
-  IF (artist_name_in IN (SELECT artist_name FROM artist)) THEN
-    CALL raise(2001, 'Artist er allerede registrert!');
-  END IF;
   SET contact_id_in = (SELECT contact_id
                        FROM contact
                        WHERE first_name = first_name_in
@@ -37,25 +35,32 @@ proc_label:BEGIN
                          AND phone = phone_in
                          AND email = email_in
                        LIMIT 1);
-  IF (contact_id_in IS NULL) THEN
-    INSERT INTO contact (first_name, last_name, email, phone)
-    VALUES (first_name_in, last_name_in, email_in, phone_in);
-    SET contact_id_in = LAST_INSERT_ID();
-  END IF;
+  IF (contact_id_in IS NULL AND artist_name_in IN (SELECT artist_name FROM artist)) THEN
+      SET artist_id = (SELECT a.artist_id FROM artist a JOIN contact c on a.contact = c.contact_id
+      WHERE a.artist_name=artist_name_in AND c.first_name=first_name_in AND c.last_name=last_name_in
+      AND email=email_in AND phone=phone_in LIMIT 1);
+    ELSE
+      IF (contact_id_in IS NULL) THEN
+        INSERT INTO contact (first_name, last_name, email, phone)
+        VALUES (first_name_in, last_name_in, email_in, phone_in);
+        SET contact_id_in = LAST_INSERT_ID();
+      END IF;
 
-  INSERT INTO artist(artist_name, contact)
-  VALUES (artist_name_in, contact_id_in);
+      INSERT INTO artist(artist_name, contact)
+      VALUES (artist_name_in, contact_id_in);
+      SET artist_id = LAST_INSERT_ID();
+  END IF;
 END;
 
 /**
-  Updates an existing artist
+  Updates an existing newArtist
 
-  IN artist_id_in: Id of the artist
-  IN artist_name_in: Name of the artist
-  IN first_name_in: First name of artist contact
-  IN last_name_in: Last name of artist contact
-  IN email_in: Email of artist contact
-  IN phone: Phone number of artist contact
+  IN artist_id_in: Id of the newArtist
+  IN artist_name_in: Name of the newArtist
+  IN first_name_in: First name of newArtist contact
+  IN last_name_in: Last name of newArtist contact
+  IN email_in: Email of newArtist contact
+  IN phone: Phone number of newArtist contact
 
   Issued by: insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string)
  */
@@ -87,10 +92,10 @@ BEGIN
 END;
 
 /**
-  Deletes an existing artist
+  Deletes an existing newArtist
 
-  IN artist_id_in: Id of the artist
-  OUT result_out: 0 if successful, -1 if artist can't be deleted
+  IN artist_id_in: Id of the newArtist
+  OUT result_out: 0 if successful, -1 if newArtist can't be deleted
 
   Issued by: deleteArtist(artistId: number)
  */
@@ -115,7 +120,7 @@ BEGIN
 END;
 
 /**
-  Get one artist from an id
+  Get one newArtist from an id
 
   Issued by: getAllArtists()
  */
@@ -127,7 +132,7 @@ BEGIN
 END;
 
 /**
-  Get one artist from an id
+  Get one newArtist from an id
 
   Issued by: getAllArtists()
  */
@@ -144,7 +149,7 @@ BEGIN
 END;
 
 /**
-  Get one artist from an id
+  Get one newArtist from an id
 
   Issued by: getAllArtists()
  */
@@ -159,36 +164,22 @@ BEGIN
   OR phone LIKE CONCAT('%',search_string,'%');
 END;
 
-CREATE PROCEDURE add_new_artist_to_event (IN event_id_in INT, IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
-                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12), IN file_in BLOB)
+CREATE PROCEDURE add_artist_to_event (IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
+                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
+                                      IN document_id_in INT)
 BEGIN
   DECLARE artist_id_in INT;
-  DECLARE document_id_in INT;
-  CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in);
-  SET artist_id_in=LAST_INSERT_ID();
-
-  IF (file_in IN (SELECT file FROM document WHERE event=event_id_in)) THEN
-    SET document_id_in = (SELECT document_id FROM document WHERE file = file_in AND event=event_id_in LIMIT 1);
-  ELSE
-    INSERT INTO document (file, event)
-    VALUES (file_in, event_id_in);
-  END IF;
+  CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
 
   INSERT INTO contract (artist, document)
   VALUES (artist_id_in, document_id_in);
 END;
 
-CREATE PROCEDURE add_existing_artist_to_event (IN event_id_in INT, IN artist_id_in INT, IN file_in BLOB)
+CREATE PROCEDURE get_artist_by_event (IN event_id_in INT)
 BEGIN
-  DECLARE document_id_in INT;
-
-  IF (file_in IN (SELECT file FROM document WHERE event=event_id_in)) THEN
-    SET document_id_in = (SELECT document_id FROM document WHERE file = file_in AND event=event_id_in LIMIT 1);
-  ELSE
-    INSERT INTO document (file, event)
-    VALUES (file_in, event_id_in);
-  END IF;
-
-  INSERT INTO contract (artist, document)
-  VALUES (artist_id_in, document_id_in);
+  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone FROM artist a
+  JOIN contact c ON a.contact = c.contact_id
+  JOIN contract cr ON a.artist_id = cr.artist
+  JOIN document d ON d.document_id = cr.document
+  WHERE d.event = event_id_in;
 END;

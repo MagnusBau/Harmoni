@@ -101,6 +101,7 @@ CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   file        LONGBLOB           NOT NULL,
   event       INT                NOT NULL,
+  name        VARCHAR(100)       NOT NULL,
   CONSTRAINT document_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
 

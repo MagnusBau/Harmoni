@@ -6,6 +6,10 @@ DROP PROCEDURE IF EXISTS get_event_by_name;
 DROP PROCEDURE IF EXISTS get_all_events;
 DROP PROCEDURE IF EXISTS create_event;
 DROP PROCEDURE IF EXISTS get_event_by_month;
+DROP PROCEDURE IF EXISTS get_events_by_cancelled;
+DROP PROCEDURE IF EXISTS cancel_event_by_id;
+DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
+DROP PROCEDURE IF EXISTS get_document_by_event;
 
  /**
    Fetch event by ID
@@ -13,7 +17,7 @@ DROP PROCEDURE IF EXISTS get_event_by_month;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
-    SELECT event_id, title, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer FROM event where event_id = event_id_in;
+    SELECT event_id, title, location, description, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer FROM event where event_id = event_id_in;
 END;
 
 /**
@@ -88,3 +92,11 @@ BEGIN
                                                  INNER JOIN event ON contact.contact_id = event.organizer
     WHERE event_id = event_id_in;
 END;
+
+/**
+    MOVE THIS TO DOCUMENT AFTER A WHILE!!!!!!!!!!
+ */
+ CREATE PROCEDURE get_document_by_event(IN event_id_in INT)
+ BEGIN
+    SELECT document_id, name FROM document WHERE event=event_id_in;
+ END;

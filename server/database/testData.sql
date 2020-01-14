@@ -4,6 +4,7 @@ DELETE FROM equipment;
 DELETE FROM event;
 DELETE FROM user;
 DELETE FROM contact;
+DELETE FROM document;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default, 'Mario', 'Bros', 'its@me', '01001010');
@@ -26,6 +27,11 @@ INSERT INTO event (title, description, location, start_time, end_time, category,
 VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 3, 1);
+
+INSERT INTO document (file, event, name)
+VALUES('blablabla', 1, 'memes.txt');
+INSERT INTO document (file, event, name)
+VALUES('peogewngnoignoi', 1, 'donn.png');
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);

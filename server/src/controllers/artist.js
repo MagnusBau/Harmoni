@@ -49,3 +49,20 @@ exports.getArtistById = (req, res, next) => {
         res.send(rows);
     })
 };
+
+exports.getArtistByEvent = (req, res, next) => {
+    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
+
+    artistDao.getArtistByEvent(req.params.eventId, (err, rows) => {
+        res.send(rows);
+    })
+};
+
+exports.addArtistToEvent = (req, res, next) => {
+    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
+
+    artistDao.addArtistToEvent(req.body.artist_name, req.body.first_name, req.body.last_name, req.body.email,
+                                req.body.phone, req.body.document_id, (err, rows) => {
+        res.send(rows);
+    })
+}
