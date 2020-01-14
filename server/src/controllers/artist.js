@@ -65,4 +65,4 @@ exports.addArtistToEvent = (req, res, next) => {
                                 req.body.phone, req.body.document_id, (err, rows) => {
         res.send(rows);
     })
-}
+};

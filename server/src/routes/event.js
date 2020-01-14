@@ -19,5 +19,6 @@ router.post("/:eventId/artist", artistController.addArtistToEvent);
 router.delete("/:eventId/equipment/:equipmentId", equipmentController.removeEquipmentFromEvent);
 router.put("/:eventId/equipment/:equipmentId", equipmentController.updateEquipmentOnEvent);
 router.put("/:eventId/cancel", eventController.cancelEvent);
+router.get("/:eventId/artist", artistController.getArtistByEvent);
 
 module.exports = router;
