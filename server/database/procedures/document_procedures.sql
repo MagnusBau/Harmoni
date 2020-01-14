@@ -12,7 +12,7 @@ DROP PROCEDURE IF EXISTS get_document_by_event;
   Issued by: getFileById(document_id: number)
  */
 
-CREATE PROCEDURE get_document_by_event(IN document_id_in INT)
+CREATE PROCEDURE get_document_by_id(IN document_id_in INT)
 BEGIN
   SELECT * FROM document
   WHERE document_id = document_id_in;

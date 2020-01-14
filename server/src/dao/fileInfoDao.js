@@ -24,7 +24,7 @@ export class FileInfoDAO extends Dao {
      * @param event
      * @param callback
      */
-    getFileInfoById(event: number, callback: (status: string, data: string) => void) {
+    getFileInfoByEvent(event: number, callback: (status: string, data: string) => void) {
         let values = [event];
         super.query("CALL get_document_by_event(?)",
             values,

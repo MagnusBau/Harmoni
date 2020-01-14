@@ -10,7 +10,8 @@ export class FileInfo {
 
 class FileInfoService {
     getFileInfo(eventId: number) {
-        return axios.get(`http://localhost:4000/api/file/info?event=${eventId}`).then(response => response.data);
+        console.log(eventId);
+        return axios.get(`http://localhost:4000/api/file/info/${eventId}`).then(response => response.data);
     }
 
     postFileInfo(name: string) {

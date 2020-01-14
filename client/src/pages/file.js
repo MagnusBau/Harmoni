@@ -7,9 +7,13 @@ import { FileInfo, fileInfoService, fileService } from "../services/fileService"
 import { userService } from "../services/userService";
 
 export class FileMain extends Component <{match: {params: {eventId: number}}}> {
+    constructor(props) {
+        super(props);
+        this.state = {file: null};
+    }
     form: any = null;
     name: string = "";
-    fileList: any = [];
+    fileList: Object[] = [];
     errorMessage: string = "";
 
     render() {
@@ -40,21 +44,21 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 type="button"
                                 className="btn btn-dark"
                                 style={{}}
-                                onClick={e => this.upload(e)}
+                                onClick={e => this.handleUpload(e)}
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Last opp</button>
                             <button
                                 type="button"
                                 className="btn btn-dark"
                                 style={{}}
-                                onClick={e => this.upload(e)}
+                                onClick={e => this.handleOverwrite(e)}
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Skriv over</button>
                             <button
                                 type="button"
                                 className="btn btn-dark"
                                 style={{}}
-                                onClick={e => this.upload(e)}
+                                onClick={e => this.handleDelete(e)}
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Slett</button>
                         </form>
@@ -68,11 +72,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 Documents with event_id: {this.props.match.params.event}
                             </div>
                         </li>
+                        <ul>
                         {this.fileList.map(f => (
-                            <li key={"fileId" + f.document_id} fileId={f.document_id} fileName={f.name} className="list-group-item list-group-item-action">
+                            <li key={"fileId" + f.document_id} className="list-group-item list-group-item-action">
                                 {f.name}
                             </li>
                         ))}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -85,7 +91,8 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
     fetch() {
         fileInfoService.getFileInfo(this.props.match.params.eventId).then(response => {
-            this.fileList = response;
+            this.fileList = response[0];
+            console.log(response[0]);
         })
     }
 
@@ -120,6 +127,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                 });
             }
         });
+    }
+    handleOverwrite(){
+
+    }
+
+    handleDelete(){
+
     }
 
 }

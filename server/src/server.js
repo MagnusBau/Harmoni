@@ -41,7 +41,7 @@ const fileRoutes = require("./routes/file");
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-app.use("/api", userRoutes);
+app.use("/auth", userRoutes);
 app.use("/api/ticket", ticketRoutes);
 app.use("/api/file", fileRoutes);
 

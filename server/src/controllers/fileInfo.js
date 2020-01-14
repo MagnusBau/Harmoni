@@ -18,7 +18,7 @@ exports.getFileInfoById = (req, res, next) => {
 
 exports.getFileInfoByEvent = (req, res, next) => {
     console.log(`Got request from client: GET /file/info/:eventId`);
-    fileInfoDao.getFileInfoByEvent(req.query.event, (err, rows) => {
+    fileInfoDao.getFileInfoByEvent(req.params.eventId, (err, rows) => {
         res.json(rows);
     })
 };
