@@ -9,11 +9,11 @@ export class RiderDAO extends Dao{
 
     /**
      * Inserts a new rider
-     * @param data
+     * @param json
      * @param callback
      */
-    postRider(data: Object, callback: (status: string, data: string) => void){
-        let values = [data.description, data.document];
+    postRider(json: Object, callback: (status: string, data: string) => void){
+        let values = [json.description, json.document];
         super.query("CALL post_rider(?,?)",
             values,
             callback);
@@ -45,15 +45,13 @@ export class RiderDAO extends Dao{
 
     /**
      * update a rider by id
-     * @param description
-     * @param id
+     * @param json
      * @param callback
      */
-    updateRider(description: string, id: number, callback: (status: string, data: string) => void){
-        let values = [description, id];
+    updateRider(json: Object, callback: (status: string, data: string) => void){
+        let values = [json.description, json.rider_id];
         super.query("CALL update_rider(?,?)",
-            values,
-            callback);
+            values, callback);
     }
 
     /**

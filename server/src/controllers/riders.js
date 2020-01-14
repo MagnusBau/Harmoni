@@ -8,14 +8,9 @@ const riderDao = new RiderDAO(pool);
 // post rider
 exports.postRider = (req, res, next) => {
     console.log(`Got request from client: POST /api/rider`);
-
-    let data = {
-        "description": req.body.description,
-        "document": req.params.document
-    };
-
-    riderDao.postRider(data,(err, rows) => {
-        res.send(rows);
+    riderDao.postRider(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
     });
 };
 
@@ -36,9 +31,8 @@ exports.getAllRiders = (req, res, next) => {
 
 exports.updateRider = (req, res, next) => {
     console.log(`Got request from client: PUT /api/rider/${req.params.rider_id}`);
-
-    riderDao.updateRider(req.params.rider_id, req.body.description,(err, rows) => {
-        res.send(rows);
+    riderDao.updateRider(req.body,(err, rows) => {
+        res.json(rows);
     });
 };
 

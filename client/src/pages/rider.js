@@ -8,6 +8,24 @@ import Modal from 'react-bootstrap/Modal';
 import { riderService, Rider} from "../services/riderService";
 import { Row, Column} from "../widgets";
 import Autosuggest from 'react-autosuggest';
+import {Ticket, ticketService} from "../services/ticketService";
+
+/*
+export class RiderComp extends Component <{rider_id: React.Node, description: React.Node, url: React.Node}> {
+    render(){
+        return (
+
+            <div>
+
+            <RiderList />
+            </div>
+        )
+    }
+
+}
+
+ */
+
 
 export class RiderCard extends Component <{rider_id: React.Node, description: React.Node, url: React.Node}> {
     show = false;
@@ -54,6 +72,7 @@ export class RiderCard extends Component <{rider_id: React.Node, description: Re
     }
     handleClose(){
         this.show = false;
+        window.location.reload()
     }
     edit(){
         history.push(this.props.url + "/edit/" + String(this.props.rider_id))
@@ -64,20 +83,25 @@ export class RiderCard extends Component <{rider_id: React.Node, description: Re
             .deleteRider(parseInt(this.props.rider_id))
             .then((response) => {
                 console.log("Rider deleted")
+                this.handleClose();
             })
             .catch((error: Error) => console.error(error.message));
     }
 }
 
-export class RiderList extends Component<{match : {params: {documentId: number}}}>{
+export class RiderList extends Component<{match : {params: {eventId: number, description : number, documentId: number}}}>{
     riders: Rider[] = [];
     url: string = "";
     render(){
+
         return(
+
             <div>
+                <AddRiderType description = {this.props.match.params.description} documentId = {this.props.match.params.documentId}/>
                 {this.riders.map(r => (
                     <RiderCard rider_id={r.rider_id} description={r.description} url={this.url} key={r.rider_id}/>
                 ))}
+
             </div>
         );
     }
@@ -93,10 +117,16 @@ export class RiderList extends Component<{match : {params: {documentId: number}}
     }
 }
 
+
 export class RiderEdit extends Component<{match : {params: {riderId: number, eventId: number, documentId: number}}}>{
     errorMessage: string = "";
-    rider: Rider = new Rider();
+    rider: Rider = new Rider(
+        '',
+        ''
+    );
 render(){
+
+    console.log( this.props.match.params.documentId);
         return(
             <div className="row justify-content-center">
                 <div className="mb-4 border-0 " style={{width: '75%'}}>
@@ -106,6 +136,7 @@ render(){
                             <div className="input-group">
                                 <div className="input-group-prepend">
                                 </div>
+
                                 <textarea
                                     className="form-control"
                                     required
@@ -114,7 +145,10 @@ render(){
                                     aria-label="tekst"
                                     rows="10"
                                     value={this.rider.description}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.rider.description = event.target.value)}> </textarea>
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>{
+                                        (this.rider.description = event.target.value);
+                                        this.rider.document = this.props.documentId;}}>
+                                </textarea>
                             </div>
                         </form>
 
@@ -123,6 +157,7 @@ render(){
                         Rediger
                     </button>
                     <p style={{color: "red"}}>{this.errorMessage}</p>
+                    <button onClick={this.toBack} type={"button"}>go toBack</button>
                 </div>
             </div>
         )
@@ -131,10 +166,9 @@ render(){
         if(!this.form || !this.form.checkValidity()){
             this.errorMessage = "Fyll ut de røde feltene";
             this.mounted();
-            return;
         }else{
             riderService
-                .updateRider(this.props.match.params.riderId, this.rider.description)
+                .updateRider(this.rider, this.props.match.params.riderId)
                 .then((response) => {
                     window.location.reload()
                 }, console.log("Rider oppdatert"))
@@ -142,4 +176,65 @@ render(){
                 .catch((error: Error) => console.error(error.message));
         }
     }
+    mounted() {
+        riderService.getRider(this.props.match.params.riderId).then(t => (this.rider = t[0][0])).catch((error: Error) => console.log(error.message));
+    }
+    toBack(){
+    history.goBack();
+    }
+}
+
+
+export class AddRiderType extends Component<{ description: React.Node, documentId: React.Node}>{
+    rider = new Rider(
+        '',
+        ''
+    );
+
+    render(){
+
+        if (!this.rider) return null;
+        return(
+            <form ref={e => {this.form = e}}>
+
+                <h2>
+                    Opprett en rider
+                </h2>
+
+                <div>
+                    <div>Description</div>
+                    <div>
+                        <input
+                            type="text"
+                            value={this.rider.description}
+                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                                if (this.rider) this.rider.description = event.target.value;
+                                this.rider.document = this.props.documentId;
+                            }}
+                        />
+                    </div>
+
+
+
+                    <button onClick={this.send} type={"button"}>legg til rider</button>
+                </div>
+            </form>
+        );}
+
+
+
+    send() {
+        if (!this.form || !this.form.checkValidity()) return;
+        if (!this.rider) return null;
+        console.log(this.rider.description, this.props.documentId);
+        riderService.addRider(this.rider).then(() => {
+            if(this.rider) {
+                window.location.reload();
+            }
+        }).catch((error: Error) => console.log(error.message));
+    }
+    mounted(){
+
+    }
+
 }
