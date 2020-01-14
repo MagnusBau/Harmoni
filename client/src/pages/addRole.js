@@ -31,7 +31,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         console.log(this.eventRoles);
     }
     onChange(e) {
-        this.newRole.type = e.target.name;
+        const type = e.target.type;
+        this.newRole[type] = e.target.value;
     }
     onSubmit(e) {
         e.preventDefault();
@@ -39,7 +40,7 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         this.newRole.type = '';
     }
     remove(role) {
-        roleService.removeRole(role);
+        roleService.removeRole(role.role_id);
     }
     addToEvent(eventRole) {
         eventRole.count = 1;
@@ -87,7 +88,7 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                     <thead><tr><th>Personell i arrangementet</th></tr></thead>
                     <tbody>
                         {this.eventRoles.map((eventRole =>
-                            <tr key={eventRole.role} className="d-flex">
+                            <tr key={eventRole.role_id} className="d-flex">
                                 <td className="col-7">{eventRole.type}</td>
                                 <td className="col-7">{eventRole.count}
                                     <div className="btn-group-vertical" role="group">

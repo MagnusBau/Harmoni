@@ -74,7 +74,7 @@ app.post("/api/event/:eventId", (req, res) => {
 //Updates count of role
 app.put("/api/role/:eventId", (req, res) => {
     console.log("Got put request from client: /role/:eventId");
-    roleDao.updateRoleCount(req.body.role, req.body.event, req.body.count, (err, rows) => {
+    roleDao.updateRoleCount(req.body.role_id, req.body.event, req.body.count, (err, rows) => {
         res.send(rows);
     })
 });
@@ -89,7 +89,7 @@ app.delete("/api/role/:eventId", (req, res) => {
 //Removes role completely
 app.delete("/api/roler", (req, res) => {
     console.log("Got delete request from client: /role");
-    roleDao.removeRole(req.body.role_id, (err, rows) => {
+    roleDao.removeRole(req.body.value, (err, rows) => {
         res.send(rows);
     })
 });

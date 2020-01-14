@@ -3,6 +3,7 @@
 import axios from 'axios';
 
 export class Role {
+    role_id: number;
     type: string;
     event: number;
 }
