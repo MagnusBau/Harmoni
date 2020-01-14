@@ -125,3 +125,15 @@ test("Add an artist to an event", done => {
     }
     artistDao.addArtistToEvent("Ok Go", "Ok", "Go", "ok.go@oh.no", "12345678", 1, callback);
 });
+
+test("Remove artist from an event", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.removeArtistFromEvent(1, 5, callback);
+});
