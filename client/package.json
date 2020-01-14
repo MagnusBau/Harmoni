@@ -29,6 +29,8 @@
     "popper.js": "^1.14.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "history": "^4.10.1",
+    "react-bootstrap": "^1.0.0-beta.16",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-simplified": "^1.6.1"
@@ -43,6 +45,7 @@
     "babel-loader": "^8.0.6",
     "history": "^4.10.1",
     "jest": "^24.9.0",
+    "react": "^16.12.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },

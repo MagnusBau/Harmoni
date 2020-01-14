@@ -16,6 +16,11 @@ exports.getEvents = (req, res, next) => {
         eventDao.getEventByName(req.query.name, (err, rows) => {
             res.json(rows);
         })
+    } else if (req.query.cancelled) {
+        let cancelled = (req.query.cancelled === "true");
+        eventDao.getEventsByCancelled(cancelled, (err, rows) => {
+            res.json(rows);
+        })
     } else {
         console.log("that");
         eventDao.getAllEvents((err, [rows]) => {
@@ -37,9 +42,25 @@ exports.insertEvent = (req, res, next) => {
 exports.getEventById = (req, res, next) => {
     console.log(`Get-request from client /event/${req.params.event_id}` );
 
-    eventDao.getEventById(req.params.event_id, (err, rows) => {
+    eventDao.getEventById(req.params.eventId, (err, rows) => {
         res.json(rows)
     })
+};
+
+exports.getEventEmail = (req, res, next) => {
+    console.log("/emailInfo/:id got GET-request from client");
+
+    eventDao.getCancelledEventInfo(req.params.eventId, (err, rows) => {
+        res.json(rows);
+    });
+};
+
+exports.cancelEvent = (req, res, next) => {
+    console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);
+
+    eventDao.cancelEvent(req.params.eventId, (err, rows) => {
+        res.json(rows);
+    });
 };
 
 //Get event by id for update

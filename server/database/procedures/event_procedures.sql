@@ -93,7 +93,6 @@ BEGIN
     WHERE event_id = event_id_in;
 END;
 
-
 /**
   Get event by id for event update
  */
@@ -102,3 +101,4 @@ END;
  BEGIN
      SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer, cancelled FROM event where event_id = event_id_in;
  end;
+

@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import {TEvent} from "../Types/TEvent";
+import {Contact} from "./TempCancelEventService";
 
 //axios.interceptors.response.use(response => response.data);
 
@@ -40,7 +41,7 @@ export class EventService {
     }
 
     getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>("http://localhost:4000/api/event/?event_id=${eventID}").then(response => response.data);
+        return axios.get<Event[]>(`http://localhost:4000/api/event/?event_id=${eventID}`).then(response => response.data);
     }
 
     getEventIDUpdate(eventID: number): Event[] {
@@ -57,6 +58,23 @@ export class EventService {
 
     updateEvent(eventID: number, updateEvent: CreateEvent): Promise<void> {
         return axios.put('http://localhost:4000/api/event/edit/' + eventID, updateEvent).then(response => response.data);
+    }
+
+    getCancelledEvents() {
+        return axios.get<Event[]>('http://localhost:4000/api/event?cancelled=true').then(response => response.data);
+    }
+
+    cancelEvent(eventId: number) {
+        return axios.put(`http://localhost:4000/api/event/${eventId}/cancel`).then(response => response.data);
+    }
+
+    //Temp add
+    getFrontpageEvents() {
+        return axios.get<Event[]>('http://localhost:4000/api/event').then(response => response.data);
+    }
+
+    getCancelledEventInfo(eventId: number) {
+        return axios.get<Contact>(`http://localhost:4000/api/event/${eventId}/email`).then(response => response.data);
     }
 }
 
