@@ -20,20 +20,20 @@ class RiderService{
     }
 
     getAllRiders(document: number): Rider[] {
-        return axios.get<Rider[]>('http://localhost:4000/api/rider/all/${document}').then(response => response.data);
+        return axios.get<Rider[]>(`http://localhost:4000/api/rider/all/${document}`).then(response => response.data);
     }
 
     updateRider(rider_id: number, description: string): void {
-        return axios.put('http://localhost:4000/api/rider/${rider_id}',
+        return axios.put(`http://localhost:4000/api/rider/${rider_id}`,
             {description: description});
     }
 
     deleteRider(rider_id: number): void {
-        return axios.delete('http://localhost:4000/api/rider/one/${rider_id}');
+        return axios.delete(`http://localhost:4000/api/rider/one/${rider_id}`);
     }
 
     deleteAllRiders(document: number): void {
-        return axios.delete('http://localhost:4000/api/rider/all/${document}')
+        return axios.delete(`http://localhost:4000/api/rider/all/${document}`);
     }
 }
 

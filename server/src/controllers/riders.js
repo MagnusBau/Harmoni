@@ -1,9 +1,9 @@
 //@flow
 
-import { riderDAO } from "../dao/riderDao.js";
+import { RiderDAO } from "../dao/riderDao.js";
 const pool = require("../server.js");
 
-const riderDao = new riderDAO(pool);
+const riderDao = new RiderDAO(pool);
 
 // post rider
 exports.postRider = (req, res, next) => {
@@ -28,7 +28,8 @@ exports.getRider = (req, res, next) => {
 
 exports.getAllRiders = (req, res, next) => {
     console.log(`Got request from client: /rider/all/${req.params.document}`);
-    riderDao.getAllRiders(req.params.document, (err, rows) => {
+    console.log("DETTE ER DOCUMENT ID!!!!!!!: " + req.params.document);
+    riderDao.getAllRiders(Number.parseInt(req.params.document), (err, rows) => {
         res.json(rows);
     })
 };
