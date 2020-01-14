@@ -69,8 +69,8 @@ test("create event", done => {
 
 test("update event", done => {
     function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data[0]}`);
-        expect(data[0].affectedRows).toEqual(1);
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data.affectedRows).toBe(0);
         done();
     }
     eventDao.updateEvent(4, {
@@ -81,15 +81,14 @@ test("update event", done => {
         "end_time": "2020-01-01",
         "category": "test",
         "capacity": "100",
-        "organizer": "1",
-        "cancelled": "0",
+        "organizer": "1"
     }, callback);
 });
 
 test("update event title", done => {
     function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data[0]}`);
-        expect(data[0].affectedRows).toEqual(1);
+        console.log(`Test callback: status=${status}, data=${data}`);
+        expect(data.affectedRows).toBe(0);
         done();
 
     }
