@@ -48,7 +48,8 @@ export default class AddEquipment extends Component {
         };
         this.state = {
             value: '',
-            suggestions: []
+            suggestions: [],
+            equipmentChange: false
         };
     }
 
@@ -64,7 +65,8 @@ export default class AddEquipment extends Component {
             item: '',
             amount: 1
         };
-        window.location.reload();
+        this.setChangeState();
+        //window.location.reload();
     }
 
     mounted() {
@@ -82,20 +84,33 @@ export default class AddEquipment extends Component {
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        window.location.reload();
+        this.setChangeState();
+        //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        window.location.reload();
+        this.setChangeState();
+        //window.location.reload();
     }
 
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
-            window.location.reload();
+            //window.location.reload();
+        }
+        this.setChangeState();
+    }
+
+    setChangeState(){
+        if(this.state.eventEquipment){
+            this.setState({equipmentChange: false});
+            console.log("state" + this.state.eventEquipment)
+        }else {
+            this.setState({equipmentChange: true});
+            console.log("state" + this.state.eventEquipment)
         }
     }
 
@@ -152,6 +167,7 @@ export default class AddEquipment extends Component {
             required: "true",
             onKeyDown: this.onKeyDown
         };
+
         return (
             <div className="w-50 m-2">
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>

@@ -17,7 +17,7 @@ module.exports = class Dao {
                     connection.release();
                     if(err) {
                         console.log(err);
-                        callback(500, {error: 'error querying'});
+                        callback(500, {error: err});
                     } else {
                         console.log('dao: returing rows');
                         callback(200, rows);

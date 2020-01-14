@@ -8,7 +8,9 @@ import { Component } from "react-simplified";
  *
  * @author Victoria Blichfeldt
  */
-
+//TODO legge til link som fungerer for å få til logg inn og registrerings side
+    //TODO kunne bruke skjema i popup for å logge inn
+    //TODO vise hvem som er logget inn i popup
 class NavBar extends Component {
 
     render() {

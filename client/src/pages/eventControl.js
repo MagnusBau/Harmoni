@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Component} from "react-simplified";
+import {Component} from "react-simplified/lib/index";
 import {createHashHistory} from 'history';
-import {Event, eventService} from "../../services/eventService";
-import {Ticket} from "../../services/ticketService";
-import {EventEquipment} from "../../services/equipmentService";
+import {Event, eventService} from "../services/eventService";
+import {Ticket} from "../services/ticketService";
+import {EventEquipment} from "../services/equipmentService";
 
-export default class Event_Overview extends Component {
+export default class EventControl extends Component {
     currentEvent: number = 0;
     eventOverview: Event = null;
     tickets: Ticket[] = [];
@@ -44,7 +44,7 @@ export default class Event_Overview extends Component {
     mounted(){
         this.currentEvent = this.props.eventId;
         eventService
-            .getEventByID(this.currentEvent)
+            .getEventID(this.currentEvent)
             .then(eventOverview => (this.eventOverview = eventOverview))
             .catch((error: Error) => console.log(error.message));
     }

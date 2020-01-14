@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import {TEvent} from "../Types/TEvent";
-//import {Contact} from "./TempCancelEventService";
+import {Contact} from "./TempCancelEventService";
 
 //axios.interceptors.response.use(response => response.data);
 
@@ -21,6 +21,18 @@ export class Event {
     organizer_name: string;
 }
 
+export class CreateEvent {
+    title: string;
+    description: string;
+    location: string;
+    start_time: string;
+    end_time: string;
+    category: string;
+    capacity: number;
+    organizer: number;
+}
+
+
 class EventService {
     getAllEvents() {
         return axios
@@ -29,18 +41,27 @@ class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventByID(eventId: number): Promise<Event[]>{
+    getEventID(eventID: number): Event[] {
         return axios
-            .get<Event[]>(`http://localhost:4000/api/event/` + eventId)
+            .get<Event[]>(`http://localhost:4000/api/event/` + eventID)
             .then(response => response.data);
     }
+
+    getEventIDUpdate(eventID: number): Event[] {
+        return axios.get('http://localhost:4000/api/event/edit/' + eventID).then(response => response.data);
+    }
+
 
     getEventByName(name: string): Promise<Event[]> {
         return axios.get('/' + name).then(response => response.data);
     }
 
-    createEvent(createEvent: Event): Promise<void> {
+    createEvent(createEvent: CreateEvent): Promise<void> {
         return axios.post("http://localhost:4000/api/event", createEvent).then(response => response.data);
+    }
+
+    updateEvent(eventID: number, updateEvent: CreateEvent): Promise<void> {
+        return axios.put('http://localhost:4000/api/event/edit/' + eventID, updateEvent).then(response => response.data);
     }
 
     getCancelledEvents() {

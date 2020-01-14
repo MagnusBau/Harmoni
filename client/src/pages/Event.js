@@ -1,4 +1,3 @@
-
 // @flow
 import * as React from 'react';
 import {Component} from "react-simplified";
@@ -7,7 +6,8 @@ import {Ticket, ticketService} from "../services/ticketService";
 import {EventEquipment, equipmentService} from "../services/equipmentService";
 import AddEquipment from "../components/Equipment/add_equipment";
 import TicketTypes from "../components/Ticket/ticket_types";
-import Event_Overview from "../components/Event/event_overview";
+import EventView from "../components/Event/event_view";
+import {EventEdit} from "../components/Event/event_edit";
 /**
  * Class for the view of one event
  *
@@ -23,9 +23,58 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     //riders: Riders[] = [];
     //roles: Role[] = [];
 
+    constructor(props){
+        super(props);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleView = this.handleView.bind(this);
+        this.state = {isEditing: false}
+    }
+
+    /*
+     * hvis true -> viser arrangement oversikt
+     */
+    handleView() {
+        this.setState({isEditing: true})
+    }
+
+    /*
+    * hvis true -> viser redigerigs side for arrangement
+    * */
+    handleEdit() {
+        this.setState({isEditing: false})
+    }
+
+    mounted(){
+        this.currentEvent = this.props.match.params.eventId;
+        console.log("current event" + this.currentEvent);
+        eventService
+            .getEventID(this.currentEvent)
+            .then(eventOverview => (this.eventOverview = eventOverview))
+            .catch((error: Error) => console.log(error.message));
+
+        ticketService
+            .getAllTicket(this.currentEvent)
+            .then(tickets => (this.tickets = tickets[0]))
+            .catch((error: Error) => console.log(error.message));
+
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
+            .catch((error: Error) => console.log(error.message));
+    }
+
+
     render(){
+        const isEditing = this.state.isEditing;
+        let eventContent;
+
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
+        if(isEditing) {
+            eventContent = <EventEdit eventId={this.currentEvent} onClick={this.handleEdit}/>;
+        }else {
+            eventContent = <EventView eventId={this.currentEvent} handleClick={this.handleView}/>;
+        }
         return (
             <div className="container">
                 <div className="card">
@@ -56,7 +105,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                         <div className="card-body">
                             <div className="tab-content" id="eventOverviewContent">
                                 <div className="tab-pane active" id="overview" role="tabpanel">
-                                    <Event_Overview eventId={this.currentEvent}/>
+                                    {eventContent}
                                 </div>
                                 <div className="tab-pane" id="staff" role="tabpanel">
                                     <h5>Personell oversikt</h5>
@@ -109,28 +158,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             </div>
         )
     }
-
-
-    mounted(){
-        this.currentEvent = this.props.match.params.eventId;
-        console.log("current event" + this.currentEvent);
-        eventService
-            .getEventByID(this.currentEvent)
-            .then(eventOverview => (this.eventOverview = eventOverview))
-            .catch((error: Error) => console.log(error.message));
-
-        ticketService
-            .getAllTicket(this.currentEvent)
-            .then(tickets => (this.tickets = tickets[0]))
-            .catch((error: Error) => console.log(error.message));
-
-        equipmentService
-            .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
-            .catch((error: Error) => console.log(error.message));
-    }
-
-
 }
 
 export default EventOverview;

@@ -1,19 +1,17 @@
 // @flow
 
+// Server properties
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
 const reload = require('reload');
 const fs = require('fs');
 const PORT = process.env.port || 4000;
-
-let app = express();
-
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../../client/public');
-
 const config = require("./controllers/configuration.js");
 
+let app = express();
 app.use(express.static(public_path));
 app.use(bodyParser.json()); // for å tolke JSON
 app.use('/public', express.static('public'));
@@ -32,21 +30,39 @@ const pool = mysql.createPool({
 
 module.exports = pool;
 
-app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next(); // http://expressjs.com/guide.html#passing-route control
-});
-
+// Setup routes
+const artistRoutes = require("./routes/artist");
 const equipmentRoutes = require("./routes/equipment");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
-//const userRoutes = require("./routes/user");
+const userRoutes = require("./routes/user");
 
+app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-//app.use("/auth", userRoutes);
+app.use("/auth", userRoutes);
+//app.use("/api", userRoutes);
 app.use("/api/ticket", ticketRoutes);
 
+// Add an application header for allowing HTTPS-requests from same host
+/*app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next();
+});*/
+
+//CORS-error handling (server/client security blocking-thing)
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Accept, Origin"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE"
+    );
+    next();
+});
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
@@ -62,3 +78,5 @@ export let listen = new Promise<void>((resolve, reject) => {
         });
     });
 });
+
+const server = app.listen(8080);
