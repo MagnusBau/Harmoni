@@ -36,12 +36,14 @@ const equipmentRoutes = require("./routes/equipment");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const userRoutes = require("./routes/user");
+const fileRoutes = require("./routes/file");
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/api", userRoutes);
 app.use("/api/ticket", ticketRoutes);
+app.use("/api/file", fileRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 app.get('/*',function(req,res,next){
