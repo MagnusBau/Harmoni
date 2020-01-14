@@ -74,6 +74,7 @@ class TicketService{
         return axios.delete<Ticket>('http://localhost:4000/auth/:id/ticket/' + id).then(response => response.data, {
             'headers': {
                 'x-access-token': userService.getToken()
+
             }});
     }
 
