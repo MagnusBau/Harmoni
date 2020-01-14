@@ -1,17 +1,16 @@
-
 // @flow
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import { createHashHistory } from 'history';
-import { Button, Column, Row, Alert } from '../components/widgets';
-import { Modal } from 'react-bootstrap';
+import {createHashHistory} from 'history';
+import {Button, Column, Row, Alert} from '../components/widgets';
+import {Modal} from 'react-bootstrap';
 //import { cancelEventService, Event} from "../services/TempCancelEventService";
-import { eventService, Event} from "../services/eventService";
+import {eventService, Event} from "../services/eventService";
 
 const history = createHashHistory();
 
-export class CancelEvent extends Component < { match: { params: { id: number } } }> {
+export class CancelEvent extends Component <{ match: { params: { id: number } } }> {
 
     event: Event = null;
 
@@ -21,11 +20,11 @@ export class CancelEvent extends Component < { match: { params: { id: number } }
     };
 
     show = () => {
-        this.setState({ setModalShow: true });
+        this.setState({setModalShow: true});
     };
 
     close = () => {
-        this.setState({ setModalShow: false });
+        this.setState({setModalShow: false});
     };
 
     render() {

@@ -18,7 +18,11 @@ export class Event {
     category: string;
     capacity: number;
     organizer: number;
-    organizer_name: string;
+}
+
+export class Document {
+    document_id: number;
+    name: string;
 }
 
 export class CreateEvent {
@@ -40,8 +44,8 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventID(eventID: number): Event[] {
-        return axios.get<Event[]>(`http://localhost:4000/api/event/?event_id=${eventID}`).then(response => response.data);
+    getEventID(eventID: number): Event {
+        return axios.get<Event>(`http://localhost:4000/api/event/${eventID}`).then(response => response.data);
     }
 
     getEventIDUpdate(eventID: number): Event[] {
@@ -75,6 +79,10 @@ export class EventService {
 
     getCancelledEventInfo(eventId: number) {
         return axios.get<Contact>(`http://localhost:4000/api/event/${eventId}/email`).then(response => response.data);
+    }
+
+    getDocumentByEvent(eventId: number): Document[] {
+        return axios.get<Document[]>(`http://localhost:4000/api/event/${eventId}/document`).then(response => response.data);
     }
 }
 

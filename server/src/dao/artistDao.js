@@ -8,7 +8,7 @@ export class ArtistDAO extends Dao {
     }
 
     /**
-     * Inserts a new artist
+     * Inserts a new newArtist
      * @param artistName
      * @param firstName
      * @param lastName
@@ -18,7 +18,7 @@ export class ArtistDAO extends Dao {
      */
     insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string, callback: (status: string, data: string) => void) {
         let values = [artistName, firstName, lastName, email, phone];
-        super.query("CALL insert_artist(?, ?, ?, ?, ?)",
+        super.query("CALL insert_artist(?, ?, ?, ?, ?, @a)",
             values,
             callback);
     }
@@ -54,6 +54,28 @@ export class ArtistDAO extends Dao {
     getArtistBySearch(searchString: string, callback: (status: string, data: string) => void) {
         let values = [searchString];
         super.query("CALL get_artist_by_search(?)",
+            values,
+            callback);
+    }
+
+    getArtistByEvent(eventId: number, callback: (status: string, data: string) => void) {
+        let values = [eventId];
+        super.query("CALL get_artist_by_event(?)",
+            values,
+            callback);
+    }
+
+    addArtistToEvent(artistName: string, firstName: string, lastName: string, email: string, phone: string,
+                     documentId: number, callback: (status: string, data: string) => void) {
+        let values= [artistName, firstName, lastName, email, phone, documentId];
+        super.query("CALL add_artist_to_event(?,?,?,?,?,?)",
+            values,
+            callback);
+    }
+
+    removeArtistFromEvent(eventId: number, artistId: number, callback: (status: string, data: string) => void) {
+        let values = [eventId, artistId];
+        super.query("CALL remove_artist_from_event(?,?)",
             values,
             callback);
     }

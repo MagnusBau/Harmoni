@@ -49,7 +49,7 @@ test("Get all artists from database", done => {
    artistDao.getAllArtists(callback);
 });
 
-test("Get one artist from database by id", done => {
+test("Get one newArtist from database by id", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
@@ -90,7 +90,7 @@ test("Get artists from database by search #2", done => {
     artistDao.getArtistBySearch("Ge", callback);
 });
 
-test("Insert new artist", done => {
+test("Insert new newArtist", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
@@ -102,7 +102,7 @@ test("Insert new artist", done => {
     artistDao.insertArtist("Bob Dylling", "Bob", "Dylling", "bob@d.no", "56723456", callback);
 });
 
-test("Insert new artist with existing contact", done => {
+test("Insert new newArtist with existing contact", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
@@ -112,4 +112,28 @@ test("Insert new artist with existing contact", done => {
         done();
     }
     artistDao.insertArtist("Svigers Eraller Verst", "Geir", "Lippestad", "geir@lips.no", "12345678", callback);
+});
+
+test("Add an artist to an event", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.addArtistToEvent("Ok Go", "Ok", "Go", "ok.go@oh.no", "12345678", 1, callback);
+});
+
+test("Remove artist from an event", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.removeArtistFromEvent(1, 5, callback);
 });

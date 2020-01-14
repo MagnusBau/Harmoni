@@ -10,6 +10,7 @@ DROP PROCEDURE IF EXISTS get_events_by_cancelled;
 DROP PROCEDURE IF EXISTS cancel_event_by_id;
 DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
+DROP PROCEDURE IF EXISTS get_document_by_event;
 
 /**
   Fetch event by ID
@@ -17,7 +18,18 @@ DROP PROCEDURE IF EXISTS get_event_by_id_update;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer, cancelled FROM event where event_id = event_id_in;
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time,
+         DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i")   as end_time,
+         category,
+         capacity,
+         organizer,
+         cancelled
+  FROM event
+  where event_id = event_id_in;
 END;
 
 /**
@@ -25,8 +37,19 @@ END;
  */
 CREATE PROCEDURE get_event_by_name(IN event_name_in VARCHAR(100))
 BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer, cancelled from event where title like CONCAT('%', event_name_in, '%');
-end ;
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time,
+         DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i")   as end_time,
+         category,
+         capacity,
+         organizer,
+         cancelled
+  from event
+  where title like CONCAT('%', event_name_in, '%');
+end;
 
 
 
@@ -35,7 +58,17 @@ end ;
  */
 CREATE PROCEDURE get_all_events()
 BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer, cancelled from event;
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time,
+         DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i")   as end_time,
+         category,
+         capacity,
+         organizer,
+         cancelled
+  from event;
 end;
 
 /**
@@ -43,16 +76,31 @@ end;
  */
 CREATE PROCEDURE get_event_by_month(IN event_month_in int)
 BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time, DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i") as end_time, category, capacity, organizer, cancelled from event where MONTH(start_time) = event_month_in;
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, "%a %e.%m.%Y %H:%i") as start_time,
+         DATE_FORMAT(end_time, "%a %e.%m.%Y %H:%i")   as end_time,
+         category,
+         capacity,
+         organizer,
+         cancelled
+  from event
+  where MONTH(start_time) = event_month_in;
 end;
 
 /**
   insert a new event in table
  */
- CREATE PROCEDURE create_event(IN event_title_in VARCHAR(50), event_description_in VARCHAR(500), event_location_in VARCHAR(100), event_start_time_in DATETIME, event_end_time_in DATETIME, event_category_in VARCHAR(50), event_capacity_in int, event_organizer_in int)
+CREATE PROCEDURE create_event(IN event_title_in VARCHAR(50), event_description_in VARCHAR(500),
+                              event_location_in VARCHAR(100), event_start_time_in DATETIME, event_end_time_in DATETIME,
+                              event_category_in VARCHAR(50), event_capacity_in int, event_organizer_in int)
 BEGIN
-    INSERT INTO event VALUES (DEFAULT, event_title_in, event_description_in, event_location_in, event_start_time_in, event_end_time_in, event_category_in, event_capacity_in, event_organizer_in, DEFAULT);
-end ;
+  INSERT INTO event
+  VALUES (DEFAULT, event_title_in, event_description_in, event_location_in, event_start_time_in, event_end_time_in,
+          event_category_in, event_capacity_in, event_organizer_in, DEFAULT);
+end;
 
 /**
 
@@ -63,7 +111,7 @@ end ;
 
 CREATE PROCEDURE get_events_by_cancelled(IN cancelled_in BIT)
 BEGIN
-    SELECT * FROM event WHERE cancelled=cancelled_in;
+  SELECT * FROM event WHERE cancelled = cancelled_in;
 END;
 
 /**
@@ -76,7 +124,7 @@ END;
 
 CREATE PROCEDURE cancel_event_by_id(IN event_id_in INT)
 BEGIN
-    UPDATE event SET cancelled = 1 WHERE event_id=event_id_in;
+  UPDATE event SET cancelled = 1 WHERE event_id = event_id_in;
 END;
 
 /**
@@ -88,17 +136,36 @@ END;
  */
 CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
 BEGIN
-    SELECT first_name, last_name, email FROM contact
-                                                 INNER JOIN event ON contact.contact_id = event.organizer
-    WHERE event_id = event_id_in;
+  SELECT first_name, last_name, email
+  FROM contact
+         INNER JOIN event ON contact.contact_id = event.organizer
+  WHERE event_id = event_id_in;
 END;
 
 /**
   Get event by id for event update
  */
 
- CREATE PROCEDURE get_event_by_id_update(IN event_id_in INT)
- BEGIN
-     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time, DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i') as end_time, category, capacity, organizer, cancelled FROM event where event_id = event_id_in;
- end;
+CREATE PROCEDURE get_event_by_id_update(IN event_id_in INT)
+BEGIN
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, '%Y-%m-%dT%H:%i') as start_time,
+         DATE_FORMAT(end_time, '%Y-%m-%dT%H:%i')   as end_time,
+         category,
+         capacity,
+         organizer,
+         cancelled
+  FROM event
+  where event_id = event_id_in;
+end;
 
+/**
+    MOVE THIS TO DOCUMENT AFTER A WHILE!!!!!!!!!!
+ */
+CREATE PROCEDURE get_document_by_event(IN event_id_in INT)
+BEGIN
+  SELECT document_id, name FROM document WHERE event = event_id_in;
+END;
