@@ -85,22 +85,12 @@ test("update event", done => {
     }, callback);
 });
 
-test("update event title", done => {
-    function callback(status, data) {
-        console.log(`Test callback: status=${status}, data=${data}`);
-        expect(data.affectedRows).toBe(0);
-        done();
-
-    }
-    eventDao.updateEventTitle({"title": "Test01"}, 4, callback);
-});
-
 test("get new event details by id", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
         data = data[0];
         expect(data.length).toBe(3);
-        expect(data[2].title).toBe("Test01");
+        expect(data[2].title).toBe("Test00");
         expect(data[2].description).toBe("Test00description");
         done();
     }
