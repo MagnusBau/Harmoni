@@ -43,39 +43,44 @@ export class Ticket {
 }
 class TicketService{
     getAllTicket(event : number){
-        return axios.get<Ticket[]>('http://localhost:4000/auth/:id/ticket/all/' + event).then(response => response.data, {
+        return axios.get<Ticket[]>('http://localhost:4000/auth/' + userService.getUserID() + '/ticket/all/' + event, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }});
+            }}).then(response => response.data, {
+
+        });
     }
 
     getTicketId(id: number) {
-        return axios.get<Ticket[]>('http://localhost:4000/auth/:id/ticket/' + id).then(response => response.data, {
+        return axios.get<Ticket[]>('http://localhost:4000/auth/' + userService.getUserID() + '/ticket/' + id, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }});
+            }}).then(response => response.data, {
+        });
     }
 
     postTicket(ticket: Ticket){
-        return axios.post('http://localhost:4000/auth/:id/ticket', ticket).then(response => response.data, {
+        return axios.post('http://localhost:4000/auth/' + userService.getUserID() + '/ticket', ticket, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }});
+            }}).then(response => response.data, {
+        });
     }
 
     updateTicket(ticket: Ticket, id : number){
-        return axios.put('http://localhost:4000/auth/:id/ticket/' + id, ticket).then(response => response.data, {
+        return axios.put('http://localhost:4000/auth/' + userService.getUserID() + '/ticket/' + id, ticket, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }});
+            }}).then(response => response.data, {
+        });
     }
 
     removeTicket(id: number) {
-        return axios.delete<Ticket>('http://localhost:4000/auth/:id/ticket/' + id).then(response => response.data, {
+        return axios.delete<Ticket>('http://localhost:4000/auth/' + userService.getUserID() + '/ticket/' + id, {
             'headers': {
                 'x-access-token': userService.getToken()
-
-            }});
+            }}).then(response => response.data, {
+        });
     }
 
 

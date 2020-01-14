@@ -60,8 +60,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
 
         }
 
-    mounted(){
-
+    mounted() {
         ticketService.getAllTicket(this.props.match.params.eventId)
             .then(t => {
                 this.ticketTypeList = t[0];

@@ -71,11 +71,40 @@ class UserService {
 
     }
 
+    getUserID() {
+        return localStorage.getItem("user_id");
+    }
+
+    getUsername() {
+        return localStorage.getItem("username");
+    }
+
+    getIamge() {
+        return localStorage.getItem("image");
+    }
+
+    getFirstName() {
+        return localStorage.getItem("first_name");
+    }
+
+    getLastName() {
+        return localStorage.getItem("last_name");
+    }
+
+    getEmail() {
+        return localStorage.getItem("email");
+    }
+
+    getPhone() {
+        return localStorage.getItem("phone");
+    }
+
     getToken() {
         return localStorage.getItem("token");
     }
 
     postLogin(username: string, password: string) {
+        console.log("yo");
         let data = {
             "username": username,
             "password": password

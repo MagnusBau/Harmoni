@@ -37,11 +37,11 @@ let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "5S",
+    expiresIn:  "1H",
     algorithm:  ["RS256"]
 };
 const signOptions = {
-    expiresIn:  "5S",
+    expiresIn:  "1H",
     algorithm:  "RS256"
 };
 
@@ -176,6 +176,7 @@ function register(data: Object, res: Response) {
 
 // Håndterer login og sender JWT-token tilbake som JSON
 exports.loginUser = (req, res, next) => {
+    console.log("yo");
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
         if(rows[0]) {
