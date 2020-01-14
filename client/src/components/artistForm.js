@@ -17,19 +17,23 @@ export class ArtistForm extends Component <{ match: { params: { eventId: number 
     constructor(props) {
         super(props);
 
-        this.newArtist = {artist_id: -1,
-                          artist_name: "",
-                          first_name: "",
-                          last_name: "",
-                          email: "",
-                          phone: ""};
+        this.newArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
 
-        this.seeArtist = {artist_id: -1,
-                          artist_name: "",
-                          first_name: "",
-                          last_name: "",
-                          email: "",
-                          phone: ""};
+        this.seeArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
     }
 
     mounted(): void {
@@ -79,10 +83,12 @@ export class ArtistForm extends Component <{ match: { params: { eventId: number 
                     <div className="col">
                         <select size="10" className="form-control m-2" id="exampleFormControlSelect1">
                             {this.eventArtists.filter(artist => artist.artist_name.includes(this.artistFilter)).map(artist =>
-                                <option value={artist} key={artist.artist_id} onClick={() => this.onSelect(artist)}>{artist.artist_name}</option>
+                                <option value={artist} key={artist.artist_id}
+                                        onClick={() => this.onSelect(artist)}>{artist.artist_name}</option>
                             )}
                         </select>
-                        <input className="form-control m-2" name="filter" placeholder="Filter" value={this.artistFilter} onChange={this.onChangeFilter}/>
+                        <input className="form-control m-2" name="filter" placeholder="Filter" value={this.artistFilter}
+                               onChange={this.onChangeFilter}/>
                     </div>
                     <div className="col">
                         <div className="card m-2">
@@ -91,18 +97,30 @@ export class ArtistForm extends Component <{ match: { params: { eventId: number 
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">{this.seeArtist.artist_name}</h5>
-                                <p className="card-text"><b>Fullt navn: </b>{this.seeArtist.first_name + " " + this.seeArtist.last_name}</p>
+                                <p className="card-text"><b>Fullt
+                                    navn: </b>{this.seeArtist.first_name + " " + this.seeArtist.last_name}</p>
                                 <p className="card-text"><b>Epost: </b>{this.seeArtist.email}</p>
                                 <p className="card-text"><b>Telefonnr.: </b>{this.seeArtist.phone}</p>
-                                {this.seeArtist.artist_name !== "" ? <a href="#" className="btn btn-danger align-bottom">Fjern</a> : null}
+                                {this.seeArtist.artist_name !== "" ? <p className="card-text">
+                                    <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
+                                </p> : null}
+                                {this.seeArtist.artist_name !== "" ?
+                                    <a href="#" className="btn btn-danger align-bottom">Fjern</a> : null}
                             </div>
                         </div>
                     </div>
                 </div>
-                <h3 className="m-2">Legg til ny artist:</h3>
+                <hr/>
+                <h4 className="m-2">Legg til ny artist:</h4>
                 <div className="row">
                     <div className="col">
-                        <input className="form-control m-2 col" name="artist_name" placeholder="Artistnavn" value={this.newArtist.artist_name} onChange={this.onChange}/>
+                        <input
+                            className="form-control m-2 col"
+                            name="artist_name"
+                            placeholder="Artistnavn"
+                            value={this.newArtist.artist_name}
+                            onChange={this.onChange}
+                            required/>
                     </div>
                     <div className="col">
                         <div className="m-2"/>
@@ -110,48 +128,34 @@ export class ArtistForm extends Component <{ match: { params: { eventId: number 
                 </div>
                 <div className="row">
                     <div className="col">
-                        <input className="form-control m-2 col" name="first_name" placeholder="Fornavn" value={this.newArtist.first_name} onChange={this.onChange}/>
+                        <input
+                            className="form-control m-2 col"
+                            name="first_name"
+                            placeholder="Fornavn"
+                            value={this.newArtist.first_name}
+                            onChange={this.onChange}
+                            required/>
                     </div>
                     <div className="col">
-                        <input className="form-control m-2 col" name="last_name" placeholder="Etternavn" value={this.newArtist.last_name} onChange={this.onChange}/>
+                        <input className="form-control m-2 col" name="last_name" placeholder="Etternavn"
+                               value={this.newArtist.last_name} onChange={this.onChange} required/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col">
-                        <input className="form-control m-2" name="email" placeholder="E-post" value={this.newArtist.email} onChange={this.onChange}/>
+                        <input className="form-control m-2" name="email" placeholder="E-post"
+                               value={this.newArtist.email} onChange={this.onChange} required/>
                     </div>
                     <div className="col">
-                        <input className="form-control m-2" name="phone" placeholder="Telefonnr." value={this.newArtist.phone} onChange={this.onChange}/>
+                        <input className="form-control m-2" name="phone" placeholder="Telefonnr."
+                               value={this.newArtist.phone} onChange={this.onChange} required/>
                     </div>
                 </div>
-                <h4 className="m-2">Legg til kontrakt</h4>
+                <h5 className="m-2">Legg til kontrakt</h5>
                 <div className="row">
                     <div className="col">
-                        <div className="form-check m-2">
-                            <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                                   value="option1" checked/>
-                                <label className="form-check-label" htmlFor="exampleRadios1">
-                                    Last opp
-                                </label>
-                        </div>
-                        <div className="form-check m-2">
-                            <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                                   value="option2"/>
-                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                    Velg dokument
-                                </label>
-                        </div>
-                        <div className="input-group m-2">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroupFileAddon01">Last opp</span>
-                            </div>
-                            <div className="custom-file">
-                                <input type="file" className="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01" disabled/>
-                                    <label className="custom-file-label" htmlFor="inputGroupFile01">Velg fil</label>
-                            </div>
-                        </div>
-                        <select id="documentSelect" className="custom-select m-2" value={this.documentId} onChange={this.onChange}>
+                        <select id="documentSelect" className="custom-select m-2" value={this.documentId}
+                                onChange={this.onChange} required>
                             <option selected value="">Velg dokument...</option>
                             {this.eventDocuments.map(document =>
                                 <option value={document.document_id}>{document.name}</option>
@@ -165,7 +169,7 @@ export class ArtistForm extends Component <{ match: { params: { eventId: number 
                         <div className="m-2"/>
                     </div>
                     <div className="col">
-                        <button className="btn btn-success m-2 float-right">Legg til</button>
+                        <button className="btn btn-success m-2 float-right" type="submit">Legg til</button>
                     </div>
                 </div>
             </form>
