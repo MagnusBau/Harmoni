@@ -58,6 +58,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     mounted(): void {
+        console.log("Hello");
         this.onComponentUpdate();
     }
 
@@ -70,6 +71,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     onComponentUpdate = direction => {
+        this.eventArtists = [];
         artistService
             .getArtistByEvent(this.props.match.params.eventId)
             .then(artists => this.eventArtists = artists[0])
@@ -95,7 +97,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     removeArtist() {
-        this.eventArtists = this.eventArtists.filter(artist => artist.artist_id !== this.seeArtist.artist_id);
+        //this.eventArtists = this.eventArtists.filter(artist => artist.artist_id !== this.seeArtist.artist_id);
         artistService.removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id);
         this.seeArtist = {
             artist_id: -1,
@@ -105,13 +107,22 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
             email: "",
             phone: ""
         };
+        this.mounted();
         this.close();
     }
 
     onSubmit(e) {
         e.preventDefault();
         artistService.addArtistToEvent(this.newArtist, this.documentId);
-        this.eventArtists[this.eventArtists.length] = this.newArtist;
+        this.newArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
+        this.mounted();
     }
 
     render() {
