@@ -42,17 +42,15 @@ export class Ticket {
 
 
 }
+
 class TicketService{
-    getAllTicket(event : number){
+    getAllTicket(event : number) {
         return axios.get<Ticket[]>('http://localhost:4000/auth/id/' + userService.getUserID() + '/ticket/event/' + event, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }}).then(response => response.data, {
+            }
+        }).then(response => response.data, {});
 
-        });
-    getTicketId(eventId: number) {
-        return axios.get<Ticket[]>('http://localhost:4000/api/ticketTest/' + eventId).then(response => response.data);
-    }
     }
 
     getTicketId(id: number) {
@@ -63,7 +61,7 @@ class TicketService{
         });
     }
 
- */
+
 
     postTicket(ticket: Ticket){
         return axios.post('http://localhost:4000/auth/id/' + userService.getUserID() + '/ticket/ticket', ticket, {

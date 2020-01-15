@@ -38,7 +38,7 @@ end;
 /**
   get all event by
  */
-CREATE PROCEDURE get_all_event()
+CREATE PROCEDURE get_all_events()
 BEGIN
   SELECT event_id,
          title,

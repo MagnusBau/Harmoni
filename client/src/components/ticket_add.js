@@ -163,6 +163,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
             alert('pris eller antall kan ikke være under 0!');
             return;
         }
+        ticketService.postTicket(this.ticket)
             .then(() => {
                 if(this.ticket) {
                     history.push('/event/edit/' + this.ticket.event + '/ticket');
