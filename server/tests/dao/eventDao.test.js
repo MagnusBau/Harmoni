@@ -115,6 +115,7 @@ test("get cancelled event information", done => {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
+
         data = data[0];
 
         expect(data.length).toBe(1);
@@ -124,7 +125,7 @@ test("get cancelled event information", done => {
 
         done();
     }
-    eventDao.getCancelledEventInfo(2, callback);
+    eventDao.getCancelledEventInfo(3, callback);
 });
 
 test("delete_ event from db", done => {
@@ -137,6 +138,6 @@ test("delete_ event from db", done => {
         done();
     }
 
-    eventDao.deleteEvent(1, callback);
+    eventDao.deleteEvent(4, callback);
 
 });
