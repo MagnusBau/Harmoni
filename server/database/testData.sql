@@ -58,9 +58,9 @@ INSERT INTO event_role (role, event, count) VALUES (1, 1, 2);
 INSERT INTO event_role (role, event, count) VALUES (2, 1, 1);
 INSERT INTO event_role (role, event, count) VALUES (3, 1, 3);
 
-INSERT INTO document (document_id, name, file, event)
+INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'thrud', 'thrud', 1);
-INSERT INTO document (document_id, name, file, event)
+INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
 
 INSERT INTO rider (description, document)

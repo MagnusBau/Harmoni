@@ -101,7 +101,6 @@ CREATE TABLE event_role (
 
 CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
   path        VARCHAR(500)           NOT NULL DEFAULT './files/error.txt',
   event       INT                NOT NULL,
   name        VARCHAR(100)       NOT NULL,
