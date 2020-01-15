@@ -11,7 +11,7 @@ import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
 import { AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
-import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
+import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/riderOLD";
 import UserOverview from "./pages/userOverview";
 
 import Footer from "./components/Footer/Footer";
@@ -37,6 +37,8 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route path="/user/:userId/overview" component={UserOverview}/>
+                    <Route exact path="/login" component={UserLogin} />
+                    <Route exact path="/register" component={UserRegister} />
                 </Switch>
                 <Footer/>
             </div>

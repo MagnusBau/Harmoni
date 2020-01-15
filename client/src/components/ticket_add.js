@@ -149,7 +149,6 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
 
                     <button onClick={this.send} type={"button"}>legg til bilett type</button>
 
-
                 </div>
             </form>
         );}
