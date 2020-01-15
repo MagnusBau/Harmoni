@@ -8,79 +8,64 @@ DROP PROCEDURE IF EXISTS update_role_count;
 /**
   returns all staff-types
  */
-DELIMITER //
 
 CREATE PROCEDURE get_all_roles()
 BEGIN
     SELECT role_id, type, event FROM role;
-END //
+END;
 
-DELIMITER ;
 /**
   Returns staff currently assigned to event
  */
-DELIMITER //
 
 CREATE PROCEDURE get_roles_in_event(IN event_in INT)
 BEGIN
     SELECT role_id, type, count, er.event FROM role r JOIN event_role er on r.role_id = er.role WHERE er.event=event_in;
-END //
+END;
 
-DELIMITER ;
 /**
   Sets staff role
  */
-DELIMITER //
 
 CREATE PROCEDURE set_role(IN type_in VARCHAR(50), IN event_id_in INT)
 BEGIN
     INSERT INTO role(type, event) VALUES (type_in, event_id_in);
-END //
+END;
 
-DELIMITER ;
 /**
   Assigns staff to event
  */
-DELIMITER //
 
 CREATE PROCEDURE assign_to_event(IN role_in INT, IN event_in INT, IN count_in INT)
 BEGIN
     INSERT INTO event_role(role, event, count) VALUES (role_in, event_in, count_in);
     /*UPDATE role SET event = event_in WHERE role_id = role_id_in;*/
-END //
+END;
 
-DELIMITER ;
 /**
   Removes staff from event
  */
-DELIMITER //
 
 CREATE PROCEDURE remove_from_event(IN role_in INT, IN event_in INT)
 BEGIN
     DELETE FROM event_role WHERE role = role_in AND event = event_in;
     /*UPDATE role SET event = NULL WHERE role_id = role_id_in AND event = event_id_in;*/
-END //
+END;
 
-DELIMITER ;
 /**
   Removes role from list
  */
-DELIMITER //
 
 CREATE PROCEDURE remove_role(IN role_id_in INT)
 BEGIN
     DELETE FROM role WHERE role_id = role_id_in;
-END //
+END;
 
-DELIMITER ;
 /**
   Updates number of specified role
  */
-DELIMITER //
 
 CREATE PROCEDURE update_role_count(IN role_id_in INT, IN event_in INT, IN count_in INT)
 BEGIN
     UPDATE event_role SET count=count_in WHERE role=role_id_in AND event=event_in;
-END //
-
-DELIMITER ;
+END;

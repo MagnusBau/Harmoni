@@ -93,6 +93,7 @@ CREATE TABLE role
 CREATE TABLE event_role (
                             role INT,
                             event INT NOT NULL,
+                            count INT NOT NULL,
                             CONSTRAINT event_role_pk PRIMARY KEY(role, event),
                             CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
                             CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
@@ -130,5 +131,4 @@ BEGIN
         SET
             MESSAGE_TEXT = `message`,
             MYSQL_ERRNO = `errno`;
-END
-);
+END;

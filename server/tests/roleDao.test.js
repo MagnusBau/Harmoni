@@ -54,11 +54,11 @@ test("Get amount of roles in event from database", done => {
         );
         data = data[0];
         expect(data.length).toBe(3);
-        expect(data[0].role).toBe(1);
+        expect(data[0].role_id).toBe(1);
         expect(data[0].count).toBe(2);
-        expect(data[1].role).toBe(2);
+        expect(data[1].role_id).toBe(2);
         expect(data[1].count).toBe(1);
-        expect(data[2].role).toBe(3);
+        expect(data[2].role_id).toBe(3);
         expect(data[2].count).toBe(3);
         done();
     }
