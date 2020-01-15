@@ -59,7 +59,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
 
         eventService
             .getEventID(this.props.match.params.eventId)
-            .then(event => this.event = event[0][0])
+            .then(event => this.event = event[0])
             .catch((error: Error) => console.log(error.message));
 
         eventService
