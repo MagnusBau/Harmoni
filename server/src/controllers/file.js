@@ -26,7 +26,6 @@ exports.upload = (req, res, next) => {
     };
     fileInfoDao.postFileInfo(data, (err, res) => {
         console.log(res.insertId);
-        file.mv('./uploads' + res.insertId);
     })
 };
 
