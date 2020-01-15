@@ -1,14 +1,14 @@
 // @flow
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 import {Route, Switch} from "react-router";
 import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import { UserRegister, TokenBoi } from "./pages/user";
-import { AddEvent} from "./pages/addEvent";
+import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
+import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
 import { FileMain} from './pages/file'
@@ -36,6 +36,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/event/ticket" component={addTicketType}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
+                    <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
