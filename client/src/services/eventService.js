@@ -15,6 +15,9 @@ export class Event {
     category: string;
     capacity: number;
     organizer: number;
+    organizer_name: string;
+    cancelled: number;
+
 }
 
 export class Document {
@@ -41,8 +44,8 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventID(eventID: number): Event {
-        return axios.get<Event>(`http://localhost:4000/api/event/${eventID}`).then(response => response.data);
+    getEventById(eventId: number): Event[] {
+        return axios.get<Event[]>(`http://localhost:4000/api/event/` + eventId).then(response => response.data);
     }
 
     getEventIDUpdate(eventID: number): Event[] {
@@ -53,7 +56,11 @@ export class EventService {
         return axios.get('/' + name).then(response => response.data);
     }
 
-    createEvent(createEvent: CreateEvent): Promise<void> {
+    getEventByUser(userId: number): Event[] {
+        return axios.get<Event[]>('http://localhost:4000/api/event/user/' + userId).then(response => response.data);
+    }
+
+    createEvent(createEvent: Event): Promise<void> {
         return axios.post("http://localhost:4000/api/event", createEvent).then(response => response.data);
     }
 
@@ -65,6 +72,10 @@ export class EventService {
         return axios.get<Event[]>('http://localhost:4000/api/event?cancelled=true').then(response => response.data);
     }
 
+    deleteEvent(eventId: number) {
+        return axios.delete<Event>('http://localhost:4000/api/event/' + eventId).then(response => response.data);
+    }
+
     cancelEvent(eventId: number) {
         return axios.put(`http://localhost:4000/api/event/${eventId}/cancel`).then(response => response.data);
     }
@@ -74,6 +85,7 @@ export class EventService {
         return axios.get<Event[]>('http://localhost:4000/api/event').then(response => response.data);
     }
 
+    /*
     getCancelledEventInfo(eventId: number) {
         return axios.get<Contact>(`http://localhost:4000/api/event/${eventId}/email`).then(response => response.data);
     }
