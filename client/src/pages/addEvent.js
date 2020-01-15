@@ -60,7 +60,7 @@ export class AddEvent extends Component {
                     <div className={"form-group m-2"}>
                         <label>Start tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-start-time"
+                        <input id="datetimepicker"
                                required={true}
                                name="start-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
@@ -70,7 +70,7 @@ export class AddEvent extends Component {
                     <div className={"form-group m-2"}>
                         <label>Slutt tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-end-time"
+                        <input id="datetimepicker2"
                                required={true}
                                name="end-time" placeholder="2020-06-12T19:30"
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
