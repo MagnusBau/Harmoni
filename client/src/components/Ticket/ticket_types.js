@@ -17,15 +17,22 @@ export default class TicketTypes extends Component {
             <div>
                 <ul className="list-group list-group-flush">
                     {this.tickets.map( (ticket =>
-                        <li className="list-group-item">
-                            <h5>Type</h5>
+                        <li className="list-group-item" key={ticket.ticket_id}>
+                            <b>Type:</b>
                             <p>{ticket.title}</p>
-                            <h5>Billettinfo</h5>
+                            <b>Billettinfo</b>
                             <p>{ticket.info}</p>
-                            <h5>Pris</h5>
+                            <b>Pris:</b>
                             <p>{ticket.price}</p>
-                            <h5>Antall</h5>
+                            <b>Antall:</b>
                             <p>{ticket.count}</p>
+                            <button
+                                size="sm"
+                                className="m"
+                                variant="outline-secondary"
+                                onClick={() => {this.props.handleClick(); this.edit()}}>
+                                Rediger billett
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -34,8 +41,8 @@ export default class TicketTypes extends Component {
                     size="sm"
                     className="m"
                     variant="outline-secondary"
-                    href={"/#/event/" + "/tickets/edit"}>
-                    Rediger billetter
+                    onClick={this.props.handleAddTicketClick}>
+                    Legg til billettype
                 </button>
             </div>
         )
@@ -48,5 +55,11 @@ export default class TicketTypes extends Component {
             .getAllTicket(this.currentEvent)
             .then(tickets => (this.tickets = tickets[0]))
             .catch((error: Error) => console.log(error.message));
+    }
+
+    edit() {
+        if (!this.ticket) return null;
+        if (this.ticket.ticket_id === '') return null;
+        //if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/ticket/'+ this.ticket.ticket_id + '/edit');
     }
 }

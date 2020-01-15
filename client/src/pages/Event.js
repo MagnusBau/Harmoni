@@ -8,12 +8,13 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketTypes from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
+import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
 /**
  * Class for the view of one event
  *
  * @author Victoria Blichfeldt
  */
-//TODO fikse bug med at arrangement overview ikke alltid oppdateres etter at redigering
+//TODO fikse bug med at arrangement overview ikke alltid oppdateres etter at redigering er utført
 //TODO flette utstyr og dokumenter når det er ferdig
 class EventOverview extends Component<{ match: { params: { eventId: number } } }>{
     currentEvent: number = 0;
@@ -27,21 +28,26 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         super(props);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleView = this.handleView.bind(this);
-        this.state = {isEditing: false}
+        this.state = {
+            isEditingEvent: false,
+            isEditingTicket: false
+        }
     }
 
     /*
      * hvis true -> viser arrangement oversikt
      */
     handleView() {
-        this.setState({isEditing: true})
+        this.setState({isEditingEvent: true})
     }
 
     /*
     * hvis true -> viser redigerigs side for arrangement
     * */
     handleEdit() {
-        this.setState({isEditing: false})
+        this.setState({
+            isEditingEvent: false,
+        })
     }
 
     mounted(){
@@ -65,15 +71,23 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
 
 
     render(){
-        const isEditing = this.state.isEditing;
+        const isEditingEvent = this.state.isEditingEvent;
+        const isEditingTicket = this.state.isEditingTicket;
         let eventContent;
+        let ticketContent;
 
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
-        if(isEditing) {
-            eventContent = <EventEdit eventId={this.currentEvent} onClick={this.handleEdit}/>;
+        if(isEditingEvent) {
+            eventContent = <EventEdit eventId={this.currentEvent} onClick={this.handleEdit} handleClickCancel={this.handleEdit}/>;
         }else {
             eventContent = <EventView eventId={this.currentEvent} handleClick={this.handleView}/>;
+        }
+
+        if(isEditingTicket){
+            ticketContent = <editTicketType/>
+        }else {
+            ticketContent = <TicketTypes eventId={this.currentEvent}/* handleClick={} handleAddTicketClick={}*//>
         }
         return (
             <div className="container">
@@ -122,7 +136,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="ticket" role="tabpanel">
                                     <h5>Billettertyper</h5>
-                                    <TicketTypes eventId={this.currentEvent}/>
+                                    {ticketContent}
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
                                     <h5>Riders</h5>

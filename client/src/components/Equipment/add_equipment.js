@@ -97,6 +97,7 @@ export default class AddEquipment extends Component {
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
+
         this.loadEquipment();
 /*
         equipmentService

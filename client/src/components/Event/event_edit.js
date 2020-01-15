@@ -131,6 +131,13 @@ export class EventEdit extends Component {
                             onClick ={() => {this.props.onClick(); this.update()}}>
                         {' '}Lagre{' '}
                     </button>
+                    <button
+                        size="sm"
+                        className="m"
+                        variant="outline-secondary"
+                        onClick={this.props.handleClickCancel}>
+                        Avbryt
+                    </button>
                 </div>
             </div>
         )
