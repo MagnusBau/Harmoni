@@ -40,11 +40,18 @@ class NavBar extends Component {
         userService.attemptLogin(this.username, this.password, this.mounted);
     }
 
+    viewMyPage() {
+        history.push("/user/" + userService.getUserID() + "/overview");
+    }
+
+    viewNewEvent() {
+        history.push("/event/new");
+    }
 
      mounted(): void {
          let id = userService.getUserID();
          let username = userService.getUsername();
-         let fullName = `${userService.getFirstName()} ${userService.getLastName()}`
+         let fullName = `${userService.getFirstName()} ${userService.getLastName()}`;
          this.setState({userId: id, username: username, fullName: fullName});
      }
 
@@ -64,8 +71,19 @@ class NavBar extends Component {
                                 <h5>{userService.getFirstName() + " " + userService.getLastName()}</h5>
                                 <p className="form-text text-muted">{`@${userService.getUsername()}`}</p>
                                 <div className="dropdown-divider"/>
-                                <Link to="/event/new">Nytt arrangement</Link><br/>
-                                <Link to="/mypage">Min side</Link><br/>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={this.viewNewEvent}
+                                >Ny event</button>
+                                <div className="dropdown-divider"/>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={this.viewMyPage}
+                                >Min side</button>
                                 <div className="dropdown-divider"/>
                                 <button
                                     type="button"
