@@ -35,6 +35,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/event/ticket" component={addTicketType}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
+                    <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route path="/user/:userId/overview" component={UserOverview}/>
                 </Switch>

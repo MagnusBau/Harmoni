@@ -9,6 +9,8 @@ import TicketTypes from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
+import AddRole from "../components/Staff/staff_overview"
+import {roleService} from "../services/roleService";
 /**
  * Class for the view of one event
  *
@@ -123,16 +125,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="staff" role="tabpanel">
                                     <h5>Personell oversikt</h5>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">role.type</li>
-                                    </ul>
-                                    <button
-                                        size="sm"
-                                        className="m"
-                                        variant="outline-secondary"
-                                        href={"/#/event/" +  "/staff/edit"}>
-                                        Rediger personell
-                                    </button>
+                                    <AddRole eventId={this.currentEvent}/>
                                 </div>
                                 <div className="tab-pane" id="ticket" role="tabpanel">
                                     <h5>Billettertyper</h5>
