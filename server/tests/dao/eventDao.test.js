@@ -38,7 +38,7 @@ test("Get all events", done => {
            `Test callback: status=${status}, data=${data}`
        );
        data = data[0];
-       expect(data.length).toBe(3);
+       expect(data.length).toBe(4);
        expect(data[0].title).toBe("EM Håndball");
        expect(data[1].title).toBe("Konsert");
        done();
@@ -54,7 +54,7 @@ test("get not-cancelled events from db", done => {
 
         data = data[0];
 
-        expect(data.length).toBe(2);
+        expect(data.length).toBe(3);
 
         done();
     }
@@ -119,7 +119,7 @@ test("get cancelled event information", done => {
         data = data[0];
 
         expect(data.length).toBe(1);
-        expect(data[0].title).toBe('Konsert');
+        expect(data[0].title).toBe('Konsert m/ballonger');
         expect(data[0].name).toBe('Mia Fornes');
         expect(data[0].email).toBe('mia@test.com');
 
