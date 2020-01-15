@@ -90,22 +90,27 @@ app.use("/auth/id/:id/ticket/ticket/:ticketId", (req, res, next) => {
             let id = rows[0][0].contact_id;
             if(req.params.ticketId) {
                 ticketDao.getOne(req.params.ticketId,(err, rows) => {
-                    if(rows[0][0].event) {
-                        eventDao.getEventById(rows[0][0].event, (err, rows2) => {
-                            if(rows2[0][0].organizer) {
-                                if(rows2[0][0].organizer === id) {
-                                    next();
+                    if(rows[0][0]) {
+                        if(rows[0][0].event) {
+                            eventDao.getEventById(rows[0][0].event, (err, rows2) => {
+                                if(rows2[0][0].organizer) {
+                                    if(rows2[0][0].organizer === id) {
+                                        next();
+                                    } else {
+                                        console.log("not authorized ticket id1");
+                                        res.json({ error: "Not authorized" });
+                                    }
                                 } else {
-                                    console.log("not authorized ticket id1");
+                                    console.log("not authorized ticket id2");
                                     res.json({ error: "Not authorized" });
                                 }
-                            } else {
-                                console.log("not authorized ticket id2");
-                                res.json({ error: "Not authorized" });
-                            }
-                        });
+                            });
+                        } else {
+                            console.log("not authorized ticket id3");
+                            res.json({ error: "Not authorized" });
+                        }
                     } else {
-                        console.log("not authorized ticket id3");
+                        console.log("not authorized ticket id4");
                         res.json({ error: "Not authorized" });
                     }
                 });
