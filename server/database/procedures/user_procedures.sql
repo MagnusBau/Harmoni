@@ -7,6 +7,7 @@ DROP PROCEDURE IF EXISTS get_username;
 DROP PROCEDURE IF EXISTS get_password;
 DROP PROCEDURE IF EXISTS get_user;
 DROP PROCEDURE IF EXISTS check_username;
+DROP PROCEDURE IF EXISTS get_contact;
 
 /**
   Inserts a new contact
@@ -84,6 +85,20 @@ END;
 CREATE PROCEDURE get_password(IN username_in VARCHAR(50))
 BEGIN
     SELECT password FROM user WHERE username=username_in;
+END;
+
+/**
+  Fetches contact
+
+  IN user_id_in: id of the user
+
+  Issued by: getContact(user_id: number)
+ */
+
+CREATE PROCEDURE get_contact(IN user_id_in INT(11))
+BEGIN
+
+    SELECT contact_id, first_name, last_name, email, phone FROM user LEFT JOIN contact ON user.contact=contact.contact_id WHERE user_id=user_id_in;
 END;
 
 /**

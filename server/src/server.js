@@ -36,20 +36,6 @@ const userDao = new UserDAO(pool);
 
 module.exports = pool;
 
-
-// Setup routes
-const artistRoutes = require("./routes/artist");
-const equipmentRoutes = require("./routes/equipment");
-const eventRoutes = require("./routes/event");
-const ticketRoutes = require("./routes/ticket");
-const userRoutes = require("./routes/user");
-
-app.use("/api/artist", artistRoutes);
-app.use("/api/event", eventRoutes);
-app.use("/api/equipment", equipmentRoutes);
-app.use("/auth", userRoutes);
-app.use("/auth/id/:id/ticket", ticketRoutes);
-
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next(); // http://expressjs.com/guide.html#passing-route control
@@ -98,53 +84,67 @@ const ticketDao = new TicketDAO(pool);
 
 
 app.use("/auth/id/:id/ticket/ticket/:ticketId", (req, res, next) => {
-    let id = req.params.id;
-    if(req.params.ticketId) {
-        ticketDao.getOne(req.params.ticketId,(err, rows) => {
-            if(rows[0][0].event) {
-                eventDao.getEventById(rows[0][0].event, (err, rows2) => {
-                    if(rows2[0][0].organizer) {
-                        if(rows2[0][0].organizer === id) {
-                            next();
-                        } else {
-                            console.log("not authorized ticket id1");
-                            res.json({ error: "Not authorized" });
-                        }
+    console.log("auth ticket 1");
+    userDao.getContact(req.params.id, (err, rows) => {
+        if(rows[0][0].contact_id) {
+            let id = rows[0][0].contact_id;
+            if(req.params.ticketId) {
+                ticketDao.getOne(req.params.ticketId,(err, rows) => {
+                    if(rows[0][0].event) {
+                        eventDao.getEventById(rows[0][0].event, (err, rows2) => {
+                            if(rows2[0][0].organizer) {
+                                if(rows2[0][0].organizer === id) {
+                                    next();
+                                } else {
+                                    console.log("not authorized ticket id1");
+                                    res.json({ error: "Not authorized" });
+                                }
+                            } else {
+                                console.log("not authorized ticket id2");
+                                res.json({ error: "Not authorized" });
+                            }
+                        });
                     } else {
-                        console.log("not authorized ticket id2");
+                        console.log("not authorized ticket id3");
                         res.json({ error: "Not authorized" });
                     }
                 });
             } else {
-                console.log("not authorized ticket id3");
-                res.json({ error: "Not authorized" });
+                next();
             }
-        });
-    } else {
-        next();
-    }
+        } else {
+            res.json({ error: "Not authorized" });
+        }
+    });
 });
 
 //TODO: Is this a test?
 app.use("/auth/id/:id/ticket", (req, res, next) => {
-    let id = req.params.id;
-    if(req.body.event) {
-        eventDao.getEventById(req.body.event, (err, rows) => {
-            if(rows[0][0].organizer) {
-                if(rows[0][0].organizer === id) {
-                    next();
-                } else {
-                    console.log("not authorized event id3");
-                    res.json({ error: "Not authorized" });
-                }
+    console.log("auth event data");
+    userDao.getContact(req.params.id, (err, rows) => {
+        if (rows[0][0].contact_id) {
+            let id = rows[0][0].contact_id;
+            if(req.body.event) {
+                eventDao.getEventById(req.body.event, (err, rows) => {
+                    if(rows[0][0].organizer) {
+                        if(rows[0][0].organizer === id) {
+                            next();
+                        } else {
+                            console.log("not authorized event id3");
+                            res.json({ error: "Not authorized" });
+                        }
+                    } else {
+                        console.log("not authorized event id4");
+                        res.json({ error: "Not authorized" });
+                    }
+                });
             } else {
-                console.log("not authorized event id4");
-                res.json({ error: "Not authorized" });
+                next();
             }
-        });
-    } else {
-        next();
-    }
+        } else {
+            res.json({error: "Not authorized"});
+        }
+    });
 });
 
 
@@ -154,26 +154,45 @@ import {EventDAO} from './dao/eventDao.js';
 const eventDao = new EventDAO(pool);
 
 app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
-    let id = req.params.id;
-    if(req.params.event) {
-        eventDao.getEventById(req.params.event, (err, rows) => {
-            if(rows[0][0].organizer) {
-                if(rows[0][0].organizer === id) {
-                    next();
-                } else {
-                    console.log("not authorized event id1");
-                    res.json({ error: "Not authorized" });
-                }
+    console.log("auth event param");
+    userDao.getContact(req.params.id, (err, rows) => {
+        if (rows[0][0].contact_id) {
+            let id = rows[0][0].contact_id;
+            if (req.params.event) {
+                eventDao.getEventById(req.params.event, (err, rows) => {
+                    if (rows[0][0].organizer) {
+                        if (rows[0][0].organizer === id) {
+                            next();
+                        } else {
+                            console.log("not authorized event id1");
+                            res.json({error: "Not authorized"});
+                        }
+                    } else {
+                        console.log("not authorized event id2");
+                        res.json({error: "Not authorized"});
+                    }
+                });
             } else {
-                console.log("not authorized event id2");
-                res.json({ error: "Not authorized" });
+                next();
             }
-        });
-    } else {
-        next();
-    }
+        } else {
+            res.json({error: "Not authorized"});
+        }
+    });
 });
 
+// Setup routes
+const artistRoutes = require("./routes/artist");
+const equipmentRoutes = require("./routes/equipment");
+const eventRoutes = require("./routes/event");
+const ticketRoutes = require("./routes/ticket");
+const userRoutes = require("./routes/user");
+
+app.use("/api/artist", artistRoutes);
+app.use("/api/event", eventRoutes);
+app.use("/api/equipment", equipmentRoutes);
+app.use("/auth", userRoutes);
+app.use("/auth/id/:id/ticket", ticketRoutes);
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
