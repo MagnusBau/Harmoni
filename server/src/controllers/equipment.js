@@ -49,7 +49,7 @@ exports.getEquipmentById = (req, res, next) => {
 };
 
 exports.addEquipmentToEvent = (req, res, next) => {
-    console.log(`Got request from client: POST /api/event/equipment`);
+    console.log(`Got request from client: POST /api/event/${req.params.eventId}equipment`);
 
     equipmentDao.addEquipmentToEvent(req.params.eventId, req.body.item, req.body.amount,(err, rows) => {
         res.send(rows);

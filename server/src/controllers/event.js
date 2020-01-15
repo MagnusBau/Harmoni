@@ -6,7 +6,7 @@ const pool = require("../server");
 const eventDao = new EventDAO(pool);
 
 /**
-    GET all events or event by name if param given.
+ GET all events
  */
 
 exports.getEvents = (req, res, next) => {
@@ -16,6 +16,10 @@ exports.getEvents = (req, res, next) => {
         eventDao.getEventByName(req.query.name, (err, rows) => {
             res.json(rows);
         })
+        /*} else if (req.query.eventId){
+            eventDao.getEventById(req.query.name, (err, rows) => {
+                res.json(rows);
+            })*/
     } else if (req.query.cancelled) {
         let cancelled = (req.query.cancelled === "true");
         eventDao.getEventsByCancelled(cancelled, (err, rows) => {
@@ -40,9 +44,9 @@ exports.insertEvent = (req, res, next) => {
 
 //Get event by id
 exports.getEventById = (req, res, next) => {
-    console.log(`Get-request from client /event/${req.params.event_id}` );
+    console.log(`Get-request from client /event/` + req.params.eventId );
 
-    eventDao.getEventById(req.params.eventId, (err, rows) => {
+    eventDao.getEventById(req.params.eventId, (err, [rows]) => {
         res.json(rows)
     })
 };
@@ -152,10 +156,3 @@ exports.createEvent = (req, res, next) => {
     })
 };
 
-exports.getDocumentByEvent = (req, res, next) => {
-    console.log(`GET request from client: /event/${req.params.eventId}/document`);
-
-    eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
-        res.json(rows);
-    });
-};

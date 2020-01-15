@@ -3,11 +3,22 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-import Autosuggest from 'react-autosuggest';
-import {equipmentService, Equipment, EventEquipment} from "../services/equipmentService";
 
 const history = createHashHistory();
+import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
+import Autosuggest from 'react-autosuggest';
 
+/*
+// Teach Autosuggest how to calculate suggestions for any given input value.
+const getSuggestions = value => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : languages.filter(lang =>
+        lang.name.toLowerCase().slice(0, inputLength) === inputValue
+    );
+};
+*/
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -21,8 +32,9 @@ const renderSuggestion = suggestion => (
     </div>
 );
 
-export class AddEquipment extends Component <{ match: { params: { eventId: number } } }> {
+export default class AddEquipment extends Component {
     // TODO: Verify that event exists before loading page
+    //TODO: send error message when event is deleted
     currentEvent: number = 0;
     equipment: Equipment[] = [];
     eventEquipment: EventEquipment[] = [];
@@ -37,7 +49,12 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
         };
         this.state = {
             value: '',
-            suggestions: []
+            suggestions: [],
+            equipmentS: [],
+            totalEquipment: 0,
+            editEquipment: null,
+            equipmentLoading: true,
+            editLoading: false
         };
     }
 
@@ -53,40 +70,67 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             item: '',
             amount: 1
         };
-        window.location.reload();
+        this.loadEquipment();
+        //window.location.reload();
     }
 
+    componentDidMount(){
+        this.loadEquipment();
+    }
+
+    loadEquipment = direction => {
+        if(direction) {
+            this.setState({equipmentLoading: true, posts:[]});
+        }
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(eventEquipment => {this.setState({
+                equipmentS: eventEquipment[0]
+            })})
+            .catch((error: Error) => console.log(error.message));
+    };
+
     mounted() {
-        this.currentEvent = this.props.match.params.eventId;
+        this.currentEvent = this.props.eventId;
+
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
 
+        this.loadEquipment();
+/*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
+
+         */
     }
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        window.location.reload();
+        this.loadEquipment();
+        //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        window.location.reload();
+        this.loadEquipment();
+        //window.location.reload();
     }
 
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
-            window.location.reload();
+            this.loadEquipment();
+            //window.location.reload();
         }
     }
+
+
 
     onDropdownChange = (event, {newValue}) => {
         this.setState({
@@ -140,6 +184,7 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             required: "true",
             onKeyDown: this.onKeyDown
         };
+
         return (
             <div className="w-50 m-2">
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
@@ -157,7 +202,7 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
                                id="equipmentType"
                                placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
                     </div>
-                    <button type="submit" className="btn btn-primary m-2 col-1">Legg til</button>
+                    <button type="submit" className="btn btn-primary m-2">Legg til</button>
                 </form>
                 <table className="table">
                     <thead>
@@ -168,26 +213,27 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
                     </tr>
                     </thead>
                     <tbody>
-                    {this.eventEquipment.map((eventEquipment =>
-                            <tr className="d-flex">
-                                <td className="col-7">{eventEquipment.item}</td>
-                                <td className="col-3">{eventEquipment.amount}
-                                    <div className="btn-group-vertical ml-4" role="group">
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.incrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-up.svg"/></button>
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.decrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-down.svg"/></button>
-                                    </div>
-                                </td>
-                                <td className="col-2">
-                                    <button type="button" className="btn btn-danger"
-                                            onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
-                                    </button>
-                                </td>
-                            </tr>
+                    {this.state.equipmentS.map(eventEquipment => (
+                        <tr className="d-flex">
+                            <td className="col-7">{eventEquipment.item}</td>
+                            <td className="col-3">{eventEquipment.amount}
+                                <div className="btn-group-vertical ml-4" role="group">
+                                    <button type="button" className="btn btn-link"
+                                            onClick={() => this.incrementAmount(eventEquipment)}><img
+                                        src="./img/icons/chevron-up.svg"/></button>
+                                    <button type="button" className="btn btn-link"
+                                            onClick={() => this.decrementAmount(eventEquipment)}><img
+                                        src="./img/icons/chevron-down.svg"/></button>
+                                </div>
+                            </td>
+                            <td className="col-2">
+                                <button type="button" className="btn btn-danger"
+                                        onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
+                                </button>
+                            </td>
+                        </tr>
                     ))}
+                    {!this.state.equipmentLoading}
                     </tbody>
                 </table>
             </div>

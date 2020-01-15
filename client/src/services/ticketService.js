@@ -33,13 +33,14 @@ export class Ticket {
 
 
     constructor( title: string, info: string, price: number, count: number, event : number) {
-
         this.title = title;
         this.info = info;
         this.price = price;
         this.count = count;
         this.event = event;
     }
+
+
 }
 class TicketService{
     getAllTicket(event : number){
@@ -49,6 +50,9 @@ class TicketService{
             }}).then(response => response.data, {
 
         });
+    getTicketId(eventId: number) {
+        return axios.get<Ticket[]>('http://localhost:4000/api/ticketTest/' + eventId).then(response => response.data);
+    }
     }
 
     getTicketId(id: number) {
@@ -58,6 +62,8 @@ class TicketService{
             }}).then(response => response.data, {
         });
     }
+
+ */
 
     postTicket(ticket: Ticket){
         return axios.post('http://localhost:4000/auth/id/' + userService.getUserID() + '/ticket/ticket', ticket, {

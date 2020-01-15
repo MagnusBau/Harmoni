@@ -9,7 +9,7 @@ export class TicketDAO extends Dao {
     }
 
     createOne( json : Object,
-              callback: (status: string, data: string) => void) {
+               callback: (status: string, data: string) => void) {
         let values = [json.title, json.info, json.price, json.count, json.event];
         super.query("CALL create_one_ticket(?,?,?,?,?)",
             values,
@@ -32,10 +32,10 @@ export class TicketDAO extends Dao {
     }
 
 
-        updateOneTicket(json: Object, callback : () => void){
+    updateOneTicket(json: Object, callback : () => void){
         let val = [json.title, json.info, json.price, json.count, json.ticket_id];
         super.query("CALL update_one_ticket(?,?,?,?,?)",
-        val, callback);
+            val, callback);
     }
 
     removeOneTicket(id: number, callback:()=> void){

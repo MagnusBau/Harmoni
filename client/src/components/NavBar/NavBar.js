@@ -8,7 +8,8 @@ import { Component } from "react-simplified";
  *
  * @author Victoria Blichfeldt
  */
-
+    //TODO kunne bruke skjema i popup for å logge inn
+    //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
 class NavBar extends Component {
 
     render() {
@@ -27,6 +28,7 @@ class NavBar extends Component {
                            <img src="./img/icons/person.svg" alt="login" width="20" height="20"/>
                        </button>
                        <div className="dropdown-menu dropdown-menu-right">
+                           <h3 ><a href="#/login">Logg inn</a></h3>
                            <form className="px-4 py-3">
                                <div className="form-group form-inline">
                                    <label htmlFor="username">Brukernavn</label>
@@ -37,12 +39,12 @@ class NavBar extends Component {
                                    <input type="password" className="form-control" placeholder="Passord"
                                           id="inputPassword"/>
                                </div>
-                               <button type="submit" className="btn btn-outline-dark"> LOGIN</button>
+                               <button type="submit" className="btn btn-outline-dark">LOGIN</button>
                                <div>
                                    <p>
                                        Har du ikke en bruker?
                                    </p>
-                                   <a href="/register">Registrer deg her</a>
+                                   <a href="#/register">Registrer deg her</a>
                                </div>
                            </form>
                        </div>

@@ -25,7 +25,7 @@ class EquipmentService {
     addEquipmentToEvent(eventId: number, equipment: Equipment, amount: number): void {
         return axios.post(`http://localhost:4000/api/event/${eventId}/equipment`,
             {item: equipment.item,
-                  amount: amount});
+                amount: amount});
     }
 
     removeEquipmentFromEvent(eventEquipment: EventEquipment): void {

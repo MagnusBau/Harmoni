@@ -36,9 +36,18 @@ const userDao = new UserDAO(pool);
 
 module.exports = pool;
 
-app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next(); // http://expressjs.com/guide.html#passing-route control
+//CORS-error handling (server/client security blocking-thing)
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Accept, Origin"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE"
+    );
+    next();
 });
 
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
@@ -197,6 +206,13 @@ app.use("/auth", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
+
+// Add an application header for allowing HTTPS-requests from same host
+/*app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next();
+});*/
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

@@ -17,8 +17,8 @@ export class EventDAO extends Dao {
         super.query("CALL get_all_events", [], callback);
     }
 
-    getEventById(event_id: number, callback: (status: string, data:string) => void) {
-        let values = [event_id];
+    getEventById(eventId: number, callback: (status: string, data:string) => void) {
+        let values = [eventId];
         super.query("CALL get_event_by_id(?)", values, callback);
     }
 
@@ -100,12 +100,5 @@ export class EventDAO extends Dao {
         let newCapacity = [json.capacity, event_id];
         console.log("New capacity: ", newCapacity);
         super.query("CALL update_event_capacity(?, ?)", newCapacity, callback);
-    }
-
-    getDocumentByEvent(event_id: number, callback: (status: string, data: string) => void) {
-        let values = [event_id];
-        super.query("CALL get_document_by_event(?)",
-            values,
-            callback);
     }
 }
