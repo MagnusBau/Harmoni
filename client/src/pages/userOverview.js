@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
+import {userService} from "../services/userService";
 
 const history = createHashHistory();
 /**
@@ -23,9 +24,13 @@ export default class UserOverview extends Component {
 
     mounted() {
 //TODO get events by user
-        eventService.getEventID(1).then(respons => {
-            this.events.push(respons[0]);
-        })
+        eventService.getEventByUser(userService.getUserID()).then(respons => {
+            if(respons[0]) {
+                respons[0].map(e => {
+                    this.events.push(e);
+                });
+            }
+        });
     }
 
     viewEvent = (event) => {
