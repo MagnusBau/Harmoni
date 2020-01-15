@@ -10,7 +10,7 @@ import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
 import {Rider, riderService} from "../services/riderService";
-import {AddRiderType, RiderList} from "../components/Rider/rider";
+import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
 const history = createHashHistory();
 import {Column} from "../components/widgets";
 import {createHashHistory} from "history";
@@ -86,16 +86,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
 
-        riderService
-            .getAllRiders(this.props.match.params.documentId)
-            .then(riders => {
-                this.riders = riders[0];
-            })
-            .catch((error: Error) => console.error(error.message));
-
-        riderService.getRider(this.props.match.params.riderId)
-            .then(t => (this.rider = t[0][0]))
-            .catch((error: Error) => console.log(error.message));
     }
 
 
@@ -179,12 +169,12 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
                                     <h5>Riders</h5>
+                                    <RiderList documentId={}/>
 
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">role.type</li>
 
                                     </ul>
-
                                     {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">

@@ -10,7 +10,7 @@ import { Row, Column} from "../widgets";
 import Autosuggest from 'react-autosuggest';
 
 
-export class RiderCard extends Component <{rider_id: React.Node, description: React.Node, url: React.Node}> {
+export class RiderCard extends Component <{rider_id: React.Node, description: React.Node}> {
     show = false;
     render(){
         return(
@@ -57,9 +57,6 @@ export class RiderCard extends Component <{rider_id: React.Node, description: Re
         this.show = false;
         window.location.reload()
     }
-    edit(){
-        history.push(this.props.url + "/edit/" + String(this.props.rider_id))
-    }
 
     delete(){
         riderService
@@ -72,9 +69,9 @@ export class RiderCard extends Component <{rider_id: React.Node, description: Re
     }
 }
 
-export class RiderList extends Component<{match : {params: {description : number, documentId: number}}}>{
+export class RiderList extends Component<{documentId: number}>{
     riders: Rider[] = [];
-    url: string = "";
+
     render(){
 
         return(
@@ -82,7 +79,7 @@ export class RiderList extends Component<{match : {params: {description : number
             <div>
 
                 {this.riders.map(r => (
-                    <RiderCard rider_id={r.rider_id} description={r.description} url={this.url} key={r.rider_id}/>
+                    <RiderCard rider_id={r.rider_id} description={r.description} key={r.rider_id}/>
                 ))}
 
             </div>
@@ -90,7 +87,8 @@ export class RiderList extends Component<{match : {params: {description : number
     }
 
     mounted(){
-        this.url = this.props.match.url;
+
+
         riderService
             .getAllRiders(this.props.match.params.documentId)
             .then(riders => {
