@@ -1,14 +1,14 @@
 // @flow
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 import {Route, Switch} from "react-router";
 import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
 import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
-import { AddEvent} from "./pages/addEvent";
+import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
 import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";

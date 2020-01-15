@@ -8,7 +8,7 @@ import {roleService, Role, EventRole} from "../../services/roleService";
 const history = createHashHistory();
 
 export default class AddRole extends Component {
-    currentEvent: number = 1;
+    currentEvent: number = 0;
     roles: Role[] = [];
     eventRoles: EventRole[] = [];
     newRole: Role = null;
@@ -28,7 +28,7 @@ export default class AddRole extends Component {
     }
     load = direction => {
         if (direction) {
-            this.setState({lmao: +1});
+            this.setState({lmao: this.state.lmao +1});
         }
         roleService
             .getAllRoles()
