@@ -16,10 +16,20 @@ export default class AddRole extends Component {
     constructor(props, context) {
         super(props, context);
         this.newRole = {type: '', event: 0};
+        this.state = {
+            lmao: 1
+        }
     }
     mounted() {
         this.currentEvent = this.props.eventId;
         this.newRole.event = this.currentEvent;
+
+        this.load();
+    }
+    load = direction => {
+        if (direction) {
+            this.setState({lmao: +1});
+        }
         roleService
             .getAllRoles()
             .then(roles => this.roles = roles[0])
@@ -28,7 +38,7 @@ export default class AddRole extends Component {
             .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles[0])
             .catch((error: Error) => console.log(error.message));
-    }
+    };
     onChange(e) {
         this.newRole.type = e.target.value;
     }
@@ -37,20 +47,24 @@ export default class AddRole extends Component {
         console.log(this.newRole.type);
         roleService.createRole(this.newRole);
         this.newRole.type = '';
+        this.load();
         //window.location.reload();
     }
     remove(role) {
         roleService.removeRole(role.role_id);
+        this.load();
         //window.location.reload();
     }
     addToEvent(eventRole) {
         eventRole.count = 1;
         roleService.assignRole(eventRole);
+        this.load();
         //window.location.reload();
     }
     removeFromEvent(eventRole) {
         eventRole.event = this.currentEvent;
         roleService.removeRoleFromEvent(eventRole);
+        this.load();
         //window.location.reload();
     }
     incrementRole(eventRole) {
