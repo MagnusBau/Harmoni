@@ -13,6 +13,7 @@ import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
+import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 
 const root = document.getElementById("root");
 if (root)

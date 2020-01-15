@@ -42,12 +42,19 @@ export class UserDAO extends Dao {
             callback);
     }
 
-/*    postContact(data: Object, callback: (status: string, data: string) => void){
-        let values = [data.email, data.first_name, data.last_name, data.phone];
-        super.query("CALL post_contact(?,?,?,?)",
+    getContact(user_id: number, callback: (status: string, data: string) => void){
+        let values = [user_id];
+        super.query("CALL get_contact(?)",
             values,
             callback);
-    }*/
+    }
+
+    /*    postContact(data: Object, callback: (status: string, data: string) => void){
+            let values = [data.email, data.first_name, data.last_name, data.phone];
+            super.query("CALL post_contact(?,?,?,?)",
+                values,
+                callback);
+        }*/
 
     postUser(data: Object, contactId: number, callback: (status: string, data: string) => void){
         let values = [data.username, data.password, contactId];
@@ -65,5 +72,33 @@ export class UserDAO extends Dao {
         );
     }
     //</DO NOT TOUCH>
+
+    /*    updateUser(contactId: numberdata: Object, callback: (status: string, data: string) => void){
+        let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
+        super.query("CALL put_contact(?,?,?,?)",
+            values,
+            callback);
+    }*/
+
+    updateContact(contactId: number, data: Object, callback: (status: string, data: string) => void){
+        let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
+        super.query("CALL put_contact(?,?,?,?,?)",
+            values,
+            callback);
+    }
+
+    /*    updatePassword(contactId: number, hash: string, callback: (status: string, data: string) => void){
+        let values = [contactId, hash];
+        super.query("CALL post_contact(?,?)",
+            values,
+            callback);
+    }*/
+
+    updatePassword(userId: number, hash: string, callback: (status: string, data: string) => void){
+        let values = [userId, hash];
+        super.query("CALL put_password(?,?)",
+            values,
+            callback);
+    }
 
 }

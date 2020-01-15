@@ -1,11 +1,13 @@
 // @flow
 
 import {EventDAO} from "../dao/eventDao";
+import {UserDAO} from "../dao/userDao";
 import {Email} from "../email";
 
 const pool = require("../server");
 
 const eventDao = new EventDAO(pool);
+const userDao = new UserDAO(pool);
 const emailService = new Email();
 
 /**
@@ -48,6 +50,20 @@ exports.getEventById = (req, res, next) => {
     })
 };
 
+exports.getEventByUser = (req, res, next) => {
+    console.log('GET-request from client');
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.getEventByUser(rows[0].contact_id, (err, [rows]) => {
+                    res.json(rows)
+                })
+            }
+        }
+    })
+};
+
 exports.getEventEmail = (req, res, next) => {
     console.log(`GET-request from client /event/${req.params.eventId}/email` );
 
@@ -60,7 +76,17 @@ exports.deleteEvent = (req, res, next) => {
 
     console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
 
-    eventDao.deleteEvent(req.params.eventId, (err, rows) => {
+    eventDao.deleteEvent(req.params.event, (err, rows) => {
+        res.json(rows);
+    });
+
+};
+
+exports.deleteEventByEndTime = (req, res, next) => {
+
+    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+
+    eventDao.deleteEventsByEndTime(req.params.organizer, (err, rows) => {
         res.json(rows);
     });
 

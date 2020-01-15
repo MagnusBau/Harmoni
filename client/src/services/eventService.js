@@ -39,6 +39,10 @@ class EventService {
         return axios.get('/' + name).then(response => response.data);
     }
 
+    getEventByUser(userId: number): Event[] {
+        return axios.get<Event[]>('http://localhost:4000/api/event/user/' + userId).then(response => response.data);
+    }
+
     createEvent(createEvent: Event): Promise<void> {
         return axios.post("http://localhost:4000/api/event", createEvent).then(response => response.data);
     }

@@ -66,6 +66,14 @@ BEGIN
 END;
 
 /**
+
+ */
+ CREATE PROCEDURE get_events_by_user(IN user_id_in INT)
+ BEGIN
+     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event WHERE organizer = user_id_in;
+ END;
+
+/**
   Cancel event based on an id
 
   IN event_id_in: Id of the event
@@ -103,3 +111,14 @@ CREATE PROCEDURE delete_event(IN event_id_in INT)
 BEGIN
     DELETE FROM event WHERE event_id = event_id_in;
 END;
+
+/**
+  Deletes events based on end time
+
+
+ */
+CREATE PROCEDURE delete_events_by_end_time(IN organizer_in INT)
+BEGIN
+    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = organizer_in;
+end;
+

@@ -80,6 +80,8 @@ test("get cancelled events from db", done => {
     eventDao.getEventsByCancelled(true, callback);
 });
 
+// TODO test geteventuser
+
 test("create event", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
