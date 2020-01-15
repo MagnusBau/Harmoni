@@ -2,7 +2,7 @@
 
 const DAO = require("./dao.js");
 
-export class roleDAO extends DAO {
+export class RoleDAO extends DAO {
     /**
      * Inserts a new role
      * @param type
