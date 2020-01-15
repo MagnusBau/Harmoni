@@ -12,6 +12,7 @@ DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
 DROP PROCEDURE IF EXISTS delete_event;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
+DROP PROCEDURE IF EXISTS get_events_by_user;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -76,21 +77,6 @@ BEGIN
   from event
   where MONTH(start_time) = event_month_in;
 end;
-
-
-/**
-    Fetch event by id
-
-    IN event_id_int: Id of the event
-
-    Issued by: getEventById(id: number)
- */
-
-CREATE PROCEDURE get_event_by_id(IN event_id_int INT)
-BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event
-    WHERE event_id = event_id_int;
-END;
 
 /**
   insert a new event in table
