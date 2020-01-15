@@ -119,7 +119,7 @@ test("get cancelled event information", done => {
         data = data[0];
 
         expect(data.length).toBe(1);
-        expect(data[0].title).toBe('Konsert m/ballonger');
+        expect(data[0].title).toBe('Konsert m/ ballonger');
         expect(data[0].name).toBe('Mia Fornes');
         expect(data[0].email).toBe('mia@test.com');
 
