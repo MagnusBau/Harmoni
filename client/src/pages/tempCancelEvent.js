@@ -96,8 +96,8 @@ export class CancelEvent extends Component < { match: { params: { eventId: numbe
                 .cancelEvent(this.props.match.params.eventId)
                 .then(history.push("/"))
                 //.then(Alert.success("Arrangementet er avlyst! Email sendt."))
-                .then(console.log("Arrangementet er avlyst! Epost sendt."))
-                .catch((error: Error) => console.log(error));
+                .then(console.log("Arrangementet er avlyst!"))
+                .catch((error: Error) => Alert.danger(error));
 
         } else if (this.event[0].cancelled === 1) {
 

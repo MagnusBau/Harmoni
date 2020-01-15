@@ -49,7 +49,7 @@ exports.getEventById = (req, res, next) => {
 };
 
 exports.getEventEmail = (req, res, next) => {
-    console.log("/emailInfo/:id got GET-request from client");
+    console.log(`GET-request from client /event/${req.params.eventId}/email` );
 
     eventDao.getCancelledEventInfo(req.params.eventId, (err, rows) => {
         res.json(rows);
@@ -60,45 +60,46 @@ exports.cancelEvent = (req, res, next) => {
 
     console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);
 
-    eventDao.cancelEvent(req.params.eventId, (status, data) => {
+    try {
 
-        if(status === 200) {
+        eventDao.cancelEvent(req.params.eventId, (status, data) => {
 
-            console.log("Kjørte cancelEvent");
+            if(status === 200) {
+                console.log("cancelEvent = OK");
 
-            eventDao.getCancelledEventInfo(req.params.eventId, (status, data) => {
+                eventDao.getCancelledEventInfo(req.params.eventId, (status, data) => {
 
-                if(status === 200) {
-                    console.log("Kjørte getCancelledEventInfo");
+                    if(status === 200 && data[0].length > 0) {
+                        console.log("getCancelledEventInfo = OK");
 
-                    if(data[0].length > 0) {
-
-                        let eventId = req.params.eventId;
+                        let eventId = data[0][0].event_id;
                         let emailList = [data[0][0].email];
                         let name = data[0][0].name;
                         let eventTitle = data[0][0].title;
                         let eventLocation = data[0][0].location;
                         let eventTime = data[0][0].start_time;
 
-                        console.log(emailList);
-
+                        //console.log(emailList);
                         emailService.cancelledNotification(emailList, eventId, eventTitle, name, eventLocation, eventTime);
 
+                        res.status(status);
+
                     } else {
-                        console.log("Fant ikke informasjon om avlyst arrangement");
+                        console.log("Failed to send email");
                     }
 
+                });
 
-                } else {
-                    console.log("Kunne ikke sende mail");
-                }
+            } else {
+                console.log("");
+            }
 
-            });
+        });
 
-        } else {
-            console.log("Feil");
-        }
+    } catch (e) {
+        console.log(e);
+    }
 
-    });
+
 
 };
