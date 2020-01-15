@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
+import { UserRegister, TokenBoi } from "./pages/user";
 import { AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
@@ -37,7 +37,6 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route path="/user/:userId/overview" component={UserOverview}/>
-                    <Route exact path="/login" component={UserLogin}/>
                     <Route exact path="/register" component={UserRegister}/>
                 </Switch>
                 <Footer/>

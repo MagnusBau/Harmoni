@@ -1,9 +1,12 @@
 import axios from 'axios';
+import { createHashHistory } from 'history';
+
+const history = createHashHistory();
 
 let ip = "localhost";
 
 class UserService {
-    attemptLogin(username: string, password: string, history: any) {
+    attemptLogin(username: string, password: string, next) {
         userService.postLogin(username, password).then(response => {
             if(response.user != null) {
                 localStorage.setItem("user_id", response.user.user_id);
@@ -17,15 +20,14 @@ class UserService {
                 localStorage.setItem("token", response.token);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
-                history.push("/");
-                return true;
+                next();
             }
             return false;
         });
 
     }
 
-    attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string, history: any){
+    attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string){
         let data = {
             "username": username,
             "password": password,
