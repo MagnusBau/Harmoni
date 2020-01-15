@@ -67,6 +67,14 @@ export class EventDAO extends Dao {
 
     }
 
+    getDocumentByEvent(event_id: number, callback: (status: string, data: string) => void) {
+        let values = [event_id];
+        super.query("CALL get_document_by_event(?)",
+            values,
+            callback);
+    }
+
+
     updateEventTitle(json: Object, event_id: number, callback: (status: string, data: string) => void ) {
         let newTitle = [json.title, event_id];
         console.log("new title: ", newTitle);

@@ -163,3 +163,12 @@ exports.createEvent = (req, res, next) => {
     })
 };
 
+exports.getDocumentByEvent = (req, res, next) => {
+    console.log(`GET request from client: /event/${req.params.eventId}/document`);
+
+    eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
+        res.json(rows);
+    });
+};
+
+

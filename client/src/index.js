@@ -32,6 +32,7 @@ if (root)
                     <Route path="/event/new" component={AddEvent}/>
                     <Route exact path="/event/edit/:event_id" component={EditEvent}/>
                     <Route exact path="/event/:eventId/edit/ticket" component={listTicketType}/>
+                    <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/event/ticket" component={addTicketType}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>

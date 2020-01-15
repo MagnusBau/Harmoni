@@ -10,7 +10,7 @@ DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS add_artist_to_event;
-DROP PROCEDURE IF EXISTS add_existing_artist_to_event;
+DROP PROCEDURE IF EXISTS remove_artist_from_event;
 
 /**
   Inserts a new newArtist with contact information
