@@ -118,13 +118,13 @@ test("get cancelled event information", done => {
         data = data[0];
 
         expect(data.length).toBe(1);
-        expect(data[0].first_name).toBe('Mia');
-        expect(data[0].last_name).toBe('Fornes');
+        expect(data[0].title).toBe('Konsert');
+        expect(data[0].name).toBe('Mia Fornes');
         expect(data[0].email).toBe('mia@test.com');
 
         done();
     }
-    eventDao.getCancelledEventInfo(3, callback);
+    eventDao.getCancelledEventInfo(2, callback);
 });
 
 test("delete_ event from db", done => {

@@ -10,7 +10,7 @@ const history = createHashHistory();
 
 export class DeleteEventButton extends Component < { match: { params: { eventId: number } } } > {
 
-    event : Event = null;
+    event : Event = new Event();
 
     state = {
         showModal: false,
@@ -75,20 +75,16 @@ export class DeleteEventButton extends Component < { match: { params: { eventId:
 
         eventService
             .getEventById(this.props.match.params.eventId)
-            .then(event => this.event = event)
+            .then(event => (this.event = event[0]))
             .catch((error: Error) => console.log(error.message));
 
     }
 
     deleteEvent() {
 
-        if(!this.event) {
-            return (
-                console.log("Arrangement finnes ikke!")
-                //Alert.danger("Arrangementet finnes ikke");
-            )
+        if(this.event == null) {
+            return Alert.danger("Fant ikke arrangement")
         } else {
-
             eventService
                 .deleteEvent(this.props.match.params.eventId)
                 .then(console.log("Arrangementet er slettet!"))

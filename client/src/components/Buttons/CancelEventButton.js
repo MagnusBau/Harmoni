@@ -13,7 +13,7 @@ const history = createHashHistory();
 
 export class CancelEventButton extends Component < { match: { params: { eventId: number } } }> {
 
-    event : Event = null;
+    event : Event = new Event();
 
     state = {
         showModal: false,
@@ -78,7 +78,7 @@ export class CancelEventButton extends Component < { match: { params: { eventId:
 
         eventService
             .getEventById(this.props.match.params.eventId)
-            .then(event => (this.event = event))
+            .then(event => (this.event = event[0]))
             .catch((error: Error) => Alert(error.message));
 
     }
@@ -89,7 +89,7 @@ export class CancelEventButton extends Component < { match: { params: { eventId:
 
         //console.log(this.props.match.params.eventId + ": " + this.event[0].title);
 
-        if(this.event[0].cancelled === 0) {
+        if(this.event.cancelled === 0) {
 
             eventService
                 .cancelEvent(this.props.match.params.eventId)
@@ -98,7 +98,7 @@ export class CancelEventButton extends Component < { match: { params: { eventId:
                 .then(history.push("/"))
                 .catch((error: Error) => Alert.danger(error));
 
-        } else if (this.event[0].cancelled === 1) {
+        } else if (this.event.cancelled === 1) {
 
             console.log("Dette arrangementet er allerede avlyst");
             //return (Alert.info("Dette arrangementet er allerede avlyst"));
