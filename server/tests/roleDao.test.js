@@ -1,7 +1,7 @@
 // @flow
 
 const mysql = require("mysql");
-import {roleDAO} from "../src/dao/roleDao.js";
+import {RoleDAO} from "../src/dao/roleDao.js";
 const runSqlFile = require("../database/runSqlFile.js");
 const config = require("../src/controllers/configuration.js");
 
@@ -17,7 +17,7 @@ let pool = mysql.createPool({
     multipleStatements: true
 });
 
-const roleDao = new roleDAO(pool);
+const roleDao = new RoleDAO(pool);
 
 beforeAll(done => {
     runSqlFile("database/setup.sql",
