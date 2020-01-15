@@ -5,7 +5,7 @@ import {Event, eventService} from "../services/eventService";
 import {Ticket, ticketService} from "../services/ticketService";
 import {EventEquipment, equipmentService} from "../services/equipmentService";
 import AddEquipment from "../components/Equipment/add_equipment";
-import TicketTypes from "../components/Ticket/ticket_types";
+import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 /**
