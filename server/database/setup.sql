@@ -100,7 +100,6 @@ CREATE TABLE event_role (
 );
 
 CREATE TABLE document (
-    name VARCHAR(50) NOT NULL,
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   file        LONGBLOB           NOT NULL,
   event       INT                NOT NULL,
