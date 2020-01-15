@@ -214,10 +214,12 @@ exports.getToken = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
     console.log("Skal oppdatere bruker");
-    userDao.getContact(Number.parseInt(req.params.id), (err, rows) => {
+    let id: number = Number.parseInt(req.params.userId);
+    let data: Object = req.body;
+    userDao.getContact(id, (err, rows) => {
         if(rows[0][0].contact_id) {
-           let id = rows[0][0].contact_id;
-            userDao.updateContact(id, req.data, (err, rows) => {
+           let contactId = rows[0][0].contact_id;
+            userDao.updateContact(contactId, data, (err, rows) => {
                 console.log("Bruker oppdatert");
                 res.json(rows);
             });

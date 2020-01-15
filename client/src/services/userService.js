@@ -50,6 +50,7 @@ class UserService {
                     localStorage.setItem("last_name", response.user.last_name);
                     localStorage.setItem("email", response.user.email);
                     localStorage.setItem("phone", response.user.phone);
+                    localStorage.setItem("contact_id", response.user.contact_id);
                     localStorage.setItem("token", response.token);
                     history.push("/");
                     return true;
@@ -154,6 +155,7 @@ class UserService {
         localStorage.setItem("last_name", null);
         localStorage.setItem("email", null);
         localStorage.setItem("phone", null);
+        localStorage.setItem("contact_id", null);
         localStorage.setItem("token", null);
     }
 }
