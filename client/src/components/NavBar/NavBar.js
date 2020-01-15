@@ -23,8 +23,6 @@ class NavBar extends Component {
             username: '',
             fullName: ''
         };
-
-        userService.updateToken();
     }
 
     mounted(): void {
@@ -39,17 +37,19 @@ class NavBar extends Component {
         if (this.state.userId > 0) {
             userIcon = (
                 <div className="form-inline">
-                    <h5>{this.state.username}</h5>
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="20" height="20"/>
+                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
                                 <h5>{this.state.fullName}</h5>
+                                <p className="form-text text-muted">{`@${this.state.username}`}</p>
+                                <div className="dropdown-divider"/>
                                 <Link to="/event/new">Nytt arrangement</Link><br/>
                                 <Link to="/mypage">Min side</Link><br/>
+                                <div className="dropdown-divider"/>
                                 <Link to="/fuckoff">Logg ut</Link>
                             </div>
                         </div>
@@ -62,28 +62,30 @@ class NavBar extends Component {
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="20" height="20"/>
+                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
-                            <h3 ><a href="#/login">Logg inn</a></h3>
-                            <form className="px-4 py-3">
-                                <div className="form-group form-inline">
-                                    <label htmlFor="username">Brukernavn</label>
-                                    <input type="text" className="form-control" placeholder="Brukernavn" id="username"/>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="inputPassword">Passord</label>
-                                    <input type="password" className="form-control" placeholder="Passord"
-                                           id="inputPassword"/>
-                                </div>
-                                <button type="submit" className="btn btn-outline-dark">LOGIN</button>
-                                <div>
-                                    <p>
-                                        Har du ikke en bruker?
-                                    </p>
-                                    <a href="#/register">Registrer deg her</a>
-                                </div>
-                            </form>
+                            <div className="m-2">
+                                <h3 ><Link to="/login">Logg inn</Link></h3>
+                                <form className="px-4 py-3">
+                                    <div className="form-group form-inline">
+                                        <label htmlFor="username">Brukernavn</label>
+                                        <input type="text" className="form-control" placeholder="Brukernavn" id="username"/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="inputPassword">Passord</label>
+                                        <input type="password" className="form-control" placeholder="Passord"
+                                               id="inputPassword"/>
+                                    </div>
+                                    <button type="submit" className="btn btn-outline-dark">LOGIN</button>
+                                    <div>
+                                        <p>
+                                            Har du ikke en bruker?
+                                        </p>
+                                        <Link to="/register">Registrer deg her</Link>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
