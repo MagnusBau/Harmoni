@@ -16,7 +16,7 @@ let jwt = require("jsonwebtoken");
 
 let app = express();
 app.use(express.static(public_path));
-app.use(bodyParser.json()); // for å tolke JSON
+app.use(bodyParser.json());
 app.use('/public', express.static('public'));
 
 // Create MySql connection pool
@@ -43,12 +43,14 @@ const equipmentRoutes = require("./routes/equipment");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const userRoutes = require("./routes/user");
+const roleRoutes = require("./routes/role");
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/auth", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
+app.use("/api/role", roleRoutes);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
@@ -173,7 +175,6 @@ app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
         next();
     }
 });
-
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

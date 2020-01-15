@@ -84,18 +84,19 @@ CREATE TABLE event_equipment
 
 CREATE TABLE role
 (
-  role_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  type    VARCHAR(50)        NOT NULL,
-  event   INT                NOT NULL,
-  CONSTRAINT role_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
+    role_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    type    VARCHAR(50)        NOT NULL,
+    event   INT                NOT NULL,
+    CONSTRAINT role_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
 
 CREATE TABLE event_role (
-  role INT,
-  event INT NOT NULL,
-  CONSTRAINT event_role_pk PRIMARY KEY(role, event),
-  CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
-  CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
+    role INT,
+    event INT NOT NULL,
+    count INT NOT NULL,
+    CONSTRAINT event_role_pk PRIMARY KEY(role, event),
+    CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
+    CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
 );
 
 CREATE TABLE document (

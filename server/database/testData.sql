@@ -55,3 +55,10 @@ VALUES (2, 4, 8);
 
 insert into ticket (title, info, price, count, event) values ( 'enTittel',  'enInfo_in',  1, 1, 1);
 insert into ticket (title, info, price, count, event) values ( 'andreTittel',  'andreInfo_in',  2, 2, 1);
+
+INSERT INTO role (role_id, type, event) VALUES (DEFAULT, 'Bartender', 1);
+INSERT INTO role (role_id, type, event) VALUES (DEFAULT, 'Lydtekniker', 1);
+INSERT INTO role (role_id, type, event) VALUES (DEFAULT, 'Dorvakt', 1);
+INSERT INTO event_role (role, event, count) VALUES (1, 1, 2);
+INSERT INTO event_role (role, event, count) VALUES (2, 1, 1);
+INSERT INTO event_role (role, event, count) VALUES (3, 1, 3);

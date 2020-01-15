@@ -32,6 +32,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
                     <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/event/ticket" component={addTicketType}/>
+                    <Route exact path='/event/:eventId/edit/role' component={AddRole} />
                     <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
@@ -41,3 +42,5 @@ if (root)
         </HashRouter>,
         root
     );
+
+            
