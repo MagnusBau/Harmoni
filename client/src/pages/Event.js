@@ -74,7 +74,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.currentEvent = this.props.match.params.eventId;
         console.log("current event" + this.currentEvent);
         eventService
-            .getEventID(this.currentEvent)
+            .getEventById(this.currentEvent)
             .then(eventOverview => (this.eventOverview = eventOverview))
             .catch((error: Error) => console.log(error.message));
 

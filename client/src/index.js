@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
+import {UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
@@ -22,6 +22,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
+import UserOverview from "./pages/userOverview";
 import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
@@ -42,11 +43,10 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
                     <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
-                    <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
-                    <Route path="/user/:userId/overview" component={UserOverview}/>
+                    <Route exact path="/user/:userId/overview" component={UserOverview} />
                 </Switch>
                 <Footer/>
             </div>

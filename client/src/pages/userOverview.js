@@ -25,11 +25,15 @@ export default class UserOverview extends Component {
     mounted() {
 //TODO get events by user
         eventService.getEventByUser(userService.getUserID()).then(respons => {
-            if(respons[0]) {
-                respons[0].map(e => {
+            console.log(respons);
+            if(respons) {
+                this.events = [];
+                respons.map(e => {
+                    console.log(e);
                     this.events.push(e);
                 });
             }
+            console.log("shait");
         });
     }
 
@@ -44,24 +48,28 @@ export default class UserOverview extends Component {
         return (
             //TODO en eller annen header for hvilken user som er logget inn
             <div className="container">
-                <div className="card-columns">
-                    <div className="card">
-                        <img className="card-img-top img-fluid" src="" alt=""/>
-                        <a href="#/event/new">
-                            <div className="card-body">
-                                <h5>
-                                    Legg til nytt arrangement
-                                    <img src="./img/icons/plus.svg" alt="login" width="30" height="30"/>
-                                </h5>
-                            </div>
-                        </a>
+                <div className="card">
+                    <img className="card-img-top img-fluid" src="" alt=""/>
+                    <a href="#/event/new">
+                        <div className="card-body">
+                            <h5>
+                                Legg til nytt arrangement
+                                <img src="./img/icons/plus.svg" alt="login" width="30" height="30"/>
+                            </h5>
+                        </div>
+                    </a>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="list-group" className="">
+                            {this.events.map(e => (
+                                //TODO hente inn en <a> og sender valgt event til eventoverview
+                                <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
+                                    {e.title} {e.start_time}
+                                </li>
+                            ))}
+                        </div>
                     </div>
-                    {this.events.map(e => (
-                        //TODO hente inn en <a> og sender valgt event til eventoverview
-                        <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
-                            {e.title} {e.start_time}
-                        </li>
-                    ))}
                 </div>
             </div>
         )

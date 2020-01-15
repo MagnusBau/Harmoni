@@ -44,7 +44,7 @@ export default class EventControl extends Component {
     mounted(){
         this.currentEvent = this.props.eventId;
         eventService
-            .getEventID(this.currentEvent)
+            .getEventById(this.currentEvent)
             .then(eventOverview => (this.eventOverview = eventOverview))
             .catch((error: Error) => console.log(error.message));
     }
