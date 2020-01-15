@@ -1,6 +1,6 @@
 // @flow
 
-import { RoleDAO } from "../dao/roleDAO";
+import { RoleDAO } from "../dao/roleDao";
 const pool = require("../server");
 
 const roleDao = new RoleDAO(pool);

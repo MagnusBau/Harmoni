@@ -5,6 +5,8 @@ import {Component} from "react-simplified";
 import {createHashHistory} from "history";
 import {eventService, Event, CreateEvent} from "../services/eventService";
 import {Alert} from "../widgets.js";
+import DateTime from "react-datetime";
+import moment from "moment";
 
 const history = createHashHistory();
 
@@ -59,24 +61,26 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                     <div className={"form-group m-2"}>
                         <label>Start tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-start-time"
-                               required={true}
-                               name="start-time"
-                               defaultValue={this.event.start_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.start_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                locale={"no"}
+                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Slutt tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-end-time"
-                               required={true}
-                               name="end-time"
-                               defaultValue={this.event.end_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.end_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                locale={"no"}
+                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Antall billettyper:</label>

@@ -21,6 +21,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
+import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
 if (root)
