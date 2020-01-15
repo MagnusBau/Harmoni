@@ -46,6 +46,13 @@ export class EventDAO extends Dao {
             callback);
     }
 
+    getDocumentByEvent(event_id: number, callback: (status: string, data: string) => void) {
+        let values = [event_id];
+        super.query("CALL get_document_by_event(?)",
+            values,
+            callback);
+    }
+
     getCancelledEventInfo(event_id: number, callback: (status: string, data: string) => void) {
         let values = [event_id];
         super.query("CALL get_cancelled_event_email_info(?)",

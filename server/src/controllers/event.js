@@ -33,6 +33,13 @@ exports.getEvents = (req, res, next) => {
     }
 };
 
+exports.getDocumentByEvent = (req, res, next) => {
+    console.log(`GET request from client: /event/${req.param.s.eventId}/document`);
+    eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
+       res.json(rows);
+    });
+}
+
 //Insert new event
 exports.insertEvent = (req, res, next) => {
     console.log("Post request from client");
