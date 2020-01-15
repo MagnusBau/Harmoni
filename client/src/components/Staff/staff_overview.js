@@ -58,6 +58,7 @@ export default class AddRole extends Component {
         //window.location.reload();
     }
     addToEvent(eventRole) {
+        eventRole.event = this.currentEvent;
         eventRole.count = 1;
         roleService.assignRole(eventRole);
         this.load();
