@@ -44,11 +44,13 @@ export default class AddRole extends Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        console.log(this.newRole.type);
-        roleService.createRole(this.newRole);
-        this.newRole.type = '';
-        this.load();
-        //window.location.reload();
+        if (this.newRole.type !== '') {
+            console.log(this.newRole.type);
+            roleService.createRole(this.newRole);
+            this.newRole.type = '';
+            this.load();
+            //window.location.reload();
+        }
     }
     remove(role) {
         roleService.removeRole(role.role_id);
