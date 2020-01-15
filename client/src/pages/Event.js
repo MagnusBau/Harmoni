@@ -169,7 +169,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
                                     <h5>Riders</h5>
-                                    <RiderList documentId={}/>
+
 
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">role.type</li>
