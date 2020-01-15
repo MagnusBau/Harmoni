@@ -9,6 +9,8 @@ import {Button} from "../components/widgets";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 
+// TODO: Clean up this mess
+
 export class AddEventArtist extends Component <{ match: { params: { eventId: number } } }> {
     event: Event = new Event();
     newArtist: Artist;
@@ -107,8 +109,8 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
 
     onSubmit(e) {
         e.preventDefault();
-        this.eventArtists[this.eventArtists.length] = this.newArtist;
         artistService.addArtistToEvent(this.newArtist, this.documentId);
+        this.eventArtists[this.eventArtists.length] = this.newArtist;
     }
 
     render() {

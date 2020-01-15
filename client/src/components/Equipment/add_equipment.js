@@ -8,18 +8,6 @@ const history = createHashHistory();
 import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
 
-/*
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : languages.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-};
-*/
-
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
@@ -31,6 +19,8 @@ const renderSuggestion = suggestion => (
         {suggestion.item}
     </div>
 );
+
+// TODO: Clean up this mess
 
 export default class AddEquipment extends Component {
     // TODO: Verify that event exists before loading page
@@ -66,11 +56,12 @@ export default class AddEquipment extends Component {
     onSubmit(e) {
         e.preventDefault();
         equipmentService.addEquipmentToEvent(this.currentEvent, {item: this.newEquipment.item}, this.newEquipment.amount);
+        this.state.equipmentS.push(this.newEquipment);
         this.newEquipment = {
             item: '',
             amount: 1
         };
-        this.loadEquipment();
+        //this.loadEquipment();
         //window.location.reload();
     }
 
@@ -98,7 +89,7 @@ export default class AddEquipment extends Component {
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
 
-        this.loadEquipment();
+        //this.loadEquipment();
 /*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
@@ -110,14 +101,15 @@ export default class AddEquipment extends Component {
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.loadEquipment();
+        this.setState({equipmentS: this.state.equipmentS.filter(e => e.equipment !== eventEquipment.equipment)});
+        //this.loadEquipment();
         //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        this.loadEquipment();
+        //this.loadEquipment();
         //window.location.reload();
     }
 
@@ -129,8 +121,6 @@ export default class AddEquipment extends Component {
             //window.location.reload();
         }
     }
-
-
 
     onDropdownChange = (event, {newValue}) => {
         this.setState({
