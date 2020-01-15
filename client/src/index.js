@@ -14,6 +14,7 @@ import { CancelEvent } from './pages/tempCancelEvent'
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {AddEventArtist} from "./pages/addEventArtist";
+import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
 if (root)

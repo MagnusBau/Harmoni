@@ -5,14 +5,27 @@ import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {eventService, Event} from "../services/eventService";
 import {Alert} from "../widgets.js";
+import DateTimePicker from 'react-datetime-picker'
+import DateTime from 'react-datetime';
+import moment from "moment";
 
 const history = createHashHistory();
+
+moment.locale("no");
 
 
 export class AddEvent extends Component {
     event: Event[] = [];
     allEvents = [];
     createEvent = new Event();
+    state = {
+        date: new Date(),
+    };
+
+    handleDate(date){
+        this.setState({date});
+        this.createEvent.start_time = date;
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -60,22 +73,26 @@ export class AddEvent extends Component {
                     <div className={"form-group m-2"}>
                         <label>Start tidspunkt:</label>
                         <br></br>
-                        <input id="datetimepicker"
-                               required={true}
-                               name="start-time" placeholder="2020-06-12T19:30"
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.start_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                locale={"no"}
+                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Slutt tidspunkt:</label>
                         <br></br>
-                        <input id="datetimepicker2"
-                               required={true}
-                               name="end-time" placeholder="2020-06-12T19:30"
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.end_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                locale={"no"}
+                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Antall billettyper:</label>

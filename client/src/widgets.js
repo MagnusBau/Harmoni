@@ -52,3 +52,4 @@ export class Alert extends Component {
         });
     }
 }
+
