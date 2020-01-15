@@ -9,6 +9,7 @@ DROP PROCEDURE IF EXISTS get_event_by_month;
 DROP PROCEDURE IF EXISTS get_events_by_cancelled;
 DROP PROCEDURE IF EXISTS cancel_event_by_id;
 DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
+DROP PROCEDURE IF EXISTS delete_event;
  /**
    Fetch event by ID
   */
@@ -89,4 +90,16 @@ BEGIN
     SELECT first_name, last_name, email FROM contact
      INNER JOIN event ON contact.contact_id = event.organizer
     WHERE event_id = event_id_in;
+END;
+
+/**
+  Deletes an event
+
+  IN event_id_in: Id of the event
+
+  Issued by: deleteEvent(eventId: number)
+ */
+CREATE PROCEDURE delete_event(IN event_id_in INT)
+BEGIN
+    DELETE FROM event WHERE event_id = event_id_in;
 END;

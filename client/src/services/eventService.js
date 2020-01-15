@@ -47,6 +47,10 @@ class EventService {
         return axios.get<Event[]>('http://localhost:4000/api/event?cancelled=true').then(response => response.data);
     }
 
+    deleteEvent(eventId: number) {
+        return axios.delete<Event>('http://localhost:4000/api/event/' + eventId).then(response => response.data);
+    }
+
     cancelEvent(eventId: number) {
         return axios.put(`http://localhost:4000/api/event/${eventId}/cancel`).then(response => response.data);
     }
@@ -56,9 +60,11 @@ class EventService {
         return axios.get<Event[]>('http://localhost:4000/api/event').then(response => response.data);
     }
 
+    /*
     getCancelledEventInfo(eventId: number) {
         return axios.get<Contact>(`http://localhost:4000/api/event/${eventId}/email`).then(response => response.data);
     }
+     */
 }
 
 export let eventService = new EventService();

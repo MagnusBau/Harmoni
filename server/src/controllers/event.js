@@ -56,6 +56,16 @@ exports.getEventEmail = (req, res, next) => {
     });
 };
 
+exports.deleteEvent = (req, res, next) => {
+
+    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+
+    eventDao.deleteEvent(req.params.eventId, (err, rows) => {
+        res.json(rows);
+    });
+
+};
+
 exports.cancelEvent = (req, res, next) => {
 
     console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);

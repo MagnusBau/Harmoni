@@ -126,3 +126,17 @@ test("get cancelled event information", done => {
     }
     eventDao.getCancelledEventInfo(3, callback);
 });
+
+test("delete_ event from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+
+    eventDao.deleteEvent(1, callback);
+
+});

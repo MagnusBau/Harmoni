@@ -11,6 +11,7 @@ router.get("/:eventId/email", eventController.getEventEmail);
 router.post("/", eventController.insertEvent);
 router.post("/:eventId/equipment", equipmentController.addEquipmentToEvent);
 router.delete("/:eventId/equipment/:equipmentId", equipmentController.removeEquipmentFromEvent);
+router.delete("/:eventId", eventController.deleteEvent);
 router.put("/:eventId/equipment/:equipmentId", equipmentController.updateEquipmentOnEvent);
 router.put("/:eventId/cancel", eventController.cancelEvent);
 

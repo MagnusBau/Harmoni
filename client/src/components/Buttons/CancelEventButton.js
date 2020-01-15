@@ -4,14 +4,14 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import { Button, Column, Row, Alert } from '../components/widgets';
+import { Button, Column, Row, Alert } from '../widgets';
 import { Modal } from 'react-bootstrap';
 //import { cancelEventService, Event} from "../services/TempCancelEventService";
-import { eventService, Event } from "../services/eventService";
+import { eventService, Event } from "../../services/eventService";
 
 const history = createHashHistory();
 
-export class CancelEvent extends Component < { match: { params: { eventId: number } } }> {
+export class CancelEventButton extends Component < { match: { params: { eventId: number } } }> {
 
     event : Event = null;
 
@@ -33,7 +33,6 @@ export class CancelEvent extends Component < { match: { params: { eventId: numbe
         return (
 
             <div>
-
 
                 <Column width={2}>
 
@@ -94,9 +93,9 @@ export class CancelEvent extends Component < { match: { params: { eventId: numbe
 
             eventService
                 .cancelEvent(this.props.match.params.eventId)
-                .then(history.push("/"))
                 //.then(Alert.success("Arrangementet er avlyst! Email sendt."))
                 .then(console.log("Arrangementet er avlyst!"))
+                .then(history.push("/"))
                 .catch((error: Error) => Alert.danger(error));
 
         } else if (this.event[0].cancelled === 1) {
@@ -108,11 +107,10 @@ export class CancelEvent extends Component < { match: { params: { eventId: numbe
 
             console.log("Noe gikk galt!");
             //return Alert.danger("Noe gikk galt!");
-
         }
 
     }
 
 }
 
-export default CancelEvent;
+export default CancelEventButton;

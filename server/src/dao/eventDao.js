@@ -34,6 +34,13 @@ export class EventDAO extends Dao {
             callback);
     }
 
+    deleteEvent(event_id: number, callback: (status: string, data: string) => void) {
+        let values = [event_id];
+        super.query("CALL delete_event(?)",
+            values,
+            callback);
+    }
+
     cancelEvent(event_id : number, callback: (status: string, data: string) => void) {
         let values = [event_id];
         super.query("CALL cancel_event_by_id(?)",
