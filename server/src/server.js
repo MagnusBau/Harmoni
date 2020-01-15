@@ -10,11 +10,21 @@ const PORT = process.env.port || 4000;
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../../client/public');
 const config = require("./controllers/configuration.js");
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const morgan = require('morgan');
+const _ = require('lodash');
 
 let app = express();
 app.use(express.static(public_path));
 app.use(bodyParser.json()); // for å tolke JSON
 app.use('/public', express.static('public'));
+app.use(fileUpload({
+    createParentPath: true
+}));
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(morgan('dev'));
 
 // Create MySql connection pool
 let database = config.getProductionDatabase();

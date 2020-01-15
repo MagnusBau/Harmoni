@@ -103,12 +103,19 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
     handleUpload(e) {
         let file = this.state.file;
+        let encodedFile = btoa(file);
+        this.name = file.name;
+        console.log(this.name);
+
         let formData = new FormData();
 
-        formData.append('file', file);
+        formData.append('file', encodedFile);
         formData.append('name', this.name);
 
-        fileInfoService.postFileInfo(this.name).then(response => {
+        this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
+        this.name = this.name.trim();
+
+        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, encodedFile).then(response => {
             console.log("should have posted fileInfo to database");
             if(response.data.insertId > 0) {
                 axios({

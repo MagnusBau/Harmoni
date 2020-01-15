@@ -5,10 +5,10 @@ const fileInfoController = require("../controllers/fileInfo");
 
 const router = express.Router();
 
-router.get("/files/download", fileController.download);
-router.post("/files/upload", fileController.upload);
-router.put("/files/update", fileController.update);
-router.delete("/files/delete", fileController.delete);
+router.get("/download", fileController.download);
+router.post("/upload/:eventId", fileController.upload);
+router.put("/update", fileController.update);
+router.delete("/delete", fileController.delete);
 
 router.get("/info/:eventId", fileInfoController.getFileInfoByEvent);
 
