@@ -68,11 +68,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     }
 
     handleTicketAdd(){
-        this.setState( prevState =>{
-            this.setState(prevState => ({
-                isAddingTicket: !prevState.isAddingTicket
-            }))
-        })
+        this.setState(prevState => ({
+            isAddingTicket: !prevState.isAddingTicket
+        }))
     }
 
 
