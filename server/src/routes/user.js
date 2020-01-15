@@ -5,7 +5,9 @@ const userController = require("../controllers/user");
 const router = express.Router();
 
 router.post("/login", userController.loginUser);
-router.post("/register", userController.registerUser);
+router.post("/user", userController.registerUser);
+router.put("/user/:userId", userController.updateUser);
+router.put("/user/:userId/password", userController.updateUserPassword);
 router.post("/:id/token", userController.getToken);
 
 

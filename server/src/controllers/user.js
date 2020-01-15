@@ -33,13 +33,8 @@ class User {
     }
 }
 
-let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
-const verifyOptions = {
-    expiresIn:  "1H",
-    algorithm:  ["RS256"]
-};
 const signOptions = {
     expiresIn:  "1H",
     algorithm:  "RS256"
@@ -205,7 +200,7 @@ exports.registerUser = (req, res, next) => {
         "phone": req.body.phone
     };
     if(validateUsername(data, req.body.username, req.body.password, req.body.email, req.body.first_name, req.body.last_name, req.body.phone, res)) {
-        console.log("yo");
+        console.log("yo (bad)");
     }
 };
 
@@ -216,3 +211,56 @@ exports.getToken = (req, res, next) => {
         res.json({token: token});
     });
 };
+
+exports.updateUser = (req, res, next) => {
+    console.log("Skal oppdatere bruker");
+    let id: number = Number.parseInt(req.params.userId);
+    let data: Object = req.body;
+    userDao.getContact(id, (err, rows) => {
+        if(rows[0][0].contact_id) {
+           let contactId = rows[0][0].contact_id;
+            userDao.updateContact(contactId, data, (err, rows) => {
+                console.log("Bruker oppdatert");
+                res.json(rows);
+            });
+        }
+    });
+
+};
+
+exports.updateUserPassword = (req, res, next) => {
+    let password = req.body.password;
+    let newPassword = req.body.newPassword;
+    let id = req.params.userId;
+    userDao.getPassword(req.body.username, (err, rows) => {
+        if(rows[0][0]) {
+            if(rows[0][0].password) {
+                let savedHash = rows[0][0].password;
+                bcrypt.compare(password, savedHash, function(err, response) {
+                    console.log(response);
+                    if(response) {
+                        bcrypt.genSalt(10, function(err, salt) {
+                            bcrypt.hash(newPassword, salt, function(err, hash) {
+                                console.log("Passord OK")
+                                userDao.updatePassword(id, hash, (err, rows) => {
+                                    console.log("Passord oppdatert");
+                                    res.json(rows);
+                                })
+                            })
+                        });
+                    } else {
+                        console.log("Passord IKKE ok1");
+                        res.json({ error: "Not authorized" });
+                    }
+                });
+            } else {
+                console.log("Passord IKKE ok2");
+                res.json({ error: "Not authorized" });
+            }
+        } else {
+            console.log("Passord IKKE ok3");
+            res.json({ error: "Not authorized" });
+        }
+    });
+};
+//lag tester for dao, mangler noen metoder (minst 1)
