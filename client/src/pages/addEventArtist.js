@@ -10,6 +10,7 @@ import { createHashHistory } from 'history';
 const history = createHashHistory();
 
 // TODO: Clean up this mess
+// TODO: Add alert on artist add
 
 export class AddEventArtist extends Component <{ match: { params: { eventId: number } } }> {
     event: Event = new Event();
