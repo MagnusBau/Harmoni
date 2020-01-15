@@ -1,12 +1,9 @@
 // @flow
 
 import axios from 'axios';
-import {TEvent} from "../Types/TEvent";
 import {Contact} from "./TempCancelEventService";
 
 //axios.interceptors.response.use(response => response.data);
-
-type EventContainer = TEvent;
 
 export class Event {
     event_id: number;
