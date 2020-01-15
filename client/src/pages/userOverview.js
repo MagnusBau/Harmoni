@@ -2,12 +2,10 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
-import {Ticket, ticketService} from "../services/ticketService";
-import {EventEquipment, equipmentService} from "../services/equipmentService";
-import AddEquipment from "../components/Equipment/add_equipment";
-import TicketTypes from "../components/Ticket/ticket_types";
-import EventView from "../components/Event/event_view";
-import {EventEdit} from "../components/Event/event_edit";
+import { createHashHistory } from 'history';
+import {userService} from "../services/userService";
+
+const history = createHashHistory();
 /**
  * Class for the view of one event
  *
@@ -15,21 +13,32 @@ import {EventEdit} from "../components/Event/event_edit";
  */
 //TODO fikse bug med at arrangement overview ikke alltid oppdateres etter at redigering er utført
 //TODO flette utstyr og dokumenter når det er ferdig
-export default class UserOverview extends Component<{ match: { params: { eventId: number } } }>{
-    currentUser = 0;
+export default class UserOverview extends Component {
+    currentUser: number = 0;
+    events: Event[] = [];
 
     constructor(props){
         super(props);
         this.state = {isEditingEvent: false}
     }
 
-    mounted(){
+    mounted() {
 //TODO get events by user
+        eventService.getEventByUser(userService.getUserID()).then(respons => {
+            if(respons[0]) {
+                respons[0].map(e => {
+                    this.events.push(e);
+                });
+            }
+        });
+    }
+
+    viewEvent = (event) => {
+        history.push("/event/" + event.target.getAttribute('eventId') + "/overview");
     }
 
 
     render(){
-        const isEditing = this.state.isEditingEvent;
 
 
         return (
@@ -39,25 +48,19 @@ export default class UserOverview extends Component<{ match: { params: { eventId
                     <div className="card">
                         <img className="card-img-top img-fluid" src="" alt=""/>
                         <a href="#/event/new">
-                        <div className="card-body">
-                            <h5>
-                                Legg til nytt arrangement
-                                <img src="./img/icons/plus.svg" alt="login" width="30" height="30"/>
-                            </h5>
-                        </div>
-                        </a>
-                    </div>
-                    {this.events.map(events => (
-                        //TODO hente inn en <a> og sender valgt event til eventoverview
-                        <div className="card">
-                            <img className="card-img-top img-fluid" src="" alt=""/>
                             <div className="card-body">
                                 <h5>
-                                    {events.title} {events.start_time}
+                                    Legg til nytt arrangement
+                                    <img src="./img/icons/plus.svg" alt="login" width="30" height="30"/>
                                 </h5>
                             </div>
-
-                        </div>
+                        </a>
+                    </div>
+                    {this.events.map(e => (
+                        //TODO hente inn en <a> og sender valgt event til eventoverview
+                        <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
+                            {e.title} {e.start_time}
+                        </li>
                     ))}
                 </div>
             </div>
