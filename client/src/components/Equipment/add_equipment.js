@@ -37,6 +37,7 @@ export default class AddEquipment extends Component {
             item: '',
             amount: 1
         };
+
         this.state = {
             value: '',
             suggestions: [],
@@ -89,7 +90,7 @@ export default class AddEquipment extends Component {
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
 
-        //this.loadEquipment();
+        this.loadEquipment();
 /*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
@@ -108,6 +109,7 @@ export default class AddEquipment extends Component {
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
+        console.log(this.state.equipmentS.map(e => e.count));
         equipmentService.updateEquipmentOnEvent(equipment);
         //this.loadEquipment();
         //window.location.reload();
@@ -117,7 +119,7 @@ export default class AddEquipment extends Component {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
-            this.loadEquipment();
+            //this.loadEquipment();
             //window.location.reload();
         }
     }
