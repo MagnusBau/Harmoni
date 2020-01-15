@@ -10,6 +10,7 @@ const PORT = process.env.port || 4000;
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../../client/public');
 const config = require("./controllers/configuration.js");
+const multer = require('multer');
 
 let app = express();
 app.use(express.static(public_path));
@@ -37,6 +38,10 @@ const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const userRoutes = require("./routes/user");
 const fileRoutes = require("./routes/file");
+import {FileInfoDAO} from './dao/fileInfoDao.js';
+
+
+const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
@@ -49,6 +54,39 @@ app.use("/api/file", fileRoutes);
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next();
+});
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null , "hei" + "." + file.originalname.split('.').pop());
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+app.post('/single/:eventId', upload.single('file'), (req, res) => {
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId
+    };
+    let result = res;
+    fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            let data = {
+              "file": req.file,
+              "name": res.insertId
+            };
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
 });
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)

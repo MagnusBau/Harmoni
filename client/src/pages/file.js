@@ -109,30 +109,16 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
         let formData = new FormData();
 
-        formData.append('file', encodedFile);
+        formData.append('file', file);
         formData.append('name', this.name);
+
+
 
         this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
         this.name = this.name.trim();
 
-        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, encodedFile).then(response => {
+        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
             console.log("should have posted fileInfo to database");
-            if(response.data.insertId > 0) {
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:4000/api/file/upload',
-                    headers: {
-                        //'x-access-token': userService.getToken(),
-                        'fileId': response.data.insertId
-                    },
-                    data: formData
-                }).then(response2 => {
-                    console.log("should have uploaded");
-                    fileInfoService.updatePath(response.data.insertId).then(response3 => {
-                        console.log("should have updated path in database");
-                    });
-                });
-            }
         });
     }
     handleOverwrite(){

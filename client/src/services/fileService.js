@@ -14,11 +14,9 @@ class FileInfoService {
         return axios.get(`http://localhost:4000/api/file/info/${eventId}`).then(response => response.data);
     }
 
-    postFileInfo(name: string, eventId: number, encodedFile: FormData) {
-        console.log(encodedFile);
-        return axios.post(`http://` + ip +`:4000/api/file/upload/${eventId}`,
-            {"name": name,
-            "encodedFile": encodedFile});
+    postFileInfo(name: string, eventId: number, data: FormData) {
+        return axios.post(`http://` + ip +`:4000/single/${eventId}`,
+            data);
     }
 
     updatePath(id: number) {
