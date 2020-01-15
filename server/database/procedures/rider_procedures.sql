@@ -56,7 +56,7 @@ END;
  */
 CREATE PROCEDURE update_rider(IN description_in VARCHAR(100), IN rider_id_in INT(11))
 BEGIN
-    UPDATE rider SET description=description_in WHERE rider_id=rider_id_in;
+    UPDATE rider SET description=description_in WHERE rider_id = rider_id_in;
 END;
 
 /**
