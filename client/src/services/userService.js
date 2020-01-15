@@ -13,6 +13,7 @@ class UserService {
                 localStorage.setItem("last_name", response.user.last_name);
                 localStorage.setItem("email", response.user.email);
                 localStorage.setItem("phone", response.user.phone);
+                localStorage.setItem("contact_id", response.user.contact_id);
                 localStorage.setItem("token", response.token);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
@@ -72,6 +73,10 @@ class UserService {
     }
 
     getUserID() {
+        return localStorage.getItem("user_id");
+    }
+
+    getContactId() {
         return localStorage.getItem("user_id");
     }
 
