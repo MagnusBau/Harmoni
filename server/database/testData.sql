@@ -28,11 +28,6 @@ VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 3, 1);
 
-INSERT INTO document (file, event, name)
-VALUES('blablabla', 1, 'memes.txt');
-INSERT INTO document (file, event, name)
-VALUES('peogewngnoignoi', 1, 'donn.png');
-
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
 INSERT INTO equipment (item, organizer)
@@ -62,3 +57,17 @@ INSERT INTO role (role_id, type, event) VALUES (DEFAULT, 'Dorvakt', 1);
 INSERT INTO event_role (role, event, count) VALUES (1, 1, 2);
 INSERT INTO event_role (role, event, count) VALUES (2, 1, 1);
 INSERT INTO event_role (role, event, count) VALUES (3, 1, 3);
+
+INSERT INTO document (document_id, name, file, event)
+VALUES (DEFAULT, 'thrud', 'thrud', 1);
+INSERT INTO document (document_id, name, file, event)
+VALUES (DEFAULT, 'faor', 'faor', 1);
+
+INSERT INTO rider (description, document)
+VALUES ('Mathias må ha tre kameler og syv geiter', 2);
+INSERT INTO rider (description, document)
+VALUES ('Mathias må ha en full size yobama statue', 2);
+INSERT INTO rider (description, document)
+VALUES ('Mathias har problemer, han trenger hjelp', 2);
+INSERT INTO rider (description, document)
+VALUES ('Magnus trenger ikke noe, han er ikke kravstor', 1);

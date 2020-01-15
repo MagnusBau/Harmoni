@@ -1,9 +1,9 @@
 // @flow
 
 const mysql = require("mysql");
-import {roleDAO} from "../src/dao/roleDao.js";
-const runSqlFile = require("../database/runSqlFile.js");
-const config = require("../src/controllers/configuration.js");
+import {roleDAO} from "../../src/dao/roleDao.js";
+const runSqlFile = require("../../src/dao/runSqlFile.js");
+const config = require("../../src/controllers/configuration.js");
 
 // Create pool for test database
 let database: {} = config.getTestingDatabase();

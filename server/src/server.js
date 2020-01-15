@@ -44,6 +44,7 @@ const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const userRoutes = require("./routes/user");
 const roleRoutes = require("./routes/role");
+const riderRoutes = require("./routes/riders");
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
@@ -51,6 +52,7 @@ app.use("/api/equipment", equipmentRoutes);
 app.use("/auth", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
+app.use("/api/rider", riderRoutes);
 
 app.get('/*',function(req,res,next){
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );

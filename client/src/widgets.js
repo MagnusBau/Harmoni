@@ -52,3 +52,21 @@ export class Alert extends Component {
         });
     }
 }
+
+export class Row extends Component<{ children?: React.Node }> {
+    render() {
+        return <div className="row">{this.props.children}</div>;
+    }
+}
+
+export class Column extends Component<{ width?: number, right?: boolean, children?: React.Node }> {
+    render() {
+        return (
+            <div
+                className={'col' + (this.props.width ? '-' + this.props.width : '') + (this.props.right ? ' text-right' : '')}
+            >
+                {this.props.children}
+            </div>
+        );
+    }
+}
