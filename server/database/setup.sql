@@ -101,7 +101,8 @@ CREATE TABLE event_role (
 
 CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  file        LONGBLOB           NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  path        VARCHAR(500)           NOT NULL DEFAULT './files/error.txt',
   event       INT                NOT NULL,
   name        VARCHAR(100)       NOT NULL,
   CONSTRAINT document_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
