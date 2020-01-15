@@ -1,5 +1,4 @@
 // @flow
-
 const mysql = require("mysql");
 import {RiderDAO} from "../../src/dao/riderDao";
 const runSqlFile = require("../../database/runSqlFile.js");
@@ -82,7 +81,7 @@ test("Update rider", done =>  {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    riderDao.updateRider("var egentlig syv kameler", 1, callback);
+    riderDao.updateRider({description : "var egentlig syv kameler", document : 1}, callback);
 });
 
 test("Remove a rider by id", done =>  {
