@@ -11,8 +11,9 @@ import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
+import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/riderOLD";
+import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
-import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 
 
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
@@ -45,6 +46,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
+                    <Route path="/user/:userId/overview" component={UserOverview}/>
                 </Switch>
                 <Footer/>
             </div>

@@ -9,6 +9,11 @@ import TicketTypes from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
+import {Rider, riderService} from "../services/riderService";
+import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
+const history = createHashHistory();
+import {Column} from "../components/widgets";
+import {createHashHistory} from "history";
 import AddRole from "../components/Staff/staff_overview"
 import {roleService} from "../services/roleService";
 /**
@@ -23,7 +28,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     eventOverview: Event = null;
     tickets: Ticket[] = [];
     eventEquipment: EventEquipment[] =[];
-    //riders: Riders[] = [];
+    riderList: Rider[] = [];
+    rider: Rider = new Rider();
     //roles: Role[] = [];
 
     constructor(props){
@@ -32,7 +38,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.handleView = this.handleView.bind(this);
         this.state = {
             isEditingEvent: false,
-            isEditingTicket: false
+            isEditingTicket: false,
+            isEditingRiders: false
         }
     }
 
@@ -52,6 +59,17 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         })
     }
 
+    handleRiderEdit(){
+        this.setState({
+            isEditingRiders: false,
+        })
+    }
+
+    handleRiderView(){
+        this.setState({
+            isEditingRiders: true,
+        })
+    }
     mounted(){
         this.currentEvent = this.props.match.params.eventId;
         console.log("current event" + this.currentEvent);
@@ -69,12 +87,17 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
+
     }
 
 
+
     render(){
+        console.log();
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
+        const isEditingRiders = this.state.isEditingRiders;
+        let riderContent;
         let eventContent;
         let ticketContent;
 
@@ -90,6 +113,12 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             ticketContent = <editTicketType/>
         }else {
             ticketContent = <TicketTypes eventId={this.currentEvent}/* handleClick={} handleAddTicketClick={}*//>
+        }
+
+        if(isEditingRiders){
+            riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
+        }else{
+            riderContent = <AddRiderType onClick={this.handleRiderView}/>
         }
         return (
             <div className="container">
@@ -133,16 +162,13 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
                                     <h5>Riders</h5>
+
+
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">role.type</li>
+
                                     </ul>
-                                    <button
-                                        size="sm"
-                                        className="m"
-                                        variant="outline-secondary"
-                                        href={"/#/event/" +  "/riders/edit"}>
-                                        Rediger riders
-                                    </button>
+                                    {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
                                     <h5>Utstyr</h5>

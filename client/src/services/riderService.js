@@ -29,7 +29,7 @@ class RiderService{
     }
 
     updateRider(rider : Rider, id:number): void {
-        return axios.put('http://localhost:4000/api/rider/' + id,rider).then(response => response.data);
+        return axios.put('http://localhost:4000/api/rider/' + id, rider).then(response => response.data);
 
     }
 
