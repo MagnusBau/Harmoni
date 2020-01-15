@@ -9,6 +9,8 @@ import TicketTypes from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
+import {AddEventArtist} from "./addEventArtist";
+
 /**
  * Class for the view of one event
  *
@@ -30,7 +32,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.handleView = this.handleView.bind(this);
         this.state = {
             isEditingEvent: false,
-            isEditingTicket: false
+            isEditingTicket: false,
+            isEditingArtist: false
         }
     }
 
@@ -73,8 +76,10 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     render(){
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
+        const isEditingArtist = this.state.isEditingArtist;
         let eventContent;
         let ticketContent;
+        let artistContent;
 
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
@@ -89,6 +94,11 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         }else {
             ticketContent = <TicketTypes eventId={this.currentEvent}/* handleClick={} handleAddTicketClick={}*//>
         }
+
+        if (isEditingArtist) {
+            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }/>
+        }
+
         return (
             <div className="container">
                 <div className="card">
@@ -113,6 +123,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#documents" data-toggle="tab">Dokumenter</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#artist" data-toggle="tab">Artist</a>
                                 </li>
                             </ul>
                         </div>
@@ -164,6 +177,10 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                         href={"/#/event/" +  "/equipment"}>
                                         Rediger dokumenter
                                     </button>
+                                </div>
+                                <div className="tab-pane" id="artist" role="tabpanel">
+                                    <h5>Artister</h5>
+                                    <AddEventArtist match={{params: {eventId: this.currentEvent}}}/>
                                 </div>
                             </div>
                         </div>
