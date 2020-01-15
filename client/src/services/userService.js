@@ -35,7 +35,7 @@ class UserService {
             "phone": phone
         };
         userService
-            .postRegister(data)
+            .postUser(data)
             .then(response => {
                 if(response.error != null) {
                     console.log(response.error);
@@ -70,6 +70,20 @@ class UserService {
                 console.log(response.token);
             });
 
+    }
+
+    updateUser(email: string, firstName: string, lastName: string, phone: string) {
+        let data = {
+            "email": email,
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": phone
+        };
+        return axios.put('http://' + ip +':4000/auth/user/' + this.getUserID(), data).then(response => response.data);
+    }
+
+    updatePassword(password: string, newPassword: string) {
+        return axios.put('http://' + ip +':4000/auth/user/' + this.getUserID() + '/password', {"password": password, "newPassword": newPassword, "username": this.getUsername()}).then(response => response.data);
     }
 
     getUserID() {
@@ -117,16 +131,8 @@ class UserService {
 
     }
 
-    postRegister(input: Object) {
-        let data = {
-            "username": input.username,
-            "password": input.password,
-            "email": input.email,
-            "first_name": input.first_name,
-            "last_name": input.last_name,
-            "phone": input.phone
-        };
-        return axios.post('http://' + ip +':4000/auth/register', data).then(response => response.data);
+    postUser(data: Object) {
+        return axios.post('http://' + ip +':4000/auth/user', data).then(response => response.data);
     }
 
     postToken(input: Object) {
@@ -138,6 +144,17 @@ class UserService {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => response.data);
+    }
+
+    logout() {
+        localStorage.setItem("user_id", null);
+        localStorage.setItem("username", null);
+        localStorage.setItem("image", null);
+        localStorage.setItem("first_name", null);
+        localStorage.setItem("last_name", null);
+        localStorage.setItem("email", null);
+        localStorage.setItem("phone", null);
+        localStorage.setItem("token", null);
     }
 }
 

@@ -73,4 +73,32 @@ export class UserDAO extends Dao {
     }
     //</DO NOT TOUCH>
 
+    /*    updateUser(contactId: numberdata: Object, callback: (status: string, data: string) => void){
+        let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
+        super.query("CALL put_contact(?,?,?,?)",
+            values,
+            callback);
+    }*/
+
+    updateContact(contactId: number, data: Object, callback: (status: string, data: string) => void){
+        let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
+        super.query("CALL put_contact(?,?,?)",
+            values,
+            callback);
+    }
+
+    /*    updatePassword(contactId: number, hash: string, callback: (status: string, data: string) => void){
+        let values = [contactId, hash];
+        super.query("CALL post_contact(?,?)",
+            values,
+            callback);
+    }*/
+
+    updatePassword(userId: number, hash: string, callback: (status: string, data: string) => void){
+        let values = [userId, hash];
+        super.query("CALL put_password(?,?)",
+            values,
+            callback);
+    }
+
 }

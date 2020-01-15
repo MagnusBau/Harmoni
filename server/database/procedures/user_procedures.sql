@@ -8,6 +8,8 @@ DROP PROCEDURE IF EXISTS get_password;
 DROP PROCEDURE IF EXISTS get_user;
 DROP PROCEDURE IF EXISTS check_username;
 DROP PROCEDURE IF EXISTS get_contact;
+DROP PROCEDURE IF EXISTS put_contact;
+DROP PROCEDURE IF EXISTS put_password;
 
 /**
   Inserts a new contact
@@ -113,4 +115,43 @@ CREATE PROCEDURE get_user(IN username_in VARCHAR(50))
 BEGIN
     SELECT * FROM user RIGHT JOIN contact ON user.contact = contact.contact_id
     WHERE user.username=username_in;
+END;
+
+/**
+  Updates a contact
+
+  IN contact_id_in: id of contact
+
+  IN first_name_in: first name of contact
+
+  IN last_name_in: last name of contact
+
+  IN email_in: email of contact
+
+  IN phone_in: phone of contact
+
+
+  Issued by: updateContact(contactId: number, data: Object)
+ */
+
+CREATE PROCEDURE put_contact(IN contact_id_in INT(11), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12))
+BEGIN
+    UPDATE contact set first_name = first_name_in, last_name = last_name_in, email = email_in, phone = phone_in
+    WHERE contact_id = contact_id_in;
+END;
+
+/**
+  Updates a password
+
+  IN user_id_in: id of the user
+
+  IN password_in: new password hash of the user
+
+  Issued by: updatePassword(contactId: number, hash: string)
+ */
+
+CREATE PROCEDURE put_password(IN user_id_in INT(11), IN password_in VARCHAR(256))
+BEGIN
+    UPDATE user set password = password_in
+    WHERE user_id = user_id_in;
 END;
