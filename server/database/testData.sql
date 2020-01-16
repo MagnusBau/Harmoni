@@ -27,6 +27,8 @@ INSERT INTO event (title, description, location, start_time, end_time, category,
 VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 3, 1);
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
+VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 1, 0);
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
@@ -58,9 +60,9 @@ INSERT INTO event_role (role, event, count) VALUES (1, 1, 2);
 INSERT INTO event_role (role, event, count) VALUES (2, 1, 1);
 INSERT INTO event_role (role, event, count) VALUES (3, 1, 3);
 
-INSERT INTO document (document_id, name, file, event)
+INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'thrud', 'thrud', 1);
-INSERT INTO document (document_id, name, file, event)
+INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
 
 INSERT INTO rider (description, document)

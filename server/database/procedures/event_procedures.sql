@@ -9,10 +9,17 @@ DROP PROCEDURE IF EXISTS get_event_by_month;
 DROP PROCEDURE IF EXISTS get_events_by_cancelled;
 DROP PROCEDURE IF EXISTS cancel_event_by_id;
 DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
+DROP PROCEDURE IF EXISTS delete_event;
+DROP PROCEDURE IF EXISTS delete_events_by_end_time;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
+DROP PROCEDURE IF EXISTS get_events_by_user;
+DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 
-
+CREATE PROCEDURE get_event_by_id(IN event_id_in int)
+BEGIN
+    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer, cancelled FROM event where event_id = event_id_in;
+END;
 
 /**
   Get event by name
@@ -73,21 +80,6 @@ BEGIN
   where MONTH(start_time) = event_month_in;
 end;
 
-
-/**
-    Fetch event by id
-
-    IN event_id_int: Id of the event
-
-    Issued by: getEventById(id: number)
- */
-
-CREATE PROCEDURE get_event_by_id(IN event_id_int INT)
-BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event
-    WHERE event_id = event_id_int;
-END;
-
 /**
   insert a new event in table
  */
@@ -113,6 +105,14 @@ BEGIN
 END;
 
 /**
+
+ */
+ CREATE PROCEDURE get_events_by_user(IN user_id_in INT)
+ BEGIN
+     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event WHERE organizer = user_id_in;
+ END;
+
+/**
   Cancel event based on an id
 
   IN event_id_in: Id of the event
@@ -134,10 +134,9 @@ END;
  */
 CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
 BEGIN
-  SELECT first_name, last_name, email
-  FROM contact
-         INNER JOIN event ON contact.contact_id = event.organizer
-  WHERE event_id = event_id_in;
+    SELECT event.event_id, CONCAT(first_name, ' ', last_name) as name, email, title, location, DATE_FORMAT(start_time, '%a %e.%m.%Y, %H:%i') as start_time FROM contact
+        INNER JOIN event ON contact.contact_id = event.organizer
+    WHERE cancelled = 1 AND event_id = event_id_in;
 END;
 
 /**
@@ -167,3 +166,37 @@ CREATE PROCEDURE get_document_by_event(IN event_id_in INT)
 BEGIN
   SELECT document_id, name FROM document WHERE event = event_id_in;
 END;
+
+/**
+  Deletes an event
+
+  IN event_id_in: Id of the event
+
+  Issued by: deleteEvent(eventId: number)
+ */
+CREATE PROCEDURE delete_event(IN event_id_in INT)
+BEGIN
+    DELETE FROM event WHERE event_id = event_id_in;
+END;
+
+/**
+  Deletes events based on end time
+
+
+ */
+CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
+BEGIN
+    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
+end;
+
+/**
+  // TODO change = 0 to > 7
+ */
+CREATE PROCEDURE get_events_by_end_time_user(IN user_id_in INT)
+BEGIN
+    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
+    FROM event
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 1
+      AND organizer = user_id_in;
+END;
+

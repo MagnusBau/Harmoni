@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import { createHashHistory } from 'history';
 import { userService } from "../services/userService";
+import { createHashHistory } from 'history';
 
 const history = createHashHistory();
 
-export class UserLogin extends Component {
+/*export class UserLogin extends Component {
     form: any = null;
     username: string = "";
     password: string = "";
@@ -65,7 +65,7 @@ export class UserLogin extends Component {
     register() {
         history.push("/register");
     }
-}
+}*/
 
 export class UserRegister extends Component {
 

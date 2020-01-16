@@ -1,9 +1,14 @@
 // @flow
 
-import { EventDAO } from "../dao/eventDao";
+import {EventDAO} from "../dao/eventDao";
+import {UserDAO} from "../dao/userDao";
+import {Email} from "../email";
+
 const pool = require("../server");
 
 const eventDao = new EventDAO(pool);
+const userDao = new UserDAO(pool);
+const emailService = new Email();
 
 /**
  GET all events
@@ -33,6 +38,13 @@ exports.getEvents = (req, res, next) => {
     }
 };
 
+exports.getDocumentByEvent = (req, res, next) => {
+    console.log(`GET request from client: /event/${req.param.s.eventId}/document`);
+    eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
+       res.json(rows);
+    });
+}
+
 //Insert new event
 exports.insertEvent = (req, res, next) => {
     console.log("Post request from client");
@@ -44,27 +56,115 @@ exports.insertEvent = (req, res, next) => {
 
 //Get event by id
 exports.getEventById = (req, res, next) => {
-    console.log(`Get-request from client /event/` + req.params.eventId );
+    console.log(`Get-request from client /event/${req.params.eventId}` );
 
     eventDao.getEventById(req.params.eventId, (err, [rows]) => {
         res.json(rows)
     })
 };
 
+exports.getEventByUser = (req, res, next) => {
+    console.log('GET-request from client');
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.getEventByUser(rows[0].contact_id, (err, [rows]) => {
+                    res.json(rows)
+                })
+            }
+        }
+    })
+};
+
+exports.getEndedEventsByUser = (req, res, next) => {
+    console.log('GET-request from client');
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.getEndedEventsByUser(rows[0].contact_id, (err, [rows]) => {
+                    res.json(rows)
+                })
+            }
+        }
+    })
+};
+
 exports.getEventEmail = (req, res, next) => {
-    console.log("/emailInfo/:id got GET-request from client");
+    console.log(`GET-request from client /event/${req.params.eventId}/email` );
 
     eventDao.getCancelledEventInfo(req.params.eventId, (err, rows) => {
         res.json(rows);
     });
 };
 
-exports.cancelEvent = (req, res, next) => {
-    console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);
+exports.deleteEvent = (req, res, next) => {
 
-    eventDao.cancelEvent(req.params.eventId, (err, rows) => {
+    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+
+    eventDao.deleteEvent(req.params.event, (err, rows) => {
         res.json(rows);
     });
+
+};
+
+exports.deleteEventByEndTime = (req, res, next) => {
+
+    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+
+    eventDao.deleteEventsByEndTime(req.params.organizer, (err, rows) => {
+        res.json(rows);
+    });
+
+};
+
+exports.cancelEvent = (req, res, next) => {
+
+    console.log(`PUT request from client: /event/${req.params.eventId}/cancel`);
+
+    try {
+
+        eventDao.cancelEvent(req.params.eventId, (status, data) => {
+
+            if(status === 200) {
+                console.log("cancelEvent = OK");
+
+                eventDao.getCancelledEventInfo(req.params.eventId, (status, data) => {
+
+                    if(status === 200 && data[0].length > 0) {
+                        console.log("getCancelledEventInfo = OK");
+
+                        let eventId = data[0][0].event_id;
+                        let emailList = [data[0][0].email];
+                        let name = data[0][0].name;
+                        let eventTitle = data[0][0].title;
+                        let eventLocation = data[0][0].location;
+                        let eventTime = data[0][0].start_time;
+
+                        //console.log(emailList);
+                        emailService.cancelledNotification(emailList, eventId, eventTitle, name, eventLocation, eventTime);
+
+                        res.status(status);
+
+                    } else {
+                        console.log("Failed to send email");
+                    }
+
+                });
+
+            } else {
+                console.log("");
+            }
+
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+
+
+
 };
 
 //Get event by id for update

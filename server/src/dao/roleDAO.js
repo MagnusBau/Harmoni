@@ -3,6 +3,10 @@
 const DAO = require("./dao.js");
 
 export class RoleDAO extends DAO {
+
+    constructor(pool) {
+        super(pool);
+    }
     /**
      * Inserts a new role
      * @param type

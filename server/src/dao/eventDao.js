@@ -32,6 +32,20 @@ export class EventDAO extends Dao {
         super.query("CALL get_event_by_name(?)", values, callback);
     }
 
+    getEventByUser(organizer: number, callback: (status: string, data: string) => void) {
+        let values = [organizer];
+        super.query("CALL get_events_by_user(?)",
+            values,
+            callback);
+    }
+
+    getEndedEventsByUser(organizer: number, callback: (status: string, data: string) => void) {
+        let values = [organizer];
+        super.query("CALL get_events_by_end_time_user(?)",
+            values,
+            callback);
+    }
+
     getEventsByCancelled(cancelled: boolean, callback: (status: string, data: string) => void) {
         let values = [cancelled];
         super.query("CALL get_events_by_cancelled(?)",
@@ -39,9 +53,30 @@ export class EventDAO extends Dao {
             callback);
     }
 
+    deleteEvent(event_id: number, callback: (status: string, data: string) => void) {
+        let values = [event_id];
+        super.query("CALL delete_event(?)",
+            values,
+            callback);
+    }
+
+    deleteEventsByEndTime(organizer: number, callback: (status: string, data: string) => void) {
+        let values = [organizer];
+        super.query("CALL delete_events_by_end_time(?)",
+            values,
+            callback);
+    }
+
     cancelEvent(event_id : number, callback: (status: string, data: string) => void) {
         let values = [event_id];
         super.query("CALL cancel_event_by_id(?)",
+            values,
+            callback);
+    }
+
+    getDocumentByEvent(event_id: number, callback: (status: string, data: string) => void) {
+        let values = [event_id];
+        super.query("CALL get_document_by_event(?)",
             values,
             callback);
     }

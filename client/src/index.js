@@ -1,23 +1,28 @@
 // @flow
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 import {Route, Switch} from "react-router";
 import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import {UserLogin, UserRegister, TokenBoi} from "./pages/user";
-import { AddEvent} from "./pages/addEvent";
+import {UserRegister, TokenBoi} from "./pages/user";
+import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
-import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
-import UserOverview from "./pages/userOverview";
+import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/riderOLD";
+import { FileMain} from './pages/file'
 
+
+import { CancelEventButton } from './components/Buttons/CancelEventButton';
+import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
+import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
-import {CancelEvent} from "./pages/tempCancelEvent";
+import UserOverview from "./pages/userOverview";
+import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
 if (root)
@@ -35,9 +40,12 @@ if (root)
                     <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                     <Route exact path="/event/ticket" component={addTicketType}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
-                    <Route exact path="/event/:eventId/edit/cancel" component={CancelEvent}/>
-                    <Route path="/login" component={UserLogin}/>
-                    <Route path="/user/:userId/overview" component={UserOverview}/>
+                    <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
+                    <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
+                    <Route exact path="/event/:eventId/edit/file" component={FileMain} />
+                    <Route exact path="/register" component={UserRegister} />
+                    <Route exact path="/" component={TokenBoi} />
+                    <Route exact path="/user/:userId/overview" component={UserOverview} />
                 </Switch>
                 <Footer/>
             </div>

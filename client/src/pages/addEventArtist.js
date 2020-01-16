@@ -78,7 +78,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
             .catch((error: Error) => console.log(error.message));
 
         eventService
-            .getEventID(this.props.match.params.eventId)
+            .getEventById(this.props.match.params.eventId)
             .then(event => this.event = event[0])
             .catch((error: Error) => console.log(error.message));
 
