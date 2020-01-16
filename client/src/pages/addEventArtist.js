@@ -37,15 +37,6 @@ export class AddEventArtist extends Component {
         }
     };
 
-    close(e) {
-        console.log(e.target.value);
-        if (e.target.id === "closeWarning") {
-            this.setState({setRemoveWarningShow: false});
-        } else if (e.target.id === "closeAddUser") {
-            this.setState({setAddArtistUserShow: false});
-        }
-    };
-
     constructor(props) {
         super(props);
 
