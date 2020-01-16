@@ -16,6 +16,7 @@ const history = createHashHistory();
 export default class UserOverview extends Component {
     currentUser: number = 0;
     events: Event[] = [];
+    endedEvents: Event[] = [];
 
     constructor(props){
         super(props);
@@ -35,6 +36,15 @@ export default class UserOverview extends Component {
             }
             console.log("shait");
         });
+
+        eventService.getEndedEventsByUser(userService.getUserID()).then(response => {
+            if(response) {
+                this.endedEvents = [];
+                response.map(events => {
+                    this.endedEvents.push(events);
+                })
+            }
+        })
     }
 
     viewEvent = (event) => {
@@ -66,6 +76,19 @@ export default class UserOverview extends Component {
                                 //TODO hente inn en <a> og sender valgt event til eventoverview
                                 <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
                                     {e.title} {e.start_time}
+                                </li>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <h5>Dine arkiverte arrangementer</h5>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="list-group" className="">
+                            {this.endedEvents.map(e => (
+                                //TODO hente inn en <a> og sender valgt event til eventoverview
+                                <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
+                                    {e.title} {e.end_time}
                                 </li>
                             ))}
                         </div>

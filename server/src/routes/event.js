@@ -17,6 +17,7 @@ router.get("/:eventId/artist", artistController.getArtistByEvent);
 router.get("/:eventId/document", eventController.getDocumentByEvent);
 router.get("/:eventId/role", roleController.getRoleByEvent);
 router.get("/user/:userId", eventController.getEventByUser);
+router.get("/user/:userId/ended", eventController.getEndedEventsByUser);
 router.post("/", eventController.insertEvent);
 router.post("/:eventId/equipment", equipmentController.addEquipmentToEvent);
 router.post("/:eventId/artist", artistController.addArtistToEvent);

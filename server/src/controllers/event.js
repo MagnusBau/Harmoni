@@ -70,6 +70,20 @@ exports.getEventByUser = (req, res, next) => {
     })
 };
 
+exports.getEndedEventsByUser = (req, res, next) => {
+    console.log('GET-request from client');
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.getEndedEventsByUser(rows[0].contact_id, (err, [rows]) => {
+                    res.json(rows)
+                })
+            }
+        }
+    })
+};
+
 exports.getEventEmail = (req, res, next) => {
     console.log(`GET-request from client /event/${req.params.eventId}/email` );
 
