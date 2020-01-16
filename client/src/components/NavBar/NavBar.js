@@ -34,6 +34,7 @@ class NavBar extends Component {
     logout() {
         userService.logout();
         this.mounted();
+        history.push("/");
     }
 
     login() {

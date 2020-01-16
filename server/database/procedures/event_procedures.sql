@@ -14,6 +14,7 @@ DROP PROCEDURE IF EXISTS delete_events_by_end_time;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
+DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -183,8 +184,19 @@ END;
 
 
  */
-CREATE PROCEDURE delete_events_by_end_time(IN organizer_in INT)
+CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
 BEGIN
-    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = organizer_in;
+    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
 end;
+
+/**
+  // TODO change = 0 to > 7
+ */
+CREATE PROCEDURE get_events_by_end_time_user(IN user_id_in INT)
+BEGIN
+    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
+    FROM event
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 1
+      AND organizer = user_id_in;
+END;
 

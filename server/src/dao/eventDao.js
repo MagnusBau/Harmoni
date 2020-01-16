@@ -39,6 +39,13 @@ export class EventDAO extends Dao {
             callback);
     }
 
+    getEndedEventsByUser(organizer: number, callback: (status: string, data: string) => void) {
+        let values = [organizer];
+        super.query("CALL get_events_by_end_time_user(?)",
+            values,
+            callback);
+    }
+
     getEventsByCancelled(cancelled: boolean, callback: (status: string, data: string) => void) {
         let values = [cancelled];
         super.query("CALL get_events_by_cancelled(?)",

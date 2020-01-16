@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
+import {Modal} from "react-bootstrap";
 
 export class Row extends Component < { children?: React.Node } > {
 
@@ -19,7 +20,8 @@ export class Column extends Component < { width?: number, children?: React.Node 
 
         return (
 
-            <div className={'col-lg' + (this.props.width ? '-' + this.props.width : '') + (this.props.right ? ' text-right' : '')}>
+            <div className={'col-lg' + (this.props.width ? '-' + this.props.width : '') + (this.props.right ? ' text-right' : '')} style={{paddingLeft: 0}}
+            >
                 {this.props.children}
             </div>
 
@@ -27,14 +29,46 @@ export class Column extends Component < { width?: number, children?: React.Node 
     }
 }
 
-class RedButton extends Component< { onClick: () => mixed, children?: React.Node }> {
+export class ModalWidget extends Component < { show: () => mixed, onHide: () => mixed, title: string, body: string, children: React.Node  } > {
+
+    render() {
+        return (
+
+            <Modal
+                show={this.props.show}
+                onHide={this.props.onHide}
+                centered
+            >
+                <Modal.Header>
+                    <Modal.Title>
+                        {this.props.title}
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <p>
+                        {this.props.body}
+                    </p>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    {this.props.children}
+                </Modal.Footer>
+
+            </Modal>
+        )
+    }
+}
+
+class RedButton extends Component< { onClick: () => mixed, style?: React.Node, children?: React.Node }> {
 
     render() {
         return (
 
             <button
+                style={this.props.style}
                 type="button"
-                className="btn btn-danger btn-lg btn-block"
+                className="btn btn-danger btn-md btn-block"
                 onClick={this.props.onClick}
             >
                 {this.props.children}
@@ -51,7 +85,7 @@ class GreenButton extends Component< { onClick: () => mixed, children?: React.No
 
             <button
                 type="button"
-                className="btn btn-success btn-lg btn-block"
+                className="btn btn-success btn-md btn-block"
                 onClick={this.props.onClick}
             >
                 {this.props.children}
@@ -68,7 +102,7 @@ class LightButton extends Component< { onClick: () => mixed, children?: React.No
 
             <button
                 type="button"
-                className="btn btn-light btn-lg btn-block"
+                className="btn btn-light btn-md btn-block"
                 onClick={this.props.onClick}
             >
                 {this.props.children}
@@ -84,7 +118,7 @@ class BlueButton extends Component< { onClick: () => mixed, children?: React.Nod
 
             <button
                 type="button"
-                className="btn btn-info btn-lg btn-block"
+                className="btn btn-info btn-md btn-block"
                 onClick={this.props.onClick}
             >
                 {this.props.children}
