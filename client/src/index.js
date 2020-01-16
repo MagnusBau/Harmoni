@@ -12,7 +12,6 @@ import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
 import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/riderOLD";
-import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
 
 

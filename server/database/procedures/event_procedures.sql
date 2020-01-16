@@ -10,6 +10,7 @@ DROP PROCEDURE IF EXISTS get_events_by_cancelled;
 DROP PROCEDURE IF EXISTS cancel_event_by_id;
 DROP PROCEDURE IF EXISTS get_cancelled_event_email_info;
 DROP PROCEDURE IF EXISTS delete_event;
+DROP PROCEDURE IF EXISTS delete_events_by_end_time;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
