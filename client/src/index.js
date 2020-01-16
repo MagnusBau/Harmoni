@@ -11,7 +11,7 @@ import {UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
-import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
+//import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
 
@@ -22,7 +22,6 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
-import UserOverview from "./pages/userOverview";
 import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
