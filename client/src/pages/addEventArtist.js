@@ -6,8 +6,13 @@ import {Artist, artistService} from "../services/artistService";
 import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
+import { createHashHistory } from 'history';
+const history = createHashHistory();
 
-export class AddEventArtist extends Component <{ match: { params: { eventId: number } } }> {
+// TODO: Clean up this mess
+// TODO: Add alert on artist add
+
+export class AddEventArtist extends Component {
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -18,7 +23,8 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
 
     state = {
         showModal: false,
-        setModalShow: false
+        setModalShow: false,
+        eventArtists: []
     };
 
     show = () => {
@@ -52,18 +58,19 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     mounted(): void {
+        this.eventArtists = [];
+        eventService
+            .getEventById(this.props.eventId)
+            .then(event => this.event = event[0])
+            .catch((error: Error) => console.log(error.message));
+
         artistService
-            .getArtistByEvent(this.props.match.params.eventId)
+            .getArtistByEvent(this.props.eventId)
             .then(artists => this.eventArtists = artists[0])
             .catch((error: Error) => console.log(error.message));
 
         eventService
-            .getEventById(this.props.match.params.eventId)
-            .then(event => this.event = event[0])
-            .catch((error: Error) => console.log(error.message));
-
-        eventService
-            .getDocumentByEvent(this.props.match.params.eventId)
+            .getDocumentByEvent(this.props.eventId)
             .then(documents => this.eventDocuments = documents[0])
             .catch((error: Error) => console.log(error.message));
     }
@@ -85,20 +92,39 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     removeArtist() {
+        //this.eventArtists = this.eventArtists.filter(artist => artist.artist_id !== this.seeArtist.artist_id);
         artistService.removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id);
-        window.location.reload();
+        this.seeArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
+        this.mounted();
+        this.close();
     }
 
     onSubmit(e) {
         e.preventDefault();
         artistService.addArtistToEvent(this.newArtist, this.documentId);
-        window.location.reload();
+        this.newArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
+        this.documentId = -1;
+        this.mounted();
     }
 
     render() {
         return (
             <div>
-                <div className="w-50 m-4">
+                <div className="m-4">
                     <h2 className="m-2">Artistliste for #{this.event.event_id} ({this.event.title})</h2>
                     <div className="row">
                         <div className="col">
@@ -134,7 +160,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
                         </div>
                     </div>
                     <hr/>
-                    <form className="w-50 m-4" onSubmit={this.onSubmit}>
+                    <form className="w-75 m-4" onSubmit={this.onSubmit}>
                         <h4 className="m-2">Legg til ny artist:</h4>
                         <div className="row">
                             <div className="col">

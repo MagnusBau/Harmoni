@@ -8,6 +8,9 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
+import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
+import {AddEventArtist} from "./addEventArtist";
+
 import {Rider, riderService} from "../services/riderService";
 import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
 const history = createHashHistory();
@@ -40,7 +43,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.handleTicketView = this.handleTicketView.bind(this);
         this.state = {
             isEditingEvent: false,
+            isEditingRiders: false,
             isEditingTicket: false,
+            isEditingArtist: false,
             isAddingTicket: false,
             currentTicketID: 0,
         }
@@ -125,10 +130,12 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
         const isEditingRiders = this.state.isEditingRiders;
+        const isEditingArtist = this.state.isEditingArtist;
         let riderContent;
         const isAddingTicket = this.state.isAddingTicket;
         let eventContent;
         let ticketContent;
+        let artistContent;
 
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
@@ -149,6 +156,11 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                             handleAddTicketClick={this.handleTicketAdd}/>
             }
         }
+
+        if (isEditingArtist) {
+            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }/>
+        }
+
 
         if(isEditingRiders){
             riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
@@ -179,6 +191,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#documents" data-toggle="tab">Dokumenter</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#artist" data-toggle="tab">Artister</a>
                                 </li>
                             </ul>
                         </div>
@@ -217,6 +232,10 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                         href={"/#/event/" +  "/equipment"}>
                                         Rediger dokumenter
                                     </button>
+                                </div>
+                                <div className="tab-pane" id="artist" role="tabpanel">
+                                    <h5>Artister</h5>
+                                    <AddEventArtist eventId={this.currentEvent}/>
                                 </div>
                             </div>
                         </div>
