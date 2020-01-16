@@ -27,6 +27,22 @@ class UserService {
 
     }
 
+    generateArtistUser(artistName: string, firstName: string, lastName: string, email: string, phone: string) {
+        // TODO: Handle username collisions
+        let username: string = artistName.replace(/\s/g, '').toLowerCase();
+        return this.attemptRegister(username, this.generateRandomPassword(10), email, firstName, lastName, phone);
+    }
+
+    generateRandomPassword(length: number) {
+        let result           = '';
+        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let charactersLength = characters.length;
+        for (let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
     attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string){
         let data = {
             "username": username,
