@@ -7,6 +7,7 @@ import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
 import { createHashHistory } from 'history';
+import {userService} from "../services/userService";
 const history = createHashHistory();
 
 // TODO: Clean up this mess
@@ -23,16 +24,26 @@ export class AddEventArtist extends Component {
 
     state = {
         showModal: false,
-        setModalShow: false,
+        setRemoveWarningShow: false,
+        setAddArtistUserShow: false,
         eventArtists: []
     };
 
-    show = () => {
-        this.setState({setModalShow: true});
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({setRemoveWarningShow: true});
+        } else if (e.target.id === "showAddUser") {
+            this.setState({setAddArtistUserShow: true});
+        }
     };
 
-    close = () => {
-        this.setState({setModalShow: false});
+    close(e) {
+        console.log(e.target.value);
+        if (e.target.id === "closeWarning") {
+            this.setState({setRemoveWarningShow: false});
+        } else if (e.target.id === "closeAddUser") {
+            this.setState({setAddArtistUserShow: false});
+        }
     };
 
     constructor(props) {
@@ -103,7 +114,12 @@ export class AddEventArtist extends Component {
             phone: ""
         };
         this.mounted();
-        this.close();
+        this.setState({setRemoveArtistShow: false});
+    }
+
+    addArtistUser() {
+        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name, this.seeArtist.email, this.seeArtist.phone);
+        this.setState({setAddArtistUserShow: false});
     }
 
     onSubmit(e) {
@@ -153,8 +169,11 @@ export class AddEventArtist extends Component {
                                         <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
                                     </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
-                                        <button className="btn btn-danger align-bottom"
-                                                onClick={this.show}>Fjern</button> : null}
+                                        <div className="align-bottom form-inline">
+                                            <button id="showAddUser" className="btn btn-primary m-1" onClick={this.show}>Opprett bruker</button>
+                                            <button id="showWarning" className="btn btn-danger m-1" onClick={this.show}>Fjern</button>
+                                        </div>
+                                         : null}
                                 </div>
                             </div>
                         </div>
@@ -225,7 +244,7 @@ export class AddEventArtist extends Component {
                     </form>
                 </div>
                 <Modal
-                    show={this.state.setModalShow}
+                    show={this.state.setRemoveWarningShow}
                     onHide={this.close}
                     centered>
                     <Modal.Header>
@@ -237,8 +256,30 @@ export class AddEventArtist extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light onClick={this.close}>Lukk</Button.Light>
+                        <Button.Light id="closeWarning" onClick={() => this.setState({setRemoveWarningShow: false})}>Lukk</Button.Light>
                         <Button.Red onClick={this.removeArtist}>Slett</Button.Red>
+                    </Modal.Footer>
+                </Modal>
+                <Modal
+                    show={this.state.setAddArtistUserShow}
+                    onHide={this.close}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Bekreft</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Bekreft opprettelse av bruker for {this.seeArtist.artist_name}.
+                            E-post med innlogging blir sendt til {this.seeArtist.email}
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            value="closeAddUser"
+                            className="modal-button"
+                            id="closeAddUser"
+                            onClick={() => this.setState({setAddArtistUserShow: false})}>Lukk</Button.Light>
+                        <Button.Green onClick={this.addArtistUser}>Bekreft</Button.Green>
                     </Modal.Footer>
                 </Modal>
             </div>

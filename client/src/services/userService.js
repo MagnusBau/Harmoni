@@ -30,9 +30,11 @@ class UserService {
     generateArtistUser(artistName: string, firstName: string, lastName: string, email: string, phone: string) {
         // TODO: Handle username collisions
         let username: string = artistName.replace(/\s/g, '').toLowerCase();
+        // TODO: Send email to artist
         return this.attemptRegister(username, this.generateRandomPassword(10), email, firstName, lastName, phone);
     }
 
+    // TODO: Move to utility class?
     generateRandomPassword(length: number) {
         let result           = '';
         let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
