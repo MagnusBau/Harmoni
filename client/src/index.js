@@ -10,8 +10,9 @@ import {AddEquipment} from "./pages/addEquipment";
 import {UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
-import {addTicketType, editTicketType, listTicketType} from "./components/ticket_add";
-import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/riderOLD";
+import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
+//import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
+import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
 
 
@@ -21,7 +22,6 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
-import UserOverview from "./pages/userOverview";
 import {AddRole} from "./pages/addRole";
 
 const root = document.getElementById("root");
@@ -38,14 +38,14 @@ if (root)
                     <Route exact path="/event/edit/:event_id" component={EditEvent}/>
                     <Route exact path="/event/:eventId/edit/ticket" component={listTicketType}/>
                     <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
-                    <Route exact path="/event/ticket" component={addTicketType}/>
-                    <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={editTicketType}/>
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
                     <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
+                    <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
+                    <Route exact path="/event/ticket" component={TicketAdd}/>
                 </Switch>
                 <Footer/>
             </div>

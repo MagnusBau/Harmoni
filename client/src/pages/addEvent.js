@@ -8,6 +8,7 @@ import {Alert} from "../widgets.js";
 import DateTimePicker from 'react-datetime-picker'
 import DateTime from 'react-datetime';
 import moment from "moment";
+import { userService } from "../services/userService";
 
 const history = createHashHistory();
 
@@ -129,18 +130,6 @@ export class AddEvent extends Component {
                                    (this.createEvent.capacity = event.target.value)}
                         />
                     </div>
-                    <div className={"form-group m-2"}>
-                        <label>Organizer:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"organizer"}
-                               placeholder={"1"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.organizer = event.target.value)}
-                        />
-                    </div>
                 </form>
                 <div className="text-center">
                     <button type="button"
@@ -165,11 +154,12 @@ export class AddEvent extends Component {
                 Alert.success('You have created a new event!!!!');
             })
             .catch((error: Error) => Alert.danger(error.message));
-        history.push(`/user/${this.createEvent.organizer}/overview`);
+        history.push('/user/' + userService.getUserID() + '/overview');
     }
 
 
     mounted() {
+        this.createEvent.organizer = userService.getUserID();
         eventService
             .getEventByName()
             .then(event => (this.allEvents  = event))

@@ -1,36 +1,41 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-import {Ticket, ticketService} from "../../services/ticketService";
+import {Ticket_ID, ticketService} from "../../services/ticketService";
 import {Event} from "../../services/eventService";
 import {EventEquipment} from "../../services/equipmentService";
 
-export default class TicketTypes extends Component {
+export default class TicketView extends Component {
     currentEvent: number = 0;
     eventOverview: Event = null;
-    tickets: Ticket[] = [];
+    tickets: Ticket_ID[] = [];
     eventEquipment: EventEquipment[] =[];
+
+    constructor(props){
+        super(props);
+    };
 
     render(){
 
         return (
             <div>
+                <h5>Billettyper</h5>
                 <ul className="list-group list-group-flush">
-                    {this.tickets.map( (ticket =>
-                        <li className="list-group-item" key={ticket.ticket_id}>
+                    {this.tickets.map( (tickets =>
+                        <li className="list-group-item">
                             <b>Type:</b>
-                            <p>{ticket.title}</p>
+                            <p>{tickets.title}</p>
                             <b>Billettinfo</b>
-                            <p>{ticket.info}</p>
+                            <p>{tickets.info}</p>
                             <b>Pris:</b>
-                            <p>{ticket.price}</p>
+                            <p>{tickets.price}</p>
                             <b>Antall:</b>
-                            <p>{ticket.count}</p>
+                            <p>{tickets.count}</p>
                             <button
                                 size="sm"
                                 className="m"
                                 variant="outline-secondary"
-                                onClick={() => {this.props.handleClick(); this.edit()}}>
+                                onClick={() => {this.props.triggerParentUpdate(tickets.ticket_id); this.props.handleEditTicketClick()}}>
                                 Rediger billett
                             </button>
                         </li>
@@ -49,17 +54,12 @@ export default class TicketTypes extends Component {
 
     }
 
+
     mounted(){
         this.currentEvent = this.props.eventId;
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets => (this.tickets = tickets[0]))
             .catch((error: Error) => console.log(error.message));
-    }
-
-    edit() {
-        if (!this.ticket) return null;
-        if (this.ticket.ticket_id === '') return null;
-        //if (this.ticket) history.push('/' + 'event/'+ 'edit/' + this.ticket.event + '/ticket/'+ this.ticket.ticket_id + '/edit');
     }
 }
