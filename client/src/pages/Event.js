@@ -45,7 +45,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingEvent: false,
             isEditingRiders: false,
             isEditingTicket: false,
-            isEditingArtist: false
+            isEditingArtist: false,
             isAddingTicket: false,
             currentTicketID: 0,
         }
@@ -193,7 +193,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     <a className="nav-link" href="#documents" data-toggle="tab">Dokumenter</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#artist" data-toggle="tab">Artist</a>
+                                    <a className="nav-link" href="#artist" data-toggle="tab">Artister</a>
                                 </li>
                             </ul>
                         </div>
@@ -235,7 +235,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
                                     <h5>Artister</h5>
-                                    <AddEventArtist match={{params: {eventId: this.currentEvent}}}/>
+                                    <AddEventArtist eventId={this.currentEvent}/>
                                 </div>
                             </div>
                         </div>

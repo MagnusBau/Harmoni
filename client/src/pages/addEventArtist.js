@@ -12,7 +12,7 @@ const history = createHashHistory();
 // TODO: Clean up this mess
 // TODO: Add alert on artist add
 
-export class AddEventArtist extends Component <{ match: { params: { eventId: number } } }> {
+export class AddEventArtist extends Component {
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -58,8 +58,21 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     mounted(): void {
-        console.log("Hello");
-        this.onComponentUpdate();
+        this.eventArtists = [];
+        eventService
+            .getEventById(this.props.eventId)
+            .then(event => this.event = event[0])
+            .catch((error: Error) => console.log(error.message));
+
+        artistService
+            .getArtistByEvent(this.props.eventId)
+            .then(artists => this.eventArtists = artists[0])
+            .catch((error: Error) => console.log(error.message));
+
+        eventService
+            .getDocumentByEvent(this.props.eventId)
+            .then(documents => this.eventDocuments = documents[0])
+            .catch((error: Error) => console.log(error.message));
     }
 
     onChange(e) {
@@ -69,24 +82,6 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
         const name = e.target.name;
         this.newArtist[name] = e.target.value;
     }
-
-    onComponentUpdate = direction => {
-        this.eventArtists = [];
-        artistService
-            .getArtistByEvent(this.props.match.params.eventId)
-            .then(artists => this.eventArtists = artists[0])
-            .catch((error: Error) => console.log(error.message));
-
-        eventService
-            .getEventById(this.props.match.params.eventId)
-            .then(event => this.event = event[0])
-            .catch((error: Error) => console.log(error.message));
-
-        eventService
-            .getDocumentByEvent(this.props.match.params.eventId)
-            .then(documents => this.eventDocuments = documents[0])
-            .catch((error: Error) => console.log(error.message));
-    };
 
     onSelect(artist: Artist) {
         this.seeArtist = artist;
@@ -122,6 +117,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
             email: "",
             phone: ""
         };
+        this.documentId = -1;
         this.mounted();
     }
 
