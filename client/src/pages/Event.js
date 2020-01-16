@@ -40,7 +40,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.handleView = this.handleView.bind(this);
         this.state = {
             isEditingEvent: false,
-            isEditingRiders: false
+            isEditingRiders: false,
             isEditingTicket: false,
             isEditingArtist: false
         }
@@ -102,7 +102,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         const isEditingRiders = this.state.isEditingRiders;
         const isEditingArtist = this.state.isEditingArtist;
         let riderContent;
-        const isEditingRiders = this.state.isEditingRiders;
         let eventContent;
         let ticketContent;
         let artistContent;

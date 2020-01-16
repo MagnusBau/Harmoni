@@ -57,11 +57,11 @@ export default class AddEquipment extends Component {
     onSubmit(e) {
         e.preventDefault();
         equipmentService.addEquipmentToEvent(this.currentEvent, {item: this.newEquipment.item}, this.newEquipment.amount);
-        this.state.equipmentS.push(this.newEquipment);
         this.newEquipment = {
             item: '',
             amount: 1
         };
+        this.mounted();
         //this.loadEquipment();
         //window.location.reload();
     }
@@ -74,43 +74,48 @@ export default class AddEquipment extends Component {
         if(direction) {
             this.setState({equipmentLoading: true, posts:[]});
         }
+        //this.setState({equipmentS: []});
+        this.eventEquipment = [];
+        /*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => {this.setState({
                 equipmentS: eventEquipment[0]
             })})
             .catch((error: Error) => console.log(error.message));
+            */
+
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(equipment => this.eventEquipment = equipment[0])
+            .catch((error: Error) => console.log(error.message));
     };
 
     mounted() {
         this.currentEvent = this.props.eventId;
-
+        this.eventEquipment = [];
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
 
-        this.loadEquipment();
-/*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
+            .then(equipment => this.eventEquipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
-
-         */
     }
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.setState({equipmentS: this.state.equipmentS.filter(e => e.equipment !== eventEquipment.equipment)});
+        this.mounted();
         //this.loadEquipment();
         //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
-        console.log(this.state.equipmentS.map(e => e.count));
         equipmentService.updateEquipmentOnEvent(equipment);
+        this.mounted();
         //this.loadEquipment();
         //window.location.reload();
     }
@@ -119,6 +124,7 @@ export default class AddEquipment extends Component {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
+            this.mounted();
             //this.loadEquipment();
             //window.location.reload();
         }
@@ -178,7 +184,7 @@ export default class AddEquipment extends Component {
         };
 
         return (
-            <div className="w-50 m-2">
+            <div className="w-75 m-2">
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
                 <form className="form-inline" onSubmit={this.onSubmit}>
                     <div className="form-group m-2">
@@ -205,7 +211,7 @@ export default class AddEquipment extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.equipmentS.map(eventEquipment => (
+                    {this.eventEquipment.map(eventEquipment => (
                         <tr className="d-flex">
                             <td className="col-7">{eventEquipment.item}</td>
                             <td className="col-3">{eventEquipment.amount}

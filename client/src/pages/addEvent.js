@@ -165,7 +165,7 @@ export class AddEvent extends Component {
                 Alert.success('You have created a new event!!!!');
             })
             .catch((error: Error) => Alert.danger(error.message));
-        history.push('/' + this.createEvent.title);
+        history.push(`/user/${this.createEvent.organizer}/overview`);
     }
 
 
