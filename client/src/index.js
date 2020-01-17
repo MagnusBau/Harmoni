@@ -23,7 +23,7 @@ import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
 import {AddRole} from "./pages/addRole";
-import {NotFoundPage} from "./pages/NotFoundPage";
+import {NotFoundPage} from "./pages/notFoundPage";
 
 const root = document.getElementById("root");
 if (root)
