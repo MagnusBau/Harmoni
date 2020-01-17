@@ -31,6 +31,12 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    /**
+     * check if a document name exist in db
+     * @param eventId
+     * @param fileName
+     * @param callback
+     */
     checkFileName(eventId: number, fileName: string, callback: (status: string, data: string) => void) {
         let values = [eventId, fileName];
         console.log("SE PÅ DENNE DATAN!!!!: " + eventId);

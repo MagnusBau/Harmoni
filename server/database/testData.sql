@@ -49,3 +49,5 @@ VALUES (2, 4, 8);
 
 insert into ticket (title, info, price, count) values ( 'enTittel',  'enInfo_in',  1, 1);
 insert into ticket (title, info, price, count) values ( 'andreTittel',  'andreInfo_in',  2, 2);
+
+INSERT INTO document (document_id, name, path, event) VALUES (DEFAULT, 'Carl', 'Barks', 1);

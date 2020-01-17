@@ -130,6 +130,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
                     fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
                         console.log("should have posted fileInfo to database");
+                        this.mounted();
                     });
                 }else{
                     this.errorMessage = "En fil med dette navnet finnes allerede";
