@@ -102,63 +102,51 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
         this.name = file.name;
     }
 
-    //returnerer true hvis navnet ikke finnes i databasen
+    //returnerer 1 hvis navnet ikke finnes i databasen
     chechkFileName(){
         fileInfoService.checkFileName(this.props.match.params.eventId, this.name).then(response => {
-            if(response[0][0].duplicate === 0){
-                return true;
-            }else{
-                return false;
-            }
-        })
+            console.log("DUP?: "+ response[0][0].duplicate);
+            let val = Number.parseInt(response[0][0].duplicate);
+            console.log("val: " + val);
+            this.setState({dup: val});
+        });
     }
 
     handleUpload(e) {
         let file = this.state.file;
-
-        if(this.chechkFileName()){
-
-            let formData = new FormData();
-            const myNewFile = new File([file], 'tester.jpg', {type: file.type});
-
-            formData.append('file', file);
-            formData.append('name', this.name);
-
-            /**
-             * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
-             * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
-             *
-             */
-
-            this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
-            this.name = this.name.trim();
-
-            fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
-                console.log("should have posted fileInfo to database");
-            });
-
-        }
-
         let formData = new FormData();
-        const myNewFile = new File([file], 'tester.jpg', {type: file.type});
-
-        formData.append('file', file);
-        formData.append('name', this.name);
-
-        /**
-         * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
-         * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
-         *
-         */
 
 
+        fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+            .then(response => {
+            console.log("DUP?: "+ response[0][0].duplicate);
+                if(response[0][0].duplicate === 0){
 
-        this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
-        this.name = this.name.trim();
+                    const myNewFile = new File([file], this.props.match.params.eventId + '------' + file.name, {type: file.type});
 
-        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
-            console.log("should have posted fileInfo to database");
+                    formData.append('file', myNewFile);
+                    formData.append('name', this.name);
+
+                    /**
+                     * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
+                     * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
+                     *
+                     */
+
+
+
+                    this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
+                    this.name = this.name.trim();
+
+                    fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
+                        console.log("should have posted fileInfo to database");
+                    });
+                }else{
+                    this.errorMessage = "En fil med dette navnet finnes allerede";
+                    this.mounted();
+                }
         });
+
     }
     handleOverwrite(){
 

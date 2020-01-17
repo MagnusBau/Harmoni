@@ -61,7 +61,7 @@ var storage = multer.diskStorage({
         cb(null, './uploads');
     },
     filename: function (req, file, cb) {
-        cb(null , "hei" + "." + file.originalname.split('.').pop());
+        cb(null , file.originalname);
     }
 });
 
@@ -79,7 +79,6 @@ app.post('/single/:eventId', upload.single('file'), (req, res) => {
     console.log(req.body.name);
     fileInfoDao.postFileInfo(data, (err, res) => {
         try {
-            //PRØV Å ENDRE NAVNET PÅ CLIENT-SIDE! NEI DET ER USIKKERT
             result.send(req.file);
         }catch(err) {
             result.send(400);
