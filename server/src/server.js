@@ -58,7 +58,7 @@ app.get('/*',function(req,res,next){
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './uploads');
+        cb(null, './files');
     },
     filename: function (req, file, cb) {
         cb(null , file.originalname);
@@ -73,7 +73,8 @@ const upload = multer({
 app.post('/single/:eventId', upload.single('file'), (req, res) => {
     let data = {
         "name": req.body.name,
-        "eventId": req.params.eventId
+        "eventId": req.params.eventId,
+        "path": req.body.path
     };
     let result = res;
     console.log(req.body.name);

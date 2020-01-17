@@ -126,19 +126,9 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
                     formData.append('file', myNewFile);
                     formData.append('name', this.name);
+                    formData.append('path', "./files/" + myNewFile.name);
 
-                    /**
-                     * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
-                     * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
-                     *
-                     */
-
-
-
-                    this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
-                    this.name = this.name.trim();
-
-                    fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
+                    fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
                         console.log("should have posted fileInfo to database");
                     });
                 }else{
