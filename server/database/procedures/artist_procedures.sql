@@ -190,6 +190,19 @@ BEGIN
      OR phone LIKE CONCAT('%', search_string, '%');
 END;
 
+/**
+  Adds a specific artist to an event
+
+  IN artist_name_in: Name of the artist
+  IN first_name_in: First name of artist contact person
+  IN last_name_in: Last name of artist contact person
+  IN email_in: Email contact of artist
+  IN phone_in: Phone of artist
+  IN document_id_in: Id of the document that represents the artist contract. This is also the binding to the event
+
+  Issued by: addArtistToEvent(artistName: string, firstName: string, lastName: string, email: string, phone: string,
+                              document: string)
+ */
 CREATE PROCEDURE add_artist_to_event(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
                                      IN document_id_in INT)
@@ -201,6 +214,13 @@ BEGIN
   VALUES (artist_id_in, document_id_in);
 END;
 
+/**
+  Fetch all artists attached to a specific event
+
+  IN event_id_in: Id of event to fetch from
+
+  Issued by: getArtistByEvent(eventId: number)
+ */
 CREATE PROCEDURE get_artist_by_event(IN event_id_in INT)
 BEGIN
   SELECT a.artist_id,
@@ -219,6 +239,14 @@ BEGIN
   WHERE d.event = event_id_in;
 END;
 
+/**
+  Removes a specific artist from a specific event
+
+  IN event_id_in: Event to delete from
+  IN artist_id_in: Artist to delete
+
+  Issued by: removeArtistFromEvent(eventId: number, artistId: number)
+ */
 CREATE PROCEDURE remove_artist_from_event(IN event_id_in INT, IN artist_id_in INT)
 BEGIN
   DELETE
