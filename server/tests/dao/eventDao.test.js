@@ -198,6 +198,7 @@ test("get cancelled event information", done => {
     eventDao.getCancelledEventInfo(3, callback);
 });
 
+/*
 test("delete_ ended event from db", done => {
     function callback(status, data) {
         console.log(
@@ -212,3 +213,4 @@ test("delete_ ended event from db", done => {
     eventDao.deleteEventsByEndTime(1, callback);
 
 });
+*/
