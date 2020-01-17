@@ -11,6 +11,8 @@ let transporter = nodemailer.createTransport({
 
 });
 
+const url = `http://localhost:4000`;
+
 export class Email {
 
     cancelledNotification(mailList: string, eventId: number, title: string, name: string, location: string, startTime: string) {

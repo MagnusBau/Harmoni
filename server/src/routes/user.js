@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post("/login", userController.loginUser);
 router.post("/user", userController.registerUser);
-router.post("/user/artist", userController.registerArtistUser);
 router.put("/user/:userId", userController.updateUser);
 router.put("/user/:userId/password", userController.updateUserPassword);
 router.post("/:id/token", userController.getToken);

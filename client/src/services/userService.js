@@ -26,12 +26,14 @@ class UserService {
         });
     }
 
-    generateArtistUser(artistName: string, email: string, contactId: number) {
+    generateArtistUser(artistName: string, firstName: string, lastName: string, phone: string, email: string,
+                       contactId: number) {
         let organizer = `${this.getFirstName()} ${this.getLastName()}`;
         // TODO: Handle username collisions
         let username: string = artistName.replace(/\s/g, '').toLowerCase();
         // TODO: Send email to artist
-        return this.attemptRegisterArtist(username, this.generateRandomPassword(10), email, contactId, organizer, artistName);
+        return this.attemptRegisterArtist(username, this.generateRandomPassword(10), firstName, lastName, phone,
+                                            email, contactId, organizer, artistName);
     }
 
     // TODO: Move to utility class?
@@ -45,14 +47,18 @@ class UserService {
         return result;
     }
 
-    attemptRegisterArtist(username: string, password: string, email: string, contactId: number, organizer: string, artistName: string) {
+    attemptRegisterArtist(username: string, password: string, firstName: string, lastName: string, phone: string,
+                          email: string, contactId: number, organizer: string, artistName: string) {
         let data = {
             "username": username,
             "password": password,
             "email": email,
-            "contactId": contactId,
+            "contact_id": contactId,
             "artist_name": artistName,
-            "organizer": organizer
+            "organizer": organizer,
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": phone
         };
         this
             .postArtistUser(data)
@@ -179,7 +185,7 @@ class UserService {
     }
 
     postArtistUser(data: Object) {
-        return axios.post(`http://${ip}:4000/auth/user/artist`, data).then(response => response.data);
+        return axios.post(`http://${ip}:4000/auth/user`, data).then(response => response.data);
     }
 
     postToken(input: Object) {

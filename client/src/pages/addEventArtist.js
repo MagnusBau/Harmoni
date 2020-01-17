@@ -109,7 +109,8 @@ export class AddEventArtist extends Component {
     }
 
     addArtistUser() {
-        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.email, this.seeArtist.contact_id);
+        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
+                                        this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id);
         this.setState({setAddArtistUserShow: false});
     }
 
