@@ -56,6 +56,13 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    getUserByArtist(artistId: number, callback: (status: string, data: string) => void) {
+        let values = [artistId];
+        super.query("CALL get_user_by_artist(?)",
+            values,
+            callback);
+    }
+
     /*    postContact(data: Object, callback: (status: string, data: string) => void){
             let values = [data.email, data.first_name, data.last_name, data.phone];
             super.query("CALL post_contact(?,?,?,?)",

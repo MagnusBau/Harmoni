@@ -212,6 +212,14 @@ exports.loginUser = (req, res, next) => {
     });
 };
 
+exports.getUserByArtist = (req, res, next) => {
+    console.log(`Got request from client: GET /auth/user/artist/${req.params.artistId}`);
+
+    userDao.getUserByArtist(req.params.artistId, (err, rows) => {
+        res.send(rows);
+    });
+};
+
 exports.registerUser = (req, res, next) => {
     let data = {
         "username": req.body.username,
@@ -236,6 +244,8 @@ exports.getToken = (req, res, next) => {
         res.json({token: token});
     });
 };
+
+
 
 exports.updateUser = (req, res, next) => {
     console.log("Skal oppdatere bruker");
