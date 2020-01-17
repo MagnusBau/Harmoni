@@ -55,7 +55,7 @@ export default class UserOverview extends Component {
 
     viewEvent = (event) => {
         history.push("/event/" + event.target.getAttribute('eventId') + "/overview");
-    }
+    };
 
 
     render(){
@@ -77,7 +77,7 @@ export default class UserOverview extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="list-group" className="">
+                        <div className="list-group">
                             {this.events.map(e => (
                                 //TODO hente inn en <a> og sender valgt event til eventoverview
                                 <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">

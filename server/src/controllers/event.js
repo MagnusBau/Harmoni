@@ -167,6 +167,15 @@ exports.cancelEvent = (req, res, next) => {
 
 };
 
+//Get events by input
+exports.getEventByInput = (req, res, next) => {
+    console.log(`Get-request from client/event/${req.param.input}`);
+
+    eventDao.getEventByInput(req.param.input, (err, rows) => {
+        res.json(rows)
+    })
+};
+
 //Get event by id for update
 exports.getEventByIdUpdate = (req, res, next) => {
     console.log(`Get-request from client /event/edit/${req.params.event_id}` );

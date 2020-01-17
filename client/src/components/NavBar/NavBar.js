@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import { userService} from "../../services/userService";
 import {Link} from "react-router-dom";
 import { createHashHistory } from 'history';
+import SearchBar from "../SearchBar/search";
 
 const history = createHashHistory();
 
@@ -152,10 +153,7 @@ class NavBar extends Component {
            <nav className="navbar navbar-light bg-light sticky-top">
                <a className="navbar-brand"  href="#">Harmoni</a>
                <div className="form-inline">
-                   <form className="form-inline my-2 my-lg-0">
-                       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                   </form>
+                   {SearchBar}
                    {userIcon}
                </div>
            </nav>

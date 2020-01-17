@@ -44,6 +44,10 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
+    getEventBy(input: string): Event[] {
+        return axios.get<Event>(`http://localhost:4000/api/event/` + input).then(response => response.data);
+    }
+
     getEventById(eventId: number): Event[] {
         return axios.get<Event[]>(`http://localhost:4000/api/event/` + eventId).then(response => response.data);
     }
