@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "1H",
+    expiresIn:  "24H",
     algorithm:  ["RS256"]
 };
 
