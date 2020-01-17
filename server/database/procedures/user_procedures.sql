@@ -23,8 +23,6 @@ DROP PROCEDURE IF EXISTS get_user_by_artist;
 
   Issued by: postContact(data: Object)
  */
-
-
 CREATE PROCEDURE post_contact(IN email_in VARCHAR(50), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN phone_in VARCHAR(12))
 BEGIN
     INSERT INTO contact(email, first_name, last_name, phone)

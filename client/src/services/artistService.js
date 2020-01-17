@@ -39,6 +39,10 @@ class ArtistService {
     removeArtistFromEvent(eventId: number, artistId: number): void {
         axios.delete(`http://localhost:4000/api/event/${eventId}/artist/${artistId}`).then(response => response.data);
     }
+
+    getArtistByUser(userId: number): Artist[] {
+        return axios.get<Artist[]>(`http://localhost:4000/api/artist/user/${userId}`).then(response => response.data);
+    }
 }
 
 export let artistService = new ArtistService();

@@ -1,8 +1,7 @@
 /**
   Delete all procedures for recreation
  */
-DROP PROCEDURE IF EXISTS insert_artist;
-DROP PROCEDURE IF EXISTS update_artist;
+DROP PROCEDURE IF EXISTS add_artist_to_event;
 DROP PROCEDURE IF EXISTS delete_artist;
 DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
@@ -10,8 +9,10 @@ DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS get_artist_by_contact;
-DROP PROCEDURE IF EXISTS add_artist_to_event;
+DROP PROCEDURE IF EXISTS get_artist_by_user;
+DROP PROCEDURE IF EXISTS insert_artist;
 DROP PROCEDURE IF EXISTS remove_artist_from_event;
+DROP PROCEDURE IF EXISTS update_artist;
 
 /**
   Inserts a new newArtist with contact information
@@ -237,6 +238,29 @@ BEGIN
          JOIN document d ON d.document_id = cr.document
          LEFT JOIN user u on c.contact_id = u.contact
   WHERE d.event = event_id_in;
+END;
+
+/**
+  Fetches artists that are bound up to a user
+
+  IN user_id_in: The user id of the user
+
+  Issued by: getArtistByUser(userId: number)
+ */
+CREATE PROCEDURE get_artist_by_user(IN user_id_in INT)
+BEGIN
+  SELECT a.artist_id,
+         a.artist_name,
+         c.contact_id,
+         c.first_name,
+         c.last_name,
+         c.email,
+         c.phone,
+         u.user_id
+  FROM artist a
+  LEFT JOIN contact c ON a.contact = c.contact_id
+  LEFT JOIN user u on c.contact_id = u.contact
+  WHERE u.user_id = user_id_in;
 END;
 
 /**

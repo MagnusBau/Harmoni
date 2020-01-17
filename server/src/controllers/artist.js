@@ -50,6 +50,14 @@ exports.getArtistById = (req, res, next) => {
     })
 };
 
+exports.getArtistByUser = (req, res, next) => {
+    console.log(`Got request from client: GET /api/artist/user/${req.params.userId}`);
+
+    artistDao.getArtistByUser(req.params.userId, (err, rows) => {
+        res.send(rows);
+    });
+};
+
 exports.getArtistByEvent = (req, res, next) => {
     console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
 
