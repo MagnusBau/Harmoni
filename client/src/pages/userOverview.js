@@ -4,7 +4,7 @@ import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
-import { Button } from '../components/widgets';
+import {Button, ModalWidget} from '../components/widgets';
 
 const history = createHashHistory();
 /**
@@ -18,6 +18,19 @@ export default class UserOverview extends Component {
     currentUser: number = 0;
     events: Event[] = [];
     endedEvents: Event[] = [];
+
+    state = {
+        showModal: false,
+        setShowModal: false
+    };
+
+    show = () => {
+        this.setState({ setShowModal: true });
+    };
+
+    close = () => {
+        this.setState({ setShowModal: false });
+    };
 
     constructor(props){
         super(props);
@@ -103,7 +116,19 @@ export default class UserOverview extends Component {
                                 </li>
                             ))}
                         </div>
-                        <Button.Red onClick={this.deleteEndedEvents}>Slett arkiverte arrangementer</Button.Red>
+
+                        <Button.Red onClick={this.show}>Slett arkiverte arrangementer</Button.Red>
+
+                        <ModalWidget
+                            show={this.state.setShowModal}
+                            onHide={this.close}
+                            title="Advarsel"
+                            body="Er du sikker på at du vil slette arkiverte arrangementer?"
+                        >
+                            <Button.Light onClick={this.close}>Lukk</Button.Light>
+                            <Button.Red onClick={this.deleteEndedEvents}>Slett</Button.Red>
+                        </ModalWidget>
+
                     </div>
                 </div>
             </div>
