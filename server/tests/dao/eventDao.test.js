@@ -83,7 +83,7 @@ test("get cancelled events from db", done => {
     eventDao.getEventsByCancelled(true, callback);
 });
 
-test("get events by a user from db", done => {
+test("get events on a user from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
@@ -91,7 +91,7 @@ test("get events by a user from db", done => {
 
         data = data[0];
 
-        expect(data.length).toBe(4);
+        expect(data.length).toBe(3);
 
         done();
     }

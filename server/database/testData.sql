@@ -22,13 +22,13 @@ INSERT INTO artist(artist_name, contact)
 VALUES ('Svein Blipp', 3);
 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', NOW(), NOW(), 'Sport', 7000, 1, 0);
+VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-10 12:06:00', '2020-01-10 12:06:00', 'Sport', 7000, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 0);
+VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 3, 1);
+VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 3, 1);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 1, 0);
+VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
