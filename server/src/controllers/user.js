@@ -3,6 +3,9 @@
 const pool = require("../server");
 const fs = require('fs');
 import {UserDAO} from "../dao/userDao";
+import {Email} from "../email";
+
+const email = new Email();
 
 const userDao = new UserDAO(pool);
 
@@ -67,7 +70,7 @@ function login(bool: boolean, username: string, res: Response) {
     }
 }
 
-function validateUsername(data: Object, username: string, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
+/*function validateUsername(data: Object, username: string, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
     if(username.match("^[A-Za-z0-9]+$") && 2 < username.length <= 50) {
         userDao.checkUsername(username, (err, rows) => {
             console.log(rows[0][0].count);
@@ -145,6 +148,84 @@ function validatePhone(data: Object, phone: string, res: Response) {
         res.json({ error: "Invalid phone" });
         return false;
     }
+}*/
+
+function validateUsername(data: Object, res: Response) {
+    if(data.username.match("^[A-Za-z0-9]+$") && 2 < data.username.length <= 50) {
+        userDao.checkUsername(data.username, (err, rows) => {
+            console.log(rows[0][0].count);
+            if(rows[0][0].count === 0) {
+                return true;
+            } else {
+                console.log("Invalid username");
+                res.json({ error: "Invalid username" });
+                return false;
+            }
+        });
+    } else {
+        console.log("Invalid username");
+        res.json({ error: "Invalid username" });
+        return false;
+    }
+}
+
+function validatePassword(data: Object, res: Response) {
+    if(data.password.match("^[A-Za-z0-9]+$") && 2 < data.password.length <= 256) {
+        return true;
+    } else {
+        console.log("Invalid");
+        res.json({ error: "Invalid password" });
+        return false;
+    }
+}
+
+function validateEmail(data: Object, email: string, first_name: string, last_name: string, phone: string, res: Response) {
+    if(email.length < 50) {
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(re.test(String(email).toLowerCase())) {
+            return true;
+        }
+    } else {
+        console.log("Invalid");
+        res.json({ error: "Invalid email" });
+        return false;
+    }
+}
+
+function validateFirstName(data: Object, res: Response) {
+    if(data.first_name.match("^[A-Za-z]+$") && 2 < data.first_name.length < 50) {
+        return true;
+    } else {
+        console.log("Invalid first name");
+        res.json({ error: "Invalid first name" });
+        return false;
+    }
+}
+
+function validateLastName(data: Object, res: Response) {
+    if(data.last_name.match("^[A-Za-z]+$") && 2 < data.last_name.length < 50) {
+        return true;
+    } else {
+        console.log("Invalid last name");
+        res.json({ error: "Invalid last name" });
+        return false;
+    }
+}
+
+function validatePhone(data: Object, res: Response) {
+    if(!data.phone.match(/\D/)) {
+        if(data.phone.length === 8 || (data.phone.length === 12 && data.phone.substring(0, 3) === "0047")) {
+            return true;
+        } else {
+            console.log("Invalid count phone");
+            res.json({ error: "Invalid phone" });
+            return false;
+        }
+    } else {
+        console.log("Invalid input phone");
+        res.json({ error: "Invalid phone" });
+        return false;
+    }
 }
 
 function register(data: Object, res: Response) {
@@ -169,6 +250,19 @@ function register(data: Object, res: Response) {
     });
 }
 
+function registerArtistUser(data: Object, res: Response) {
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(data.password, salt, function(err, hash) {
+            data.password = hash;
+            userDao.postUser(data, data.contactId, (err, userData) => {
+                if (err) {
+                    res.json(err);
+                }
+            });
+        });
+    });
+}
+
 // Håndterer login og sender JWT-token tilbake som JSON
 exports.loginUser = (req, res, next) => {
     console.log("yo");
@@ -190,7 +284,7 @@ exports.loginUser = (req, res, next) => {
     });
 };
 
-exports.registerUser = (req, res, next) => {
+/*exports.registerUser = (req, res, next) => {
     let data = {
         "username": req.body.username,
         "password": req.body.password,
@@ -201,6 +295,59 @@ exports.registerUser = (req, res, next) => {
     };
     if(validateUsername(data, req.body.username, req.body.password, req.body.email, req.body.first_name, req.body.last_name, req.body.phone, res)) {
         console.log("yo (bad)");
+    }
+};*/
+
+exports.registerUser = (req, res, next) => {
+    let data = {
+        "username": req.body.username,
+        "password": req.body.password,
+        "email": req.body.email,
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "phone": req.body.phone
+    };
+    if(!validateUsername(data, res)) {
+        return false;
+    }
+    if(!validatePassword(data, res)) {
+        return false;
+    }
+    if(!validateFirstName(data, res)) {
+        return false;
+    }
+    if(!validateLastName(data, res)) {
+        return false;
+    }
+    if(!validateEmail(data, res)) {
+        return false;
+    }
+    if(!validatePhone(data, res)) {
+        return false;
+    }
+    register(data, res);
+};
+
+exports.registerArtistUser = (req, res, next) => {
+    console.log("Hey!");
+    let data: Object = {
+        "username": req.body.username,
+        "password": req.body.password,
+        "contact_id": req.body.contactId,
+        "email": req.body.email,
+        "artist_name": req.body.artistName,
+        "organizer": req.body.organizer,
+    };
+    let baseUsername: string = data.username;
+    while (!validateUsername(data, res)) {
+        data.username = baseUsername += Math.floor((Math.random() * 999));
+        console.log(data.username);
+    }
+    if(!validatePassword(data, res)) {
+        return false;
+    }
+    if (registerArtistUser(data, res)) {
+        email.artistUserNotification(data.email, data.artist_name, data.username, data.password, data.organizer);
     }
 };
 
