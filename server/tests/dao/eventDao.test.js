@@ -83,7 +83,37 @@ test("get cancelled events from db", done => {
     eventDao.getEventsByCancelled(true, callback);
 });
 
-// TODO test geteventuser
+test("get events by a user from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(4);
+
+        done();
+    }
+
+    eventDao.getEventByUser(1, callback);
+});
+
+test("get ended events by a user from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(0);
+
+        done();
+    }
+
+    eventDao.getEndedEventsByUser(1, callback);
+});
 
 test("create event", done => {
     function callback(status, data) {
@@ -168,16 +198,17 @@ test("get cancelled event information", done => {
     eventDao.getCancelledEventInfo(3, callback);
 });
 
-test("delete_ event from db", done => {
+test("delete_ ended event from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
 
-        expect(data.affectedRows).toBe(1);
+        //TODO change end_time in setup.sql
+        expect(data.affectedRows).toBe(0);
         done();
     }
 
-    eventDao.deleteEvent(4, callback);
+    eventDao.deleteEventsByEndTime(1, callback);
 
 });
