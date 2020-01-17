@@ -54,7 +54,8 @@ export default class UserEdit extends Component {
 
     render(){
         let artistBox;
-        if(userService.getArtistName() != null) {
+        if(userService.getArtistName() != null && userService.getArtistName() !== "null") {
+            console.log(typeof userService.getArtistId());
             artistBox = (
                 <div className="list-group" className="">
                     <form ref={e => (this.artistForm = e)}>
@@ -105,6 +106,7 @@ export default class UserEdit extends Component {
         return (
             //TODO en eller annen header for hvilken user som er logget inn
             <div className="container">
+                <br/>
                 <div className="row">
                     <div className="col-md-6">
                         <div className="row">
@@ -172,7 +174,45 @@ export default class UserEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                        <br/>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h5>Profilbilde</h5>
+                                <div className="list-group" className="">
+                                    <form ref={e => (this.artistForm = e)}>
+                                        <li className="list-group-item">
+                                            <h5>Bilde</h5>
+
+                                        </li>
+                                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                            this.saveImageChanges();
+                                        }}>
+                                            Lagre Endringer
+                                        </li>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="list-group">
+                                    <li className="list-group-item list-group-item-action list-group-item-dark"
+                                        style={{marginTop: "20px"}}
+                                        onClick={(e) => {
+                                            history.push("/user/" + userService.getUserID() + "/overview");
+                                        }}>
+                                        Tilbake
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h5>Artist</h5>
+                                {artistBox}
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col-md-12">
                                 <h5>Password</h5>
@@ -220,36 +260,6 @@ export default class UserEdit extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Profilbilde</h5>
-                                <div className="list-group" className="">
-                                    <form ref={e => (this.artistForm = e)}>
-                                        <li className="list-group-item">
-                                            <h5>Bilde</h5>
-
-                                        </li>
-                                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                            this.saveImageChanges();
-                                        }}>
-                                            Lagre Endringer
-                                        </li>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Artist</h5>
-                                {artistBox}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-
                     </div>
                 </div>
             </div>

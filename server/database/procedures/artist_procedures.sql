@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS update_artist;
 DROP PROCEDURE IF EXISTS delete_artist;
 DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
+DROP PROCEDURE IF EXISTS get_artist_by_contact;
 DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
@@ -139,6 +140,18 @@ BEGIN
   FROM artist a
          JOIN contact c ON a.contact = c.contact_id
   WHERE a.artist_id = artist_id_in;
+END;
+
+/**
+  Get artist from contact_id
+
+  Issued by: getArtistByContact(contactId: number)
+ */
+CREATE PROCEDURE get_artist_by_contact(IN contact_id_in INT)
+BEGIN
+  SELECT artist_id, artist_name
+  FROM artist
+  WHERE contact = contact_id_in;
 END;
 
 /**

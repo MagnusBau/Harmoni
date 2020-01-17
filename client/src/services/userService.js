@@ -18,6 +18,8 @@ class UserService {
                 localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("contact_id", response.user.contact_id);
                 localStorage.setItem("token", response.token);
+                localStorage.setItem("artist_id", response.artist.artist_id);
+                localStorage.setItem("artist_name", response.artist.artist_name);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
                 next();
@@ -37,7 +39,7 @@ class UserService {
     // TODO: Move to utility class?
     generateRandomPassword(length: number) {
         let result           = '';
-        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let charactersLength = characters.length;
         for (let i = 0; i < length; i++ ) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -94,8 +96,8 @@ class UserService {
                     localStorage.setItem("phone", response.user.phone);
                     localStorage.setItem("contact_id", response.user.contact_id);
                     localStorage.setItem("token", response.token);
-                    localStorage.setItem("artist_id", response.artist_id);
-                    localStorage.setItem("artist_name", response.artist_name);
+                    localStorage.setItem("artist_id", response.artist.artist_id);
+                    localStorage.setItem("artist_name", response.artist.artist_name);
                     history.push("/");
                     return true;
                 }
@@ -185,7 +187,7 @@ class UserService {
     }
 
     getUser() {
-        return axios.get('http://' + ip + ':4000/auth/user/' + userService.getUserID(), data).then(response => {
+        return axios.get('http://' + ip + ':4000/auth/user/' + userService.getUserID()).then(response => {
             if (response.user != null) {
                 localStorage.setItem("user_id", response.user.user_id);
                 localStorage.setItem("username", response.user.username);

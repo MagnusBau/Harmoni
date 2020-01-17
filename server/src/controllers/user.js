@@ -9,7 +9,7 @@ import {Email} from "../email";
 const email = new Email();
 
 const userDao = new UserDAO(pool);
-const artistDao = new UserDAO(pool);
+const artistDao = new ArtistDAO(pool);
 
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
@@ -52,9 +52,10 @@ function login(bool: boolean, username: string, res: Response) {
 
         userDao.getUser(username, (err, user) => {
             console.log(username + user[0][0].user_id + user[0][0].username);
-            artistDao.getArtistByContactId(user[0][0].contact_id), (err, artist) => {
-                if(artist[0][0]) {
-                    if(artist[0][0].artist_id) {
+            artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
+                if(artist[0][0] != null) {
+                    if(artist[0][0].artist_id != null) {
+                        console.log(artist[0][0].artist_name);
                         res.json({
                             user: {
                                 "user_id": user[0][0].user_id,
@@ -89,8 +90,25 @@ function login(bool: boolean, username: string, res: Response) {
                             },
                             token: token });
                     }
+                } else {
+                    res.json({
+                        user: {
+                            "user_id": user[0][0].user_id,
+                            "username": user[0][0].username,
+                            "contact_id": user[0][0].contact_id,
+                            "image": user[0][0].image,
+                            "first_name": user[0][0].first_name,
+                            "last_name": user[0][0].last_name,
+                            "email": user[0][0].email,
+                            "phone": user[0][0].phone
+                        },
+                        artist: {
+                            "artist_id": null,
+                            "artist_name": null
+                        },
+                        token: token });
                 }
-            }
+            });
         });
 
 
@@ -406,9 +424,9 @@ exports.updateUser = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-    userDao.getUser(username, (err, user) => {
-        console.log(username + user[0][0].user_id + user[0][0].username);
-        artistDao.getArtistByContactId(user[0][0].contact_id), (err, artist) => {
+    userDao.getUserById(req.params.userId, (err, user) => {
+        console.log(req.params.userId + user[0][0].user_id + user[0][0].username);
+        artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
             if(artist[0][0]) {
                 if(artist[0][0].artist_id) {
                     res.json({
@@ -446,7 +464,7 @@ exports.getUser = (req, res, next) => {
                     });
                 }
             }
-        }
+        });
     });
 }
 
