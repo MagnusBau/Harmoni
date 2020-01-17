@@ -142,6 +142,18 @@ BEGIN
 END;
 
 /**
+  Get artist from contact_id
+
+  Issued by: getArtistByContact(contactId: number)
+ */
+CREATE PROCEDURE get_artist_by_contact(IN contact_id_in INT)
+BEGIN
+  SELECT artist_id, artist_name
+  FROM artist
+  WHERE contact = contact_id_in;
+END;
+
+/**
   Get one newArtist from an id
 
   Issued by: getAllArtists()
