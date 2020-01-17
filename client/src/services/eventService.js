@@ -80,6 +80,10 @@ export class EventService {
         return axios.delete<Event>('http://localhost:4000/api/event/' + eventId).then(response => response.data);
     }
 
+    deleteEndedEvents(userId: number) {
+        return axios.delete<Event[]>('http://localhost:4000/api/event/user/' + userId + '/ended').then(response => response.data);
+    }
+
     cancelEvent(eventId: number) {
         return axios.put(`http://localhost:4000/api/event/${eventId}/cancel`).then(response => response.data);
     }

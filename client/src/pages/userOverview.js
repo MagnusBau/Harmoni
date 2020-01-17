@@ -4,6 +4,7 @@ import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
+import { Button } from '../components/widgets';
 
 const history = createHashHistory();
 /**
@@ -44,12 +45,22 @@ export default class UserOverview extends Component {
                     this.endedEvents.push(events);
                 })
             }
-        })
+        });
+
+    }
+
+    deleteEndedEvents() {
+
+        eventService
+            .deleteEndedEvents(userService.getUserID())
+            .then(window.location.reload())
+            .then(console.log("Arrangement slettet!"))
+            .catch((error: Error) => console.log(error.message));
     }
 
     viewEvent = (event) => {
         history.push("/event/" + event.target.getAttribute('eventId') + "/overview");
-    }
+    };
 
 
     render(){
@@ -92,6 +103,7 @@ export default class UserOverview extends Component {
                                 </li>
                             ))}
                         </div>
+                        <Button.Red onClick={this.deleteEndedEvents}>Slett arkiverte arrangementer</Button.Red>
                     </div>
                 </div>
             </div>
