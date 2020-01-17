@@ -186,17 +186,19 @@ END;
  */
 CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
 BEGIN
-    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
+    DELETE event_equipment,event FROM event_equipment
+        INNER JOIN event ON event_equipment.event = event.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
 end;
 
 /**
-  // TODO change = 0 to > 7
+  Get ended events on a specific user
  */
 CREATE PROCEDURE get_events_by_end_time_user(IN user_id_in INT)
 BEGIN
     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
     FROM event
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 1
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
       AND organizer = user_id_in;
 END;
 
