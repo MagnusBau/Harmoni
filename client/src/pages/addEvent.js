@@ -23,6 +23,8 @@ export class AddEvent extends Component {
         date: new Date(),
     };
 
+
+
     /**
      *
      * @param date
@@ -42,6 +44,8 @@ export class AddEvent extends Component {
     }
 
     render() {
+
+
         return(
             <div className={"m-2"}>
                 <form className="form-group">

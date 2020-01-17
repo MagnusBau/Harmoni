@@ -5,6 +5,9 @@ import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
 import {ModalWidget, Button, Alert} from "../widgets";
+import {SimpleMap} from "../simplemap"
+
+
 
 export default class EventView extends Component {
     currentEvent: number = 0;
@@ -31,32 +34,52 @@ export default class EventView extends Component {
 
         return (
             <div>
-                <h3>{this.eventOverview[0].title}</h3>
-                <h5>Beskrivelse:</h5>
-                <p>{this.eventOverview[0].description}</p>
-                <h5>Kategori</h5>
-                <p>{this.eventOverview[0].category}</p>
-                <h5>Sted</h5>
-                <p>{this.eventOverview[0].location}</p>
-                <h5>Tidspunkt</h5>
-                <p>Fra: {this.eventOverview[0].start_time}
-                    <br/>Til: {this.eventOverview[0].end_time}</p>
-                <h5>Kapasitet</h5>
-                <p>{this.eventOverview[0].capacity}</p>
-                <button
-                    size="sm"
-                    className="m"
-                    variant="outline-secondary"
-                    onClick={this.props.handleClick}>
-                    Rediger arrangement
-                </button>
+                <div className="row">
+                    <div className={"col"}>
+                        <div className={"card"}>
+                            <div className={"card-body"}>
+                                <h3>{this.eventOverview[0].title}</h3>
+                                <h5>Beskrivelse:</h5>
+                                <p>{this.eventOverview[0].description}</p>
+                                <h5>Kategori</h5>
+                                <p>{this.eventOverview[0].category}</p>
+                                <h5>Sted</h5>
+                                <p>{this.eventOverview[0].location}</p>
+                                <h5>Tidspunkt</h5>
+                                <p>Fra: {this.eventOverview[0].start_time}
+                                    <br/>Til: {this.eventOverview[0].end_time}</p>
+                                <h5>Kapasitet</h5>
+                                <p>{this.eventOverview[0].capacity}</p>
+                                <button
+                                    size="sm"
+                                    className="m"
+                                    variant="outline-secondary"
+                                    onClick={this.props.handleClick}>
+                                    Rediger arrangement
+                                </button>
 
-                <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
+                                <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
 
-                <ModalWidget show={this.state.setShowModal} onHide={this.close} title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <Button.Light onClick={this.close}>Lukk</Button.Light>
-                    <Button.Red onClick={this.cancelEvent}>Avlys</Button.Red>
-                </ModalWidget>
+                                <ModalWidget show={this.state.setShowModal} onHide={this.close} title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
+                                    <Button.Light onClick={this.close}>Lukk</Button.Light>
+                                    <Button.Red onClick={this.cancelEvent}>Avlys</Button.Red>
+                                </ModalWidget>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={"col"}>
+                        <div className={"card"}>
+                            <div className={"card-body"}>
+                                <div>
+                                    <SimpleMap>
+
+                                    </SimpleMap>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         )

@@ -35,6 +35,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     rider: Rider = new Rider();
     //roles: Role[] = [];
 
+
     constructor(props){
         super(props);
         this.handleEventEdit = this.handleEventEdit.bind(this);
@@ -126,6 +127,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
 
 
     render(){
+
         console.log();
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
