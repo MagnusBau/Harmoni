@@ -10,17 +10,17 @@
     <script src="jquery.min.js"></script>
     <script src="popper.min.js"></script>
     <script src="bootstrap.min.js"></script>
+    <script src="mapsapi.js"></script>
+    <script src="scriptKid.js"></script>
 </head>
 <body>
     <div id="root"></div>
     <script src="bundle.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('[data-toggle="popover"]').popover({
-                placement : 'bottom',
-                content: 'body'
-            });
-        });
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2gT4JBMh-JKuJtXr-EJgcD_dKkJZF-U4&callback=initMap">
     </script>
+
+
 </body>
 </html>

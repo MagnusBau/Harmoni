@@ -23,11 +23,20 @@ export class AddEvent extends Component {
         date: new Date(),
     };
 
+    /**
+     *
+     * @param date
+     */
     handleDate(date){
         this.setState({date});
         this.createEvent.start_time = date;
     };
 
+    /**
+     * 
+     * @param props
+     * @param context
+     */
     constructor(props, context) {
         super(props, context);
     }
