@@ -220,6 +220,10 @@ app.use("/api/file", fileRoutes);
     next();
 });*/
 
+app.use((req, res, next) => {
+    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
+});
+
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

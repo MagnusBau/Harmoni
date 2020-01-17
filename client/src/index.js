@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {HashRouter} from 'react-router-dom';
-import {Route, Switch} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
 
 import EventOverview from "./pages/Event.js";
@@ -23,6 +23,7 @@ import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
 import {AddRole} from "./pages/addRole";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const root = document.getElementById("root");
 if (root)
@@ -46,6 +47,8 @@ if (root)
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
+                    <Route exact path="/404" component={NotFoundPage}/>
+                    <Redirect to="/404"/>
                 </Switch>
                 <Footer/>
             </div>
