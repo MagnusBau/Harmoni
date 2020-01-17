@@ -186,10 +186,12 @@ END;
  */
 CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
 BEGIN
-    DELETE event_equipment,event FROM event_equipment
-        INNER JOIN event ON event_equipment.event = event.event_id
+    DELETE event_equipment FROM event_equipment
+        INNER JOIN event ON event.event_id = event_equipment.event
     WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
-end;
+
+    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
+END;
 
 /**
   Get ended events on a specific user
