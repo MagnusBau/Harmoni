@@ -340,7 +340,7 @@ exports.registerArtistUser = (req, res, next) => {
     };
     let baseUsername: string = data.username;
     while (!validateUsername(data, res)) {
-        data.username = baseUsername += Math.floor((Math.random() * 999));
+        data.username = baseUsername + 1;
         console.log(data.username);
     }
     if(!validatePassword(data, res)) {
