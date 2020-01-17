@@ -11,6 +11,7 @@ router.put("/update", fileController.update);
 router.delete("/delete", fileController.delete);
 
 router.get("/info/:eventId", fileInfoController.getFileInfoByEvent);
+router.post("/check/:eventId", fileInfoController.checkFileName);
 
 
 module.exports = router;

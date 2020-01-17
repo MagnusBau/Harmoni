@@ -31,6 +31,14 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    checkFileName(eventId: number, fileName: string, callback: (status: string, data: string) => void) {
+        let values = [eventId, fileName];
+        console.log("SE PÅ DENNE DATAN!!!!: " + eventId);
+        super.query("CALL check_document_name(?,?)",
+            values,
+            callback);
+    }
+
     //<DO NOT TOUCH>
     postFileInfo(data, callback: ()=>void) {
         console.log("data.name: " + data.name);

@@ -30,6 +30,15 @@ exports.insertFileInfo = (req, res, next) => {
     })
 };
 
+exports.checkFileName = (req, res, next) => {
+    console.log('Got request from client: POST /file/check/:eventId');
+    console.log(req.params.eventId);
+    console.log(req.body.name);
+    fileInfoDao.checkFileName(req.params.eventId, req.body.name, (err, rows) => {
+        res.json(rows);
+    })
+};
+
 exports.updateFileInfo = (req, res, next) => {
 };
 

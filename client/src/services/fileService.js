@@ -22,6 +22,10 @@ class FileInfoService {
     updatePath(id: number) {
         return axios.put('http://' + ip +':4000/api/file/path', id).then(response => response.data);
     }
+
+    checkFileName(eventId: number, name: string){
+        return axios.post(`http://` + ip +`:4000/api/file/check/${eventId}`, {"name": name}).then(response => response.data);
+    }
 }
 
 class FileService {

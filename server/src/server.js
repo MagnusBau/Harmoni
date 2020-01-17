@@ -76,12 +76,10 @@ app.post('/single/:eventId', upload.single('file'), (req, res) => {
         "eventId": req.params.eventId
     };
     let result = res;
+    console.log(req.body.name);
     fileInfoDao.postFileInfo(data, (err, res) => {
         try {
-            let data = {
-              "file": req.file,
-              "name": res.insertId
-            };
+            //PRØV Å ENDRE NAVNET PÅ CLIENT-SIDE! NEI DET ER USIKKERT
             result.send(req.file);
         }catch(err) {
             result.send(400);

@@ -18,8 +18,6 @@ exports.download = async (req, res, next) => {
 
 exports.upload = (req, res, next) => {
     console.log(`Got request from client: /file/upload/${req.params.eventId}`);
-    let file: File = Buffer.from(req.body.encodedFile, 'base64').toString('binary');
-    console.log(file);
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId

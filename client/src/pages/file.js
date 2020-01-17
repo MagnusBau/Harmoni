@@ -99,18 +99,57 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleFile(e) {
         let file = e.target.files[0];
         this.setState({file: file});
+        this.name = file.name;
+    }
+
+    //returnerer true hvis navnet ikke finnes i databasen
+    chechkFileName(){
+        fileInfoService.checkFileName(this.props.match.params.eventId, this.name).then(response => {
+            if(response[0][0].duplicate === 0){
+                return true;
+            }else{
+                return false;
+            }
+        })
     }
 
     handleUpload(e) {
         let file = this.state.file;
-        let encodedFile = btoa(file);
-        this.name = file.name;
-        console.log(this.name);
+
+        if(this.chechkFileName()){
+
+            let formData = new FormData();
+            const myNewFile = new File([file], 'tester.jpg', {type: file.type});
+
+            formData.append('file', file);
+            formData.append('name', this.name);
+
+            /**
+             * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
+             * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
+             *
+             */
+
+            this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
+            this.name = this.name.trim();
+
+            fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, formData).then(response => {
+                console.log("should have posted fileInfo to database");
+            });
+
+        }
 
         let formData = new FormData();
+        const myNewFile = new File([file], 'tester.jpg', {type: file.type});
 
         formData.append('file', file);
         formData.append('name', this.name);
+
+        /**
+         * hent navn fra klient sammen med eventId. sjekk om navnen finnes blant dokumenter for det eventet.
+         * Om det er et unikt navn, lagre filen med eventId pluss noen symboler (typ ---) og dokumentnavnet
+         *
+         */
 
 
 
