@@ -1,8 +1,7 @@
-
 // @flow
 const nodemailer = require("nodemailer");
 
-let transporter = nodemailer.createTransport( {
+let transporter = nodemailer.createTransport({
 
     service: 'gmail',
     auth: {
@@ -11,6 +10,8 @@ let transporter = nodemailer.createTransport( {
     }
 
 });
+
+const url = `http://localhost:4000`;
 
 export class Email {
 
@@ -31,19 +32,42 @@ export class Email {
                 '   <br>Harmoni Team 3</div>' +
                 '   <br><p style="text-align: center">&copy; 2020 Team 3</div>' +
                 '  </div>'
-
-
         };
 
         transporter.sendMail(mailOption, (err, res) => {
-            if(err) {
+            if (err) {
                 console.log("Error occured: " + err);
             } else {
                 console.log("Email sent: " + res.response);
             }
         });
-
     }
 
+    artistUserNotification(recipient: string, artistName: string, username: string, password: string, organizer: string) {
+        let mailOption = {
+            from: `Harmoni <harmoni.team3@gmail.com>`,
+            to: [recipient],
+            subject: `${organizer} har opprettet en bruker for deg på Harmoni`,
+            html: `<h3 style="font-size: 21px">Hei, ${artistName}` +
+                `  <div style="font-size: 17px">` +
+                `  <br>${organizer} har knyttet deg til sitt arrangement og har opprettet en bruker på vegne av deg!` +
+                `  <br>Du kan nå logge inn på ${url} og se detaljer angående arrangementet ved å bruke følgende innlogging:` +
+                `  <br><br><b>Brukernavn: </b>${username}` +
+                `  <br><b>Passord: </b>${password}</div>` +
+                `  <div>Med vennlig hilsen,` +
+                `  <br>Harmoni Team 3</div>` +
+                `  <br><p style="text-align: center">&copy; 2020 Team 3</div>` +
+                `  </div>`
+
+        };
+
+        transporter.sendMail(mailOption, (err, res) => {
+            if (err) {
+                console.log("Error occured: " + err);
+            } else {
+                console.log("Email sent: " + res.response);
+            }
+        });
+    }
 }
 

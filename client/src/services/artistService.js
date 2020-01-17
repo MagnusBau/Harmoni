@@ -5,10 +5,12 @@ import axios from 'axios';
 export class Artist {
     artist_id: number;
     artist_name: string;
+    contact_id: string;
     first_name: string;
     last_name: string;
     email: string;
     phone: string;
+    user_id: string;
 }
 
 class ArtistService {

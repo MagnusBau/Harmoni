@@ -24,14 +24,16 @@ class UserService {
             }
             return false;
         });
-
     }
 
-    generateArtistUser(artistName: string, firstName: string, lastName: string, email: string, phone: string) {
+    generateArtistUser(artistName: string, firstName: string, lastName: string, phone: string, email: string,
+                       contactId: number) {
+        let organizer = `${this.getFirstName()} ${this.getLastName()}`;
         // TODO: Handle username collisions
         let username: string = artistName.replace(/\s/g, '').toLowerCase();
         // TODO: Send email to artist
-        return this.attemptRegister(username, this.generateRandomPassword(10), email, firstName, lastName, phone);
+        return this.attemptRegisterArtist(username, this.generateRandomPassword(10), firstName, lastName, phone,
+                                            email, contactId, organizer, artistName);
     }
 
     // TODO: Move to utility class?
@@ -43,6 +45,32 @@ class UserService {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         return result;
+    }
+
+    attemptRegisterArtist(username: string, password: string, firstName: string, lastName: string, phone: string,
+                          email: string, contactId: number, organizer: string, artistName: string) {
+        let data = {
+            "username": username,
+            "password": password,
+            "email": email,
+            "contact_id": contactId,
+            "artist_name": artistName,
+            "organizer": organizer,
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": phone
+        };
+        this
+            .postArtistUser(data)
+            .then(response => {
+                if (response.error != null) {
+                    console.log(response.error);
+                    console.log("failed");
+                    return false;
+                } else {
+                    return true;
+                }
+            });
     }
 
     attemptRegister(username: string, password: string, email: string, firstName: string, lastName: string, phone: string){
@@ -154,6 +182,10 @@ class UserService {
 
     postUser(data: Object) {
         return axios.post('http://' + ip +':4000/auth/user', data).then(response => response.data);
+    }
+
+    postArtistUser(data: Object) {
+        return axios.post(`http://${ip}:4000/auth/user`, data).then(response => response.data);
     }
 
     postToken(input: Object) {

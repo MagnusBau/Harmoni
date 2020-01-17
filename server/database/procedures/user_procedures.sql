@@ -10,6 +10,8 @@ DROP PROCEDURE IF EXISTS check_username;
 DROP PROCEDURE IF EXISTS get_contact;
 DROP PROCEDURE IF EXISTS put_contact;
 DROP PROCEDURE IF EXISTS put_password;
+DROP PROCEDURE IF EXISTS check_and_verify_artist_username;
+DROP PROCEDURE IF EXISTS get_user_by_artist;
 
 /**
   Inserts a new contact
@@ -103,6 +105,13 @@ BEGIN
     SELECT contact_id, first_name, last_name, email, phone FROM user LEFT JOIN contact ON user.contact=contact.contact_id WHERE user_id=user_id_in;
 END;
 
+CREATE PROCEDURE get_user_by_artist(IN artist_id_in INT(11))
+BEGIN
+    SELECT * FROM user RIGHT JOIN contact ON user.contact = contact.contact_id
+    LEFT JOIN artist a on contact.contact_id = a.contact
+    WHERE a.artist_id = artist_id_in;
+END;
+
 /**
   Fetches a user based on username
 
@@ -115,6 +124,15 @@ CREATE PROCEDURE get_user(IN username_in VARCHAR(50))
 BEGIN
     SELECT * FROM user RIGHT JOIN contact ON user.contact = contact.contact_id
     WHERE user.username=username_in;
+END;
+
+CREATE PROCEDURE check_and_verify_artist_username(IN username_in VARCHAR(50))
+BEGIN
+    WHILE (username_in IN (SELECT username FROM user WHERE user.username=username_in)) DO
+        SET username_in = CONCAT(username_in, FLOOR(RAND()*999));
+    END WHILE;
+
+    SELECT username_in;
 END;
 
 /**

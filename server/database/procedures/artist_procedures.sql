@@ -142,6 +142,18 @@ BEGIN
 END;
 
 /**
+  Get artist from contact_id
+
+  Issued by: getArtistByContact(contactId: number)
+ */
+CREATE PROCEDURE get_artist_by_contact(IN contact_id_in INT)
+BEGIN
+  SELECT artist_id, artist_name
+  FROM artist
+  WHERE contact = contact_id_in;
+END;
+
+/**
   Get one newArtist from an id
 
   Issued by: getAllArtists()
@@ -190,11 +202,12 @@ END;
 
 CREATE PROCEDURE get_artist_by_event(IN event_id_in INT)
 BEGIN
-  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone
+  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone, u.user_id
   FROM artist a
          JOIN contact c ON a.contact = c.contact_id
          JOIN contract cr ON a.artist_id = cr.artist
          JOIN document d ON d.document_id = cr.document
+          LEFT JOIN user u on c.contact_id = u.contact
   WHERE d.event = event_id_in;
 END;
 

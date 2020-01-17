@@ -104,13 +104,15 @@ export class AddEventArtist extends Component {
             email: "",
             phone: ""
         };
-        this.mounted();
         this.setState({setRemoveArtistShow: false});
+        this.mounted();
     }
 
     addArtistUser() {
-        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name, this.seeArtist.email, this.seeArtist.phone);
+        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
+                                        this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id);
         this.setState({setAddArtistUserShow: false});
+        this.mounted();
     }
 
     onSubmit(e) {
@@ -161,7 +163,13 @@ export class AddEventArtist extends Component {
                                     </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
                                         <div className="align-bottom form-inline">
-                                            <button id="showAddUser" className="btn btn-primary m-1" onClick={this.show}>Opprett bruker</button>
+                                            {!this.seeArtist.user_id ?
+                                                <button
+                                                    id="showAddUser"
+                                                    className="btn btn-primary m-1"
+                                                    onClick={this.show}>
+                                                    Opprett bruker
+                                                </button> : null}
                                             <button id="showWarning" className="btn btn-danger m-1" onClick={this.show}>Fjern</button>
                                         </div>
                                          : null}
