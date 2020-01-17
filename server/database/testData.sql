@@ -22,7 +22,7 @@ INSERT INTO artist(artist_name, contact)
 VALUES ('Svein Blipp', 3);
 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-10 12:06:00', '2020-01-10 12:06:00', 'Sport', 7000, 1, 0);
+VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-09 12:06:00', '2020-01-09 12:06:00', 'Sport', 7000, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)

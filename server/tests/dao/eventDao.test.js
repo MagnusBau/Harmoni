@@ -107,7 +107,7 @@ test("get ended events by a user from db", done => {
 
         data = data[0];
 
-        expect(data.length).toBe(0);
+        expect(data.length).toBe(1);
 
         done();
     }
@@ -205,7 +205,7 @@ test("delete_ ended event from db", done => {
         );
 
         //TODO change end_time in setup.sql
-        expect(data.affectedRows).toBe(0);
+        expect(data.affectedRows).toBe(5);
         done();
     }
 
