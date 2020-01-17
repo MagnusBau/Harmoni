@@ -18,6 +18,8 @@ const history = createHashHistory();
     //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
 class NavBar extends Component {
     form: any = null;
+    firstName: string = "";
+    lastName: string = "";
     username: string = "";
     password: string = "";
 
@@ -50,10 +52,16 @@ class NavBar extends Component {
     }
 
      mounted(): void {
+        if(userService.getUserID() != null && userService.getUserID() !== "null") {
+            this.username = userService.getUsername();
+            this.firstName = userService.getFirstName();
+            this.lastName = userService.getLastName();
+        }
          let id = userService.getUserID();
          let username = userService.getUsername();
          let fullName = `${userService.getFirstName()} ${userService.getLastName()}`;
          this.setState({userId: id, username: username, fullName: fullName});
+         userService.setMountDropdown(this.mounted);
      }
 
     render() {
@@ -69,8 +77,8 @@ class NavBar extends Component {
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
-                                <h5>{userService.getFirstName() + " " + userService.getLastName()}</h5>
-                                <p className="form-text text-muted">{`@${userService.getUsername()}`}</p>
+                                <h5>{this.firstName + " " + this.lastName}</h5>
+                                <p className="form-text text-muted">{`@${this.username}`}</p>
                                 <div className="dropdown-divider"/>
                                 <button
                                     type="button"

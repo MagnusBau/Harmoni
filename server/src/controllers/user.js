@@ -409,7 +409,8 @@ exports.getToken = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
     console.log("Skal oppdatere bruker");
-    let id: number = Number.parseInt(req.params.userId);
+    console.log(req.body);
+    let id: number = Number.parseInt(req.params.id);
     let data: Object = req.body;
     userDao.getContact(id, (err, rows) => {
         if(rows[0][0].contact_id) {
@@ -424,9 +425,12 @@ exports.updateUser = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-    userDao.getUserById(req.params.userId, (err, user) => {
-        console.log(req.params.userId + user[0][0].user_id + user[0][0].username);
+    console.log("id:" + req.params.id);
+    userDao.getUserById(req.params.id, (err, user) => {
+        console.log(user);
+        console.log(req.params.id + user[0][0].user_id + user[0][0].username);
         artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
+            console.log(artist);
             if(artist[0][0]) {
                 if(artist[0][0].artist_id) {
                     res.json({
@@ -463,25 +467,42 @@ exports.getUser = (req, res, next) => {
                         }
                     });
                 }
+            } else {
+                res.json({
+                    user: {
+                        "user_id": user[0][0].user_id,
+                        "username": user[0][0].username,
+                        "contact_id": user[0][0].contact_id,
+                        "image": user[0][0].image,
+                        "first_name": user[0][0].first_name,
+                        "last_name": user[0][0].last_name,
+                        "email": user[0][0].email,
+                        "phone": user[0][0].phone
+                    },
+                    artist: {
+                        "artist_id": null,
+                        "artist_name": null
+                    }
+                });
             }
         });
     });
 }
 
 exports.updateUserPassword = (req, res, next) => {
+    console.log(req.body);
     let password = req.body.password;
     let newPassword = req.body.newPassword;
-    let id = req.params.userId;
+    let id = req.params.id;
     userDao.getPassword(req.body.username, (err, rows) => {
         if(rows[0][0]) {
             if(rows[0][0].password) {
                 let savedHash = rows[0][0].password;
                 bcrypt.compare(password, savedHash, function(err, response) {
-                    console.log(response);
                     if(response) {
                         bcrypt.genSalt(10, function(err, salt) {
                             bcrypt.hash(newPassword, salt, function(err, hash) {
-                                console.log("Passord OK")
+                                console.log("Passord OK");
                                 userDao.updatePassword(id, hash, (err, rows) => {
                                     console.log("Passord oppdatert");
                                     res.json(rows);
