@@ -58,7 +58,7 @@ test("Get one document from db by document id", done => {
         done();
 
     }
-    fileInfoDao.getFileInfoById(1, callback);
+    fileInfoDao.getFileInfoById(2, callback);
 });
 
 test("Get one document from db by event id", done => {
