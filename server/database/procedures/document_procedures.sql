@@ -28,7 +28,7 @@ END;
 
 CREATE PROCEDURE get_document_by_event(IN event_id_in INT)
 BEGIN
-  SELECT document_id, name FROM document
+  SELECT document_id, name, path FROM document
   WHERE event = event_id_in;
 END;
 

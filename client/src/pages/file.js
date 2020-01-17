@@ -15,6 +15,8 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     name: string = "";
     fileList: Object[] = [];
     errorMessage: string = "";
+    path: string = "./files";
+    nameAddOn: string = "------";
 
     render() {
         return(
@@ -61,6 +63,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 onClick={e => this.handleDelete(e)}
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Slett</button>
+                            <button
+                                type="button"
+                                className="btn btn-dark"
+                                style={{}}
+                                onClick={e => this.handleDownload(e)}
+                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                            >Last ned</button>
                         </form>
                         <p style={{color: "red"}}>{this.errorMessage}</p>
                     </div>
@@ -74,7 +83,9 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                         </li>
                         <ul>
                         {this.fileList.map(f => (
-                            <li key={"fileId" + f.document_id} className="list-group-item list-group-item-action">
+                            <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
+                                this.setState({selected: event.target.innerText});
+                            }}>
                                 {f.name}
                             </li>
                         ))}
@@ -102,16 +113,6 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
         this.name = file.name;
     }
 
-    //returnerer 1 hvis navnet ikke finnes i databasen
-    chechkFileName(){
-        fileInfoService.checkFileName(this.props.match.params.eventId, this.name).then(response => {
-            console.log("DUP?: "+ response[0][0].duplicate);
-            let val = Number.parseInt(response[0][0].duplicate);
-            console.log("val: " + val);
-            this.setState({dup: val});
-        });
-    }
-
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
@@ -122,11 +123,11 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
             console.log("DUP?: "+ response[0][0].duplicate);
                 if(response[0][0].duplicate === 0){
 
-                    const myNewFile = new File([file], this.props.match.params.eventId + '------' + file.name, {type: file.type});
+                    const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
 
                     formData.append('file', myNewFile);
                     formData.append('name', this.name);
-                    formData.append('path', "./files/" + myNewFile.name);
+                    formData.append('path', this.path + myNewFile.name);
 
                     fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
                         console.log("should have posted fileInfo to database");
@@ -138,6 +139,11 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                 }
         });
 
+    }
+
+    handleDownload(e){
+
+        console.log(this.state.selected);
     }
     handleOverwrite(){
 
