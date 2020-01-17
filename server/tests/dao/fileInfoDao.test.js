@@ -58,7 +58,7 @@ test("Get one document from db by document id", done => {
         done();
 
     }
-    fileInfoDao.getFileInfoById(1);
+    fileInfoDao.getFileInfoById(1, callback);
 });
 
 test("Get one document from db by event id", done => {
@@ -73,7 +73,7 @@ test("Get one document from db by event id", done => {
         done();
 
     }
-    fileInfoDao.getFileInfoByEvent(1);
+    fileInfoDao.getFileInfoByEvent(1, callback);
 });
 
 test("Check if document name exist in db", done => {
@@ -87,5 +87,5 @@ test("Check if document name exist in db", done => {
         done();
 
     }
-    fileInfoDao.checkFileName(1, "Bob");
+    fileInfoDao.checkFileName(1, "Bob", callback);
 });
