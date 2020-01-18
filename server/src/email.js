@@ -4,7 +4,8 @@ const nodemailer = require("nodemailer");
 
 let transporter = nodemailer.createTransport( {
 
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
     auth: {
         user: 'harmoni.team3@gmail.com',
         pass: 'Team3.harmoni'
