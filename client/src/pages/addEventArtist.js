@@ -24,6 +24,10 @@ export class AddEventArtist extends Component {
     documentId: number = -1;
     isArtist: boolean = true;
 
+    /**
+     * Shows a modal dialog window
+     * @param e Component triggering the dialog
+     */
     show(e) {
         if (e.target.id === "showWarning") {
             this.setState({showRemoveWarning: true});
@@ -62,6 +66,13 @@ export class AddEventArtist extends Component {
     }
 
     mounted(): void {
+        this.fetchData();
+    }
+
+    /**
+     * Updates all component data from the database
+     */
+    fetchData() {
         this.eventArtists = [];
         eventService
             .getEventById(this.props.eventId)
@@ -102,17 +113,30 @@ export class AddEventArtist extends Component {
         this.newArtist[name] = e.target.value;
     }
 
+    /**
+     * Called whenever the artist list is clicked
+     * @param artist Artist object that was clicked on
+     */
     onSelect(artist: Artist) {
         this.seeArtist = artist;
     }
 
+    /**
+     * Called whenever the filter textbox has been changed
+     * @param e
+     */
     onChangeFilter(e) {
         this.artistFilter = e.target.value;
     }
 
+    /**
+     * Removes an artist from the event
+     * @param e
+     */
     removeArtist(e) {
-        //this.eventArtists = this.eventArtists.filter(artist => artist.artist_id !== this.seeArtist.artist_id);
-        artistService.removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id);
+        artistService
+            .removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id)
+            .then(this.fetchData());
         this.seeArtist = {
             artist_id: -1,
             artist_name: "",
@@ -121,23 +145,27 @@ export class AddEventArtist extends Component {
             email: "",
             phone: ""
         };
-        this.setState({showRemoveWarning: false}, () => {
-            this.mounted();
-        });
+        this.setState({showRemoveWarning: false});
     }
 
+    /**
+     * Adds a user to the selected artist if none exist
+     * @param e
+     */
     addArtistUser(e) {
-        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
-            this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id);
+        userService
+            .generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
+                                this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id)
+            .then(this.fetchData());
         e.stopPropagation();
-        this.setState({showConfirmAddUser: false}, () => {
-            this.mounted();
-        });
+        this.setState({showConfirmAddUser: false});
     }
 
     onSubmit(e) {
         e.preventDefault();
-        artistService.addArtistToEvent(this.newArtist, this.documentId);
+        artistService
+            .addArtistToEvent(this.newArtist, this.documentId)
+            .then(this.fetchData());
         this.newArtist = {
             artist_id: -1,
             artist_name: "",
@@ -147,7 +175,6 @@ export class AddEventArtist extends Component {
             phone: ""
         };
         this.documentId = -1;
-        this.mounted();
     }
 
     render() {
