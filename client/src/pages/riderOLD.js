@@ -6,7 +6,7 @@ import { createHashHistory } from 'history';
 const history = createHashHistory();
 import Modal from 'react-bootstrap/Modal';
 import { riderService, Rider} from "../services/riderService";
-import { Row, Column} from "../widgets";
+import { Row, Column} from "../components/widgets";
 import Autosuggest from 'react-autosuggest';
 import {Ticket, ticketService} from "../services/ticketService";
 

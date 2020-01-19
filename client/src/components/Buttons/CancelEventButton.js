@@ -4,7 +4,8 @@
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
-import { Button, Column, Row, Alert } from '../widgets';
+import { Button, Column, Row} from '../widgets';
+import {Alert} from "../Alert/alert";
 import { Modal } from 'react-bootstrap';
 //import { cancelEventService, Event} from "../services/TempCancelEventService";
 import { eventService, Event } from "../../services/eventService";

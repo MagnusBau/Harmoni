@@ -8,7 +8,7 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
-import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
+import {editTicketType, addTicketType, listTicketType} from "../components/Ticket/ticket_add";
 import {AddEventArtist} from "./addEventArtist";
 
 import {Rider, riderService} from "../services/riderService";
@@ -18,7 +18,7 @@ import {Column} from "../components/widgets";
 import {createHashHistory} from "history";
 import AddRole from "../components/Staff/staff_overview"
 import {roleService} from "../services/roleService";
-import {TicketAdd, TicketEdit} from "../components/ticket_add";
+import {TicketAdd, TicketEdit} from "../components/Ticket/ticket_add";
 /**
  * Class for the view of one event
  *

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {eventService, Event} from "../services/eventService";
-import {Alert} from "../widgets.js";
+import {Alert} from "../components/Alert/alert.js";
 import DateTimePicker from 'react-datetime-picker'
 import DateTime from 'react-datetime';
 import moment from "moment";

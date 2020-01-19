@@ -10,7 +10,7 @@ import {AddEquipment} from "./pages/addEquipment";
 import {UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
-import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
+import {TicketAdd, TicketEdit, listTicketType} from "./components/Ticket/ticket_add";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
 import UserEdit from "./pages/userEdit";

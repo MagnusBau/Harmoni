@@ -16,7 +16,7 @@ export default class TicketView extends Component {
     };
 
     render(){
-
+        //TODO bruke samme table som i riders/personell
         return (
             <div>
                 <h5>Billettyper</h5>

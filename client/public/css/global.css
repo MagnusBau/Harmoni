@@ -1,0 +1,14 @@
+*{
+    background-color: #FAF3EB;
+    font-family: 'Source Sans Pro', sans-serif;
+    border: transparent;
+
+}
+
+.text-light{
+    color: #FFFFFF;
+}
+
+.text-dark{
+    color: #3A3A3A;
+}

@@ -3,63 +3,6 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import {Modal} from "react-bootstrap";
-
-export class Row extends Component < { children?: React.Node } > {
-
-    render() {
-
-        return <div className="row">{this.props.children}</div>
-
-    }
-}
-
-export class Column extends Component < { width?: number, children?: React.Node } > {
-
-    render() {
-
-        return (
-
-            <div className={'col-lg' + (this.props.width ? '-' + this.props.width : '') + (this.props.right ? ' text-right' : '')} style={{paddingLeft: 0}}
-            >
-                {this.props.children}
-            </div>
-
-        )
-    }
-}
-
-export class ModalWidget extends Component < { show: () => mixed, onHide: () => mixed, title: string, body: string, children: React.Node  } > {
-
-    render() {
-        return (
-
-            <Modal
-                show={this.props.show}
-                onHide={this.props.onHide}
-                centered
-            >
-                <Modal.Header>
-                    <Modal.Title>
-                        {this.props.title}
-                    </Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <p>
-                        {this.props.body}
-                    </p>
-                </Modal.Body>
-
-                <Modal.Footer>
-                    {this.props.children}
-                </Modal.Footer>
-
-            </Modal>
-        )
-    }
-}
-
 class RedButton extends Component< { onClick: () => mixed, style?: React.Node, children?: React.Node }> {
 
     render() {
@@ -134,7 +77,3 @@ export class Button {
     static Light = LightButton;
     static Blue = BlueButton;
 }
-
-
-
-
