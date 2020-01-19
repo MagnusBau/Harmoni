@@ -4,8 +4,7 @@ const nodemailer = require("nodemailer");
 
 let transporter = nodemailer.createTransport( {
 
-    host: 'smtp.gmail.com',
-    port: 465,
+    service: 'gmail',
     auth: {
         user: 'harmoni.team3@gmail.com',
         pass: 'Team3.harmoni'
@@ -15,7 +14,7 @@ let transporter = nodemailer.createTransport( {
 
 export class Email {
 
-    cancelledNotification(mailList: string, eventId: number, title: string, name: string, location: string, startTime: string) {
+    cancelledNotification(mailList: Array, eventId: number, title: string, name: string, location: string, startTime: string) {
 
         let toMail = mailList.join(', ');
 
