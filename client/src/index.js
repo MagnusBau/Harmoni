@@ -13,6 +13,7 @@ import {EditEvent} from "./pages/editEvent";
 import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
+import UserEdit from "./pages/userEdit";
 import { FileMain} from './pages/file'
 
 
@@ -45,6 +46,7 @@ if (root)
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
+                    <Route exact path="/user/:userId/edit" component={UserEdit}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/404" component={NotFoundPage}/>

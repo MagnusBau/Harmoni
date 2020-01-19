@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS update_artist;
 DROP PROCEDURE IF EXISTS delete_artist;
 DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
+DROP PROCEDURE IF EXISTS get_artist_by_contact;
 DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;

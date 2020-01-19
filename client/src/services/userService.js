@@ -18,6 +18,8 @@ class UserService {
                 localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("contact_id", response.user.contact_id);
                 localStorage.setItem("token", response.token);
+                localStorage.setItem("artist_id", response.artist.artist_id);
+                localStorage.setItem("artist_name", response.artist.artist_name);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
                 next();
@@ -39,7 +41,7 @@ class UserService {
     // TODO: Move to utility class?
     generateRandomPassword(length: number) {
         let result           = '';
-        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let charactersLength = characters.length;
         for (let i = 0; i < length; i++ ) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -100,6 +102,8 @@ class UserService {
                     localStorage.setItem("phone", response.user.phone);
                     localStorage.setItem("contact_id", response.user.contact_id);
                     localStorage.setItem("token", response.token);
+                    localStorage.setItem("artist_id", response.artist.artist_id);
+                    localStorage.setItem("artist_name", response.artist.artist_name);
                     history.push("/");
                     return true;
                 }
@@ -171,6 +175,14 @@ class UserService {
         return localStorage.getItem("token");
     }
 
+    getArtistId() {
+        return localStorage.getItem("artist_id");
+    }
+
+    getArtistName() {
+        return localStorage.getItem("artist_name");
+    }
+
     postLogin(username: string, password: string) {
         let data = {
             "username": username,
@@ -178,6 +190,22 @@ class UserService {
         };
         return axios.post('http://' + ip + ':4000/auth/login', data).then(response => response.data);
 
+    }
+
+    getUser() {
+        return axios.get('http://' + ip + ':4000/auth/user/' + userService.getUserID()).then(response => {
+            if (response.user != null) {
+                localStorage.setItem("user_id", response.user.user_id);
+                localStorage.setItem("username", response.user.username);
+                localStorage.setItem("image", response.user.image);
+                localStorage.setItem("first_name", response.user.first_name);
+                localStorage.setItem("last_name", response.user.last_name);
+                localStorage.setItem("email", response.user.email);
+                localStorage.setItem("phone", response.user.phone);
+                localStorage.setItem("contact_id", response.user.contact_id);
+            }
+            return false;
+        });
     }
 
     postUser(data: Object) {
@@ -209,6 +237,8 @@ class UserService {
         localStorage.setItem("phone", null);
         localStorage.setItem("contact_id", null);
         localStorage.setItem("token", null);
+        localStorage.setItem("artist_id", null);
+        localStorage.setItem("artist_name", null);
     }
 }
 

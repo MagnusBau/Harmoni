@@ -64,39 +64,60 @@ export default class UserOverview extends Component {
         return (
             //TODO en eller annen header for hvilken user som er logget inn
             <div className="container">
-                <div className="card">
-                    <img className="card-img-top img-fluid" src="" alt=""/>
-                    <a href="#/event/new">
-                        <div className="card-body">
-                            <h5>
-                                Legg til nytt arrangement
-                                <img src="./img/icons/plus.svg" alt="login" width="30" height="30"/>
-                            </h5>
-                        </div>
-                    </a>
-                </div>
                 <div className="row">
                     <div className="col-md-6">
+                        <h5>Profil</h5>
                         <div className="list-group" className="">
-                            {this.events.map(e => (
-                                //TODO hente inn en <a> og sender valgt event til eventoverview
-                                <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
-                                    {e.title} {e.start_time}
-                                </li>
-                            ))}
+                            <li className="list-group-item">
+                                <h5>Username:</h5>{userService.getUsername()}
+                            </li>
+                            <li className="list-group-item">
+                                <h5>Name:</h5> {userService.getFirstName() + " " + userService.getLastName()}
+                            </li>
+                            <li className="list-group-item">
+                                <h5>Email:</h5> {userService.getEmail()}
+                            </li>
+                            <li className="list-group-item">
+                                <h5>Phone:</h5> {userService.getPhone()}
+                            </li>
+                            <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                history.push("/user/" + userService.getUserID() + "/edit");
+                            }}>
+                                Endre Profil
+                            </li>
                         </div>
                     </div>
-                </div>
-                <h5>Dine arkiverte arrangementer</h5>
-                <div className="row">
                     <div className="col-md-6">
-                        <div className="list-group" className="">
-                            {this.endedEvents.map(e => (
-                                //TODO hente inn en <a> og sender valgt event til eventoverview
-                                <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
-                                    {e.title} {e.end_time}
-                                </li>
-                            ))}
+                        <h5>Dine aktive arrangementer</h5>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="list-group" className="">
+                                    <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                        history.push("/event/new");
+                                    }}>
+                                        Legg til nytt arrangement
+                                    </li>
+                                    {this.events.map(e => (
+                                        //TODO hente inn en <a> og sender valgt event til eventoverview
+                                        <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
+                                            {e.title} {e.start_time}
+                                        </li>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <h5>Dine arkiverte arrangementer</h5>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="list-group" className="">
+                                    {this.endedEvents.map(e => (
+                                        //TODO hente inn en <a> og sender valgt event til eventoverview
+                                        <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action list-group-item-secondary">
+                                            {e.title} {e.end_time}
+                                        </li>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
