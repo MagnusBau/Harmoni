@@ -55,6 +55,14 @@ export class FileInfoDAO extends Dao {
             callback
         );
     }
+
+    deleteFileInfo(path: string, callback: (status: string, data: string) => void){
+        let values = [path];
+        console.log(path);
+        super.query("CALL delete_document(?)",
+            values,
+            callback);
+    }
     //</DO NOT TOUCH>
 
 }

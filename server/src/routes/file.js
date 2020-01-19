@@ -14,6 +14,7 @@ router.get("/info/:eventId", fileInfoController.getFileInfoByEvent);
 router.post("/check/:eventId", fileInfoController.checkFileName);
 router.get("/download/:file", fileInfoController.downloadFile);
 router.get("/edit/:file", fileInfoController.getFileContent);
+router.delete("/delete/:file", fileInfoController.deleteFileInfo);
 
 
 module.exports = router;

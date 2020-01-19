@@ -40,6 +40,9 @@ class FileInfoService {
     getFileContent(encodedFile: string){
         return axios.get(`http://` + ip +`:4000/api/file/edit/${encodedFile}`);
     }
+    deleteFile(encodedFile: string){
+        return axios.delete(`http://` + ip +`:4000/api/file/delete/${encodedFile}`);
+    }
 }
 
 class FileService {

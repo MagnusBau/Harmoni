@@ -163,7 +163,9 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleDelete(){
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
-            fileInfoService.deleteFile(encodedFilePath)
+            fileInfoService.deleteFile(encodedFilePath).then(response => {
+                this.mounted();
+            });
         }
     }
 }
