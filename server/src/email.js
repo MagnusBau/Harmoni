@@ -2,7 +2,7 @@
 // @flow
 const nodemailer = require("nodemailer");
 
-let transporter = nodemailer.createTransport( {
+let transporter = nodemailer.createTransport({
 
     service: 'gmail',
     auth: {
@@ -22,7 +22,6 @@ export class Email {
             from: 'Harmoni <harmoni.team3@gmail.com>',
             bcc: toMail,
             subject: "Arrangementet " + title + " er avlyst",
-            text: 'Dette er en test',
             html: '<h3 style="font-size: 21px">Hei, ' + name + '</h3>' +
                 '  <div style="font-size: 17px">' +
                 '   <br>Dette er et varsel om at følgende arrangement har blitt avlyst: <a href="http://localhost:4000/#/event/' + eventId + '">Link til ditt arrangement</a>' +
@@ -36,14 +35,12 @@ export class Email {
         };
 
         transporter.sendMail(mailOption, (err, res) => {
-            if(err) {
+            if (err) {
                 console.log("Error occured: " + err);
             } else {
                 console.log("Email sent: " + res.response);
             }
         });
-
     }
-
 }
 
