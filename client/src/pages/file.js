@@ -143,6 +143,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
     handleDownload(e){
 
+        window.open("http://localhost:8080/api/file/download/3", "_blank");
         console.log(this.state.selected);
         let filePath= this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
         fileInfoService.downloadFile(filePath).then(response =>
