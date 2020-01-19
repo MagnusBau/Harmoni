@@ -165,12 +165,14 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     }
 }
 
-export class FileEdit extends Component <{match: {params: {filepath: string}}}> {
+export class FileEdit extends Component <{match: {params: {filepath: string, eventId: number}}}> {
     form = null;
     errorMessage: string = "";
     text: string = "";
-    render(){
-        return(
+    path: string = "./files/";
+
+    render() {
+        return (
             <div className="row justify-content-center">
                 <div className="mb-4 border-0 " style={{width: '75%'}}>
                     <div className="card-body">
@@ -195,21 +197,43 @@ export class FileEdit extends Component <{match: {params: {filepath: string}}}> 
                     <button
                         type="button"
                         className="btn btn-dark"
-                        onClick={e => this.post}
+                        onClick={this.post}
                         style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                    >Oppdater</button>
+                    >Oppdater
+                    </button>
                     <p style={{color: "red"}}>{this.errorMessage}</p>
                 </div>
             </div>
         )
     }
-    mounted(){
+
+    mounted() {
         fileInfoService.getFileContent(this.props.match.params.filepath).then(response => {
-            console.log(response);
-            this.text = response[0];
+            this.text = response.data;
         });
     }
-    post(){
 
+    post() {
+        let formData = new FormData();
+
+        if (!this.form || !this.form.checkValidity()) {
+            this.errorMessage = "Fyll ut de røde feltene";
+            this.mounted();
+            return;
+        } else {
+            let name= atob(this.props.match.params.filepath);
+            name = name.replace(this.path, "");
+            let data = new Blob([this.text], {type: 'text/plain'});
+            const myNewFile = new File([data], name, {type: "text/plain"});
+
+            formData.append('file', myNewFile);
+            formData.append('name', name);
+            formData.append('path', this.path + myNewFile.name);
+
+            fileInfoService.postFileInfo(name, this.props.match.params.eventId,  formData).then(response => {
+                console.log("should have posted fileInfo to database");
+                this.mounted();
+            });
+        }
     }
 }
