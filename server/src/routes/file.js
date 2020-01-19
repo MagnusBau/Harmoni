@@ -12,7 +12,7 @@ router.delete("/delete", fileController.delete);
 
 router.get("/info/:eventId", fileInfoController.getFileInfoByEvent);
 router.post("/check/:eventId", fileInfoController.checkFileName);
-router.get("/download/:eventId", fileInfoController.downloadFile);
+router.get("/download/:file", fileInfoController.downloadFile);
 
 
 module.exports = router;
