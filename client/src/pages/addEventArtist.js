@@ -6,13 +6,7 @@ import {Artist, artistService} from "../services/artistService";
 import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
-import {createHashHistory} from 'history';
 import {userService} from "../services/userService";
-
-const history = createHashHistory();
-
-// TODO: Clean up this mess
-// TODO: Add alert on artist add
 
 export class AddEventArtist extends Component {
     event: Event = new Event();
@@ -25,17 +19,9 @@ export class AddEventArtist extends Component {
     isArtist: boolean = true;
 
     /**
-     * Shows a modal dialog window
-     * @param e Component triggering the dialog
+     * Constructor
+     * @param props
      */
-    show(e) {
-        if (e.target.id === "showWarning") {
-            this.setState({showRemoveWarning: true});
-        } else if (e.target.id === "showAddUser") {
-            this.setState({showConfirmAddUser: true});
-        }
-    };
-
     constructor(props) {
         super(props);
 
@@ -105,12 +91,35 @@ export class AddEventArtist extends Component {
             .catch((error: Error) => console.log(error.message));
     }
 
-    onChange(e) {
-        if (e.currentTarget.id === "documentSelect") {
-            this.documentId = e.target.value;
+    /**
+     * Shows a modal dialog window
+     * @param e Component triggering the dialog
+     */
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({showRemoveWarning: true});
+        } else if (e.target.id === "showAddUser") {
+            this.setState({showConfirmAddUser: true});
         }
-        const name = e.target.name;
-        this.newArtist[name] = e.target.value;
+    };
+
+    /**
+     * On form data change
+     * @param e
+     */
+    onChange(e) {
+        switch (e.currentTarget.id) {
+            case "documentSelect":
+                this.documentId = e.target.value;
+                break;
+            case "artistFilter":
+                this.artistFilter = e.target.value;
+                break;
+            default:
+                const name = e.target.name;
+                this.newArtist[name] = e.target.value;
+                break;
+        }
     }
 
     /**
@@ -119,14 +128,6 @@ export class AddEventArtist extends Component {
      */
     onSelect(artist: Artist) {
         this.seeArtist = artist;
-    }
-
-    /**
-     * Called whenever the filter textbox has been changed
-     * @param e
-     */
-    onChangeFilter(e) {
-        this.artistFilter = e.target.value;
     }
 
     /**
@@ -161,6 +162,10 @@ export class AddEventArtist extends Component {
         this.setState({showConfirmAddUser: false});
     }
 
+    /**
+     * Called when the 'submit artist' button is pressed. Adds the artist from form to this event
+     * @param e
+     */
     onSubmit(e) {
         e.preventDefault();
         artistService
@@ -190,9 +195,9 @@ export class AddEventArtist extends Component {
                                             onClick={() => this.onSelect(artist)}>{artist.artist_name}</option>
                                 )}
                             </select>
-                            <input className="form-control m-2" name="filter" placeholder="Filter"
+                            <input className="form-control m-2" name="filter" placeholder="Filter" id="artistFilter"
                                    value={this.artistFilter}
-                                   onChange={this.onChangeFilter}/>
+                                   onChange={this.onChange}/>
                         </div>
                         <div className="col">
                             <div className="card m-2">
