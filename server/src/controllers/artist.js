@@ -31,8 +31,8 @@ exports.deleteArtist = (req, res, next) => {
 exports.getAllArtists = (req, res, next) => {
     console.log(`Got request from client: GET /api/artist`);
 
-    if (req.query.search) {
-        artistDao.getArtistBySearch(req.query.search, (err, rows) => {
+    if (req.query.searchBar) {
+        artistDao.getArtistBySearch(req.query.searchBar, (err, rows) => {
             res.send(rows);
         })
     } else {

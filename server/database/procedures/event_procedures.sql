@@ -15,6 +15,7 @@ DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
 DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
+DROP PROCEDURE IF EXISTS get_all_events_by_input;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -200,3 +201,8 @@ BEGIN
       AND organizer = user_id_in;
 END;
 
+CREATE PROCEDURE get_all_events_by_input(IN input_in VARCHAR(40))
+BEGIN
+    SELECT event_id, title FROM event
+    WHERE UPPER(title) LIKE CONCAT('%', input_in,'%');
+END;

@@ -169,10 +169,12 @@ exports.cancelEvent = (req, res, next) => {
 
 //Get events by input
 exports.getEventByInput = (req, res, next) => {
-    console.log(`Get-request from client/event/${req.param.input}`);
+    console.log("getEventByInput");
+    console.log(`Get-request from client: event/search/${req.params.input}`);
+    console.log("input controller " + req.params.input);
 
-    eventDao.getEventByInput(req.param.input, (err, rows) => {
-        res.json(rows)
+    eventDao.getEventByInput(req.params.input, (err, rows) => {
+        res.json(rows);
     })
 };
 

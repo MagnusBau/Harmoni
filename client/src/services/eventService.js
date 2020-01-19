@@ -20,6 +20,11 @@ export class Event {
 
 }
 
+export class EventSearch {
+    event_id: number;
+    title: string;
+}
+
 export class Document {
     document_id: number;
     name: string;
@@ -44,8 +49,12 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
-    getEventBy(input: string): Event[] {
-        return axios.get<Event>(`http://localhost:4000/api/event/` + input).then(response => response.data);
+    getEventBy(input: string){
+        console.log("input " + input);
+        return axios
+            .get('http://localhost:4000/api/event/search/' + input.toLocaleUpperCase())
+            .then(response => response.data)
+            .catch(error => console.log("error " + error.message));
     }
 
     getEventById(eventId: number): Event[] {
