@@ -155,13 +155,16 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleOverwrite(){
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
-            history.push("/event/:eventId/edit/file/" + encodedFilePath);
+            history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
         }
 
     }
 
     handleDelete(){
-
+        if(this.state.selected !== undefined){
+            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+            fileInfoService.deleteFile(encodedFilePath)
+        }
     }
 }
 
@@ -217,7 +220,7 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
         let formData = new FormData();
 
         if (!this.form || !this.form.checkValidity()) {
-            this.errorMessage = "Fyll ut de røde feltene";
+            this.errorMessage = "Filen kan ikke være tom";
             this.mounted();
             return;
         } else {
@@ -227,12 +230,10 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
             const myNewFile = new File([data], name, {type: "text/plain"});
 
             formData.append('file', myNewFile);
-            formData.append('name', name);
-            formData.append('path', this.path + myNewFile.name);
 
-            fileInfoService.postFileInfo(name, this.props.match.params.eventId,  formData).then(response => {
-                console.log("should have posted fileInfo to database");
-                this.mounted();
+            fileInfoService.updateFile(formData).then(response => {
+                console.log("should have updated file");
+                history.push("/event/" + this.props.match.params.eventId + "/edit/file");
             });
         }
     }

@@ -1,5 +1,1 @@
-{this.fileList.map(f => (
-                            <li key={"fileId" + f.document_id} fileId={f.document_id} fileName={f.name} className="list-group-item list-group-item-action">
-                                {f.name}
-                            </li>
-                        ))}
+heisan hoppsan

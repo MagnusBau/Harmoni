@@ -87,6 +87,14 @@ app.post('/single/:eventId', upload.single('file'), (req, res) => {
     });
 });
 
+app.post('/single/update', upload.single('file'), (req, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+});
+
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {
     // Setup hot reload (refresh web page on client changes)

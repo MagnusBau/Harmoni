@@ -18,6 +18,10 @@ class FileInfoService {
         return axios.post(`http://` + ip +`:4000/single/${eventId}`,
             data);
     }
+    updateFile(data: FormData) {
+        return axios.post(`http://` + ip +`:4000/single/update`,
+            data);
+    }
 
     updatePath(id: number) {
         return axios.put('http://' + ip +':4000/api/file/path', id).then(response => response.data);
