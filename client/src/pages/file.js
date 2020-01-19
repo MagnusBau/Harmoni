@@ -15,7 +15,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     name: string = "";
     fileList: Object[] = [];
     errorMessage: string = "";
-    path: string = "./files";
+    path: string = "./files/";
     nameAddOn: string = "------";
 
     render() {
@@ -144,6 +144,9 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleDownload(e){
 
         console.log(this.state.selected);
+        let filePath= this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
+        fileInfoService.downloadFile(filePath).then(response =>
+        console.log("laster ned"));
     }
     handleOverwrite(){
 

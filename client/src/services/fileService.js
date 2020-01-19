@@ -26,6 +26,11 @@ class FileInfoService {
     checkFileName(eventId: number, name: string){
         return axios.post(`http://` + ip +`:4000/api/file/check/${eventId}`, {"name": name}).then(response => response.data);
     }
+
+    downloadFile(file: string){
+        console.log("hei");
+        return axios.get(`http://` + ip +`:4000/api/file/download/${3}`);
+    }
 }
 
 class FileService {

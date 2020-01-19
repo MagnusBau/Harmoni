@@ -39,6 +39,11 @@ exports.checkFileName = (req, res, next) => {
     })
 };
 
+exports.downloadFile = (req, res, next) => {
+    console.log('Got request from client: GET /file/download');
+    res.download("./files/3------bernie.jpg");
+};
+
 exports.updateFileInfo = (req, res, next) => {
 };
 
