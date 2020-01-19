@@ -116,46 +116,100 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
+        if(this.state.file !== null){
+            fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+                .then(response => {
+                    console.log("DUP?: "+ response[0][0].duplicate);
+                    if(response[0][0].duplicate === 0){
 
+                        const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
 
-        fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
-            .then(response => {
-            console.log("DUP?: "+ response[0][0].duplicate);
-                if(response[0][0].duplicate === 0){
+                        formData.append('file', myNewFile);
+                        formData.append('name', this.name);
+                        formData.append('path', this.path + myNewFile.name);
 
-                    const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
-
-                    formData.append('file', myNewFile);
-                    formData.append('name', this.name);
-                    formData.append('path', this.path + myNewFile.name);
-
-                    fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
-                        console.log("should have posted fileInfo to database");
+                        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+                            console.log("should have posted fileInfo to database");
+                            this.mounted();
+                        });
+                    }else{
+                        this.errorMessage = "En fil med dette navnet finnes allerede";
                         this.mounted();
-                    });
-                }else{
-                    this.errorMessage = "En fil med dette navnet finnes allerede";
-                    this.mounted();
-                }
-        });
+                    }
+                });
+        }
 
     }
 
     handleDownload(e){
 
-        let filePath: string = this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
-        let encodedFilePath = btoa(filePath);
-        window.open("http://localhost:8080/api/file/download/" + encodedFilePath, "_blank");
-        console.log(encodedFilePath);
-        fileInfoService.downloadFile(filePath).then(response =>
-        console.log("laster ned " + this.state.selected));
+        if(this.state.selected !== undefined){
+            let filePath: string = this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
+            let encodedFilePath = btoa(filePath);
+            window.open("http://localhost:8080/api/file/download/" + encodedFilePath, "_blank");
+            console.log(encodedFilePath);
+            fileInfoService.downloadFile(filePath).then(response =>
+                console.log("laster ned " + this.state.selected));
+        }
     }
     handleOverwrite(){
+        if(this.state.selected !== undefined){
+            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+            history.push("/event/:eventId/edit/file/" + encodedFilePath);
+        }
 
     }
 
     handleDelete(){
 
     }
+}
 
+export class FileEdit extends Component <{match: {params: {filepath: string}}}> {
+    form = null;
+    errorMessage: string = "";
+    text: string = "";
+    render(){
+        return(
+            <div className="row justify-content-center">
+                <div className="mb-4 border-0 " style={{width: '75%'}}>
+                    <div className="card-body">
+                        <form ref={e => (this.form = e)}>
+
+                            <label htmlFor="basic-url">Tekst: </label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                </div>
+                                <textarea
+                                    className="form-control"
+                                    required
+                                    minLength={1}
+                                    aria-label="tekst"
+                                    rows="10"
+                                    value={this.text}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
+                            </div>
+                        </form>
+
+                    </div>
+                    <button
+                        type="button"
+                        className="btn btn-dark"
+                        onClick={e => this.post}
+                        style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                    >Oppdater</button>
+                    <p style={{color: "red"}}>{this.errorMessage}</p>
+                </div>
+            </div>
+        )
+    }
+    mounted(){
+        fileInfoService.getFileContent(this.props.match.params.filepath).then(response => {
+            console.log(response);
+            this.text = response[0];
+        });
+    }
+    post(){
+
+    }
 }

@@ -32,6 +32,10 @@ class FileInfoService {
         console.log("hei");
         return axios.get(`http://` + ip +`:4000/api/file/download/${encodedFile}`);
     }
+
+    getFileContent(encodedFile: string){
+        return axios.get(`http://` + ip +`:4000/api/file/edit/${encodedFile}`);
+    }
 }
 
 class FileService {

@@ -13,6 +13,7 @@ router.delete("/delete", fileController.delete);
 router.get("/info/:eventId", fileInfoController.getFileInfoByEvent);
 router.post("/check/:eventId", fileInfoController.checkFileName);
 router.get("/download/:file", fileInfoController.downloadFile);
+router.get("/edit/:file", fileInfoController.getFileContent);
 
 
 module.exports = router;
