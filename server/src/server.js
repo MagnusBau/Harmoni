@@ -246,9 +246,7 @@ app.use("/auth", loginRoutes);
     next();
 });*/
 
-app.use((req, res, next) => {
-    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
-});
+
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -287,6 +285,10 @@ app.post('/api/single/update', upload.single('file'), (req, res) => {
         }catch(err) {
             result.send(400);
         }
+});
+
+app.use((req, res, next) => {
+    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
 });
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
