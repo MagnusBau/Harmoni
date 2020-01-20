@@ -62,25 +62,47 @@ app.use("/auth/id/:id", (req, res, next) => {
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");
-            res.json({ error: "Not authorized" });
+            res.json({ error: "Token" });
         } else {
             userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
                             console.log("Token ok: " + decoded.username);
-                            next();
+                            if(req.body.user_id) {
+                                if(req.body.user_id === req.params.id) {
+                                    console.log("Token ok: " + decoded.username);
+                                    next();
+                                } else {
+                                    console.log("Token IKKE ok 4");
+                                    res.json({ error: "Token" });
+                                }
+                            } else {
+                                console.log("Token ok: " + decoded.username);
+                                next();
+                            }
                         } else {
                             console.log("Token IKKE ok 2");
-                            res.json({ error: "Not authorized" });
+                            res.json({ error: "Token" });
                         }
                     } else {
                         console.log("Token ok: " + decoded.username);
-                        next();
+                        if(req.body.user_id) {
+                            if(req.body.user_id === req.params.id) {
+                                console.log("Token ok: " + decoded.username);
+                                next();
+                            } else {
+                                console.log("Token IKKE ok 5");
+                                res.json({ error: "Token" });
+                            }
+                        } else {
+                            console.log("Token ok: " + decoded.username);
+                            next();
+                        }
                     }
                 } else {
                     console.log("Token IKKE ok 3");
-                    res.json({ error: "Not authorized" });
+                    res.json({ error: "Token" });
                 }
             });
         }
@@ -90,6 +112,7 @@ app.use("/auth/id/:id", (req, res, next) => {
 
 app.use("/auth/id/:id", (req, res, next) => {
     //check body
+    next();
 
 });
 

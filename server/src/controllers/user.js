@@ -287,7 +287,7 @@ exports.registerUser = (req, res, next) => {
 
 exports.getToken = (req, res, next) => {
     console.log("Skal returnere en ny token");
-    userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
+    userDao.getUsername(Number.parseInt(req.body.user_id), (err, rows) => {
         let token = jwt.sign({username: req.body.username}, privateKey, signOptions);
         res.json({token: token});
     });
@@ -298,7 +298,7 @@ exports.getToken = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     console.log("Skal oppdatere bruker");
     console.log(req.body);
-    let id: number = Number.parseInt(req.params.id);
+    let id: number = Number.parseInt(req.params.userId);
     let data: Object = req.body;
     userDao.getContact(id, (err, rows) => {
         if(rows[0][0].contact_id) {
@@ -313,10 +313,10 @@ exports.updateUser = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-    console.log("id:" + req.params.id);
-    userDao.getUserById(req.params.id, (err, user) => {
+    console.log("id:" + req.params.userId);
+    userDao.getUserById(req.params.userId, (err, user) => {
         console.log(user);
-        console.log(req.params.id + user[0][0].user_id + user[0][0].username);
+        console.log(req.params.userId + user[0][0].user_id + user[0][0].username);
         artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
             console.log(artist);
             if(artist[0][0]) {
@@ -381,7 +381,7 @@ exports.updateUserPassword = (req, res, next) => {
     console.log(req.body);
     let password = req.body.password;
     let newPassword = req.body.newPassword;
-    let id = req.params.id;
+    let id = req.params.userId;
     userDao.getPassword(req.body.username, (err, rows) => {
         if(rows[0][0]) {
             if(rows[0][0].password) {
