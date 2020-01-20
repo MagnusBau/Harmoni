@@ -255,7 +255,7 @@ class UserService {
             "user_id": input.user_id,
             "username": input.username
         };
-        return axios.post('http://' + ip +':4000/auth/id/' + data.user_id + '/token', data, {
+        return axios.post('http://' + ip +':4000/auth/token/' + data.user_id, data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => response.data);

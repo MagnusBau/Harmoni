@@ -35,9 +35,11 @@ export class FileInfoDAO extends Dao {
     postFileInfo(data, callback: ()=>void) {
         console.log("data.name: " + data.name);
         console.log("data.eventId: " + data.eventId);
+        let name = JSON.stringify(data.name);
+        let eventId = number.parseInt(data.eventId);
         super.query(
             "INSERT INTO document(document_id, name, path, event) VALUES(default,?,default,?)",
-            [data.name, data.eventId],
+            [name, eventId],
             callback
         );
     }

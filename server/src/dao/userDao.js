@@ -86,9 +86,13 @@ export class UserDAO extends Dao {
 
     //<DO NOT TOUCH>
     postContact(data, callback: ()=>void) {
+        let first_name = JSON.stringify(data.first_name);
+        let last_name = JSON.stringify(data.last_name);
+        let email = JSON.stringify(data.email);
+        let phone = JSON.stringify(data.phone);
         super.query(
             "INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default,?,?,?,?)",
-            [data.first_name, data.last_name, data.email, data.phone],
+            [first_name, last_name, email, phone],
             callback
         );
     }
