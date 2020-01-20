@@ -195,5 +195,6 @@ test("search for event by title with string", done => {
         expect(data[1].title).toBe('Konsert');
 
         eventDao.getEventByInput('KON', callback);
+        done();
     }
 });
