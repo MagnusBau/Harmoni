@@ -111,7 +111,7 @@ class LightButton extends Component< { onClick: () => mixed, children?: React.No
         );
     }
 }
-class BlueButton extends Component< { onClick: () => mixed, children?: React.Node} > {
+class BlueButton extends Component< { onClick: () => mixed, style?: React.Node, children?: React.Node} > {
 
     render() {
         return (

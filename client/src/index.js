@@ -25,6 +25,7 @@ import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton"
 import {AddEventArtist} from "./pages/addEventArtist";
 import {AddRole} from "./pages/addRole";
 import {NotFoundPage} from "./pages/notFoundPage";
+import {ContactForm} from "./pages/contactForm";
 
 const root = document.getElementById("root");
 if (root)
@@ -50,6 +51,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/404" component={NotFoundPage}/>
+                    <Route exact="/contact" component={ContactForm}/>
                     <Redirect to="/404"/>
                 </Switch>
                 <Footer/>
