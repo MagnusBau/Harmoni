@@ -28,7 +28,7 @@ export default class UserEdit extends Component {
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
-    artistName: string = "";
+    artistName: string = userService.getArtistName();
     userForm: any = null;
     passwordForm: any = null;
     artistForm: any = null;
@@ -42,6 +42,9 @@ export default class UserEdit extends Component {
     mounted() {
 //TODO get events by user
         console.log("ya");
+        if(this.artistName == null || this.artistName === "null") {
+            this.artistName = "";
+        }
         userService.getUser().then(respons => {
             console.log(respons);
             if(userService.getArtistId() != null) {
@@ -51,6 +54,7 @@ export default class UserEdit extends Component {
             this.lastName  = userService.getLastName();
             this.email = userService.getEmail();
             this.phone = userService.getPhone();
+            console.log("this:" + userService.getArtistName());
         });
         userService.mountDropdown();
     }
@@ -265,7 +269,7 @@ export default class UserEdit extends Component {
         }
         console.log("try");
         console.log(this.email + this.firstName + this.lastName + this.phone);
-        userService.updateUser2(this.email, this.firstName, this.lastName, this.phone).then(response => {
+        userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
             if(response.error) {
                 console.log("fail");
                 this.errorMessage = "Brukerinformasjon server error";
@@ -274,7 +278,7 @@ export default class UserEdit extends Component {
                 console.log("success");
                 userService.getUser().then(response => {
                     this.errorMessage = "Brukerinformasjon oppdatert";
-                    this.mounted()
+                    this.mounted();
                 });
             }
         })
