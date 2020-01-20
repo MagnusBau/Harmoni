@@ -41,7 +41,7 @@ class User {
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 const signOptions = {
-    expiresIn:  "24H",
+    expiresIn:  "30M",
     algorithm:  "RS256"
 };
 

@@ -5,13 +5,10 @@ const artistController = require("../controllers/artist");
 
 const router = express.Router();
 
-router.post("/login", userController.loginUser);
-router.post("/user", userController.registerUser);
-router.post("/user/artist", userController.registerArtistUser);
 router.get("/user/:userId", userController.getUser);
 router.put("/user/:userId", userController.updateUser);
 router.put("/user/:userId/password", userController.updateUserPassword);
-router.post("/:id/token", userController.getToken);
+router.post("/token/:id/", userController.getToken);
 router.get("/user/artist/:artistId", userController.getUserByArtist);
 router.put("/contact/:contactId/artist", artistController.getArtistByContact);
 
