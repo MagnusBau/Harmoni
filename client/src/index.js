@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import {HashRouter} from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
-
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
 import {UserRegister, TokenBoi} from "./pages/user";
@@ -15,8 +14,7 @@ import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 import UserOverview from "./pages/userOverview";
 import UserEdit from "./pages/userEdit";
 import { FileMain} from './pages/file'
-
-
+import {eventVisit} from "./pages/eventVisit";
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
 import Footer from "./components/Footer/Footer";
@@ -51,6 +49,7 @@ if (root)
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/404" component={NotFoundPage}/>
                     <Redirect to="/404"/>
+                    <Route exact path="/event/:eventId/view" component={eventVisit}/>
                 </Switch>
                 <Footer/>
             </div>

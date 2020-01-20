@@ -1,3 +1,5 @@
+// @flow
+
 import * as React from 'react';
 import {Component} from "react-simplified/lib/index";
 import {createHashHistory} from 'history';
