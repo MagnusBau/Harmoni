@@ -220,7 +220,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
-                                    <h5>Utstyr</h5>
                                     <AddEquipment eventId={this.currentEvent}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
@@ -234,7 +233,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     </button>
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
-                                    <h5>Artister</h5>
                                     <AddEventArtist eventId={this.currentEvent}/>
                                 </div>
                             </div>

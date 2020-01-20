@@ -185,8 +185,8 @@ export class AddEventArtist extends Component {
     render() {
         return (
             <div>
-                <div className="m-4">
-                    <h2 className="m-2">Artistliste for #{this.event.event_id} ({this.event.title})</h2>
+                <div>
+                    <h3 className="m-2">Artistliste for {this.event.title}</h3>
                     <div className="row">
                         <div className="col">
                             <select size="10" className="form-control m-2" id="exampleFormControlSelect1">
