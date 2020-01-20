@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import {createHashHistory} from 'history';
 
-const history = createHashHistory();
 import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
+import {userService} from "../../services/userService";
+import {artistService} from "../../services/artistService";
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -45,7 +45,8 @@ export default class AddEquipment extends Component {
             totalEquipment: 0,
             editEquipment: null,
             equipmentLoading: true,
-            editLoading: false
+            editLoading: false,
+            isArtist: false
         };
     }
 
@@ -102,6 +103,11 @@ export default class AddEquipment extends Component {
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(equipment => this.eventEquipment = equipment[0])
+            .catch((error: Error) => console.log(error.message));
+
+        artistService
+            .getArtistByUser(userService.getUserID())
+            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
     }
 
@@ -185,23 +191,26 @@ export default class AddEquipment extends Component {
 
         return (
             <div className="w-75 m-2">
+
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
-                <form className="form-inline" onSubmit={this.onSubmit}>
-                    <div className="form-group m-2">
-                        <Autosuggest suggestions={suggestions}
-                                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                                     getSuggestionValue={getSuggestionValue}
-                                     renderSuggestion={renderSuggestion}
-                                     inputProps={inputProps}/>
-                    </div>
-                    <div className="form-group m-2">
-                        <input width="32px" type="number" name="amount" min="1" className="form-control"
-                               id="equipmentType"
-                               placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
-                    </div>
-                    <button type="submit" className="btn btn-primary m-2">Legg til</button>
-                </form>
+                {!this.state.isArtist ?
+                    <form className="form-inline" onSubmit={this.onSubmit}>
+                        <div className="form-group m-2">
+                            <Autosuggest suggestions={suggestions}
+                                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                         getSuggestionValue={getSuggestionValue}
+                                         renderSuggestion={renderSuggestion}
+                                         inputProps={inputProps}/>
+                        </div>
+                        <div className="form-group m-2">
+                            <input width="32px" type="number" name="amount" min="1" className="form-control"
+                                   id="equipmentType"
+                                   placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
+                        </div>
+                        <button type="submit" className="btn btn-primary m-2">Legg til</button>
+                    </form>
+                : null}
                 <table className="table">
                     <thead>
                     <tr className="d-flex">
@@ -215,19 +224,23 @@ export default class AddEquipment extends Component {
                         <tr className="d-flex">
                             <td className="col-7">{eventEquipment.item}</td>
                             <td className="col-3">{eventEquipment.amount}
-                                <div className="btn-group-vertical ml-4" role="group">
-                                    <button type="button" className="btn btn-link"
-                                            onClick={() => this.incrementAmount(eventEquipment)}><img
-                                        src="./img/icons/chevron-up.svg"/></button>
-                                    <button type="button" className="btn btn-link"
-                                            onClick={() => this.decrementAmount(eventEquipment)}><img
-                                        src="./img/icons/chevron-down.svg"/></button>
-                                </div>
+                                {this.state.isArtist ?
+                                    <div className="btn-group-vertical ml-4" role="group">
+                                        <button type="button" className="btn btn-link"
+                                                onClick={() => this.incrementAmount(eventEquipment)}><img
+                                            src="./img/icons/chevron-up.svg"/></button>
+                                        <button type="button" className="btn btn-link"
+                                                onClick={() => this.decrementAmount(eventEquipment)}><img
+                                            src="./img/icons/chevron-down.svg"/></button>
+                                    </div>
+                                : null}
                             </td>
                             <td className="col-2">
-                                <button type="button" className="btn btn-danger"
-                                        onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
-                                </button>
+                                {!this.state.isArtist ?
+                                    <button type="button" className="btn btn-danger"
+                                            onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
+                                    </button>
+                                : null}
                             </td>
                         </tr>
                     ))}
