@@ -247,6 +247,7 @@ const userRoutes = require("./routes/user");
 const fileRoutes = require("./routes/file");
 const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
+const contactRoutes = require("./routes/contact");
 const loginRoutes = require("./routes/login");
 import {FileInfoDAO} from './dao/fileInfoDao.js';
 
@@ -262,6 +263,7 @@ app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
 app.use("/auth", loginRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){

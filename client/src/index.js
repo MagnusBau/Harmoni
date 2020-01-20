@@ -22,6 +22,7 @@ import NavBar from "./components/NavBar/NavBar";
 import {AddEventArtist} from "./pages/addEventArtist";
 import {NotFoundPage} from "./pages/notFoundPage";
 import {EventSearch} from "./pages/eventSearch";
+import {ContactForm} from "./pages/contactForm";
 
 const root = document.getElementById("root");
 if (root)
@@ -49,6 +50,7 @@ if (root)
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/event/search/:input" component={EventSearch}/>
                     <Route exact path="/404" component={NotFoundPage}/>
+                    <Route exact="/contact" component={ContactForm}/>
                     <Redirect to="/404"/>
                     <Route exact path="/event/:eventId/view" component={eventVisit}/>
                 </Switch>

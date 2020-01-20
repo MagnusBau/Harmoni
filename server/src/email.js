@@ -68,5 +68,24 @@ export class Email {
             }
         });
     }
+
+    contactUs(fromMail: string, name: string, subject: string, content: string) {
+
+        let mailOption = {
+            from: name + '<' + fromMail + '>',
+            to: 'harmoni.team3@gmail.com',
+            subject: subject,
+            html: '<div style="white-space: pre-line"><p>Svar sendes til: ' + fromMail + '</p>' + content + '</div>'
+        };
+
+        transporter.sendMail(mailOption, (err, res) => {
+            if (err) {
+                console.log("Error occured: " + err);
+            } else {
+                console.log("Email sent: " + res.response);
+            }
+        });
+
+    }
 }
 
