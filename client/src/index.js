@@ -22,6 +22,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {AddEventArtist} from "./pages/addEventArtist";
 import {NotFoundPage} from "./pages/notFoundPage";
+import {EventSearch} from "./pages/eventSearch";
 
 const root = document.getElementById("root");
 if (root)
@@ -45,6 +46,7 @@ if (root)
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
+                    <Route exact path="/event/search/:input" component={EventSearch}/>
                     <Route exact path="/404" component={NotFoundPage}/>
                     <Redirect to="/404"/>
                 </Switch>

@@ -6,7 +6,7 @@
  * @author Victoria Blichfeldt
  */
 
-import React from "react";
+import * as React from "react";
 import { Component } from "react-simplified";
 import { EventSearch, eventService} from "../../services/eventService";
 import {createHashHistory} from "history";
@@ -29,7 +29,7 @@ export class SearchBar extends Component {
                 <div className="dropdown-menu">
                     <div className="list-group list-group-flush">
                         {this.events.map( event => (
-                            <button onKeyPress={this.ifEnterInList} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
+                            <button onKeyPress={this.ifEnterInList} onClick={() => history.push("/event/" + event.event_id + "/visit")} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
                         ))}
                     </div>
                 </div>
@@ -54,14 +54,14 @@ export class SearchBar extends Component {
     ifEnter = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
-            history.push("/search");
+            history.push("/event/search/" + event.input);
         }
     };
 
     ifEnterInList = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
-            history.push("/event" + event.event_id + "overview");
+            history.push("/event/" + event.event_id + "/visit");
         }
     };
 
