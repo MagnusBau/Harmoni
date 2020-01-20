@@ -45,6 +45,11 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    /**
+     * Posts a document to the db
+     * @param data
+     * @param callback
+     */
     //<DO NOT TOUCH>
     postFileInfo(data, callback: ()=>void) {
         console.log("data.name: " + data.name);
@@ -56,6 +61,12 @@ export class FileInfoDAO extends Dao {
         );
     }
 
+    /**
+     * Deletes a document from the db
+     * @param path
+     * @param callback
+     */
+    //</DO NOT TOUCH
     deleteFileInfo(path: string, callback: (status: string, data: string) => void){
         let values = [path];
         console.log(path);

@@ -15,11 +15,11 @@ class FileInfoService {
     }
 
     postFileInfo(name: string, eventId: number, data: FormData) {
-        return axios.post(`http://` + ip +`:4000/single/${eventId}`,
+        return axios.post(`http://` + ip +`:4000/api/single/${eventId}`,
             data);
     }
     updateFile(data: FormData) {
-        return axios.post(`http://` + ip +`:4000/single/update`,
+        return axios.post(`http://` + ip +`:4000/api/single/update`,
             data);
     }
 

@@ -89,3 +89,14 @@ test("Check if document name exist in db", done => {
     }
     fileInfoDao.checkFileName(1, "Bob", callback);
 });
+
+test("Remove document from db", done =>  {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    fileInfoDao.deleteFileInfo("Ross", callback);
+});

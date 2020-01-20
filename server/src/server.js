@@ -70,7 +70,7 @@ const upload = multer({
     limits: 1024 * 1024 * 5
 });
 
-app.post('/single/:eventId', upload.single('file'), (req, res) => {
+app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
@@ -87,7 +87,7 @@ app.post('/single/:eventId', upload.single('file'), (req, res) => {
     });
 });
 
-app.post('/single/update', upload.single('file'), (req, res) => {
+app.post('/api/single/update', upload.single('file'), (req, res) => {
         try {
             result.send(req.file);
         }catch(err) {
