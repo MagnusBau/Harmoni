@@ -15,7 +15,7 @@ class Home extends Component {
     events: Event[] = [];
 
     viewEvent(e) {
-        history.push("/event/" + e + "/visit")
+        history.push("/event/" + e + "/view")
     };
     render(){
         return (
