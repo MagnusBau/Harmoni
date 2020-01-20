@@ -9,6 +9,7 @@ import DateTimePicker from 'react-datetime-picker'
 import DateTime from 'react-datetime';
 import moment from "moment";
 import { userService } from "../services/userService";
+import {SimpleMap} from "../components/simplemap";
 
 const history = createHashHistory();
 
@@ -35,7 +36,7 @@ export class AddEvent extends Component {
     };
 
     /**
-     * 
+     *
      * @param props
      * @param context
      */
@@ -43,115 +44,127 @@ export class AddEvent extends Component {
         super(props, context);
     }
 
+    _onClick = ({x, y, lat, lng, event}) => console.log(x, y, lat, lng, event);
+
     render() {
 
 
         return(
-            <div className={"m-2"}>
-                <form className="form-group">
-                    <div className={"form-group m-2"}>
-                        <label>Navn på arrangement:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"event-title"}
-                               placeholder={"Navn på arrangement"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.title = event.target.value)}/>
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Beskrivelse:</label>
-                        <br></br>
-                        <textarea rows={4} cols={50}
-                                  className={"form-control"}
-                                  id={"event-description"}
-                                  placeholder={"Beskrivelse av arrangement"}
-                                  required={true}
-                                  onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                      (this.createEvent.description = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Lokasjon:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"event-location"}
-                               placeholder={"Lokasjon"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.location = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Start tidspunkt:</label>
-                        <br></br>
-                        <div>
-                            <DateTime
-                                dateFormat={"YYYY-MM-DD"}
-                                timeFormat={"HH:mm"}
-                                locale={"no"}
-                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
-                            />
+            <div className={"row"}>
+                <div className={"col"}>
+                    <div className={"m-2"}>
+                        <form className="form-group">
+                            <div className={"form-group m-2"}>
+                                <label>Navn på arrangement:</label>
+                                <br></br>
+                                <input type={"text"}
+                                       className={"form-control"}
+                                       id={"event-title"}
+                                       placeholder={"Navn på arrangement"}
+                                       required={true}
+                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                           (this.createEvent.title = event.target.value)}/>
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Beskrivelse:</label>
+                                <br></br>
+                                <textarea rows={4} cols={50}
+                                          className={"form-control"}
+                                          id={"event-description"}
+                                          placeholder={"Beskrivelse av arrangement"}
+                                          required={true}
+                                          onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                              (this.createEvent.description = event.target.value)}
+                                />
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Lokasjon:</label>
+                                <br></br>
+                                <input type={"text"}
+                                       className={"form-control"}
+                                       id={"event-location"}
+                                       placeholder={"Lokasjon"}
+                                       required={true}
+                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                           (this.createEvent.location = event.target.value)}
+                                />
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Start tidspunkt:</label>
+                                <br></br>
+                                <div>
+                                    <DateTime
+                                        dateFormat={"YYYY-MM-DD"}
+                                        timeFormat={"HH:mm"}
+                                        locale={"no"}
+                                        onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                    />
+                                </div>
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Slutt tidspunkt:</label>
+                                <br></br>
+                                <div>
+                                    <DateTime
+                                        dateFormat={"YYYY-MM-DD"}
+                                        timeFormat={"HH:mm"}
+                                        locale={"no"}
+                                        onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                    />
+                                </div>
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Antall billettyper:</label>
+                                <br></br>
+                                <select name={"ticket-types"} size={"1"}>
+                                    <option value={"1"}>1</option>
+                                    <option value={"2"}>2</option>
+                                    <option value={"3"}>3</option>
+                                    <option value={"4"}>4</option>
+                                    <option value={"5"}>5</option>
+                                </select>
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Type arrangement:</label>
+                                <br></br>
+                                <input type={"text"}
+                                       className={"form-control"}
+                                       id={"category"}
+                                       placeholder={"konsert"}
+                                       required={true}
+                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                           (this.createEvent.category = event.target.value)}
+                                />
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <label>Total kapasitet:</label>
+                                <br></br>
+                                <input type={"text"}
+                                       className={"form-control"}
+                                       id={"ticket-amount"}
+                                       placeholder={"1"}
+                                       required={true}
+                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                           (this.createEvent.capacity = event.target.value)}
+                                />
+                            </div>
+                        </form>
+                        <div className="text-center">
+                            <button type="button"
+                                    className="btn btn-ghost btn-ghost-bordered center-block"
+                                    onClick={this.register}>
+                                {' '}Registrer{' '}
+                            </button>
                         </div>
                     </div>
-                    <div className={"form-group m-2"}>
-                        <label>Slutt tidspunkt:</label>
-                        <br></br>
-                        <div>
-                            <DateTime
-                                dateFormat={"YYYY-MM-DD"}
-                                timeFormat={"HH:mm"}
-                                locale={"no"}
-                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
-                            />
-                        </div>
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Antall billettyper:</label>
-                        <br></br>
-                        <select name={"ticket-types"} size={"1"}>
-                            <option value={"1"}>1</option>
-                            <option value={"2"}>2</option>
-                            <option value={"3"}>3</option>
-                            <option value={"4"}>4</option>
-                            <option value={"5"}>5</option>
-                        </select>
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Type arrangement:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"category"}
-                               placeholder={"konsert"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.category = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Total kapasitet:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"ticket-amount"}
-                               placeholder={"1"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.capacity = event.target.value)}
-                        />
-                    </div>
-                </form>
-                <div className="text-center">
-                    <button type="button"
-                            className="btn btn-ghost btn-ghost-bordered center-block"
-                            onClick={this.register}>
-                        {' '}Registrer{' '}
-                    </button>
+                </div>
+                <div className={"col"}>
+                    <SimpleMap>
+
+                    </SimpleMap>
                 </div>
             </div>
+
         )
     }
 

@@ -14,6 +14,7 @@ import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
+import {SimpleMap} from "./components/simplemap";
 
 
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
@@ -46,6 +47,7 @@ if (root)
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
+                    <Route exact path="/map" component={SimpleMap}/>
                 </Switch>
                 <Footer/>
             </div>
