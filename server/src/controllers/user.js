@@ -3,8 +3,13 @@
 const pool = require("../server");
 const fs = require('fs');
 import {UserDAO} from "../dao/userDao";
+import {ArtistDAO} from "../dao/artistDao";
+import {Email} from "../email";
+
+const email = new Email();
 
 const userDao = new UserDAO(pool);
+const artistDao = new ArtistDAO(pool);
 
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
@@ -36,7 +41,7 @@ class User {
 let privateKey = fs.readFileSync('./src/private.txt', 'utf8');
 
 const signOptions = {
-    expiresIn:  "1H",
+    expiresIn:  "24H",
     algorithm:  "RS256"
 };
 
@@ -47,17 +52,63 @@ function login(bool: boolean, username: string, res: Response) {
 
         userDao.getUser(username, (err, user) => {
             console.log(username + user[0][0].user_id + user[0][0].username);
-            res.json({
-                user: {
-                    "user_id": user[0][0].user_id,
-                    "username": user[0][0].username,
-                    "image": user[0][0].image,
-                    "first_name": user[0][0].first_name,
-                    "last_name": user[0][0].last_name,
-                    "email": user[0][0].email,
-                    "phone": user[0][0].phone
-                },
-                token: token });
+            artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
+                if(artist[0][0] != null) {
+                    if(artist[0][0].artist_id != null) {
+                        console.log(artist[0][0].artist_name);
+                        res.json({
+                            user: {
+                                "user_id": user[0][0].user_id,
+                                "username": user[0][0].username,
+                                "contact_id": user[0][0].contact_id,
+                                "image": user[0][0].image,
+                                "first_name": user[0][0].first_name,
+                                "last_name": user[0][0].last_name,
+                                "email": user[0][0].email,
+                                "phone": user[0][0].phone
+                            },
+                            artist: {
+                                "artist_id": artist[0][0].artist_id,
+                                "artist_name": artist[0][0].artist_name
+                            },
+                            token: token });
+                    } else {
+                        res.json({
+                            user: {
+                                "user_id": user[0][0].user_id,
+                                "username": user[0][0].username,
+                                "contact_id": user[0][0].contact_id,
+                                "image": user[0][0].image,
+                                "first_name": user[0][0].first_name,
+                                "last_name": user[0][0].last_name,
+                                "email": user[0][0].email,
+                                "phone": user[0][0].phone
+                            },
+                            artist: {
+                                "artist_id": null,
+                                "artist_name": null
+                            },
+                            token: token });
+                    }
+                } else {
+                    res.json({
+                        user: {
+                            "user_id": user[0][0].user_id,
+                            "username": user[0][0].username,
+                            "contact_id": user[0][0].contact_id,
+                            "image": user[0][0].image,
+                            "first_name": user[0][0].first_name,
+                            "last_name": user[0][0].last_name,
+                            "email": user[0][0].email,
+                            "phone": user[0][0].phone
+                        },
+                        artist: {
+                            "artist_id": null,
+                            "artist_name": null
+                        },
+                        token: token });
+                }
+            });
         });
 
 
@@ -69,16 +120,25 @@ function login(bool: boolean, username: string, res: Response) {
 
 function validateUsername(data: Object, username: string, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
     if(username.match("^[A-Za-z0-9]+$") && 2 < username.length <= 50) {
-        userDao.checkUsername(username, (err, rows) => {
-            console.log(rows[0][0].count);
-            if(rows[0][0].count === 0) {
+        if (data.artist_name) {
+            userDao.checkAndVerifyArtistUsername(username, (err, rows) => {
+                console.log(rows);
+                console.log(rows[0][0].username_in);
+                data.username = rows[0][0].username_in;
                 return validatePassword(data, password, email, first_name, last_name, phone, res);
-            } else {
-                console.log("Invalid username");
-                res.json({ error: "Invalid username" });
-                return false;
-            }
-        });
+            });
+        } else {
+            userDao.checkUsername(username, (err, rows) => {
+                console.log(rows[0][0].count);
+                if (rows[0][0].count === 0) {
+                    return validatePassword(data, password, email, first_name, last_name, phone, res);
+                } else {
+                    console.log("Invalid username");
+                    res.json({error: "Invalid username"});
+                    return false;
+                }
+            });
+        }
     } else {
         console.log("Invalid username");
         res.json({ error: "Invalid username" });
@@ -148,23 +208,33 @@ function validatePhone(data: Object, phone: string, res: Response) {
 }
 
 function register(data: Object, res: Response) {
+    // Store original password to send by mail
+    const originalPassword = data.password;
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(data.password, salt, function(err, hash) {
             data.password = hash;
-            userDao.postContact(data, (err, contactData) => {
-                if(contactData.insertId != null || contactData.insertId === false || contactData.insertId === 0) {
-                    userDao.postUser(data, contactData.insertId, (err, userData) => {
-                        if(userData.insertId != null || userData.insertId === false || userData.insertId === 0) {
-                            login(true, data.username, res);
-                        } else {
-                            res.json({ error: "Invalid something" });
-                        }
-                    })
-                } else {
-                    console.log("Invalid7");
-                    res.json({ error: "Invalid something" });
-                }
-            })
+            if (data.artist_name) {
+                userDao.postUser(data, data.contact_id, (err, userData) => {
+                    res.json(userData);
+                    // Send email to user with login information
+                    email.artistUserNotification(data.email, data.artist_name, data.username, originalPassword, data.organizer);
+                })
+            } else {
+                userDao.postContact(data, (err, contactData) => {
+                    if (contactData.insertId != null || contactData.insertId === false || contactData.insertId === 0) {
+                        userDao.postUser(data, contactData.insertId, (err, userData) => {
+                            if (userData.insertId != null || userData.insertId === false || userData.insertId === 0) {
+                                login(true, data.username, res);
+                            } else {
+                                res.json({error: "Invalid something"});
+                            }
+                        })
+                    } else {
+                        console.log("Invalid7");
+                        res.json({error: "Invalid something"});
+                    }
+                })
+            }
         })
     });
 }
@@ -190,6 +260,14 @@ exports.loginUser = (req, res, next) => {
     });
 };
 
+exports.getUserByArtist = (req, res, next) => {
+    console.log(`Got request from client: GET /auth/user/artist/${req.params.artistId}`);
+
+    userDao.getUserByArtist(req.params.artistId, (err, rows) => {
+        res.send(rows);
+    });
+};
+
 exports.registerUser = (req, res, next) => {
     let data = {
         "username": req.body.username,
@@ -197,7 +275,10 @@ exports.registerUser = (req, res, next) => {
         "email": req.body.email,
         "first_name": req.body.first_name,
         "last_name": req.body.last_name,
-        "phone": req.body.phone
+        "phone": req.body.phone,
+        "contact_id": req.body.contact_id,
+        "artist_name": req.body.artist_name,
+        "organizer": req.body.organizer
     };
     if(validateUsername(data, req.body.username, req.body.password, req.body.email, req.body.first_name, req.body.last_name, req.body.phone, res)) {
         console.log("yo (bad)");
@@ -211,6 +292,8 @@ exports.getToken = (req, res, next) => {
         res.json({token: token});
     });
 };
+
+
 
 exports.updateUser = (req, res, next) => {
     console.log("Skal oppdatere bruker");
@@ -227,6 +310,51 @@ exports.updateUser = (req, res, next) => {
     });
 
 };
+
+exports.getUser = (req, res, next) => {
+    userDao.getUserById(req.params.userId, (err, user) => {
+        console.log(req.params.userId + user[0][0].user_id + user[0][0].username);
+        artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
+            if(artist[0][0]) {
+                if(artist[0][0].artist_id) {
+                    res.json({
+                        user: {
+                            "user_id": user[0][0].user_id,
+                            "username": user[0][0].username,
+                            "contact_id": user[0][0].contact_id,
+                            "image": user[0][0].image,
+                            "first_name": user[0][0].first_name,
+                            "last_name": user[0][0].last_name,
+                            "email": user[0][0].email,
+                            "phone": user[0][0].phone
+                        },
+                        artist: {
+                            "artist_id": artist[0][0].artist_id,
+                            "artist_name": artist[0][0].artist_name
+                        }
+                    });
+                } else {
+                    res.json({
+                        user: {
+                            "user_id": user[0][0].user_id,
+                            "username": user[0][0].username,
+                            "contact_id": user[0][0].contact_id,
+                            "image": user[0][0].image,
+                            "first_name": user[0][0].first_name,
+                            "last_name": user[0][0].last_name,
+                            "email": user[0][0].email,
+                            "phone": user[0][0].phone
+                        },
+                        artist: {
+                            "artist_id": null,
+                            "artist_name": null
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
 
 exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;

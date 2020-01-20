@@ -8,18 +8,6 @@ const history = createHashHistory();
 import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
 
-/*
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : languages.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-};
-*/
-
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
 // input value for every given suggestion.
@@ -31,6 +19,8 @@ const renderSuggestion = suggestion => (
         {suggestion.item}
     </div>
 );
+
+// TODO: Clean up this mess
 
 export default class AddEquipment extends Component {
     // TODO: Verify that event exists before loading page
@@ -47,6 +37,7 @@ export default class AddEquipment extends Component {
             item: '',
             amount: 1
         };
+
         this.state = {
             value: '',
             suggestions: [],
@@ -70,7 +61,8 @@ export default class AddEquipment extends Component {
             item: '',
             amount: 1
         };
-        this.loadEquipment();
+        this.mounted();
+        //this.loadEquipment();
         //window.location.reload();
     }
 
@@ -82,42 +74,49 @@ export default class AddEquipment extends Component {
         if(direction) {
             this.setState({equipmentLoading: true, posts:[]});
         }
+        //this.setState({equipmentS: []});
+        this.eventEquipment = [];
+        /*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => {this.setState({
                 equipmentS: eventEquipment[0]
             })})
             .catch((error: Error) => console.log(error.message));
+            */
+
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(equipment => this.eventEquipment = equipment[0])
+            .catch((error: Error) => console.log(error.message));
     };
 
     mounted() {
         this.currentEvent = this.props.eventId;
-
+        this.eventEquipment = [];
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
 
-        this.loadEquipment();
-/*
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
+            .then(equipment => this.eventEquipment = equipment[0])
             .catch((error: Error) => console.log(error.message));
-
-         */
     }
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.loadEquipment();
+        this.mounted();
+        //this.loadEquipment();
         //window.location.reload();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        this.loadEquipment();
+        this.mounted();
+        //this.loadEquipment();
         //window.location.reload();
     }
 
@@ -125,12 +124,11 @@ export default class AddEquipment extends Component {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
-            this.loadEquipment();
+            this.mounted();
+            //this.loadEquipment();
             //window.location.reload();
         }
     }
-
-
 
     onDropdownChange = (event, {newValue}) => {
         this.setState({
@@ -186,7 +184,7 @@ export default class AddEquipment extends Component {
         };
 
         return (
-            <div className="w-50 m-2">
+            <div className="w-75 m-2">
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
                 <form className="form-inline" onSubmit={this.onSubmit}>
                     <div className="form-group m-2">
@@ -213,7 +211,7 @@ export default class AddEquipment extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.equipmentS.map(eventEquipment => (
+                    {this.eventEquipment.map(eventEquipment => (
                         <tr className="d-flex">
                             <td className="col-7">{eventEquipment.item}</td>
                             <td className="col-3">{eventEquipment.amount}

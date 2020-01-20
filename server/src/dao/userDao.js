@@ -42,9 +42,30 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    checkAndVerifyArtistUsername(username: string, callback: (status: string, data: string) => void) {
+        let values = [username];
+        super.query("CALL check_and_verify_artist_username(?)",
+            values,
+            callback);
+    }
+
+    getUserById(userId: number, callback: (status: string, data: string) => void){
+        let values = [userId];
+        super.query("CALL get_user_by_id(?)",
+            values,
+            callback);
+    }
+
     getContact(user_id: number, callback: (status: string, data: string) => void){
         let values = [user_id];
         super.query("CALL get_contact(?)",
+            values,
+            callback);
+    }
+
+    getUserByArtist(artistId: number, callback: (status: string, data: string) => void) {
+        let values = [artistId];
+        super.query("CALL get_user_by_artist(?)",
             values,
             callback);
     }

@@ -186,17 +186,52 @@ END;
  */
 CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
 BEGIN
-    DELETE FROM event WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7 AND organizer = user_id_in;
-end;
+
+    DELETE rider FROM rider
+        INNER JOIN document d on rider.document = d.document_id
+        INNER JOIN event e2 on d.event = e2.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE contract FROM contract
+        INNER JOIN document ON contract.document = document.document_id
+        INNER JOIN event e3 on document.event = e3.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE document FROM document
+        INNER JOIN event e4 on document.event = e4.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE event_role FROM event_role
+        INNER JOIN event e on event_role.event = e.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE role FROM role
+        INNER JOIN event e5 on role.event = e5.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE event_equipment FROM event_equipment
+        INNER JOIN event e6 on event_equipment.event = e6.event_id
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+
+    DELETE FROM event
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+      AND organizer = user_id_in;
+END;
 
 /**
-  // TODO change = 0 to > 7
+  Get ended events on a specific user
  */
 CREATE PROCEDURE get_events_by_end_time_user(IN user_id_in INT)
 BEGIN
     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
     FROM event
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 1
+    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
       AND organizer = user_id_in;
 END;
 

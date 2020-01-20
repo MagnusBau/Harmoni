@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "1H",
+    expiresIn:  "24H",
     algorithm:  ["RS256"]
 };
 
@@ -219,6 +219,10 @@ app.use("/api/file", fileRoutes);
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next();
 });*/
+
+app.use((req, res, next) => {
+    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
+});
 
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)

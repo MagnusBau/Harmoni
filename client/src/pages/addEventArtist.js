@@ -6,8 +6,14 @@ import {Artist, artistService} from "../services/artistService";
 import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
+import { createHashHistory } from 'history';
+import {userService} from "../services/userService";
+const history = createHashHistory();
 
-export class AddEventArtist extends Component <{ match: { params: { eventId: number } } }> {
+// TODO: Clean up this mess
+// TODO: Add alert on artist add
+
+export class AddEventArtist extends Component {
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -18,15 +24,17 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
 
     state = {
         showModal: false,
-        setModalShow: false
+        setRemoveWarningShow: false,
+        setAddArtistUserShow: false,
+        eventArtists: []
     };
 
-    show = () => {
-        this.setState({setModalShow: true});
-    };
-
-    close = () => {
-        this.setState({setModalShow: false});
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({setRemoveWarningShow: true});
+        } else if (e.target.id === "showAddUser") {
+            this.setState({setAddArtistUserShow: true});
+        }
     };
 
     constructor(props) {
@@ -52,18 +60,19 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     mounted(): void {
+        this.eventArtists = [];
+        eventService
+            .getEventById(this.props.eventId)
+            .then(event => this.event = event[0])
+            .catch((error: Error) => console.log(error.message));
+
         artistService
-            .getArtistByEvent(this.props.match.params.eventId)
+            .getArtistByEvent(this.props.eventId)
             .then(artists => this.eventArtists = artists[0])
             .catch((error: Error) => console.log(error.message));
 
         eventService
-            .getEventById(this.props.match.params.eventId)
-            .then(event => this.event = event[0])
-            .catch((error: Error) => console.log(error.message));
-
-        eventService
-            .getDocumentByEvent(this.props.match.params.eventId)
+            .getDocumentByEvent(this.props.eventId)
             .then(documents => this.eventDocuments = documents[0])
             .catch((error: Error) => console.log(error.message));
     }
@@ -85,20 +94,46 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
     }
 
     removeArtist() {
+        //this.eventArtists = this.eventArtists.filter(artist => artist.artist_id !== this.seeArtist.artist_id);
         artistService.removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id);
-        window.location.reload();
+        this.seeArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
+        this.setState({setRemoveArtistShow: false});
+        this.mounted();
+    }
+
+    addArtistUser() {
+        userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
+                                        this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id);
+        this.setState({setAddArtistUserShow: false});
+        this.mounted();
     }
 
     onSubmit(e) {
         e.preventDefault();
         artistService.addArtistToEvent(this.newArtist, this.documentId);
-        window.location.reload();
+        this.newArtist = {
+            artist_id: -1,
+            artist_name: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: ""
+        };
+        this.documentId = -1;
+        this.mounted();
     }
 
     render() {
         return (
             <div>
-                <div className="w-50 m-4">
+                <div className="m-4">
                     <h2 className="m-2">Artistliste for #{this.event.event_id} ({this.event.title})</h2>
                     <div className="row">
                         <div className="col">
@@ -127,14 +162,23 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
                                         <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
                                     </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
-                                        <button className="btn btn-danger align-bottom"
-                                                onClick={this.show}>Fjern</button> : null}
+                                        <div className="align-bottom form-inline">
+                                            {!this.seeArtist.user_id ?
+                                                <button
+                                                    id="showAddUser"
+                                                    className="btn btn-primary m-1"
+                                                    onClick={this.show}>
+                                                    Opprett bruker
+                                                </button> : null}
+                                            <button id="showWarning" className="btn btn-danger m-1" onClick={this.show}>Fjern</button>
+                                        </div>
+                                         : null}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr/>
-                    <form className="w-50 m-4" onSubmit={this.onSubmit}>
+                    <form className="w-75 m-4" onSubmit={this.onSubmit}>
                         <h4 className="m-2">Legg til ny artist:</h4>
                         <div className="row">
                             <div className="col">
@@ -199,7 +243,7 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
                     </form>
                 </div>
                 <Modal
-                    show={this.state.setModalShow}
+                    show={this.state.setRemoveWarningShow}
                     onHide={this.close}
                     centered>
                     <Modal.Header>
@@ -211,8 +255,30 @@ export class AddEventArtist extends Component <{ match: { params: { eventId: num
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light onClick={this.close}>Lukk</Button.Light>
+                        <Button.Light id="closeWarning" onClick={() => this.setState({setRemoveWarningShow: false})}>Lukk</Button.Light>
                         <Button.Red onClick={this.removeArtist}>Slett</Button.Red>
+                    </Modal.Footer>
+                </Modal>
+                <Modal
+                    show={this.state.setAddArtistUserShow}
+                    onHide={this.close}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Bekreft</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Bekreft opprettelse av bruker for {this.seeArtist.artist_name}.
+                            E-post med innlogging blir sendt til {this.seeArtist.email}
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            value="closeAddUser"
+                            className="modal-button"
+                            id="closeAddUser"
+                            onClick={() => this.setState({setAddArtistUserShow: false})}>Lukk</Button.Light>
+                        <Button.Green onClick={this.addArtistUser}>Bekreft</Button.Green>
                     </Modal.Footer>
                 </Modal>
             </div>

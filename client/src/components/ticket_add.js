@@ -61,11 +61,14 @@ export class listTicketType extends Component <{match: {params: {eventId: number
     }
 
     mounted() {
+        /*
         ticketService.getAllTicket(this.props.match.params.eventId)
             .then(t => {
                 this.ticketTypeList = t[0];
             })
             .catch(error => error.message);
+
+         */
 
     }
 
@@ -75,7 +78,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
 }
 
 
-export class addTicketType extends Component <{match: {params: {eventId: number}}}> {
+export class TicketAdd extends Component <{match: {params: {eventId: number}}}> {
     ticket = new Ticket(
         '',
         '',
@@ -89,7 +92,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
         return(
             <form ref={e => {this.form = e}}>
                 <h2>
-                    Opprett en billett type
+                    Opprett en billettype
                 </h2>
                 <div>
                     <div>Title</div>
@@ -147,7 +150,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
                         />
                     </div>
 
-                    <button onClick={this.send} type={"button"}>legg til bilett type</button>
+                    <button onClick={this.send} type={"button"}>Legg til billett type</button>
 
                 </div>
             </form>
@@ -165,8 +168,7 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
         ticketService.postTicket(this.ticket)
             .then(() => {
                 if(this.ticket) {
-                    history.push('/event/edit/' + this.ticket.event + '/ticket');
-                    window.location.reload();
+                    this.props.postedTicket();
                 }
             })
             .catch((error: Error) => console.log(error.message));
@@ -174,7 +176,8 @@ export class addTicketType extends Component <{match: {params: {eventId: number}
 
 }
 
-export class editTicketType extends Component <{match: {params: {ticketId: number}}}> {
+export class TicketEdit extends Component {
+    currentTicketID = 0;
     ticketTypeList: Ticket[] = [];
     ticket = new Ticket(
         '',
@@ -247,22 +250,28 @@ export class editTicketType extends Component <{match: {params: {ticketId: numbe
                     />
                 </div>
 
-                <button onClick={this.save} type={"button"}>Save</button>
-                <button onClick={this.delete} type={"button"}>delete</button>
-                <button onClick={this.ToBack} type={"button"}>ToBack</button>
+                <button onClick={() => {this.save(); }} type={"button"}>Lagre</button>
+                <button onClick={() => {this.delete(); } } type={"button"}>Slett</button>
+                <button onClick={this.props.handleCancel} type={"button"}>Avbryt</button>
             </form>
         );
     }
 
     mounted() {
-        ticketService.getTicketId(this.props.match.params.ticketId).then(t => (this.ticket = t[0][0])).catch((error: Error) => console.log(error.message));
+        this.currentEventID = this.props.eventId;
+        this.currentTicketID = this.props.ticketId;
+        console.log(this.currentTicketID);
+        ticketService
+            .getTicketId(this.currentTicketID)
+            .then(t => (this.ticket = t[0][0]))
+            .catch((error: Error) => console.log(error.message));
     }
 
     delete(){
         if(!this.ticket) return null;
 
-        ticketService.removeTicket(this.props.match.params.ticketId).then(() => {
-            if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
+        ticketService.removeTicket(this.currentTicketID).then(() => {
+            if (this.ticket) this.props.handleDelete();
         }).catch(error => error.message);
     }
 
@@ -272,12 +281,9 @@ export class editTicketType extends Component <{match: {params: {ticketId: numbe
             alert('pris eller antall kan ikke være under 0!');
             return;
         }
-        ticketService.updateTicket(this.ticket, this.props.match.params.ticketId).then(() => {
-            if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
+        ticketService.updateTicket(this.ticket, this.currentTicketID).then(() => {
+            if (this.ticket) this.props.handleSaveEdit();//history.push('/event/edit/' + this.ticket.event + '/ticket');
 
         }).catch(error => error.message);
-    }
-    ToBack(){
-        if (this.ticket) history.push('/event/edit/' + this.ticket.event + '/ticket');
     }
 }

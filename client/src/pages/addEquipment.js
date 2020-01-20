@@ -53,11 +53,13 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             item: '',
             amount: 1
         };
-        window.location.reload();
+        this.mounted();
     }
 
     mounted() {
-        this.currentEvent = this.props.match.params.eventId;
+        this.currentEvent = this.props.eventId;
+        this.equipment = [];
+        this.eventEquipment = [];
         equipmentService
             .getEquipment()
             .then(equipment => this.equipment = equipment[0])
@@ -71,20 +73,20 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
 
     deleteEquipment(eventEquipment) {
         equipmentService.removeEquipmentFromEvent(eventEquipment);
-        window.location.reload();
+        this.mounted();
     }
 
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
         equipmentService.updateEquipmentOnEvent(equipment);
-        window.location.reload();
+        this.mounted();
     }
 
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
             equipmentService.updateEquipmentOnEvent(equipment);
-            window.location.reload();
+            this.mounted();
         }
     }
 
@@ -141,7 +143,7 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             onKeyDown: this.onKeyDown
         };
         return (
-            <div className="w-50 m-2">
+            <div className="w-75 m-2">
                 <h2>{`Utstyrsliste for arrangement ${this.currentEvent}`}</h2>
                 <form className="form-inline" onSubmit={this.onSubmit}>
                     <div className="form-group m-2">
