@@ -23,6 +23,13 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
+    insertArtist(artistName: string, contactId: number, callback: (status: string, data: string) => void) {
+        let values = [artistName, contactId];
+        super.query("CALL create_artist_on_contact(?, ?)",
+            values,
+            callback);
+    }
+
     updateArtist(artistId: string, artistName: string, firstName: string, lastName: string, email: string, phone: string,
                  callback: (status: string, data: string) => void) {
         let values = [artistId, artistName, firstName, lastName, email, phone];

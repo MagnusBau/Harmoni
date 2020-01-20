@@ -25,6 +25,7 @@ export default class UserEdit extends Component {
     lastName: string = userService.getLastName();
     email: string = userService.getEmail();
     phone: string = userService.getPhone();
+    contactId: number = userService.getContactId();
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
@@ -308,8 +309,8 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.insertArtist({artist_name: this.artistName, first_name: this.firstName,
-                                            last_name: this.lastName, phone: this.phone, email: this.email});
+        artistService.insertArtist(this.artistName, this.contactId);
+        this.mounted();
     }
 
     saveImageChanges() {

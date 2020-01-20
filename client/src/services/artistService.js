@@ -50,6 +50,12 @@ class ArtistService {
             .then(response => response.data);
     }
 
+    insertArtist(artistName: string, contactId: number): void {
+        return axios.post(`http://localhost:4000/api/artist`, {artistName: artistName,
+                                                                         contactId: contactId})
+            .then(response => response.data);
+    }
+
     removeArtistFromEvent(eventId: number, artistId: number): void {
         return axios.delete(`http://localhost:4000/api/event/${eventId}/artist/${artistId}`).then(response => response.data);
     }
