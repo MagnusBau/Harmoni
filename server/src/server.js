@@ -11,6 +11,7 @@ const PORT = process.env.port || 4000;
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../../client/public');
 const config = require("./controllers/configuration.js");
+const multer = require('multer');
 
 let jwt = require("jsonwebtoken");
 
@@ -53,7 +54,7 @@ app.use((req, res, next) => {
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "1H",
+    expiresIn:  "30M",
     algorithm:  ["RS256"]
 };
 
@@ -62,43 +63,72 @@ app.use("/auth/id/:id", (req, res, next) => {
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");
-            res.json({ error: "Not authorized" });
+            res.json({ error: "Token" });
         } else {
             userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
                             console.log("Token ok: " + decoded.username);
-                            next();
+                            if(req.body.user_id) {
+                                if(req.body.user_id === req.params.id) {
+                                    console.log("Token ok: " + decoded.username);
+                                    next();
+                                } else {
+                                    console.log("Token IKKE ok 4");
+                                    res.json({ error: "Token" });
+                                }
+                            } else {
+                                console.log("Token ok: " + decoded.username);
+                                next();
+                            }
                         } else {
                             console.log("Token IKKE ok 2");
-                            res.json({ error: "Not authorized" });
+                            res.json({ error: "Token" });
                         }
                     } else {
                         console.log("Token ok: " + decoded.username);
-                        next();
+                        if(req.body.user_id) {
+                            if(req.body.user_id === req.params.id) {
+                                console.log("Token ok: " + decoded.username);
+                                next();
+                            } else {
+                                console.log("Token IKKE ok 5");
+                                res.json({ error: "Token" });
+                            }
+                        } else {
+                            console.log("Token ok: " + decoded.username);
+                            next();
+                        }
                     }
                 } else {
                     console.log("Token IKKE ok 3");
-                    res.json({ error: "Not authorized" });
+                    res.json({ error: "Token" });
                 }
             });
         }
     });
 });
 
+
+app.use("/auth/id/:id", (req, res, next) => {
+    //check body
+    next();
+
+});
+
 import {TicketDAO} from './dao/ticketDao.js';
 
 const ticketDao = new TicketDAO(pool);
 
-
-app.use("/auth/id/:id/ticket/ticket/:ticketId", (req, res, next) => {
+/*
+app.use("/auth/id/:id/ticket/ticket/:ticket", (req, res, next) => {
     console.log("auth ticket 1");
     userDao.getContact(req.params.id, (err, rows) => {
         if(rows[0][0].contact_id) {
             let id = rows[0][0].contact_id;
-            if(req.params.ticketId) {
-                ticketDao.getOne(req.params.ticketId,(err, rows) => {
+            if(req.params.ticket) {
+                ticketDao.getOne(req.params.ticket,(err, rows) => {
                     if(rows[0][0]) {
                         if(rows[0][0].event) {
                             eventDao.getEventById(rows[0][0].event, (err, rows2) => {
@@ -164,7 +194,9 @@ app.use("/auth/id/:id/ticket", (req, res, next) => {
 
 //TODO: Is this a test?
 import {EventDAO} from './dao/eventDao.js';
+import {ArtistDAO} from "./dao/artistDao";
 
+const artistDao = new ArtistDAO(pool);
 const eventDao = new EventDAO(pool);
 
 app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
@@ -178,8 +210,19 @@ app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
                         if (rows[0][0].organizer === id) {
                             next();
                         } else {
-                            console.log("not authorized event id1");
-                            res.json({error: "Not authorized"});
+                            artistDao.getArtistByEvent(req.params.event, (err, rows) => {
+                                if (rows[0]) {
+                                    if (rows[0].map(artist => artist.user_id).includes(id)) {
+                                        next();
+                                    } else {
+                                        console.log("not authorized event id6");
+                                        res.json({error: "Not authorized"});
+                                    }
+                                } else {
+                                    console.log("not authorized event id1");
+                                    res.json({error: "Not authorized"});
+                                }
+                            });
                         }
                     } else {
                         console.log("not authorized event id2");
@@ -193,7 +236,7 @@ app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
             res.json({error: "Not authorized"});
         }
     });
-});
+});*/
 
 // Setup routes
 const artistRoutes = require("./routes/artist");
@@ -204,15 +247,23 @@ const userRoutes = require("./routes/user");
 const fileRoutes = require("./routes/file");
 const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
+const contactRoutes = require("./routes/contact");
+const loginRoutes = require("./routes/login");
+import {FileInfoDAO} from './dao/fileInfoDao.js';
+
+
+const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-app.use("/auth", userRoutes);
+app.use("/auth/id/:id/user", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
+app.use("/auth", loginRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){
@@ -220,10 +271,50 @@ app.use("/api/file", fileRoutes);
     next();
 });*/
 
+
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function (req, file, cb) {
+        cb(null , file.originalname);
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path
+    };
+    let result = res;
+    console.log(req.body.name);
+    fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/single/update', upload.single('file'), (req, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+});
+
 app.use((req, res, next) => {
     res.status(404).redirect('http://localhost:' + PORT + '/#/404');
 });
-
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

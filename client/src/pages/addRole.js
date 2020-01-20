@@ -4,6 +4,8 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {roleService, Role, EventRole} from "../services/roleService";
+import {artistService} from "../services/artistService";
+import {userService} from "../services/userService";
 
 const history = createHashHistory();
 
@@ -27,6 +29,11 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         roleService
             .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles[0])
+            .catch((error: Error) => console.log(error.message));
+
+        artistService
+            .getArtistByUser(userService.getUserID())
+            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
     }
     onChange(e) {
@@ -68,25 +75,31 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
     render(){
         return(
             <div className="m-2">
-                <form className={"form-inline"} onSubmit={this.onSubmit}>
-                    <div className="form-group m-2">
-                        <input type="text"
-                               className="form-control"
-                               id="role-type"
-                               defaultValue={this.newRole.type}
-                               placeholder="Rollenavn"
-                               onChange={this.onChange}/>
-                    </div>
-                    <button type="submit" className="btn-primary m-2">Legg til</button>
-                </form>
+                {!this.state.isArtist ?
+                    <form className={"form-inline"} onSubmit={this.onSubmit}>
+                        <div className="form-group m-2">
+                            <input type="text"
+                                   className="form-control"
+                                   id="role-type"
+                                   defaultValue={this.newRole.type}
+                                   placeholder="Rollenavn"
+                                   onChange={this.onChange}/>
+                        </div>
+                        <button type="submit" className="btn-primary m-2">Legg til</button>
+                    </form>
+                : null}
                 <table className="table w-50">
                     <thead><tr><th>Personell</th></tr></thead>
                     <tbody>
                         {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
                                 <td className="col-7">{role.type}</td>
-                                <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
-                                <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
+                                {!this.state.isArtist ?
+                                    <div>
+                                        <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
+                                        <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
+                                    </div>
+                                : null}
                             </tr>
                         ))}
                     </tbody>

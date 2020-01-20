@@ -15,7 +15,7 @@ const url = `http://localhost:4000`;
 
 export class Email {
 
-    cancelledNotification(mailList: string, eventId: number, title: string, name: string, location: string, startTime: string) {
+    cancelledNotification(mailList: Array, eventId: number, title: string, name: string, location: string, startTime: string) {
 
         let toMail = mailList.join(', ');
 
@@ -23,7 +23,6 @@ export class Email {
             from: 'Harmoni <harmoni.team3@gmail.com>',
             bcc: toMail,
             subject: "Arrangementet " + title + " er avlyst",
-            text: 'Dette er en test',
             html: '<h3 style="font-size: 21px">Hei, ' + name + '</h3>' +
                 '  <div style="font-size: 17px">' +
                 '   <br>Dette er et varsel om at følgende arrangement har blitt avlyst: <a href="http://localhost:4000/#/event/' + eventId + '">Link til ditt arrangement</a>' +
@@ -68,6 +67,25 @@ export class Email {
                 console.log("Email sent: " + res.response);
             }
         });
+    }
+
+    contactUs(fromMail: string, name: string, subject: string, content: string) {
+
+        let mailOption = {
+            from: name + '<' + fromMail + '>',
+            to: 'harmoni.team3@gmail.com',
+            subject: subject,
+            html: '<div style="white-space: pre-line"><p>Svar sendes til: ' + fromMail + '</p>' + content + '</div>'
+        };
+
+        transporter.sendMail(mailOption, (err, res) => {
+            if (err) {
+                console.log("Error occured: " + err);
+            } else {
+                console.log("Email sent: " + res.response);
+            }
+        });
+
     }
 }
 

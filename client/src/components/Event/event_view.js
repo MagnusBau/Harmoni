@@ -1,3 +1,5 @@
+// @flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
@@ -43,15 +45,19 @@ export default class EventView extends Component {
                     <br/>Til: {this.eventOverview[0].end_time}</p>
                 <h5>Kapasitet</h5>
                 <p>{this.eventOverview[0].capacity}</p>
-                <button
-                    size="sm"
-                    className="m"
-                    variant="outline-secondary"
-                    onClick={this.props.handleClick}>
-                    Rediger arrangement
-                </button>
+                {!this.props.isArtist ?
+                    <button
+                        size="sm"
+                        className="m"
+                        variant="outline-secondary"
+                        onClick={this.props.handleClick}>
+                        Rediger arrangement
+                    </button>
+                : null}
 
-                <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
+                {!this.props.isArtist ?
+                    <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
+                : null}
 
                 <ModalWidget show={this.state.setShowModal} onHide={this.close} title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
                     <Button.Light onClick={this.close}>Lukk</Button.Light>
@@ -74,22 +80,21 @@ export default class EventView extends Component {
     cancelEvent() {
 
         console.log(this.eventOverview[0].event_id);
-        if(!this.eventOverview[0]) return null;
 
-        //console.log(this.props.match.params.eventId + ": " + this.event[0].title);
+        if(!this.eventOverview) return Alert.danger("Finner ikke arrangementet");
 
-        if(this.eventOverview[0].cancelled === 0) {
+        if (this.eventOverview[0].cancelled === 0) {
 
             this.currentEvent = this.props.eventId;
 
             eventService
                 .cancelEvent(this.currentEvent)
-                //.then(Alert.success("Arrangementet er avlyst! Email sendt."))
+                .then(window.location.reload())
                 .then(console.log("Arrangementet er avlyst!"))
-                .then(history.push("/"))
+                //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
                 .catch((error: Error) => Alert.danger(error));
 
-        } else if (this.eventOverview.cancelled === 1) {
+        } else if (this.eventOverview[0].cancelled === 1) {
 
             console.log("Dette arrangementet er allerede avlyst");
             //return (Alert.info("Dette arrangementet er allerede avlyst"));
@@ -101,4 +106,5 @@ export default class EventView extends Component {
         }
 
     }
+
 }

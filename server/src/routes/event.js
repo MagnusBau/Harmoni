@@ -25,7 +25,8 @@ router.post("/:eventId/role", roleController.addRoleToEvent);
 router.delete("/:eventId/equipment/:equipmentId", equipmentController.removeEquipmentFromEvent);
 router.delete("/:eventId/artist/:artistId", artistController.removeArtistFromEvent);
 router.delete("/:eventId/role/:roleId", roleController.removeRoleFromEvent);
-router.delete("/:eventId", eventController.deleteEvent);
+//router.delete("/:eventId", eventController.deleteEvent);
+router.delete("/user/:userId/ended", eventController.deleteEventByEndTime);
 router.put("/:eventId/equipment/:equipmentId", equipmentController.updateEquipmentOnEvent);
 router.put("/:eventId/cancel", eventController.cancelEvent);
 router.put("/edit/:event_id", eventController.updateEvent);
@@ -33,5 +34,6 @@ router.put("/:eventId/role", roleController.updateRoleCount);
 router.get("/edit/:event_id", eventController.getEventByIdUpdate);
 router.post("/new", eventController.createEvent);
 router.get("/:eventId/artist", artistController.getArtistByEvent);
+router.get("/search/:input", eventController.getEventByInput);
 
 module.exports = router;

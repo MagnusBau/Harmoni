@@ -103,6 +103,7 @@ CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   path        VARCHAR(500)           NOT NULL DEFAULT './files/error.txt',
   event       INT                NOT NULL,
+  alt VARCHAR(50) NOT NULL DEFAULT 'it''sa me, Mario',
   name        VARCHAR(100)       NOT NULL,
   CONSTRAINT document_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );

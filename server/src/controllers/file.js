@@ -2,12 +2,31 @@
 
 const fileInfoController = require("./fileInfo");
 const fs = require('fs');
+const multer = require('multer');
 
 import {FileInfoDAO} from '../dao/fileInfoDao.js';
 const pool = require('../server.js');
 
 
 const fileInfoDao = new FileInfoDAO(pool);
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function (req, file, cb) {
+        cb(null , file.originalname);
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+module.exports = {
+    upload
+};
 
 
 
@@ -17,16 +36,21 @@ exports.download = async (req, res, next) => {
 };
 
 exports.upload = (req, res, next) => {
-    console.log(`Got request from client: /file/upload/${req.params.eventId}`);
-    let file: File = Buffer.from(req.body.encodedFile, 'base64').toString('binary');
-    console.log(file);
+    console.log(`Got request from client: POST /file/upload/${req.params.eventId}`);
     let data = {
         "name": req.body.name,
-        "eventId": req.params.eventId
+        "eventId": req.params.eventId,
+        "path": req.body.path
     };
+    let result = res;
+    console.log(req.body.name);
     fileInfoDao.postFileInfo(data, (err, res) => {
-        console.log(res.insertId);
-    })
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
 };
 
 exports.update = (req, res, next) => {

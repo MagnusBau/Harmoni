@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import { userService} from "../../services/userService";
 import {Link} from "react-router-dom";
 import { createHashHistory } from 'history';
+import {SearchBar} from "../SearchBar/searchBar";
 
 const history = createHashHistory();
 
@@ -18,6 +19,8 @@ const history = createHashHistory();
     //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
 class NavBar extends Component {
     form: any = null;
+    firstName: string = "";
+    lastName: string = "";
     username: string = "";
     password: string = "";
 
@@ -50,10 +53,16 @@ class NavBar extends Component {
     }
 
      mounted(): void {
+        if(userService.getUserID() != null && userService.getUserID() !== "null") {
+            this.username = userService.getUsername();
+            this.firstName = userService.getFirstName();
+            this.lastName = userService.getLastName();
+        }
          let id = userService.getUserID();
          let username = userService.getUsername();
          let fullName = `${userService.getFirstName()} ${userService.getLastName()}`;
          this.setState({userId: id, username: username, fullName: fullName});
+         userService.setMountDropdown(this.mounted);
      }
 
     render() {
@@ -69,8 +78,8 @@ class NavBar extends Component {
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
-                                <h5>{userService.getFirstName() + " " + userService.getLastName()}</h5>
-                                <p className="form-text text-muted">{`@${userService.getUsername()}`}</p>
+                                <h5>{this.firstName + " " + this.lastName}</h5>
+                                <p className="form-text text-muted">{`@${this.username}`}</p>
                                 <div className="dropdown-divider"/>
                                 <button
                                     type="button"
@@ -152,10 +161,7 @@ class NavBar extends Component {
            <nav className="navbar navbar-light bg-light sticky-top">
                <a className="navbar-brand"  href="#">Harmoni</a>
                <div className="form-inline">
-                   <form className="form-inline my-2 my-lg-0">
-                       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                   </form>
+                   <SearchBar/>
                    {userIcon}
                </div>
            </nav>

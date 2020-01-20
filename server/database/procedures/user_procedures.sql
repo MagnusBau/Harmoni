@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS post_user;
 DROP PROCEDURE IF EXISTS get_username;
 DROP PROCEDURE IF EXISTS get_password;
 DROP PROCEDURE IF EXISTS get_user;
+DROP PROCEDURE IF EXISTS get_user_by_id;
 DROP PROCEDURE IF EXISTS check_username;
 DROP PROCEDURE IF EXISTS get_contact;
 DROP PROCEDURE IF EXISTS put_contact;
@@ -23,8 +24,6 @@ DROP PROCEDURE IF EXISTS get_user_by_artist;
 
   Issued by: postContact(data: Object)
  */
-
-
 CREATE PROCEDURE post_contact(IN email_in VARCHAR(50), IN first_name_in VARCHAR(50), IN last_name_in VARCHAR(50), IN phone_in VARCHAR(12))
 BEGIN
     INSERT INTO contact(email, first_name, last_name, phone)
@@ -133,6 +132,20 @@ BEGIN
     END WHILE;
 
     SELECT username_in;
+END;
+
+/**
+  Fetches a user based on user_id
+
+  IN user_id_in: username of the user
+
+  Issued by: getUserById(userId: number)
+ */
+
+CREATE PROCEDURE get_user_by_id(IN user_id_in INT(11))
+BEGIN
+    SELECT * FROM user RIGHT JOIN contact ON user.contact = contact.contact_id
+    WHERE user.user_id=user_id_in;
 END;
 
 /**

@@ -7,9 +7,15 @@ const artistDao = new ArtistDAO(pool);
 exports.insertArtist = (req, res, next) => {
     console.log(`Got request from client: POST /api/artist`);
 
-    artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
-        res.send(rows);
-    });
+    if (req.body.contactId) {
+        artistDao.createArtistOnContact(req.body.artistName, req.body.contactId, (err, rows) => {
+            res.send(rows);
+        });
+    } else {
+        artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
+            res.send(rows);
+        });
+    }
 };
 
 exports.updateArtist = (req, res, next) => {
@@ -31,8 +37,8 @@ exports.deleteArtist = (req, res, next) => {
 exports.getAllArtists = (req, res, next) => {
     console.log(`Got request from client: GET /api/artist`);
 
-    if (req.query.search) {
-        artistDao.getArtistBySearch(req.query.search, (err, rows) => {
+    if (req.query.searchBar) {
+        artistDao.getArtistBySearch(req.query.searchBar, (err, rows) => {
             res.send(rows);
         })
     } else {
@@ -48,6 +54,21 @@ exports.getArtistById = (req, res, next) => {
     artistDao.getArtistById(req.params.artistId, (err, rows) => {
         res.send(rows);
     })
+};
+exports.getArtistByContact = (req, res, next) => {
+    console.log(`Got request from client: GET /api/artist/${req.params.contactId}`);
+
+    artistDao.getArtistByContact(req.params.contactId, (err, rows) => {
+        res.send(rows);
+    })
+};
+
+exports.getArtistByUser = (req, res, next) => {
+    console.log(`Got request from client: GET /api/artist/user/${req.params.userId}`);
+
+    artistDao.getArtistByUser(req.params.userId, (err, rows) => {
+        res.send(rows);
+    });
 };
 
 exports.getArtistByEvent = (req, res, next) => {

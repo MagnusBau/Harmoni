@@ -14,6 +14,7 @@ class Footer extends Component {
         return (
             <footer className="text-center">
                 <p>&copy; 2020 Team 3</p>
+                <p><a href="/#/contact">Kontakt oss</a></p>
             </footer>
         );
     }

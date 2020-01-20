@@ -11,6 +11,13 @@ export class EventEquipment extends Equipment{
     equipment: number;
     item: string;
     amount: number;
+
+    constructor(props) {
+        super(props);
+        this.item = '';
+        this.amount = 1;
+    }
+
 }
 
 class EquipmentService {

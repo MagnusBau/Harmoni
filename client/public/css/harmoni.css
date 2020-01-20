@@ -53,3 +53,11 @@
 input:invalid {
     border: 2px solid red;
 }
+
+textarea:invalid {
+    border: 2px solid red;
+}
+
+select:invalid {
+    border: 2px solid red;
+}
