@@ -11,6 +11,7 @@ const PORT = process.env.port || 4000;
 const bodyParser = require("body-parser");
 const public_path = path.join(__dirname, '/../../client/public');
 const config = require("./controllers/configuration.js");
+const multer = require('multer');
 
 let jwt = require("jsonwebtoken");
 
@@ -53,7 +54,7 @@ app.use((req, res, next) => {
 let publicKey = fs.readFileSync('./src/public.txt', 'utf8');
 
 const verifyOptions = {
-    expiresIn:  "1H",
+    expiresIn:  "30M",
     algorithm:  ["RS256"]
 };
 
@@ -87,18 +88,24 @@ app.use("/auth/id/:id", (req, res, next) => {
     });
 });
 
+
+app.use("/auth/id/:id", (req, res, next) => {
+    //check body
+
+});
+
 import {TicketDAO} from './dao/ticketDao.js';
 
 const ticketDao = new TicketDAO(pool);
 
-
-app.use("/auth/id/:id/ticket/ticket/:ticketId", (req, res, next) => {
+/*
+app.use("/auth/id/:id/ticket/ticket/:ticket", (req, res, next) => {
     console.log("auth ticket 1");
     userDao.getContact(req.params.id, (err, rows) => {
         if(rows[0][0].contact_id) {
             let id = rows[0][0].contact_id;
-            if(req.params.ticketId) {
-                ticketDao.getOne(req.params.ticketId,(err, rows) => {
+            if(req.params.ticket) {
+                ticketDao.getOne(req.params.ticket,(err, rows) => {
                     if(rows[0][0]) {
                         if(rows[0][0].event) {
                             eventDao.getEventById(rows[0][0].event, (err, rows2) => {
@@ -206,7 +213,7 @@ app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
             res.json({error: "Not authorized"});
         }
     });
-});
+});*/
 
 // Setup routes
 const artistRoutes = require("./routes/artist");
@@ -217,15 +224,21 @@ const userRoutes = require("./routes/user");
 const fileRoutes = require("./routes/file");
 const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
+const loginRoutes = require("./routes/login");
+import {FileInfoDAO} from './dao/fileInfoDao.js';
+
+
+const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-app.use("/auth", userRoutes);
+app.use("/auth/id/:id/user", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
+app.use("/auth", loginRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){
@@ -237,6 +250,44 @@ app.use((req, res, next) => {
     res.status(404).redirect('http://localhost:' + PORT + '/#/404');
 });
 
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function (req, file, cb) {
+        cb(null , file.originalname);
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path
+    };
+    let result = res;
+    console.log(req.body.name);
+    fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/single/update', upload.single('file'), (req, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+});
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)
 export let listen = new Promise<void>((resolve, reject) => {

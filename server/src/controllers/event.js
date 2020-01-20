@@ -111,10 +111,17 @@ exports.deleteEvent = (req, res, next) => {
 
 exports.deleteEventByEndTime = (req, res, next) => {
 
-    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+    console.log(`DELETE-request from client: /event/user/${req.params.contact_id}/ended`);
 
-    eventDao.deleteEventsByEndTime(req.params.organizer, (err, rows) => {
-        res.json(rows);
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.deleteEventsByEndTime(rows[0].contact_id, (err, rows) => {
+                    res.send(rows);
+                });
+            }
+        }
     });
 
 };

@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import {HashRouter} from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
-
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
 import {UserRegister, TokenBoi} from "./pages/user";
@@ -13,11 +12,11 @@ import {EditEvent} from "./pages/editEvent";
 import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
-import { FileMain} from './pages/file'
-
-
+import UserEdit from "./pages/userEdit";
+import {eventVisit} from "./pages/eventVisit";
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
+import { FileMain, FileEdit} from './pages/file'
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
@@ -42,13 +41,16 @@ if (root)
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
                     <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
+                    <Route exact path="/event/:eventId/edit/file/:filepath" component={FileEdit} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
+                    <Route exact path="/user/:userId/edit" component={UserEdit}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/404" component={NotFoundPage}/>
                     <Redirect to="/404"/>
+                    <Route exact path="/event/:eventId/view" component={eventVisit}/>
                 </Switch>
                 <Footer/>
             </div>

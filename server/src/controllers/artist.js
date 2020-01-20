@@ -49,6 +49,13 @@ exports.getArtistById = (req, res, next) => {
         res.send(rows);
     })
 };
+exports.getArtistByContact = (req, res, next) => {
+    console.log(`Got request from client: GET /api/artist/${req.params.contactId}`);
+
+    artistDao.getArtistByContact(req.params.contactId, (err, rows) => {
+        res.send(rows);
+    })
+};
 
 exports.getArtistByUser = (req, res, next) => {
     console.log(`Got request from client: GET /api/artist/user/${req.params.userId}`);

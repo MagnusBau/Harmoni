@@ -51,6 +51,13 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
+    getArtistByContact(contactId: string, callback: (status: string, data: string) => void) {
+        let values= [contactId];
+        super.query("CALL get_artist_by_contact(?)",
+            values,
+            callback);
+    }
+
     getArtistBySearch(searchString: string, callback: (status: string, data: string) => void) {
         let values = [searchString];
         super.query("CALL get_artist_by_search(?)",
