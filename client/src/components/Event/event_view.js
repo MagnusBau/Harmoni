@@ -74,22 +74,21 @@ export default class EventView extends Component {
     cancelEvent() {
 
         console.log(this.eventOverview[0].event_id);
-        if(!this.eventOverview[0]) return null;
 
-        //console.log(this.props.match.params.eventId + ": " + this.event[0].title);
+        if(!this.eventOverview) return Alert.danger("Finner ikke arrangementet");
 
-        if(this.eventOverview[0].cancelled === 0) {
+        if (this.eventOverview[0].cancelled === 0) {
 
             this.currentEvent = this.props.eventId;
 
             eventService
                 .cancelEvent(this.currentEvent)
-                //.then(Alert.success("Arrangementet er avlyst! Email sendt."))
+                .then(window.location.reload())
                 .then(console.log("Arrangementet er avlyst!"))
-                .then(history.push("/"))
+                //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
                 .catch((error: Error) => Alert.danger(error));
 
-        } else if (this.eventOverview.cancelled === 1) {
+        } else if (this.eventOverview[0].cancelled === 1) {
 
             console.log("Dette arrangementet er allerede avlyst");
             //return (Alert.info("Dette arrangementet er allerede avlyst"));
@@ -101,4 +100,5 @@ export default class EventView extends Component {
         }
 
     }
+
 }
