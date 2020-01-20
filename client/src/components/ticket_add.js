@@ -148,12 +148,12 @@ export class TicketAdd extends Component{
                     </div>
 
 
-                    <button type="submit" className="btn btn-success" onClick={this.send} >Legg til billett type</button>
+                    <button type="submit" className="btn btn-outline-success" onClick={this.send} >Legg til billett type</button>
 
                     <button
                         type="button"
                         size="sm"
-                        className="btn btn-danger"
+                        className="btn btn-outline-danger"
                         variant="outline-secondary"
                         onClick={this.props.handleCancel}>
                         Avbryt
