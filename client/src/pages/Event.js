@@ -234,13 +234,15 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
                                     <h5>Dokumenter</h5>
-                                    <button
-                                        size="sm"
-                                        className="m"
-                                        variant="outline-secondary"
-                                        href={"/#/event/" +  "/equipment"}>
-                                        Rediger dokumenter
-                                    </button>
+                                    {!this.state.isArtist ?
+                                        <button
+                                            size="sm"
+                                            className="m"
+                                            variant="outline-secondary"
+                                            href={"/#/event/" + "/equipment"}>
+                                            Rediger dokumenter
+                                        </button>
+                                    : null}
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
                                     <AddEventArtist eventId={this.currentEvent} isArtist={this.state.isArtist}/>
