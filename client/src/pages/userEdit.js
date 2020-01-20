@@ -40,7 +40,9 @@ export default class UserEdit extends Component {
 
     mounted() {
 //TODO get events by user
+        console.log("ya");
         userService.getUser().then(respons => {
+            console.log(respons);
             if(userService.getArtistId() != null) {
                 this.artistName = userService.getArtistName();
             }
@@ -49,33 +51,19 @@ export default class UserEdit extends Component {
             this.email = userService.getEmail();
             this.phone = userService.getPhone();
         });
+        userService.mountDropdown();
     }
 
 
     render(){
         let artistBox;
         if(userService.getArtistName() != null && userService.getArtistName() !== "null") {
-            console.log(typeof userService.getArtistId());
             artistBox = (
                 <div className="list-group" className="">
-                    <form ref={e => (this.artistForm = e)}>
-                        <li className="list-group-item">
-                            <h5>Artist Navn:</h5>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.artistName}
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.artistName = event.target.value)}
-                                required
-                                maxLength={50}
-                            />
-                        </li>
-                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                            this.saveArtistChanges();
-                        }}>
-                            Lagre Endringer
-                        </li>
-                    </form>
+                    <li className="list-group-item">
+                        <h5>Artist Navn:</h5>
+                        {this.artistName}
+                    </li>
                 </div>
             );
         } else {
@@ -176,6 +164,29 @@ export default class UserEdit extends Component {
                         </div>
                         <div className="row">
                             <div className="col-md-12">
+                                <h5>Artist</h5>
+                                {artistBox}
+                            </div>
+                        </div>
+                        <p>{this.errorMessage}</p>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="list-group">
+                                    <li className="list-group-item list-group-item-action list-group-item-dark"
+                                        style={{marginTop: "20px"}}
+                                        onClick={(e) => {
+                                            history.push("/user/" + userService.getUserID() + "/overview");
+                                        }}>
+                                        Tilbake
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <br/>
                                 <h5>Profilbilde</h5>
                                 <div className="list-group" className="">
                                     <form ref={e => (this.artistForm = e)}>
@@ -194,28 +205,8 @@ export default class UserEdit extends Component {
                         </div>
                         <div className="row">
                             <div className="col-md-12">
-                                <div className="list-group">
-                                    <li className="list-group-item list-group-item-action list-group-item-dark"
-                                        style={{marginTop: "20px"}}
-                                        onClick={(e) => {
-                                            history.push("/user/" + userService.getUserID() + "/overview");
-                                        }}>
-                                        Tilbake
-                                    </li>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Artist</h5>
-                                {artistBox}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Password</h5>
+                                <br/>
+                                <h5>Passord</h5>
                                 <div className="list-group">
                                     <form ref={e => (this.passwordForm = e)}>
                                         <li className="list-group-item">
@@ -267,35 +258,56 @@ export default class UserEdit extends Component {
     }
 
     saveChanges() {
-        console.log("yo");
         if(!this.userForm || !this.userForm.checkValidity()) {
+            this.errorMessage = "Brukerinformasjon error";
             return;
         }
         console.log("try");
-        userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
+        console.log(this.email + this.firstName + this.lastName + this.phone);
+        userService.updateUser2(this.email, this.firstName, this.lastName, this.phone).then(response => {
             if(response.error) {
-                this.errorMessage = "Something went wrong";
+                console.log("fail");
+                this.errorMessage = "Brukerinformasjon server error";
                 return;
             } else {
-                this.mounted()
-                return;
+                console.log("success");
+                userService.getUser().then(response => {
+                    this.errorMessage = "Brukerinformasjon oppdatert";
+                    this.mounted()
+                });
             }
         })
     }
 
     changePassword() {
+        if(!this.passwordForm || !this.passwordForm.checkValidity()) {
+            this.errorMessage = "Passord error";
+            return;
+        }
+            if(this.newPassword === this.confirmNewPassword) {
+                userService.updatePassword(this.oldPassword, this.newPassword).then(response => {
+                    if(response.error) {
+                        this.errorMessage = "Feil passord";
+                    } else {
+                        console.log(response);
+                        this.oldPassword = "";
+                        this.newPassword = "";
+                        this.confirmNewPassword = "";
+                        this.errorMessage = "Passord oppdatert";
+                    }
+                })
+            } else {
 
+                this.errorMessage = "Passord ikke like";
+            }
     }
 
     registerArtist() {
 
     }
 
-    saveArtistChanges() {
-
-    }
-
     saveImageChanges() {
-
+        console.log("saveImageChanges not implemented");
+        this.errorMessage = "saveImageChanges ikke implementert";
     }
 }

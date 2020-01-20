@@ -208,11 +208,13 @@ const riderRoutes = require("./routes/riders");
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
-app.use("/auth", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
+app.use("/auth/id/:id/user", userRoutes);
+app.use("/auth/login", userRoutes);
+app.use("/auth/register", userRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){

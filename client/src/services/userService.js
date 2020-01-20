@@ -6,9 +6,13 @@ const history = createHashHistory();
 let ip = "localhost";
 
 class UserService {
+    mountDropdown: Function = () => {};
+
     attemptLogin(username: string, password: string, next) {
         userService.postLogin(username, password).then(response => {
-            if(response.user != null) {
+            console.log("this:");
+            console.log(response);
+            if(response != null) {
                 localStorage.setItem("user_id", response.user.user_id);
                 localStorage.setItem("username", response.user.username);
                 localStorage.setItem("image", response.user.image);
@@ -16,15 +20,17 @@ class UserService {
                 localStorage.setItem("last_name", response.user.last_name);
                 localStorage.setItem("email", response.user.email);
                 localStorage.setItem("phone", response.user.phone);
-                localStorage.setItem("contact_id", response.user.contact_id);
+                localStorage.setItem("contact_id", response.contact_id);
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("artist_id", response.artist.artist_id);
                 localStorage.setItem("artist_name", response.artist.artist_name);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
                 next();
+            } else {
+                console.log("fail");
+                return false;
             }
-            return false;
         });
     }
 
@@ -132,11 +138,32 @@ class UserService {
             "last_name": lastName,
             "phone": phone
         };
-        return axios.put('http://' + ip +':4000/auth/user/' + this.getUserID(), data).then(response => response.data);
+        console.log(data);
+        console.log("sender request");
+        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserID() + "/user/user/" + userService.getUserID(), data, {
+            'headers': {
+                'x-access-token': this.getToken()
+            }}).then(response => response.data);
+    }
+
+    updateUser2(email: string, firstName: string, lastName: string, phone: string) {
+        let data = {
+            "email": email,
+            "first_name": firstName,
+            "last_name": lastName,
+            "phone": phone
+        };
+        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserID() + '/user/user/' + userService.getUserID(), data, {
+            'headers': {
+                'x-access-token': this.getToken()
+            }}).then(response => response.data);
     }
 
     updatePassword(password: string, newPassword: string) {
-        return axios.put('http://' + ip +':4000/auth/user/' + this.getUserID() + '/password', {"password": password, "newPassword": newPassword, "username": this.getUsername()}).then(response => response.data);
+        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserID() + '/user/user/' + this.getUserID() + '/password', {"password": password, "newPassword": newPassword, "username": this.getUsername()}, {
+            'headers': {
+                'x-access-token': this.getToken()
+            }}).then(response => response.data);
     }
 
     getUserID() {
@@ -193,27 +220,34 @@ class UserService {
     }
 
     getUser() {
-        return axios.get('http://' + ip + ':4000/auth/user/' + userService.getUserID()).then(response => {
-            if (response.user != null) {
-                localStorage.setItem("user_id", response.user.user_id);
-                localStorage.setItem("username", response.user.username);
-                localStorage.setItem("image", response.user.image);
-                localStorage.setItem("first_name", response.user.first_name);
-                localStorage.setItem("last_name", response.user.last_name);
-                localStorage.setItem("email", response.user.email);
-                localStorage.setItem("phone", response.user.phone);
-                localStorage.setItem("contact_id", response.user.contact_id);
+        return axios.get('http://' + ip + ':4000/auth/id/' + userService.getUserID() + "/user/user/" + userService.getUserID(), {
+            'headers': {
+                'x-access-token': this.getToken()
+            }}).then(response => {
+            console.log(response.data);
+            if (response.data.user != null) {
+                localStorage.setItem("user_id", response.data.user.user_id);
+                localStorage.setItem("username", response.data.user.username);
+                localStorage.setItem("image", response.data.user.image);
+                localStorage.setItem("first_name", response.data.user.first_name);
+                localStorage.setItem("last_name", response.data.user.last_name);
+                localStorage.setItem("email", response.data.user.email);
+                localStorage.setItem("phone", response.data.user.phone);
+                localStorage.setItem("contact_id", response.data.user.contact_id);
+                console.log("this:" + localStorage.getItem("last_name"));
             }
-            return false;
         });
     }
 
     postUser(data: Object) {
-        return axios.post('http://' + ip +':4000/auth/user', data).then(response => response.data);
+        return axios.post('http://' + ip +':4000/auth/register', data).then(response => response.data);
     }
 
     postArtistUser(data: Object) {
-        return axios.post(`http://${ip}:4000/auth/user`, data).then(response => response.data);
+        return axios.post(`http://${ip}:4000/auth/id/${userService.getUserID()}/user/artist`, data, {
+            'headers': {
+                'x-access-token': this.getToken()
+            }}).then(response => response.data);
     }
 
     postToken(input: Object) {
@@ -221,7 +255,7 @@ class UserService {
             "user_id": input.user_id,
             "username": input.username
         };
-        return axios.post('http://' + ip +':4000/auth/' + data.user_id + '/token', data, {
+        return axios.post('http://' + ip +':4000/auth/id/' + data.user_id + '/token', data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => response.data);
@@ -239,6 +273,14 @@ class UserService {
         localStorage.setItem("token", null);
         localStorage.setItem("artist_id", null);
         localStorage.setItem("artist_name", null);
+    }
+
+    setMountDropdown(mountDropdown: Function) {
+        this.mountDropdown = mountDropdown;
+    }
+
+    mountDropdown() {
+        this.mountDropdown();
     }
 }
 

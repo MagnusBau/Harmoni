@@ -47,14 +47,15 @@ export default class UserOverview extends Component {
 //TODO get events by user
         eventService.getEventByUser(userService.getUserID()).then(respons => {
             console.log(respons);
-            if(respons) {
+            if(respons != null) {
                 this.events = [];
                 respons.map(e => {
                     console.log(e);
                     this.events.push(e);
                 });
+            } else {
+                console.log("shait");
             }
-            console.log("shait");
         });
 
         eventService.getEndedEventsByUser(userService.getUserID()).then(response => {
@@ -83,33 +84,54 @@ export default class UserOverview extends Component {
 
 
     render(){
+        let artistBox = (<div></div>);
+        if(userService.getArtistName() != null && userService.getArtistName() !== "null") {
+            artistBox = (
 
+                <div className="row">
+                    <div className="col-md-12">
+                        <h5>Artist</h5>
+                        <div className="list-group" className="">
+                            <li className="list-group-item">
+                                <h5>Artist Navn:</h5>
+                                {userService.getArtistName()}
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
 
         return (
             //TODO en eller annen header for hvilken user som er logget inn
             <div className="container">
                 <div className="row">
                     <div className="col-md-6">
-                        <h5>Profil</h5>
-                        <div className="list-group" className="">
-                            <li className="list-group-item">
-                                <h5>Username:</h5>{userService.getUsername()}
-                            </li>
-                            <li className="list-group-item">
-                                <h5>Name:</h5> {userService.getFirstName() + " " + userService.getLastName()}
-                            </li>
-                            <li className="list-group-item">
-                                <h5>Email:</h5> {userService.getEmail()}
-                            </li>
-                            <li className="list-group-item">
-                                <h5>Phone:</h5> {userService.getPhone()}
-                            </li>
-                            <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                history.push("/user/" + userService.getUserID() + "/edit");
-                            }}>
-                                Endre Profil
-                            </li>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h5>Profil</h5>
+                                <div className="list-group" className="">
+                                    <li className="list-group-item">
+                                        <h5>Username:</h5>{userService.getUsername()}
+                                    </li>
+                                    <li className="list-group-item">
+                                        <h5>Name:</h5> {userService.getFirstName() + " " + userService.getLastName()}
+                                    </li>
+                                    <li className="list-group-item">
+                                        <h5>Email:</h5> {userService.getEmail()}
+                                    </li>
+                                    <li className="list-group-item">
+                                        <h5>Phone:</h5> {userService.getPhone()}
+                                    </li>
+                                    <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                        history.push("/user/" + userService.getUserID() + "/edit");
+                                    }}>
+                                        Endre Profil
+                                    </li>
+                                </div>
+                            </div>
                         </div>
+                        {artistBox}
                     </div>
                     <div className="col-md-6">
                         <h5>Dine aktive arrangementer</h5>
