@@ -15,6 +15,7 @@ class FileInfoService {
     }
 
     postFileInfo(name: string, eventId: number, data: FormData) {
+        console.log("uploading file");
         return axios.post(`http://` + ip +`:4000/api/single/${eventId}`,
             data);
     }
@@ -32,7 +33,7 @@ class FileInfoService {
     }
 
     downloadFile(encodedFile: string){
-        console.log(encodedFile);
+        console.log("Nå er vi i service: " + encodedFile);
         console.log("hei");
         return axios.get(`http://` + ip +`:4000/api/file/download/${encodedFile}`);
     }

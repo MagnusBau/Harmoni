@@ -227,16 +227,6 @@ app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
 app.use("/auth", loginRoutes);
 
-// Add an application header for allowing HTTPS-requests from same host
-/*app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next();
-});*/
-
-app.use((req, res, next) => {
-    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
-});
-
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './files');
@@ -252,6 +242,7 @@ const upload = multer({
 });
 
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/single/' + req.params.eventId);
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
@@ -269,11 +260,21 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/single/update', upload.single('file'), (req, res) => {
-        try {
-            result.send(req.file);
-        }catch(err) {
-            result.send(400);
-        }
+    try {
+        result.send(req.file);
+    }catch(err) {
+        result.send(400);
+    }
+});
+
+// Add an application header for allowing HTTPS-requests from same host
+/*app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next();
+});*/
+
+app.use((req, res, next) => {
+    res.status(404).redirect('http://localhost:' + PORT + '/#/404');
 });
 
 // The listen promise can be used to wait for the web server to start (for instance in your tests)

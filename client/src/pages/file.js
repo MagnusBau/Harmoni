@@ -143,12 +143,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
 
     handleDownload(e){
 
+        console.log("handling download");
         if(this.state.selected !== undefined){
             let filePath: string = this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
             let encodedFilePath = btoa(filePath);
-            window.open("http://localhost:8080/api/file/download/" + encodedFilePath, "_blank");
-            console.log(encodedFilePath);
-            fileInfoService.downloadFile(filePath).then(response =>
+            window.open("http://localhost:4000/api/file/download/" + encodedFilePath, "_blank");
+            console.log("Dette er i pages: " + encodedFilePath);
+            fileInfoService.downloadFile(encodedFilePath).then(response =>
                 console.log("laster ned " + this.state.selected));
         }
     }
