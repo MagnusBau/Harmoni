@@ -29,7 +29,7 @@ export class SearchBar extends Component {
                 <div className="dropdown-menu">
                     <div className="list-group list-group-flush">
                         {this.events.map( event => (
-                            <button onKeyPress={this.ifEnterInList} onClick={() => history.push("/event/" + event.event_id + "/visit")} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
+                            <button onKeyPress={this.ifEnterInList} onClick={() => history.push("/event/" + event.event_id + "/view")} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
                         ))}
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export class SearchBar extends Component {
     ifEnterInList = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
-            history.push("/event/" + event.event_id + "/visit");
+            history.push("/event/" + event.event_id + "/view");
         }
     };
 
