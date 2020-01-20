@@ -79,6 +79,12 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                         ))}
                     </tbody>
                 </table>
+                <table className="table w-50">
+                    <thead><tr><th>Arrangør</th></tr></thead>
+                    <tr className="d-flex">
+                        <td>{this.event[0].organizer}</td>
+                    </tr>
+                </table>
             </div>
         )
     }
