@@ -128,13 +128,11 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
 
         artistService
             .getArtistByUser(userService.getUserID())
-            .then(artists => this.setState({isArtist: (artists[0].length)}))
+            .then(artists => {this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)})})
             .catch((error: Error) => console.log(error.message));
-
     }
 
-
-    render(){
+    render() {
         console.log();
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;

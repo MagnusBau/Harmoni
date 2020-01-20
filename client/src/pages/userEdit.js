@@ -12,6 +12,7 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
+import {artistService} from "../services/artistService";
 /**
  * Class for the view of one event
  *
@@ -24,6 +25,7 @@ export default class UserEdit extends Component {
     lastName: string = userService.getLastName();
     email: string = userService.getEmail();
     phone: string = userService.getPhone();
+    contactId: number = userService.getContactId();
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
@@ -307,7 +309,8 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-
+        artistService.createArtistOnContact(this.artistName, this.contactId);
+        this.mounted();
     }
 
     saveImageChanges() {

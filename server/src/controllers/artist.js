@@ -7,9 +7,15 @@ const artistDao = new ArtistDAO(pool);
 exports.insertArtist = (req, res, next) => {
     console.log(`Got request from client: POST /api/artist`);
 
-    artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
-        res.send(rows);
-    });
+    if (req.body.contactId) {
+        artistDao.createArtistOnContact(req.body.artistName, req.body.contactId, (err, rows) => {
+            res.send(rows);
+        });
+    } else {
+        artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
+            res.send(rows);
+        });
+    }
 };
 
 exports.updateArtist = (req, res, next) => {
