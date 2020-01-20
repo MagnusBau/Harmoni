@@ -58,7 +58,7 @@ test("Get one document from db by document id", done => {
         done();
 
     }
-    fileInfoDao.getFileInfoById(2, callback);
+    fileInfoDao.getFileInfoById(4, callback);
 });
 
 test("Get one document from db by event id", done => {
@@ -67,9 +67,9 @@ test("Get one document from db by event id", done => {
             'Test callback: status=${status}, data=${data}'
         );
         data = data[0];
-        expect(data.length).toBe(2);
+        expect(data.length).toBe(4);
         expect(data[0].name).toBe("Carl");
-        expect(data[1].name).toBe("Bob");
+        expect(data[3].name).toBe("Bob");
         done();
 
     }
