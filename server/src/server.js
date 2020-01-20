@@ -171,7 +171,9 @@ app.use("/auth/id/:id/ticket", (req, res, next) => {
 
 //TODO: Is this a test?
 import {EventDAO} from './dao/eventDao.js';
+import {ArtistDAO} from "./dao/artistDao";
 
+const artistDao = new ArtistDAO(pool);
 const eventDao = new EventDAO(pool);
 
 app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
@@ -185,8 +187,19 @@ app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
                         if (rows[0][0].organizer === id) {
                             next();
                         } else {
-                            console.log("not authorized event id1");
-                            res.json({error: "Not authorized"});
+                            artistDao.getArtistByEvent(req.params.event, (err, rows) => {
+                                if (rows[0]) {
+                                    if (rows[0].map(artist => artist.user_id).includes(id)) {
+                                        next();
+                                    } else {
+                                        console.log("not authorized event id6");
+                                        res.json({error: "Not authorized"});
+                                    }
+                                } else {
+                                    console.log("not authorized event id1");
+                                    res.json({error: "Not authorized"});
+                                }
+                            });
                         }
                     } else {
                         console.log("not authorized event id2");

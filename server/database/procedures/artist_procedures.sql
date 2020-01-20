@@ -1,8 +1,7 @@
 /**
   Delete all procedures for recreation
  */
-DROP PROCEDURE IF EXISTS insert_artist;
-DROP PROCEDURE IF EXISTS update_artist;
+DROP PROCEDURE IF EXISTS add_artist_to_event;
 DROP PROCEDURE IF EXISTS delete_artist;
 DROP PROCEDURE IF EXISTS get_all_artists;
 DROP PROCEDURE IF EXISTS get_artist_by_id;
@@ -11,8 +10,10 @@ DROP PROCEDURE IF EXISTS get_artist_by_query;
 DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS get_artist_by_contact;
-DROP PROCEDURE IF EXISTS add_artist_to_event;
+DROP PROCEDURE IF EXISTS get_artist_by_user;
+DROP PROCEDURE IF EXISTS insert_artist;
 DROP PROCEDURE IF EXISTS remove_artist_from_event;
+DROP PROCEDURE IF EXISTS update_artist;
 
 /**
   Inserts a new newArtist with contact information
@@ -191,6 +192,19 @@ BEGIN
      OR phone LIKE CONCAT('%', search_string, '%');
 END;
 
+/**
+  Adds a specific artist to an event
+
+  IN artist_name_in: Name of the artist
+  IN first_name_in: First name of artist contact person
+  IN last_name_in: Last name of artist contact person
+  IN email_in: Email contact of artist
+  IN phone_in: Phone of artist
+  IN document_id_in: Id of the document that represents the artist contract. This is also the binding to the event
+
+  Issued by: addArtistToEvent(artistName: string, firstName: string, lastName: string, email: string, phone: string,
+                              document: string)
+ */
 CREATE PROCEDURE add_artist_to_event(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
                                      IN document_id_in INT)
@@ -202,6 +216,13 @@ BEGIN
   VALUES (artist_id_in, document_id_in);
 END;
 
+/**
+  Fetch all artists attached to a specific event
+
+  IN event_id_in: Id of event to fetch from
+
+  Issued by: getArtistByEvent(eventId: number)
+ */
 CREATE PROCEDURE get_artist_by_event(IN event_id_in INT)
 BEGIN
   SELECT a.artist_id,
@@ -220,6 +241,37 @@ BEGIN
   WHERE d.event = event_id_in;
 END;
 
+/**
+  Fetches artists that are bound up to a user
+
+  IN user_id_in: The user id of the user
+
+  Issued by: getArtistByUser(userId: number)
+ */
+CREATE PROCEDURE get_artist_by_user(IN user_id_in INT)
+BEGIN
+  SELECT a.artist_id,
+         a.artist_name,
+         c.contact_id,
+         c.first_name,
+         c.last_name,
+         c.email,
+         c.phone,
+         u.user_id
+  FROM artist a
+  LEFT JOIN contact c ON a.contact = c.contact_id
+  LEFT JOIN user u on c.contact_id = u.contact
+  WHERE u.user_id = user_id_in;
+END;
+
+/**
+  Removes a specific artist from a specific event
+
+  IN event_id_in: Event to delete from
+  IN artist_id_in: Artist to delete
+
+  Issued by: removeArtistFromEvent(eventId: number, artistId: number)
+ */
 CREATE PROCEDURE remove_artist_from_event(IN event_id_in INT, IN artist_id_in INT)
 BEGIN
   DELETE

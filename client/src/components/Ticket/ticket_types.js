@@ -4,6 +4,8 @@ import {createHashHistory} from 'history';
 import {Ticket_ID, ticketService} from "../../services/ticketService";
 import {Event} from "../../services/eventService";
 import {EventEquipment} from "../../services/equipmentService";
+import {artistService} from "../../services/artistService";
+import {userService} from "../../services/userService";
 
 export default class TicketView extends Component {
     currentEvent: number = 0;
@@ -31,24 +33,27 @@ export default class TicketView extends Component {
                             <p>{tickets.price}</p>
                             <b>Antall:</b>
                             <p>{tickets.count}</p>
+                            {this.props.isArtist ?
                             <button
                                 size="sm"
                                 className="m"
                                 variant="outline-secondary"
                                 onClick={() => {this.props.triggerParentUpdate(tickets.ticket_id); this.props.handleEditTicketClick()}}>
                                 Rediger billett
-                            </button>
+                                </button>
+                            : null}
                         </li>
                     ))}
                 </ul>
-
-                <button
-                    size="sm"
-                    className="m"
-                    variant="outline-secondary"
-                    onClick={this.props.handleAddTicketClick}>
-                    Legg til billettype
-                </button>
+                {!this.props.isArtist ?
+                    <button
+                        size="sm"
+                        className="m"
+                        variant="outline-secondary"
+                        onClick={this.props.handleAddTicketClick}>
+                        Legg til billettype
+                    </button>
+                : null}
             </div>
         )
 
