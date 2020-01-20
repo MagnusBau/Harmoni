@@ -15,9 +15,6 @@ export default class TicketView extends Component {
 
     constructor(props){
         super(props);
-        this.state = {
-            isArtist: false
-        }
     };
 
     render(){
@@ -36,7 +33,7 @@ export default class TicketView extends Component {
                             <p>{tickets.price}</p>
                             <b>Antall:</b>
                             <p>{tickets.count}</p>
-                            {this.state.isArtist ?
+                            {this.props.isArtist ?
                             <button
                                 size="sm"
                                 className="m"
@@ -48,7 +45,7 @@ export default class TicketView extends Component {
                         </li>
                     ))}
                 </ul>
-                {!this.state.isArtist ?
+                {!this.props.isArtist ?
                     <button
                         size="sm"
                         className="m"
@@ -68,11 +65,6 @@ export default class TicketView extends Component {
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets => (this.tickets = tickets[0]))
-            .catch((error: Error) => console.log(error.message));
-
-        artistService
-            .getArtistByUser(userService.getUserID())
-            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
     }
 }

@@ -19,8 +19,7 @@ export default class AddRole extends Component {
         super(props, context);
         this.newRole = {type: '', event: 0};
         this.state = {
-            lmao: 1,
-            isArtist: false
+            lmao: 1
         }
     }
     mounted() {
@@ -40,11 +39,6 @@ export default class AddRole extends Component {
         roleService
             .getEventRoles(this.currentEvent)
             .then(eventRoles => this.eventRoles = eventRoles[0])
-            .catch((error: Error) => console.log(error.message));
-
-        artistService
-            .getArtistByUser(userService.getUserID())
-            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
     };
     onChange(e) {
@@ -93,7 +87,7 @@ export default class AddRole extends Component {
     render(){
         return(
             <div className="m-2">
-                {!this.state.isArtist ?
+                {!this.props.isArtist ?
                     <form className={"form-inline"} onSubmit={this.onSubmit}>
                         <div className="form-group m-2">
                             <input type="text"
@@ -112,7 +106,7 @@ export default class AddRole extends Component {
                     {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
                                 <td className="col-7">{role.type}</td>
-                                {!this.state.isArtist ?
+                                {!this.props.isArtist ?
                                     <div>
                                         <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
                                         <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
@@ -129,7 +123,7 @@ export default class AddRole extends Component {
                             <tr key={eventRole.role_id} className="d-flex">
                                 <td className="col-7">{eventRole.type}</td>
                                 <td className="col-7">{eventRole.count}
-                                    {!this.state.isArtist ?
+                                    {!this.props.isArtist ?
                                         <div className="btn-group-vertical" role="group">
                                             <button type="button" className="btn-link" onClick={() => this.incrementRole(eventRole)}>
                                                 <img src="../img/icons/chevron-up.svg"/></button>

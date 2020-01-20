@@ -46,8 +46,7 @@ export class AddEventArtist extends Component {
         this.state = {
             showRemoveWarning: false,
             showConfirmAddUser: false,
-            eventArtists: [],
-            isArtist: false
+            eventArtists: []
         };
     }
 
@@ -80,14 +79,6 @@ export class AddEventArtist extends Component {
         eventService
             .getDocumentByEvent(this.props.eventId)
             .then(documents => this.eventDocuments = documents[0])
-            .catch((error: Error) => console.log(error.message));
-
-        // TODO: Add this to props somehow?
-        artistService
-            .getArtistByUser(userService.getUserID())
-            .then(users => {
-                this.setState({isArtist: (users[0].length > 0)});
-            })
             .catch((error: Error) => console.log(error.message));
     }
 
@@ -216,14 +207,14 @@ export class AddEventArtist extends Component {
                                         </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
                                         <div className="align-bottom form-inline">
-                                            {!this.seeArtist.user_id && !this.state.isArtist ?
+                                            {!this.seeArtist.user_id && !this.props.isArtist ?
                                                 <button
                                                     id="showAddUser"
                                                     className="btn btn-primary m-1"
                                                     onClick={this.show}>
                                                     Opprett bruker
                                                 </button> : null}
-                                            {!this.state.isArtist ?
+                                            {!this.props.isArtist ?
                                                 <button
                                                     id="showWarning"
                                                     className="btn btn-danger m-1"
@@ -236,7 +227,7 @@ export class AddEventArtist extends Component {
                             </div>
                         </div>
                     </div>
-                    {!this.state.isArtist ?
+                    {!this.props.isArtist ?
                         <div>
                             <hr/>
                             <form className="w-75 m-4" onSubmit={this.onSubmit}>

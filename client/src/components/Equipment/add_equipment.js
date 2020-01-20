@@ -38,8 +38,7 @@ export default class AddEquipment extends Component {
             value: '',
             suggestions: [],
             eventEquipment: [],
-            userEquipment: [],
-            isArtist: false
+            userEquipment: []
         };
     }
 
@@ -80,11 +79,6 @@ export default class AddEquipment extends Component {
         equipmentService
             .getEquipment()
             .then(equipment => this.setState({userEquipment: equipment[0]}))
-            .catch((error: Error) => console.log(error.message));
-
-        artistService
-            .getArtistByUser(userService.getUserID())
-            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
 
         equipmentService
@@ -192,7 +186,7 @@ export default class AddEquipment extends Component {
         return (
             <div className="w-75 m-2">
                 <h3>{`Utstyrsliste for ${this.props.eventId}`}</h3>
-                {!this.state.isArtist ?
+                {!this.props.isArtist ?
                     <form className="form-inline" onSubmit={this.onSubmit}>
                         <div className="form-group m-2">
                             <Autosuggest suggestions={suggestions}
@@ -223,7 +217,7 @@ export default class AddEquipment extends Component {
                         <tr className="d-flex">
                             <td className="col-7">{eventEquipment.item}</td>
                             <td className="col-3">{eventEquipment.amount}
-                                {!this.state.isArtist ?
+                                {!this.props.isArtist ?
                                     <div className="btn-group-vertical ml-4" role="group">
                                         <button type="button" className="btn btn-link"
                                                 onClick={() => this.incrementAmount(eventEquipment)}><img
@@ -235,7 +229,7 @@ export default class AddEquipment extends Component {
                                 : null}
                             </td>
                             <td className="col-2">
-                                {!this.state.isArtist ?
+                                {!this.props.isArtist ?
                                     <button type="button" className="btn btn-danger"
                                             onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
                                     </button>
