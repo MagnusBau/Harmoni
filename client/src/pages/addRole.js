@@ -39,7 +39,8 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         this.newRole.type = '';
         window.location.reload();
     }
-    remove(role) {
+
+    remove(role){
         roleService.removeRole(role.role_id);
         window.location.reload();
     }
