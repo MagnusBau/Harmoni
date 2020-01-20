@@ -49,10 +49,10 @@ if (root)
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
                     <Route exact path="/event/search/:input" component={EventSearch}/>
+                    <Route exact path="/event/:eventId/view" component={eventVisit}/>
                     <Route exact path="/404" component={NotFoundPage}/>
                     <Route exact="/contact" component={ContactForm}/>
                     <Redirect to="/404"/>
-                    <Route exact path="/event/:eventId/view" component={eventVisit}/>
                 </Switch>
                 <Footer/>
             </div>

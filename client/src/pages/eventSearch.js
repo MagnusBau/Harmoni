@@ -25,7 +25,7 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
             <div className="container">
                 <div className="card-columns">
                     {this.events.map(events => (
-                        <div className="card" onClick={() => history.push("/event/" + events.event_id + "/visit")}>
+                        <div className="card" onClick={() => history.push("/event/" + events.event_id + "/view")}>
                             <img className="card-img-top img-fluid" src="" alt=""/>
                             <div className="card-body">
                                 <h5>
