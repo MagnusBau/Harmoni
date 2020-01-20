@@ -37,10 +37,14 @@ exports.deleteArtist = (req, res, next) => {
 exports.getAllArtists = (req, res, next) => {
     console.log(`Got request from client: GET /api/artist`);
 
-    if (req.query.searchBar) {
+    if (req.query.contact) {
+        artistDao.getArtistByPreviousContract(req.query.contact, (err, rows) => {
+            res.send(rows);
+        });
+    } else if (req.query.searchBar) {
         artistDao.getArtistBySearch(req.query.searchBar, (err, rows) => {
             res.send(rows);
-        })
+        });
     } else {
         artistDao.getAllArtists((err, rows) => {
             res.send(rows);

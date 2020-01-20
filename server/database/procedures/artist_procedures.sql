@@ -12,6 +12,7 @@ DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS get_artist_by_contact;
 DROP PROCEDURE IF EXISTS get_artist_by_user;
+DROP PROCEDURE IF EXISTS get_artist_by_previous_contract;
 DROP PROCEDURE IF EXISTS insert_artist;
 DROP PROCEDURE IF EXISTS remove_artist_from_event;
 DROP PROCEDURE IF EXISTS update_artist;
@@ -113,6 +114,17 @@ BEGIN
   SET artist_name=artist_name_in,
       contact=contact_id_in
   WHERE artist_id = artist_id_in;
+END;
+
+CREATE PROCEDURE get_artist_by_previous_contract(IN contact_id_in INT)
+BEGIN
+  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone
+  FROM artist a
+  LEFT JOIN contact c ON a.contact = c.contact_id
+  LEFT JOIN contract cr ON a.artist_id = cr.artist
+  LEFT JOIN document d ON cr.document = d.document_id
+  LEFT JOIN event e ON d.event = e.event_id
+  WHERE e.organizer=contact_id_in;
 END;
 
 /**

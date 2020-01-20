@@ -30,6 +30,13 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
+    getArtistByPreviousContract(contactId: number, callback: (status: string, data: string) => void) {
+        let values = [contactId];
+        super.query("CALL get_artist_by_previous_contract(?)",
+            values,
+            callback);
+    }
+
     updateArtist(artistId: string, artistName: string, firstName: string, lastName: string, email: string, phone: string,
                  callback: (status: string, data: string) => void) {
         let values = [artistId, artistName, firstName, lastName, email, phone];
