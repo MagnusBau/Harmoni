@@ -30,8 +30,41 @@ exports.insertFileInfo = (req, res, next) => {
     })
 };
 
+exports.checkFileName = (req, res, next) => {
+    console.log('Got request from client: POST /file/check/:eventId');
+    console.log(req.params.eventId);
+    console.log(req.body.name);
+    fileInfoDao.checkFileName(req.params.eventId, req.body.name, (err, rows) => {
+        res.json(rows);
+    })
+};
+
+exports.downloadFile = (req, res, next) => {
+    console.log('Got request from client: GET /file/download');
+    let path: string = Buffer.from(req.params.file, 'base64').toString();
+    res.download(path);
+};
+
+exports.getFileContent = (req, res, next) => {
+    console.log('Got request from client: GET /file/edit');
+    let path: string = Buffer.from(req.params.file, 'base64').toString();
+    fs.readFile(path, 'utf8', (err, rows) => {
+        res.json(rows);
+    });
+};
+
 exports.updateFileInfo = (req, res, next) => {
 };
 
 exports.deleteFileInfo = (req, res, next) => {
+    console.log('Got request from client: DELETE /file/delete');
+    let path: string = Buffer.from(req.params.file, 'base64').toString();
+    fileInfoDao.deleteFileInfo(path, (err, rows) => {
+        res.json(rows);
+        fs.unlink(path, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    });
 };

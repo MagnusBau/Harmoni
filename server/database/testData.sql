@@ -50,6 +50,7 @@ VALUES (1, 4, 4);
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (2, 4, 8);
 
+INSERT INTO document (document_id, name, path, event) VALUES (DEFAULT, 'Carl', 'Barks', 1);
 insert into ticket (title, info, price, count, event) values ( 'enTittel',  'enInfo_in',  1, 1, 1);
 insert into ticket (title, info, price, count, event) values ( 'andreTittel',  'andreInfo_in',  2, 2, 1);
 

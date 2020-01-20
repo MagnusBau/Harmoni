@@ -14,15 +14,34 @@ class FileInfoService {
         return axios.get(`http://localhost:4000/api/file/info/${eventId}`).then(response => response.data);
     }
 
-    postFileInfo(name: string, eventId: number, encodedFile: FormData) {
-        console.log(encodedFile);
-        return axios.post(`http://` + ip +`:4000/api/file/upload/${eventId}`,
-            {"name": name,
-            "encodedFile": encodedFile});
+    postFileInfo(name: string, eventId: number, data: FormData) {
+        return axios.post(`http://` + ip +`:4000/api/single/${eventId}`,
+            data);
+    }
+    updateFile(data: FormData) {
+        return axios.post(`http://` + ip +`:4000/api/single/update`,
+            data);
     }
 
     updatePath(id: number) {
         return axios.put('http://' + ip +':4000/api/file/path', id).then(response => response.data);
+    }
+
+    checkFileName(eventId: number, name: string){
+        return axios.post(`http://` + ip +`:4000/api/file/check/${eventId}`, {"name": name}).then(response => response.data);
+    }
+
+    downloadFile(encodedFile: string){
+        console.log(encodedFile);
+        console.log("hei");
+        return axios.get(`http://` + ip +`:4000/api/file/download/${encodedFile}`);
+    }
+
+    getFileContent(encodedFile: string){
+        return axios.get(`http://` + ip +`:4000/api/file/edit/${encodedFile}`);
+    }
+    deleteFile(encodedFile: string){
+        return axios.delete(`http://` + ip +`:4000/api/file/delete/${encodedFile}`);
     }
 }
 

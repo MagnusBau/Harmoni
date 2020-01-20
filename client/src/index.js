@@ -13,10 +13,10 @@ import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
 import UserEdit from "./pages/userEdit";
-import { FileMain} from './pages/file'
 import {eventVisit} from "./pages/eventVisit";
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
+import { FileMain, FileEdit} from './pages/file'
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
@@ -41,6 +41,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
                     <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
+                    <Route exact path="/event/:eventId/edit/file/:filepath" component={FileEdit} />
                     <Route exact path="/register" component={UserRegister} />
                     <Route exact path="/" component={TokenBoi} />
                     <Route exact path="/user/:userId/overview" component={UserOverview} />

@@ -31,6 +31,25 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    /**
+     * check if a document name exist in db
+     * @param eventId
+     * @param fileName
+     * @param callback
+     */
+    checkFileName(eventId: number, fileName: string, callback: (status: string, data: string) => void) {
+        let values = [eventId, fileName];
+        console.log("SE PÅ DENNE DATAN!!!!: " + eventId);
+        super.query("CALL check_document_name(?,?)",
+            values,
+            callback);
+    }
+
+    /**
+     * Posts a document to the db
+     * @param data
+     * @param callback
+     */
     //<DO NOT TOUCH>
     postFileInfo(data, callback: ()=>void) {
         console.log("data.name: " + data.name);
@@ -38,10 +57,24 @@ export class FileInfoDAO extends Dao {
         let name = JSON.stringify(data.name);
         let eventId = number.parseInt(data.eventId);
         super.query(
-            "INSERT INTO document(document_id, name, path, event) VALUES(default,?,default,?)",
-            [name, eventId],
+            "INSERT INTO document(document_id, name, path, event) VALUES(default,?,?,?)",
+            [data.name, data.path, data.eventId],
             callback
         );
+    }
+
+    /**
+     * Deletes a document from the db
+     * @param path
+     * @param callback
+     */
+    //</DO NOT TOUCH
+    deleteFileInfo(path: string, callback: (status: string, data: string) => void){
+        let values = [path];
+        console.log(path);
+        super.query("CALL delete_document(?)",
+            values,
+            callback);
     }
     //</DO NOT TOUCH>
 

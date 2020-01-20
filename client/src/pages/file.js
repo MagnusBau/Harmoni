@@ -15,6 +15,8 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     name: string = "";
     fileList: Object[] = [];
     errorMessage: string = "";
+    path: string = "./files/";
+    nameAddOn: string = "------";
 
     render() {
         return(
@@ -61,6 +63,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 onClick={e => this.handleDelete(e)}
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Slett</button>
+                            <button
+                                type="button"
+                                className="btn btn-dark"
+                                style={{}}
+                                onClick={e => this.handleDownload(e)}
+                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                            >Last ned</button>
                         </form>
                         <p style={{color: "red"}}>{this.errorMessage}</p>
                     </div>
@@ -74,7 +83,9 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                         </li>
                         <ul>
                         {this.fileList.map(f => (
-                            <li key={"fileId" + f.document_id} className="list-group-item list-group-item-action">
+                            <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
+                                this.setState({selected: event.target.innerText});
+                            }}>
                                 {f.name}
                             </li>
                         ))}
@@ -99,48 +110,133 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleFile(e) {
         let file = e.target.files[0];
         this.setState({file: file});
+        this.name = file.name;
     }
 
     handleUpload(e) {
         let file = this.state.file;
-        let encodedFile = btoa(file);
-        this.name = file.name;
-        console.log(this.name);
-
         let formData = new FormData();
+        if(this.state.file !== null){
+            fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+                .then(response => {
+                    console.log("DUP?: "+ response[0][0].duplicate);
+                    if(response[0][0].duplicate === 0){
 
-        formData.append('file', encodedFile);
-        formData.append('name', this.name);
+                        const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
 
-        this.name = this.name.replace(/[.,\/#!$%\^&\*;:{}=\-_`~() ]/g,"");
-        this.name = this.name.trim();
+                        formData.append('file', myNewFile);
+                        formData.append('name', this.name);
+                        formData.append('path', this.path + myNewFile.name);
 
-        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId, encodedFile).then(response => {
-            console.log("should have posted fileInfo to database");
-            if(response.data.insertId > 0) {
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:4000/api/file/upload',
-                    headers: {
-                        //'x-access-token': userService.getToken(),
-                        'fileId': response.data.insertId
-                    },
-                    data: formData
-                }).then(response2 => {
-                    console.log("should have uploaded");
-                    fileInfoService.updatePath(response.data.insertId).then(response3 => {
-                        console.log("should have updated path in database");
-                    });
+                        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+                            console.log("should have posted fileInfo to database");
+                            this.mounted();
+                        });
+                    }else{
+                        this.errorMessage = "En fil med dette navnet finnes allerede";
+                        this.mounted();
+                    }
                 });
-            }
-        });
+        }
+
+    }
+
+    handleDownload(e){
+
+        if(this.state.selected !== undefined){
+            let filePath: string = this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
+            let encodedFilePath = btoa(filePath);
+            window.open("http://localhost:8080/api/file/download/" + encodedFilePath, "_blank");
+            console.log(encodedFilePath);
+            fileInfoService.downloadFile(filePath).then(response =>
+                console.log("laster ned " + this.state.selected));
+        }
     }
     handleOverwrite(){
+        if(this.state.selected !== undefined){
+            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+            history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
+        }
 
     }
 
     handleDelete(){
+        if(this.state.selected !== undefined){
+            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+            fileInfoService.deleteFile(encodedFilePath).then(response => {
+                this.mounted();
+            });
+        }
+    }
+}
 
+export class FileEdit extends Component <{match: {params: {filepath: string, eventId: number}}}> {
+    form = null;
+    errorMessage: string = "";
+    text: string = "";
+    path: string = "./files/";
+
+    render() {
+        return (
+            <div className="row justify-content-center">
+                <div className="mb-4 border-0 " style={{width: '75%'}}>
+                    <div className="card-body">
+                        <form ref={e => (this.form = e)}>
+
+                            <label htmlFor="basic-url">Tekst: </label>
+                            <div className="input-group">
+                                <div className="input-group-prepend">
+                                </div>
+                                <textarea
+                                    className="form-control"
+                                    required
+                                    minLength={1}
+                                    aria-label="tekst"
+                                    rows="10"
+                                    value={this.text}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
+                            </div>
+                        </form>
+
+                    </div>
+                    <button
+                        type="button"
+                        className="btn btn-dark"
+                        onClick={this.post}
+                        style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                    >Oppdater
+                    </button>
+                    <p style={{color: "red"}}>{this.errorMessage}</p>
+                </div>
+            </div>
+        )
     }
 
+    mounted() {
+        fileInfoService.getFileContent(this.props.match.params.filepath).then(response => {
+            this.text = response.data;
+        });
+    }
+
+    post() {
+        let formData = new FormData();
+
+        if (!this.form || !this.form.checkValidity()) {
+            this.errorMessage = "Filen kan ikke være tom";
+            this.mounted();
+            return;
+        } else {
+            let name= atob(this.props.match.params.filepath);
+            name = name.replace(this.path, "");
+            let data = new Blob([this.text], {type: 'text/plain'});
+            const myNewFile = new File([data], name, {type: "text/plain"});
+
+            formData.append('file', myNewFile);
+
+            fileInfoService.updateFile(formData).then(response => {
+                console.log("should have updated file");
+                history.push("/event/" + this.props.match.params.eventId + "/edit/file");
+            });
+        }
+    }
 }
