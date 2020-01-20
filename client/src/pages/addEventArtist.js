@@ -240,7 +240,7 @@ export class AddEventArtist extends Component {
             placeholder: 'Artistnavn',
             value: this.newArtist.artist_name,
             onChange: this.onDropdownChange,
-            className: "form-control",
+            className: "form-control m-2",
             required: "true",
             onKeyDown: this.onKeyDown,
             name: "artist_name"
