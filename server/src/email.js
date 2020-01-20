@@ -75,7 +75,7 @@ export class Email {
             from: name + '<' + fromMail + '>',
             to: 'harmoni.team3@gmail.com',
             subject: subject,
-            html: '<div style={{white-space: "pre-wrap"}}><p>Svar sendes til: ' + fromMail + '</p>' + content + '</div>'
+            html: '<div style="white-space: pre-line"><p>Svar sendes til: ' + fromMail + '</p>' + content + '</div>'
         };
 
         transporter.sendMail(mailOption, (err, res) => {
