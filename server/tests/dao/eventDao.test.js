@@ -212,5 +212,20 @@ test("delete_ ended event from db", done => {
 
     eventDao.deleteEventsByEndTime(1, callback);
 
+test("search for event by title with string", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+
+        data = data[0];
+
+        expect(data.length).toBe(2);
+        expect(data[0].title).toBe('Konsert');
+        expect(data[1].title).toBe('Konsert m/ ballonger');
+
+        done();
+    }
+    eventDao.getEventByInput('KON', callback);
 });
 */

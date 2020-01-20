@@ -1,4 +1,5 @@
 // @flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";

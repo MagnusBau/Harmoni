@@ -19,10 +19,9 @@ import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
 import { FileMain, FileEdit} from './pages/file'
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
-import {DeleteEventTimeButton} from "./components/Buttons/DeleteEventTimeButton";
 import {AddEventArtist} from "./pages/addEventArtist";
-import {AddRole} from "./pages/addRole";
 import {NotFoundPage} from "./pages/notFoundPage";
+import {EventSearch} from "./pages/eventSearch";
 
 const root = document.getElementById("root");
 if (root)
@@ -48,6 +47,7 @@ if (root)
                     <Route exact path="/user/:userId/edit" component={UserEdit}/>
                     <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
                     <Route exact path="/event/ticket" component={TicketAdd}/>
+                    <Route exact path="/event/search/:input" component={EventSearch}/>
                     <Route exact path="/404" component={NotFoundPage}/>
                     <Redirect to="/404"/>
                     <Route exact path="/event/:eventId/view" component={eventVisit}/>
