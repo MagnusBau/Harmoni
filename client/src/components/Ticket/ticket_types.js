@@ -22,15 +22,15 @@ export default class TicketView extends Component {
 
                 <div className="container">
 
-                <button type="submit" className="btn-success m-2"
-                    onClick={this.props.handleAddTicketClick}>
-                    Legg til billettype
-                </button>
+
+
+                <div style={{textAlign:"center"}}>
+                    <h2>Dine billettyper</h2>
+                </div>
 
 
 
                     <Row>
-
                     {this.tickets.map( (tickets =>
                         <div className="card" style={{width : "33%", marginBottom:"5%"}}>
                             <li style={{float:"left", width:"100%",height:"100%", border:"none"}} className="list-group-item">
@@ -50,21 +50,27 @@ export default class TicketView extends Component {
                             <b>Antall billetter:</b>
                             <hr/>
                             <p>{tickets.count}</p>
-                            <button type="submit" className="btn-primary m-2"
+
+                                <Row>
+                                <button type="submit" className="btn btn-outline-primary"
                                 onClick={() => {this.props.triggerParentUpdate(tickets.ticket_id); this.props.handleEditTicketClick()}}>
-                                Rediger billett
-                            </button>
+                                Rediger billett</button>
 
-                            <button className="btn-danger" onClick={() => {this.delete(tickets.ticket_id); } } type={"button"}>Slett</button>
 
-                        </li>
+                                <button className="btn btn-outline-danger" onClick={() => {this.delete(tickets.ticket_id); } } type={"button"}>Slett</button>
+                            </Row>
+                            </li>
                         </div>
                     ))}
 
                     </Row>
 
-
-
+                    <div style={{textAlign:"right"}}>
+                    <button type="submit" className="btn btn-outline-success m-2"
+                            onClick={this.props.handleAddTicketClick}>
+                        Legg til ny billettype
+                    </button>
+                </div>
 
                 </div>
         )

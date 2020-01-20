@@ -28,6 +28,7 @@ export class TicketEdit extends Component {
                 <div>title</div>
                 <div>
                     <input
+                        className="form-control"
                         type="text"
                         value={this.ticket.title}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -40,6 +41,7 @@ export class TicketEdit extends Component {
                 <div>info</div>
                 <div>
                     <input
+                        className="form-control"
                         type="text"
                         value={this.ticket.info}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -52,6 +54,7 @@ export class TicketEdit extends Component {
                 <div>price</div>
                 <div>
                     <input
+                        className="form-control"
                         type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -63,6 +66,7 @@ export class TicketEdit extends Component {
                 <div>count</div>
                 <div>
                     <input
+                        className="form-control"
                         type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -74,6 +78,7 @@ export class TicketEdit extends Component {
                 <div>event</div>
                 <div>
                     <input
+                        className="form-control"
                         type="number"
                         value={this.ticket.event}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -82,9 +87,9 @@ export class TicketEdit extends Component {
                     />
                 </div>
 
-                <button onClick={() => {this.save(); }} type={"button"}>Lagre</button>
-                <button onClick={() => {this.delete(); } } type={"button"}>Slett</button>
-                <button onClick={this.props.handleCancel} type={"button"}>Avbryt</button>
+                <button className="btn btn-outline-success" onClick={() => {this.save(); }} type={"button"}>Lagre</button>
+                <button className="btn btn-outline-danger" onClick={() => {this.delete(); } } type={"button"}>Slett</button>
+                <button className="btn btn-outline-danger" onClick={this.props.handleCancel} type={"button"}>Avbryt</button>
             </form>
         );
     }

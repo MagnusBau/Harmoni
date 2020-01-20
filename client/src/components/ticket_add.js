@@ -93,7 +93,7 @@ export class TicketAdd extends Component{
 
         if (!this.ticket) return null;
         return(
-            <form ref={e => {this.form = e}}>
+            <form ref={e => {this.form = e}} className="form-group">
                 <h2>
                     Opprett en billettype
                 </h2>
@@ -101,6 +101,7 @@ export class TicketAdd extends Component{
                     <div>Title</div>
                     <div>
                         <input
+                            className="form-control"
                             type="text"
                             value={this.ticket.title}
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -113,6 +114,7 @@ export class TicketAdd extends Component{
                     <div>info</div>
                     <div>
                         <input
+                            className="form-control"
                             type="text"
                             value={this.ticket.info}
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -124,6 +126,7 @@ export class TicketAdd extends Component{
                     <div>price</div>
                     <div>
                         <input
+                            className="form-control"
                             type="number"
                             value={this.ticket.price}
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -135,6 +138,7 @@ export class TicketAdd extends Component{
                     <div>count</div>
                     <div>
                         <input
+                            className="form-control"
                             type="number"
                             value={this.ticket.count}
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -144,12 +148,12 @@ export class TicketAdd extends Component{
                     </div>
 
 
-                    <button type="submit" className="btn-success" onClick={this.send} >Legg til billett type</button>
+                    <button type="submit" className="btn btn-success" onClick={this.send} >Legg til billett type</button>
 
                     <button
                         type="button"
                         size="sm"
-                        className="m"
+                        className="btn btn-danger"
                         variant="outline-secondary"
                         onClick={this.props.handleCancel}>
                         Avbryt
