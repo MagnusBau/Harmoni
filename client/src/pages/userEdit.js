@@ -309,7 +309,7 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.insertArtist(this.artistName, this.contactId);
+        artistService.createArtistOnContact(this.artistName, this.contactId);
         this.mounted();
     }
 

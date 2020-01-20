@@ -50,7 +50,7 @@ class ArtistService {
             .then(response => response.data);
     }
 
-    insertArtist(artistName: string, contactId: number): void {
+    createArtistOnContact(artistName: string, contactId: number): void {
         return axios.post(`http://localhost:4000/api/artist`, {artistName: artistName,
                                                                          contactId: contactId})
             .then(response => response.data);

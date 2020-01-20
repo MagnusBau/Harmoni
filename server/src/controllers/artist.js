@@ -8,7 +8,7 @@ exports.insertArtist = (req, res, next) => {
     console.log(`Got request from client: POST /api/artist`);
 
     if (req.body.contactId) {
-        artistDao.insertArtist(req.body.artistName, req.body.contactId, (err, rows) => {
+        artistDao.createArtistOnContact(req.body.artistName, req.body.contactId, (err, rows) => {
             res.send(rows);
         });
     } else {

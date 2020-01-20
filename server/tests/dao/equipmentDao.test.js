@@ -82,7 +82,7 @@ test("Add new equipment", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.insertEquipment("Mikrofonstativ", callback);
+    equipmentDao.insertEquipment("Mikrofonstativ", 1, callback);
 });
 
 test("Delete equipment", done => {
