@@ -4,6 +4,8 @@ import {createHashHistory} from 'history';
 import {Ticket_ID, ticketService} from "../../services/ticketService";
 import {Event} from "../../services/eventService";
 import {EventEquipment} from "../../services/equipmentService";
+import {artistService} from "../../services/artistService";
+import {userService} from "../../services/userService";
 
 export default class TicketView extends Component {
     currentEvent: number = 0;
@@ -13,6 +15,9 @@ export default class TicketView extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            isArtist: false
+        }
     };
 
     render(){
@@ -31,24 +36,27 @@ export default class TicketView extends Component {
                             <p>{tickets.price}</p>
                             <b>Antall:</b>
                             <p>{tickets.count}</p>
+                            {this.state.isArtist ?
                             <button
                                 size="sm"
                                 className="m"
                                 variant="outline-secondary"
                                 onClick={() => {this.props.triggerParentUpdate(tickets.ticket_id); this.props.handleEditTicketClick()}}>
                                 Rediger billett
-                            </button>
+                                </button>
+                            : null}
                         </li>
                     ))}
                 </ul>
-
-                <button
-                    size="sm"
-                    className="m"
-                    variant="outline-secondary"
-                    onClick={this.props.handleAddTicketClick}>
-                    Legg til billettype
-                </button>
+                {!this.state.isArtist ?
+                    <button
+                        size="sm"
+                        className="m"
+                        variant="outline-secondary"
+                        onClick={this.props.handleAddTicketClick}>
+                        Legg til billettype
+                    </button>
+                : null}
             </div>
         )
 
@@ -60,6 +68,11 @@ export default class TicketView extends Component {
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets => (this.tickets = tickets[0]))
+            .catch((error: Error) => console.log(error.message));
+
+        artistService
+            .getArtistByUser(userService.getUserID())
+            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
             .catch((error: Error) => console.log(error.message));
     }
 }
