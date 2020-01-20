@@ -173,7 +173,7 @@ exports.getEventByInput = (req, res, next) => {
     console.log(`Get-request from client: event/search/${req.params.input}`);
     console.log("input controller " + req.params.input);
 
-    eventDao.getEventByInput(req.query.search, (err, rows) => {
+    eventDao.getEventByInput(req.params.input, (err, rows) => {
         res.json(rows);
     })
 };

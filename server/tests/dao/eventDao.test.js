@@ -177,9 +177,7 @@ test("delete_ event from db", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
-
     eventDao.deleteEvent(4, callback);
-
 });
 
 test("search for event by title with string", done => {
@@ -191,10 +189,10 @@ test("search for event by title with string", done => {
         data = data[0];
 
         expect(data.length).toBe(2);
-        expect(data[0].title).toBe('Konsert m/ ballonger');
-        expect(data[1].title).toBe('Konsert');
+        expect(data[0].title).toBe('Konsert');
+        expect(data[1].title).toBe('Konsert m/ ballonger');
 
-        eventDao.getEventByInput('KON', callback);
         done();
     }
+    eventDao.getEventByInput('KON', callback);
 });

@@ -54,7 +54,7 @@ export class SearchBar extends Component {
     ifEnter = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
-            history.push("/event/search/" + event.input);
+            history.push("/event/search/" + this.input);
         }
     };
 
