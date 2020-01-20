@@ -15,7 +15,7 @@ const url = `http://localhost:4000`;
 
 export class Email {
 
-    cancelledNotification(mailList: string, eventId: number, title: string, name: string, location: string, startTime: string) {
+    cancelledNotification(mailList: Array, eventId: number, title: string, name: string, location: string, startTime: string) {
 
         let toMail = mailList.join(', ');
 
@@ -69,14 +69,14 @@ export class Email {
         });
     }
 
-    contactUs(recipient: string, name: string, subject: string, content: string) {
+    contactUs(fromMail: string, name: string, subject: string, content: string) {
 
         let mailOption = {
-            from: '' + name + '<' + recipient + '>',
+            from: name + '<' + fromMail + '>',
             to: 'harmoni.team3@gmail.com',
             subject: subject,
-            html: '<div>' + content + '</div>'
-        }
+            html: '<div style={{white-space: "pre-wrap"}}><p>Svar sendes til: ' + fromMail + '</p>' + content + '</div>'
+        };
 
         transporter.sendMail(mailOption, (err, res) => {
             if (err) {
@@ -85,6 +85,7 @@ export class Email {
                 console.log("Email sent: " + res.response);
             }
         });
+
     }
 }
 
