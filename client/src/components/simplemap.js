@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
+const API_KEY = process.env.REACT_APP_GOOGLE_MAP_KEY;
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 export class SimpleMap extends Component {
     static defaultProps = {
         center: {
-            lat: 59.95,
-            lng: 30.33
+            lat: 63.4154,
+            lng: 10.4055
         },
-        zoom: 11
+        zoom: 14
     };
 
     render() {
@@ -17,14 +18,14 @@ export class SimpleMap extends Component {
             // Important! Always set the container height explicitly
             <div style={{ height: '400px', width: '100%' }}>
                 <GoogleMapReact
-                    bootstrapURLKeys={{ key: "AIzaSyCipSbIa2FOeWTPsocYrBZ0_Lq3wwhjK6Y" }}
+                    bootstrapURLKeys={{ key: API_KEY }}
                     defaultCenter={this.props.center}
                     defaultZoom={this.props.zoom}
                 >
                     <AnyReactComponent
-                        lat={59.955413}
-                        lng={30.337844}
-                        text="My Marker"
+                        lat={63.415496}
+                        lng={10.405554}
+                        text="X"
                     />
                 </GoogleMapReact>
             </div>
