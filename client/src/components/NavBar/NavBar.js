@@ -137,12 +137,14 @@ class NavBar extends Component {
                                         required
                                         maxLength={256}
                                     />
+
                                     <button
-                                        type="button"
+                                        type="submit"
                                         className="btn btn-dark"
                                         style={{}}
-                                        onClick={this.login}
-                                    >Logg inn</button>
+                                        onClick={this.login}>
+                                        Logg inn
+                                    </button>
                                 </form>
                                 <div>
                                     <p>
@@ -167,6 +169,8 @@ class NavBar extends Component {
            </nav>
         )
     }
+
 }
+
 
 export default NavBar;

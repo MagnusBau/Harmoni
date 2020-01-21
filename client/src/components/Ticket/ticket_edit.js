@@ -87,9 +87,22 @@ export class TicketEdit extends Component {
                     />
                 </div>
 
-                <button className="btn btn-outline-success" onClick={() => {this.save(); }} type={"button"}>Lagre</button>
-                <button className="btn btn-outline-danger" onClick={() => {this.delete(); } } type={"button"}>Slett</button>
-                <button className="btn btn-outline-danger" onClick={this.props.handleCancel} type={"button"}>Avbryt</button>
+                <button
+                    className="btn btn-outline-success"
+                    onClick={() => {this.save(); }}
+                    type={"submit"}>
+                    Lagre
+                </button>
+                <button className="btn btn-outline-danger"
+                        onClick={() => {this.delete();}}
+                        type={"button"}>Slett
+                </button>
+                <button
+                    className="btn btn-outline-danger"
+                    onClick={this.props.handleCancel}
+                    type={"button"}>
+                    Avbryt
+                </button>
             </form>
         );
     }

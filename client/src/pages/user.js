@@ -38,10 +38,10 @@ export class UserLogin extends Component {
                             required
                             maxLength={256}
                         />
-                    </form>
+
                     <br/>
                     <button
-                        type="button"
+                        type="submit"
                         className="btn btn-dark"
                         style={{}}
                         onClick={this.attemptLogin}
@@ -53,6 +53,7 @@ export class UserLogin extends Component {
                         style={{}}
                         onClick={this.register}
                     >Registrer</button>
+                    </form>
                 </div>
             </div>
         )

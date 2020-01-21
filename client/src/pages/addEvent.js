@@ -132,7 +132,7 @@ export class AddEvent extends Component {
                     </div>
                 </form>
                 <div className="text-center">
-                    <button type="button"
+                    <button type="submit"
                             className="btn btn-ghost btn-ghost-bordered center-block"
                             onClick={this.register}>
                         {' '}Registrer{' '}
