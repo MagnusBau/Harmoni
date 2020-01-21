@@ -11,29 +11,31 @@ import moment from "moment";
 import { userService } from "../services/userService";
 import {SimpleMap} from "../components/simplemap";
 import Map from "../components/map";
+import set from "@babel/runtime/helpers/esm/set";
 
 const history = createHashHistory();
 
 moment.locale("no");
 
+const [value, setValue] = React.useState(new Date());
 
 export class AddEvent extends Component {
     event: Event[] = [];
     allEvents = [];
     createEvent = new Event();
     state = {
-        date: new Date()
+        start_date: new Date(),
+        end_date: new Date()
     };
 
 
 
-    /**
-     *
-     * @param date
-     */
-    handleDate(date){
-        this.setState({date});
-    };
+    handleChange(date) {
+        this.setState({ start_date: date });
+
+    }
+
+
 
     /**
      *
@@ -42,6 +44,11 @@ export class AddEvent extends Component {
      */
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            start_date: new Date(),
+            end_date: new Date()
+        };
+        this.handleChange = this.handleChange.bind(this);
     }
 
     _onClick = ({x, y, lat, lng, event}) => console.log(x, y, lat, lng, event);
@@ -103,9 +110,8 @@ export class AddEvent extends Component {
                                     <DateTime
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        locale={"no"}
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                            (this.createEvent.start_time = event.target.value)}
+                                        value={this.state.start_date}
+                                        onChange={this.handleChange}
                                     />
                                 </div>
                             </div>
@@ -117,22 +123,11 @@ export class AddEvent extends Component {
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
                                         locale={"no"}
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                            (this.createEvent.end_time = event.target.value)}
+                                        onChange={this.props.handleEndTime}
                                     />
                                 </div>
                             </div>
-                            <div className={"form-group m-2"}>
-                                <label>Antall billettyper:</label>
-                                <br></br>
-                                <select name={"ticket-types"} size={"1"}>
-                                    <option value={"1"}>1</option>
-                                    <option value={"2"}>2</option>
-                                    <option value={"3"}>3</option>
-                                    <option value={"4"}>4</option>
-                                    <option value={"5"}>5</option>
-                                </select>
-                            </div>
+
                             <div className={"form-group m-2"}>
                                 <label>Type arrangement:</label>
                                 <br></br>
@@ -173,7 +168,7 @@ export class AddEvent extends Component {
                         center={{lat: 63.4154, lng: 10.4055}}
                         height='300px'
                         zoom={15}
-                        onChange={this.getAddress}
+                        getAddress={this.getAddress}
                     />
                 </div>
             </div>
@@ -187,6 +182,7 @@ export class AddEvent extends Component {
             return Alert.danger('Please fill empty fields');
         }
         */
+        this.createEvent.start_time = this.state.start_date;
         eventService
             .createEvent(this.createEvent)
             .then(() => {
