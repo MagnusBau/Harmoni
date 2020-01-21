@@ -45,14 +45,13 @@ export class UserLogin extends Component {
                             style={{}}
                             onClick={this.attemptLogin}
                             >Logg inn</button>
-                    </form>
-                    <p>{this.errorMessage}</p>
-                    <button
-                        type="button"
-                        className="btn btn-light"
-                        style={{}}
-                        onClick={this.register}
-                    >Registrer</button>
+                        <p>{this.errorMessage}</p>
+                        <button
+                            type="button"
+                            className="btn btn-light"
+                            style={{}}
+                            onClick={this.register}
+                        >Registrer</button>
                     </form>
                 </div>
             </div>
