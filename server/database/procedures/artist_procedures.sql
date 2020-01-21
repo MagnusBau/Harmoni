@@ -237,6 +237,8 @@ BEGIN
   DECLARE artist_id_in INT;
   CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
 
+  CALL raise(300, 'Artist already bound to event');
+
   INSERT INTO contract (artist, document)
   VALUES (artist_id_in, document_id_in);
 END;

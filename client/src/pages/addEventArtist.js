@@ -8,6 +8,7 @@ import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
 import {userService} from "../services/userService";
 import Autosuggest from 'react-autosuggest';
+import {Alert} from '../components/widgets';
 
 const getSuggestionValue = suggestion => suggestion.artist_name;
 
@@ -216,21 +217,33 @@ export class AddEventArtist extends Component {
         e.preventDefault();
         artistService
             .addArtistToEvent(this.newArtist, this.documentId)
-            .then(this.fetchData());
-        this.newArtist = {
-            artist_id: -1,
-            artist_name: "",
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: ""
-        };
-        this.documentId = -1;
+            .then(result => {
+                if (result.error) {
+                    if (result.error.errno === 300) {
+                        Alert.danger("Artist er allerede tilknyttet arrangement");
+                    } else {
+                        Alert.danger("En feil har oppstått");
+                    }
+                } else {
+                    this.fetchData();
+                    this.newArtist = {
+                        artist_id: -1,
+                        artist_name: "",
+                        first_name: "",
+                        last_name: "",
+                        email: "",
+                        phone: ""
+                    };
+                    this.documentId = -1;
+                }
+            });
+
     }
 
     onSuggestionSelected = (e, data) => {
         const artistName = data.suggestionValue;
-        this.newArtist = this.state.storedArtists.filter(a => a.artist_name === artistName)[0];
+        let selectArtist = this.state.storedArtists.filter(a => a.artist_name === artistName)[0];
+        this.newArtist = Object.assign({}, selectArtist);
     };
 
     render() {
@@ -367,6 +380,7 @@ export class AddEventArtist extends Component {
                                         </button>
                                     </div>
                                 </div>
+                                <Alert/>
                             </form>
                         </div>
                         : null}
