@@ -97,12 +97,10 @@ export default class EventView extends Component {
                 .catch((error: Error) => Alert.danger(error));
 
         } else if (this.eventOverview[0].cancelled === 1) {
-
             console.log("Dette arrangementet er allerede avlyst");
             //return (Alert.info("Dette arrangementet er allerede avlyst"));
 
         } else {
-
             console.log("Noe gikk galt!");
             //return Alert.danger("Noe gikk galt!");
         }
