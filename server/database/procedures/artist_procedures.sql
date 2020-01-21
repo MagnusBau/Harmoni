@@ -12,6 +12,7 @@ DROP PROCEDURE IF EXISTS get_artist_by_search;
 DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS get_artist_by_contact;
 DROP PROCEDURE IF EXISTS get_artist_by_user;
+DROP PROCEDURE IF EXISTS get_artist_by_previous_contract;
 DROP PROCEDURE IF EXISTS insert_artist;
 DROP PROCEDURE IF EXISTS remove_artist_from_event;
 DROP PROCEDURE IF EXISTS update_artist;
@@ -113,6 +114,17 @@ BEGIN
   SET artist_name=artist_name_in,
       contact=contact_id_in
   WHERE artist_id = artist_id_in;
+END;
+
+CREATE PROCEDURE get_artist_by_previous_contract(IN contact_id_in INT)
+BEGIN
+  SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone
+  FROM artist a
+  LEFT JOIN contact c ON a.contact = c.contact_id
+  LEFT JOIN contract cr ON a.artist_id = cr.artist
+  LEFT JOIN document d ON cr.document = d.document_id
+  LEFT JOIN event e ON d.event = e.event_id
+  WHERE e.organizer=contact_id_in;
 END;
 
 /**
@@ -223,7 +235,13 @@ CREATE PROCEDURE add_artist_to_event(IN artist_name_in VARCHAR(50), IN first_nam
                                      IN document_id_in INT)
 BEGIN
   DECLARE artist_id_in INT;
+  DECLARE event_id_in INT;
   CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
+
+  SET event_id_in = IFNULL((SELECT event FROM document WHERE document_id=document_id_in LIMIT 1), 0);
+  IF (SELECT COUNT(*) FROM contract c LEFT JOIN document d on c.document = d.document_id WHERE c.artist=artist_id_in AND d.event=event_id_in) THEN
+    CALL raise(300, 'Artist already bound to event');
+  END IF;
 
   INSERT INTO contract (artist, document)
   VALUES (artist_id_in, document_id_in);

@@ -1,4 +1,5 @@
 // @flow
+/* eslint eqeqeq: "off" */
 
 import * as React from 'react';
 import {Component} from 'react-simplified';
@@ -7,6 +8,16 @@ import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
 import {userService} from "../services/userService";
+import Autosuggest from 'react-autosuggest';
+import {Alert} from '../components/widgets';
+
+const getSuggestionValue = suggestion => suggestion.artist_name;
+
+const renderSuggestion = suggestion => (
+    <div>
+        {suggestion.artist_name}
+    </div>
+);
 
 export class AddEventArtist extends Component {
     event: Event = new Event();
@@ -44,9 +55,12 @@ export class AddEventArtist extends Component {
         };
 
         this.state = {
+            value: '',
             showRemoveWarning: false,
             showConfirmAddUser: false,
-            eventArtists: []
+            eventArtists: [],
+            storedArtists: [],
+            suggestions: []
         };
     }
 
@@ -73,6 +87,13 @@ export class AddEventArtist extends Component {
             artistService
                 .getArtistByEvent(this.props.eventId)
                 .then(artists => this.setState({eventArtists: artists[0]}))
+                .catch((error: Error) => console.log(error.message));
+        });
+
+        this.setState({storedArtists: []}, () => {
+            artistService
+                .getArtistByEvent(this.props.eventId)
+                .then(artists => this.setState({storedArtists: artists[0]}))
                 .catch((error: Error) => console.log(error.message));
         });
 
@@ -113,6 +134,35 @@ export class AddEventArtist extends Component {
         }
     }
 
+    getSuggestions = value => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0 ? [] : this.state.storedArtists.filter(artist =>
+            artist.artist_name.toLowerCase().slice(0, inputLength) === inputValue
+        );
+    };
+
+    onSuggestionsFetchRequested = ({value}) => {
+        this.setState({
+            suggestions: this.getSuggestions(value)
+        });
+    };
+
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
+
+    onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        switch (event.keyCode) {
+            case 13: {
+                event.preventDefault();
+            }
+        }
+    };
+
     /**
      * Called whenever the artist list is clicked
      * @param artist Artist object that was clicked on
@@ -149,9 +199,16 @@ export class AddEventArtist extends Component {
             .generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
                                 this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id)
             .then(this.fetchData());
-        e.stopPropagation();
         this.setState({showConfirmAddUser: false});
     }
+
+    onDropdownChange = (event, {newValue}) => {
+        this.setState({
+            value: newValue
+        });
+
+        this.newArtist.artist_name = newValue;
+    };
 
     /**
      * Called when the 'submit artist' button is pressed. Adds the artist from form to this event
@@ -161,19 +218,48 @@ export class AddEventArtist extends Component {
         e.preventDefault();
         artistService
             .addArtistToEvent(this.newArtist, this.documentId)
-            .then(this.fetchData());
-        this.newArtist = {
-            artist_id: -1,
-            artist_name: "",
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: ""
-        };
-        this.documentId = -1;
+            .then(result => {
+                if (result.error) {
+                    if (result.error.errno === 300) {
+                        Alert.danger("Artist er allerede tilknyttet arrangement");
+                    } else {
+                        Alert.danger("En feil har oppstått");
+                    }
+                } else {
+                    this.fetchData();
+                    this.newArtist = {
+                        artist_id: -1,
+                        artist_name: "",
+                        first_name: "",
+                        last_name: "",
+                        email: "",
+                        phone: ""
+                    };
+                    this.documentId = -1;
+                }
+            });
+
     }
 
+    onSuggestionSelected = (e, data) => {
+        const artistName = data.suggestionValue;
+        let selectArtist = this.state.storedArtists.filter(a => a.artist_name === artistName)[0];
+        this.newArtist = Object.assign({}, selectArtist);
+    };
+
     render() {
+        const {value, suggestions} = this.state;
+
+        const inputProps = {
+            placeholder: 'Artistnavn',
+            value: this.newArtist.artist_name,
+            onChange: this.onDropdownChange,
+            className: "form-control m-2",
+            required: "true",
+            onKeyDown: this.onKeyDown,
+            name: "artist_name"
+        };
+
         return (
             <div>
                 <div>
@@ -234,13 +320,14 @@ export class AddEventArtist extends Component {
                                 <h4 className="m-2">Legg til ny artist:</h4>
                                 <div className="row">
                                     <div className="col">
-                                        <input
-                                            className="form-control m-2 col"
-                                            name="artist_name"
-                                            placeholder="Artistnavn"
-                                            value={this.newArtist.artist_name}
-                                            onChange={this.onChange}
-                                            required/>
+                                        <Autosuggest suggestions={suggestions}
+                                                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                                     onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                                     getSuggestionValue={getSuggestionValue}
+                                                     renderSuggestion={renderSuggestion}
+                                                     inputProps={inputProps}
+                                                     onSuggestionSelected={this.onSuggestionSelected}/>
+
                                     </div>
                                     <div className="col">
                                         <div className="m-2"/>
@@ -294,6 +381,7 @@ export class AddEventArtist extends Component {
                                         </button>
                                     </div>
                                 </div>
+                                <Alert/>
                             </form>
                         </div>
                         : null}

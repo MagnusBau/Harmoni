@@ -123,6 +123,10 @@ class ArtistService {
     getArtistByUser(userId: number): Artist[] {
         return axios.get<Artist[]>(`http://localhost:4000/api/artist/user/${userId}`).then(response => response.data);
     }
+
+    getArtistByPreviousContract(contactId: number): Artist[] {
+        return axios.get<Artist[]>(`http://localhost:4000/api/artist?contact=${contactId}`).then(response => response.data);
+    }
 }
 
 export let artistService = new ArtistService();
