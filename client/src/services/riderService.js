@@ -1,6 +1,7 @@
 //@flow
 
 import axios from 'axios';
+import {userService} from "./userService";
 
 export class Rider {
     rider_id: number;
@@ -17,28 +18,88 @@ export class Rider {
 class RiderService{
 
     addRider(rider : Rider): void {
-        return axios.post('http://localhost:4000/api/rider', rider).then(response => response.data);
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/rider`, rider, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 
     getRider(rider_id: number): Rider {
-        return axios.get<Rider>(`http://localhost:4000/api/rider/one/${rider_id}`).then(response => response.data);
+        return axios.get<Rider>(`http://localhost:4000/auth/id/${userService.getUserId()}/rider/one/${rider_id}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 
     getAllRiders(document: number): Rider[] {
-        return axios.get<Rider[]>(`http://localhost:4000/api/rider/all/${document}`).then(response => response.data);
+        return axios.get<Rider[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/rider/all/${document}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 
-    updateRider(rider : Rider, id: number): void {
-        return axios.put('http://localhost:4000/api/rider/' + id, rider).then(response => response.data);
+    updateRider(rider : Rider, id:number): void {
+        return axios.put(`http://localhost:4000/auth/id/${userService.getUserId()}/rider/${id}`, rider, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
 
     }
 
     deleteRider(rider_id: number): void {
-        return axios.delete(`http://localhost:4000/api/rider/one/${rider_id}`);
+        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/rider/one/${rider_id}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 
     deleteAllRiders(document: number): void {
-        return axios.delete(`http://localhost:4000/api/rider/all/${document}`);
+        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/rider/all/${document}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 }
 

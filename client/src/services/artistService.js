@@ -16,7 +16,7 @@ export class Artist {
 
 class ArtistService {
     getAllArtists(): Artist[] {
-        return axios.get<Artist[]>(`http://localhost:4000/api/artist`, {
+        return axios.get<Artist[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -30,7 +30,7 @@ class ArtistService {
     }
 
     getArtistById(artistId: number): Artist {
-        return axios.get<Artist>(`http://localhost:4000/api/artist/${artistId}`, {
+        return axios.get<Artist>(`http://localhost:4000/auth/id/${userService.getUserId()}/artist/${artistId}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -72,7 +72,7 @@ class ArtistService {
     }
 
     addArtistToEvent(artist: Artist, documentId: number, eventId): void {
-        axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist`,
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist`,
             {artist_name: artist.artist_name,
                   first_name: artist.first_name,
                   last_name: artist.last_name,
@@ -92,22 +92,38 @@ class ArtistService {
     }
 
     insertArtist(artist: Artist): void {
-        return axios.post(`http://localhost:4000/api/artist`, {artistName: artist.artist_name,
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`, {artistName: artist.artist_name,
                                                                         firstName: artist.first_name,
                                                                         lastName: artist.last_name,
                                                                         email: artist.email,
-                                                                        phone: artist.phone})
-            .then(response => response.data);
+                                                                        phone: artist.phone}, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     createArtistOnContact(artistName: string, contactId: number): void {
-        return axios.post(`http://localhost:4000/api/artist`, {artistName: artistName,
-                                                                         contactId: contactId})
-            .then(response => response.data);
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`, {artistName: artistName,
+                                                                         contactId: contactId}, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     removeArtistFromEvent(eventId: number, artistId: number): void {
-        axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist/${artistId}`, {
+        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist/${artistId}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -121,11 +137,29 @@ class ArtistService {
     }
 
     getArtistByUser(userId: number): Artist[] {
-        return axios.get<Artist[]>(`http://localhost:4000/api/artist/user/${userId}`).then(response => response.data);
+        return axios.get<Artist[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/artist/user/${userId}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getArtistByPreviousContract(contactId: number): Artist[] {
-        return axios.get<Artist[]>(`http://localhost:4000/api/artist?contact=${contactId}`).then(response => response.data);
+        return axios.get<Artist[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/artist?contact=${contactId}`, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 }
 

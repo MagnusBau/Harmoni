@@ -15,9 +15,25 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
     allEvents = [];
     event = new Event();
     updateEvent = new CreateEvent();
+    state = {
+        start_time: new moment(),
+        end_time: new moment()
+    };
 
     constructor(props, context) {
         super(props, context);
+    }
+
+    handleStartTime(moment){
+        this.setState({
+            start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
+        })
+    };
+
+    handleEndTime(moment) {
+        this.setState({
+            end_time: moment.format("YYYY-MM-DDTHH:mm:ss")
+        });
     }
 
     render() {
@@ -64,10 +80,12 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <br></br>
                         <div>
                             <DateTime
+                                id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.start_time}
                                 locale={"no"}
-                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                onChange={this.handleStartTime}
                             />
                         </div>
                     </div>
@@ -76,10 +94,12 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <br></br>
                         <div>
                             <DateTime
+                                id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.end_time}
                                 locale={"no"}
-                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                onChange={this.handleEndTime}
                             />
                         </div>
                     </div>
@@ -143,6 +163,8 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
     }
 
     update() {
+        this.createEvent.start_time = this.state.start_time;
+        this.createEvent.end_time = this.state.end_time;
         eventService
             .updateEvent(this.props.match.params.event_id, this.event)
             .then((response) => {

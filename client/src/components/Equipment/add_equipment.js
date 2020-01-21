@@ -5,8 +5,8 @@ import {Component} from "react-simplified";
 
 import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
-import {userService} from "../../services/userService";
-import {artistService} from "../../services/artistService";
+import {Modal} from "react-bootstrap";
+import {Button} from "../widgets";
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -38,7 +38,9 @@ export default class AddEquipment extends Component {
             value: '',
             suggestions: [],
             eventEquipment: [],
-            userEquipment: []
+            userEquipment: [],
+            showConfirmDelete: false,
+            selected: null
         };
     }
 
@@ -62,31 +64,34 @@ export default class AddEquipment extends Component {
      */
     onSubmit(e) {
         e.preventDefault();
-        equipmentService.addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount);
+        equipmentService.addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount).then(response => {
+            this.fetchData();
+        });
         this.newEquipment = {
             item: '',
             amount: 1
         };
-        this.fetchData();
     }
 
     /**
      * Fetches data from the database
      */
     fetchData() {
-        this.setState({userEquipment: [], eventEquipment: []});
+        this.setState({userEquipment: [], eventEquipment: []}, () => {
+            equipmentService
+                .getEquipment()
+                .then(equipment => this.setState({userEquipment: equipment[0]}))
+                .catch((error: Error) => console.log(error.message));
 
-        equipmentService
-            .getEquipment()
-            .then(equipment => this.setState({userEquipment: equipment[0]}))
-            .catch((error: Error) => console.log(error.message));
-
-        equipmentService
-            .getEquipmentByEvent(this.props.eventId)
-            .then(equipment => {this.setState({
-                eventEquipment: equipment[0]
-            })})
-            .catch((error: Error) => console.log(error.message));
+            equipmentService
+                .getEquipmentByEvent(this.props.eventId)
+                .then(equipment => {
+                    this.setState({
+                        eventEquipment: equipment[0]
+                    })
+                })
+                .catch((error: Error) => console.log(error.message));
+        });
     }
 
     /**
@@ -94,8 +99,9 @@ export default class AddEquipment extends Component {
      * @param eventEquipment
      */
     deleteEquipment(eventEquipment) {
-        equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.fetchData();
+        equipmentService.removeEquipmentFromEvent(this.state.selected).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -104,8 +110,9 @@ export default class AddEquipment extends Component {
      */
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
-        equipmentService.updateEquipmentOnEvent(equipment);
-        this.fetchData();
+        equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -115,8 +122,9 @@ export default class AddEquipment extends Component {
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
-            equipmentService.updateEquipmentOnEvent(equipment);
-            this.fetchData();
+            equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+                this.fetchData();
+            });
         }
     }
 
@@ -184,7 +192,7 @@ export default class AddEquipment extends Component {
         };
 
         return (
-            <div className="w-75 m-2">
+            <div className="w-100 m-2">
                 <h3>{`Utstyrsliste for ${this.props.eventId}`}</h3>
                 {!this.props.isArtist ?
                     <form className="form-inline" onSubmit={this.onSubmit}>
@@ -199,11 +207,12 @@ export default class AddEquipment extends Component {
                         <div className="form-group m-2">
                             <input width="32px" type="number" name="amount" min="1" className="form-control"
                                    id="equipmentType"
-                                   placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
+                                   placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange}
+                                   required/>
                         </div>
-                        <button type="submit" className="btn btn-primary m-2">Legg til</button>
+                        <button type="submit" className="btn btn-success m-2">Legg til</button>
                     </form>
-                : null}
+                    : null}
                 <table className="table">
                     <thead>
                     <tr className="d-flex">
@@ -213,32 +222,58 @@ export default class AddEquipment extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.eventEquipment.map(eventEquipment => (
-                        <tr className="d-flex">
-                            <td className="col-7">{eventEquipment.item}</td>
-                            <td className="col-3">{eventEquipment.amount}
-                                {!this.props.isArtist ?
-                                    <div className="btn-group-vertical ml-4" role="group">
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.incrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-up.svg"/></button>
-                                        <button type="button" className="btn btn-link"
-                                                onClick={() => this.decrementAmount(eventEquipment)}><img
-                                            src="./img/icons/chevron-down.svg"/></button>
-                                    </div>
-                                : null}
-                            </td>
-                            <td className="col-2">
-                                {!this.props.isArtist ?
-                                    <button type="button" className="btn btn-danger"
-                                            onClick={() => this.deleteEquipment(eventEquipment)}>Fjern
-                                    </button>
-                                : null}
-                            </td>
-                        </tr>
-                    ))}
+                        {this.state.eventEquipment.map(eventEquipment => (
+                            <tr className="d-flex">
+                                <td className="col-7">{eventEquipment.item}</td>
+                                <td className="col-3">{eventEquipment.amount}
+                                    {!this.props.isArtist ?
+                                        <div className="btn-group-vertical ml-4" role="group">
+                                            <button type="button" className="btn btn-link"
+                                                    onClick={() => this.incrementAmount(eventEquipment)}><img
+                                                src="./img/icons/chevron-up.svg"/></button>
+                                            <button type="button" className="btn btn-link"
+                                                    onClick={() => this.decrementAmount(eventEquipment)}><img
+                                                src="./img/icons/chevron-down.svg"/></button>
+                                        </div>
+                                        : null}
+                                </td>
+                                <td className="col-2">
+                                    {!this.props.isArtist ?
+                                        <button type="button" className="btn btn-danger"
+                                                onClick={() => {
+                                                    this.setState({selected: eventEquipment, showConfirmDelete: true})
+                                                }}>Fjern
+                                        </button>
+                                     : null}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                        centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du ønsker å slette dette utstyret?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            id="closeConfirmDelete"
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk
+                        </Button.Light>
+                        <Button.Red onClick={() => {
+                            this.deleteEquipment();
+                            this.setState({showConfirmDelete: false})
+                            }}>Bekreft
+                        </Button.Red>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

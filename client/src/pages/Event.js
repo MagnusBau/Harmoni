@@ -69,7 +69,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     handleEventEdit() {
         this.setState({
             isEditingEvent: false,
-        })
+        });
+        this.loadEvent();
     }
 
     handleTicketView(){
@@ -109,9 +110,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingRiders: true,
         })
     }
-    mounted(){
-        this.currentEvent = this.props.match.params.eventId;
-        console.log("current event:" + this.currentEvent);
+
+    loadEvent() {
         eventService
             .getEventById(this.currentEvent)
             .then(eventOverview => {
@@ -121,7 +121,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                 }
             })
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadTicket() {
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets => {
@@ -131,7 +133,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                 }
             })
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadEquipment() {
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment =>{
@@ -141,7 +145,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                 }
             })
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadArtist() {
         artistService
             .getArtistByUser(userService.getUserId())
             .then(artists => {
@@ -154,8 +160,16 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .catch((error: Error) => console.log(error.message));
     }
 
+    mounted(){
+        this.currentEvent = this.props.match.params.eventId;
+        console.log("current event:" + this.currentEvent);
+        this.loadEvent();
+        this.loadTicket();
+        this.loadEquipment();
+        this.loadArtist();
+    }
+
     render() {
-        console.log();
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
         const isEditingRiders = this.state.isEditingRiders;
@@ -192,22 +206,19 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                             onClick={this.handleTicketEdit}/>
             }else {
                 ticketContent = <TicketView triggerParentUpdate={this.editThisTicket} eventId={this.currentEvent}
+                                            loadTicket={this.loadTicket}
                                             handleEditTicketClick={this.handleTicketView}
                                             handleAddTicketClick={this.handleTicketAdd} isArtist={this.state.isArtist}/>
             }
 
         }
 
-        if (isEditingArtist) {
-            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }/>
-        }
-
-
         if(isEditingRiders){
             riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
         }else{
             if (!this.state.isArtist) {
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
+                //loadRider={this.loadRider}
             }
         }
         return (
@@ -263,10 +274,11 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
-                                    <AddEquipment eventId={this.currentEvent} isArtist={this.state.isArtist}/>
+                                    <AddEquipment eventId={this.currentEvent}
+                                                  loadEquipment={this.loadEquipment}
+                                                  isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
-                                    <h5>Dokumenter</h5>
                                     <FileMain eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">

@@ -38,21 +38,20 @@ export class UserLogin extends Component {
                             required
                             maxLength={256}
                         />
-
-                    <br/>
-                    <button
-                        type="submit"
-                        className="btn btn-dark"
-                        style={{}}
-                        onClick={this.attemptLogin}
-                    >Logg inn</button>
-                    <p>{this.errorMessage}</p>
-                    <button
-                        type="button"
-                        className="btn btn-light"
-                        style={{}}
-                        onClick={this.register}
-                    >Registrer</button>
+                        <br/>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            style={{}}
+                            onClick={this.attemptLogin}
+                            >Logg inn</button>
+                        <p>{this.errorMessage}</p>
+                        <button
+                            type="button"
+                            className="btn btn-light"
+                            style={{}}
+                            onClick={this.register}
+                        >Registrer</button>
                     </form>
                 </div>
             </div>
@@ -148,16 +147,27 @@ export class UserRegister extends Component {
                             minLength={1}
                             maxLength={256}
                         />
+                        <br/>
+                        <p style={{color: "red"}}>{this.errorMessage}</p>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            style={{width: "100%"}}
+                            onClick={this.attemptRegister}
+                            >
+                            Registrer deg
+                        </button>
                     </form>
                     <br/>
                     <button
                         type="button"
                         className="btn btn-dark"
-                        style={{}}
-                        onClick={this.attemptRegister}
-                    >Registrer deg</button>
+                        style={{width: "100%"}}
+                        onClick={(e)=> (history.push("/login"))}
+                    >
+                        Logg inn
+                    </button>
                     <br/>
-                    <p style={{color: "red"}}>{this.errorMessage}</p>
                 </div>
             </div>
         )

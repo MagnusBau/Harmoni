@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
+DROP TABLE IF EXISTS category;
 
 DROP PROCEDURE IF EXISTS raise;
 
@@ -123,6 +124,11 @@ CREATE TABLE rider
   description VARCHAR(100)       NOT NULL,
   document    INT                NOT NULL,
   CONSTRAINT rider_fk1 FOREIGN KEY (document) REFERENCES document (document_id)
+);
+
+CREATE TABLE category
+(
+  name VARCHAR(50) PRIMARY KEY
 );
 
 CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))

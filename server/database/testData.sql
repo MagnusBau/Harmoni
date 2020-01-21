@@ -5,6 +5,7 @@ DELETE FROM event;
 DELETE FROM user;
 DELETE FROM contact;
 DELETE FROM document;
+DELETE FROM category;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default, 'Mario', 'Bros', 'its@me', '01001010');
@@ -74,3 +75,9 @@ INSERT INTO rider (description, document)
 VALUES ('Mathias har problemer, han trenger hjelp', 2);
 INSERT INTO rider (description, document)
 VALUES ('Magnus trenger ikke noe, han er ikke kravstor', 1);
+
+INSERT INTO category VALUES('Konsert');
+INSERT INTO category VALUES('Festival');
+INSERT INTO category VALUES('Party');
+INSERT INTO category VALUES('Karneval');
+INSERT INTO category VALUES('Høytids-sammenkomst');

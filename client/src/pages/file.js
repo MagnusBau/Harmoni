@@ -5,7 +5,8 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
-import {Alert} from "../components/widgets";
+import {Alert, Button} from "../components/widgets";
+import {Modal} from "react-bootstrap";
 import {AddRiderType} from "../components/Rider/rider";
 import {Rider} from "../services/riderService";
 
@@ -17,7 +18,7 @@ export class FileMain extends Component {
     );
     constructor(props) {
         super(props);
-        this.state = {file: null};
+        this.state = {file: null, showConfirmDelete: false};
     }
     form: any = null;
     name: string = "";
@@ -26,12 +27,121 @@ export class FileMain extends Component {
     path: string = "./files/";
     nameAddOn: string = "------";
 
-    render() {
+    /*render() {
         return(
-            <div className="row justify-content-center">
-                <div className="row" style={{}}>
-                    <div className="card" style={{}}>
-                        <form ref={e => (this.form = e)}>
+            <div>
+                <Alert/>
+                <div className="row justify-content-center">
+                    <div className="row" style={{}}>
+                        <div className="card" style={{}}>
+                            <form ref={e => (this.form = e)}>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.name}
+                                    placeholder="Filnavn"
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.name = event.target.value)}
+                                    required
+                                    maxLength={50}
+                                />
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    value={this.file}
+                                    placeholder="Fil"
+                                    onChange={(e) => this.handleFile(e)}
+                                    required
+                                    style={{paddingBottom: "50px", paddingTop: "20px"}}
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleUpload(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Last opp</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleOverwrite(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Skriv over</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={() => {this.setState({showConfirmDelete: true})}}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Slett</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleDownload(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Last ned</button>
+                            </form>
+                            <p style={{color: "red"}}>{this.errorMessage}</p>
+                        </div>
+                    </div>
+                    <div className="card" style={{width: "25%"}}>
+                        <div className="list-group">
+                            <li className="list-group-item" style={{}}>
+                                <div className="row justify-content-center">
+                                    Dokumenter
+                                </div>
+                            </li>
+                            <select size="10" className="form-control" id="selectDocument">
+                                {this.fileList.map(f =>
+                                    <option value={f.document_id} key={"fileId" + f.document_id}
+                                            onClick={(event) => this.setState({selected: event.target.innerText})}>{f.name}</option>
+                                )}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du ønsker å slette denne filen?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            id="closeConfirmDelete"
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        )
+    }*/
+
+    render() {
+        return (
+            <div className="w-100 m-2">
+                <h4>{`Dokumenter`}</h4>
+                <Alert/>
+                {!this.props.isArtist ?
+                    <form className="form-inline" onSubmit={this.handleUpload}>
+                        <div className="form-group m-2">
+                            <input
+                                type="file"
+                                className="form-control"
+                                value={this.file}
+                                placeholder="Fil"
+                                onChange={(e) => this.handleFile(e)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group m-2">
                             <input
                                 type="text"
                                 className="form-control"
@@ -41,74 +151,63 @@ export class FileMain extends Component {
                                 required
                                 maxLength={50}
                             />
-                            <input
-                                type="file"
-                                className="form-control"
-                                value={this.file}
-                                placeholder="Fil"
-                                onChange={(e) => this.handleFile(e)}
-                                required
-                                style={{paddingBottom: "50px", paddingTop: "20px"}}
-                            />
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleUpload(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Last opp</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleOverwrite(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Skriv over</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleDelete(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Slett</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleDownload(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Last ned</button>
-                        </form>
-                        <Alert/>
-                        <p style={{color: "red"}}>{this.errorMessage}</p>
+                        </div>
+                        <button type="submit" className="btn btn-success m-2">Last opp</button>
+                    </form>
+                : null}
+                <table className="table">
+                    <thead>
+                    <tr className="d-flex">
+                        <th className="col-7">Filnavn</th>
+                        <th className="col-5"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.fileList.map(f => (
+                        <tr className="d-flex">
+                            <td className="col-10">{f.name}</td>
+                            {!this.props.isArtist ?
+                                <div>
+                                    <td className="col-1">
+                                                <button type="button" className="btn btn-link"
+                                                        onClick={(event) => this.handleDownload(event)}>
+                                                    <img src="./img/icons/download.svg" width="24" height="24"/>
+                                                </button>
 
-
-                    </div>
-                </div>
-                <div className="card" style={{width: "25%"}}>
-                    <div className="list-group">
-                        <li className="list-group-item" style={{}}>
-                            <div className="row justify-content-center">
-                                Documents with event_id: {this.props.event}
-                            </div>
-                        </li>
-                        <ul>
-                        {this.fileList.map(f => (
-                            <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
-                                this.setState({selected: event.target.innerText});
-                                this.rider.document = f.document_id;
-                            }}>
-                                {f.name}
-
-
-                            </li>
-                        ))}
+                                    </td>
+                                    <td className="col-1">
+                                        <button type="button" className="btn btn-danger"
+                                                onClick={() => {this.setState({selected: f.name, showConfirmDelete: true})}}>Fjern
+                                        </button>
+                                    </td>
+                                </div>
+                            : null}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du ønsker å slette denne filen?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            id="closeConfirmDelete"
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
+                    </Modal.Footer>
+                </Modal>
                             <div>
                                 <AddRiderType documentId={this.rider.document}/>
                             </div>
-                        </ul>
-                    </div>
-                </div>
             </div>
         )
     }
@@ -150,6 +249,8 @@ export class FileMain extends Component {
 
                         fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
                             console.log("should have posted fileInfo to database");
+                            this.setState({file: null});
+                            this.name = "";
                             this.mounted();
                         });
                     }else{
@@ -163,7 +264,7 @@ export class FileMain extends Component {
     }
 
     handleDownload(e){
-
+        this.setState({selected: e.target.innerText});
         if(this.state.selected !== undefined){
             let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
             let encodedFilePath = btoa(filePath);
@@ -185,10 +286,16 @@ export class FileMain extends Component {
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
-                if(response.body.error) {
-                    this.errorMessage = response.body.error;
+                if (response.error) {
+                    // Foreign key update fail from database
+                    if (response.error.errno === 1451) {
+                        Alert.danger("Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
+                    } else {
+                        Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                    }
+                } else {
+                    this.mounted();
                 }
-                this.mounted();
             });
         }
     }
@@ -202,35 +309,37 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
 
     render() {
         return (
-            <div className="row justify-content-center">
-                <div className="mb-4 border-0 " style={{width: '75%'}}>
-                    <div className="card-body">
-                        <form ref={e => (this.form = e)}>
+            <div>
+                <div className="row justify-content-center">
+                    <div className="mb-4 border-0 " style={{width: '75%'}}>
+                        <div className="card-body">
+                            <form ref={e => (this.form = e)}>
 
-                            <label htmlFor="basic-url">Tekst: </label>
-                            <div className="input-group">
-                                <div className="input-group-prepend">
+                                <label htmlFor="basic-url">Tekst: </label>
+                                <div className="input-group">
+                                    <div className="input-group-prepend">
+                                    </div>
+                                    <textarea
+                                        className="form-control"
+                                        required
+                                        minLength={1}
+                                        aria-label="tekst"
+                                        rows="10"
+                                        value={this.text}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
                                 </div>
-                                <textarea
-                                    className="form-control"
-                                    required
-                                    minLength={1}
-                                    aria-label="tekst"
-                                    rows="10"
-                                    value={this.text}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
-                            </div>
-                        </form>
+                            </form>
 
+                        </div>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            onClick={this.post}
+                            style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                        >Oppdater
+                        </button>
+                        <p style={{color: "red"}}>{this.errorMessage}</p>
                     </div>
-                    <button
-                        type="button"
-                        className="btn btn-dark"
-                        onClick={this.post}
-                        style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                    >Oppdater
-                    </button>
-                    <p style={{color: "red"}}>{this.errorMessage}</p>
                 </div>
             </div>
         )
