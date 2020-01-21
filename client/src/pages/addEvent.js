@@ -10,6 +10,7 @@ import DateTime from 'react-datetime';
 import moment from "moment";
 import { userService } from "../services/userService";
 import {SimpleMap} from "../components/simplemap";
+import Map from "../components/map";
 
 const history = createHashHistory();
 
@@ -21,7 +22,7 @@ export class AddEvent extends Component {
     allEvents = [];
     createEvent = new Event();
     state = {
-        date: new Date(),
+        date: new Date()
     };
 
 
@@ -32,7 +33,6 @@ export class AddEvent extends Component {
      */
     handleDate(date){
         this.setState({date});
-        this.createEvent.start_time = date;
     };
 
     /**
@@ -45,6 +45,14 @@ export class AddEvent extends Component {
     }
 
     _onClick = ({x, y, lat, lng, event}) => console.log(x, y, lat, lng, event);
+
+    getAddress = (dataFromChild) => {
+        this.createEvent.location = dataFromChild;
+        this.setState([{address: dataFromChild}]);
+        console.log(dataFromChild);
+    };
+
+
 
     render() {
 
@@ -77,18 +85,17 @@ export class AddEvent extends Component {
                                               (this.createEvent.description = event.target.value)}
                                 />
                             </div>
-                            {/*<div className={"form-group m-2"}>
+                            <div className={"form-group m-2"}>
                                 <label>Lokasjon:</label>
                                 <br></br>
                                 <input type={"text"}
                                        className={"form-control"}
                                        id={"event-location"}
-                                       defaultValue={this.createEvent.location}
+                                       value={this.createEvent.location}
                                        required={true}
-                                       onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                           (this.createEvent.location = event.target.value)}
+                                       readOnly={"readonly"}
                                 />
-                            </div>*/}
+                            </div>
                             <div className={"form-group m-2"}>
                                 <label>Start tidspunkt:</label>
                                 <br></br>
@@ -161,10 +168,13 @@ export class AddEvent extends Component {
                     </div>
                 </div>
                 <div className={"col"}>
-                    <SimpleMap
-                        onchange={(this.createEvent.location = map.state.address)}>
-
-                    </SimpleMap>
+                    <Map
+                        google={this.props.google}
+                        center={{lat: 63.4154, lng: 10.4055}}
+                        height='300px'
+                        zoom={15}
+                        onChange={this.getAddress}
+                    />
                 </div>
             </div>
 

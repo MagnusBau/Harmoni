@@ -203,6 +203,16 @@ export class Map extends React.Component{
             }
         );
     };
+
+    getAddress() {
+        this.props.onChange(this.state.address);
+    }
+
+    testFunction() {
+        this.getAddress();
+        this.onChange();
+    }
+
     render(){
         const AsyncMap = withScriptjs(
             withGoogleMap(
@@ -276,7 +286,7 @@ export class Map extends React.Component{
                     </div>*/}
                     <div className="form-group">
                         <label htmlFor="">Adresse</label>
-                        <input type="text" name="address" className="form-control" onChange={ this.onChange } readOnly="readOnly" value={ this.state.address }/>
+                        <input type="text" name="address" className="form-control" onChange={ this.testFunction } readOnly="readOnly" value={ this.state.address }/>
                     </div>
                 </div>
 
