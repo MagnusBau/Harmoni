@@ -154,6 +154,9 @@ export class AddEventArtist extends Component {
                                     phone: ""
                                 };
                                 this.documentId = -1;
+                                this.name="";
+                                this.file=null;
+                                this.setState({file: null});
                                 this.mounted();
                             });
                         }else{
@@ -173,6 +176,9 @@ export class AddEventArtist extends Component {
                     phone: ""
                 };
                 this.documentId = -1;
+                this.name="";
+                this.file=null;
+                this.setState({file: null});
             })
         }
     }
