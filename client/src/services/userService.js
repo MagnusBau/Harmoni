@@ -16,18 +16,18 @@ class UserService {
             console.log("this:");
             console.log(response);
             if(response != null) {
-                localStorage.setItem("user_id", response.user.user_id);
-                localStorage.setItem("username", response.user.username);
-                localStorage.setItem("image", response.user.image);
-                localStorage.setItem("first_name", response.user.first_name);
-                localStorage.setItem("last_name", response.user.last_name);
-                localStorage.setItem("email", response.user.email);
-                localStorage.setItem("phone", response.user.phone);
+                localStorage.setItem("user_id", response.userRegister.user_id);
+                localStorage.setItem("username", response.userRegister.username);
+                localStorage.setItem("image", response.userRegister.image);
+                localStorage.setItem("first_name", response.userRegister.first_name);
+                localStorage.setItem("last_name", response.userRegister.last_name);
+                localStorage.setItem("email", response.userRegister.email);
+                localStorage.setItem("phone", response.userRegister.phone);
                 localStorage.setItem("contact_id", response.contact_id);
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("artist_id", response.artist.artist_id);
                 localStorage.setItem("artist_name", response.artist.artist_name);
-                console.log("success:" + username + response.user.user_id + response.user.username);
+                console.log("success:" + username + response.userRegister.user_id + response.userRegister.username);
                 console.log(response.token);
                 next();
             } else {
@@ -108,16 +108,16 @@ class UserService {
                     return false;
                 }
                 console.log(response);
-                if(response.user != null) {
+                if(response.userRegister != null) {
                     console.log("click3");
-                    localStorage.setItem("user_id", response.user.user_id);
-                    localStorage.setItem("username", response.user.username);
-                    localStorage.setItem("image", response.user.image);
-                    localStorage.setItem("first_name", response.user.first_name);
-                    localStorage.setItem("last_name", response.user.last_name);
-                    localStorage.setItem("email", response.user.email);
-                    localStorage.setItem("phone", response.user.phone);
-                    localStorage.setItem("contact_id", response.user.contact_id);
+                    localStorage.setItem("user_id", response.userRegister.user_id);
+                    localStorage.setItem("username", response.userRegister.username);
+                    localStorage.setItem("image", response.userRegister.image);
+                    localStorage.setItem("first_name", response.userRegister.first_name);
+                    localStorage.setItem("last_name", response.userRegister.last_name);
+                    localStorage.setItem("email", response.userRegister.email);
+                    localStorage.setItem("phone", response.userRegister.phone);
+                    localStorage.setItem("contact_id", response.userRegister.contact_id);
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("artist_id", response.artist.artist_id);
                     localStorage.setItem("artist_name", response.artist.artist_name);
@@ -243,15 +243,15 @@ class UserService {
                 return this.error(response);
             }
             console.log(response.data);
-            if (response.data.user != null) {
-                localStorage.setItem("user_id", response.data.user.user_id);
-                localStorage.setItem("username", response.data.user.username);
-                localStorage.setItem("image", response.data.user.image);
-                localStorage.setItem("first_name", response.data.user.first_name);
-                localStorage.setItem("last_name", response.data.user.last_name);
-                localStorage.setItem("email", response.data.user.email);
-                localStorage.setItem("phone", response.data.user.phone);
-                localStorage.setItem("contact_id", response.data.user.contact_id);
+            if (response.data.userRegister != null) {
+                localStorage.setItem("user_id", response.data.userRegister.user_id);
+                localStorage.setItem("username", response.data.userRegister.username);
+                localStorage.setItem("image", response.data.userRegister.image);
+                localStorage.setItem("first_name", response.data.userRegister.first_name);
+                localStorage.setItem("last_name", response.data.userRegister.last_name);
+                localStorage.setItem("email", response.data.userRegister.email);
+                localStorage.setItem("phone", response.data.userRegister.phone);
+                localStorage.setItem("contact_id", response.data.userRegister.contact_id);
                 console.log("this:" + localStorage.getItem("last_name"));
             }
         });

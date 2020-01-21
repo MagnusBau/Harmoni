@@ -14,10 +14,8 @@ import {AddEventArtist} from "./addEventArtist";
 import {Rider, riderService} from "../services/riderService";
 import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
 const history = createHashHistory();
-import {Column} from "../components/widgets";
 import {createHashHistory} from "history";
 import AddRole from "../components/Staff/staff_overview"
-import {roleService} from "../services/roleService";
 import {TicketAdd} from "../components/Ticket/ticket_add";
 import {TicketEdit} from "../components/Ticket/ticket_edit"
 import {artistService} from "../services/artistService";

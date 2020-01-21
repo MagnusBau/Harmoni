@@ -6,7 +6,8 @@ import {createHashHistory} from 'history';
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
-import {ModalWidget, Button} from "../widgets";
+import {ModalWidget} from "../Modal/modal";
+import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
 
 export default class EventView extends Component {

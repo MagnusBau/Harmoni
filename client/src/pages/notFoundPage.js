@@ -15,7 +15,7 @@ export class NotFoundPage extends Component {
                 <p>Det kan være lurt å ta turen tilbake til hjemmesiden. <br/>
                 Hvis du tror noe er ødelagt, rapporter problemet</p>
                 <a className="btn btn btn-outline-success" href="#" role="button" >Hjem</a>
-                <a className="btn btn btn-outline-success" href="#" role="button" >Hjem</a>
+                <a className="btn btn btn-outline-success" href="#" role="button" >Kontakt oss</a>
             </div>
         );
     }

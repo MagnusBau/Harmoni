@@ -11,7 +11,7 @@ let database: {} = config.getTestingDatabase();
 let pool = mysql.createPool({
     connectionLimit: 1,
     host: database.host,
-    user: database.user,
+    user: database.userRegister,
     password: database.password,
     database: database.database,
     debug: false,

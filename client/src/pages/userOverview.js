@@ -4,8 +4,8 @@ import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
-import {Button, ModalWidget} from '../components/widgets';
-
+import {Button} from '../components/Buttons/buttons';
+import {ModalWidget} from '../components/Modal/modal'
 const history = createHashHistory();
 import {Ticket, ticketService} from "../services/ticketService";
 import {EventEquipment, equipmentService} from "../services/equipmentService";

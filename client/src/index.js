@@ -6,7 +6,8 @@ import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import { UserLogin, UserRegister, TokenBoi} from "./pages/user";
+import {UserRegister, TokenBoi} from "./pages/userRegister";
+import {UserLogin} from "./pages/userLogin";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {TicketAdd, listTicketType} from "./components/Ticket/ticket_add";
@@ -53,7 +54,7 @@ if (root)
                     <Route exact path="/event/search/:input" component={EventSearch}/>
                     <Route exact path="/event/:eventId/view" component={eventVisit}/>
                     <Route exact path="/404" component={NotFoundPage}/>
-                    <Route exact="/contact" component={ContactForm}/>
+                    <Route exact="/contactUs" component={ContactForm}/>
                     <Redirect to="/404"/>
                 </Switch>
                 <Footer/>
