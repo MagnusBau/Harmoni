@@ -5,7 +5,6 @@ import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {eventService, Event} from "../services/eventService";
 import {Alert} from "../components/Alert/alert.js";
-import DateTimePicker from 'react-datetime-picker'
 import DateTime from 'react-datetime';
 import moment from "moment";
 import { userService } from "../services/userService";
@@ -14,19 +13,26 @@ const history = createHashHistory();
 
 moment.locale("no");
 
-
 export class AddEvent extends Component {
     event: Event[] = [];
     allEvents = [];
     createEvent = new Event();
     state = {
-        date: new Date(),
+        start_time: new moment(),
+        end_time: new moment()
     };
 
-    handleDate(date){
-        this.setState({date});
-        this.createEvent.start_time = date;
+    handleStartTime(moment){
+        this.setState({
+            start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
+        })
     };
+
+    handleEndTime(moment) {
+        this.setState({
+            end_time: moment.format("YYYY-MM-DDTHH:mm:ss")
+        });
+    }
 
     constructor(props, context) {
         super(props, context);
@@ -76,10 +82,12 @@ export class AddEvent extends Component {
                         <br></br>
                         <div>
                             <DateTime
+                                id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.start_time}
                                 locale={"no"}
-                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                onChange={this.handleStartTime}
                             />
                         </div>
                     </div>
@@ -88,10 +96,12 @@ export class AddEvent extends Component {
                         <br></br>
                         <div>
                             <DateTime
+                                id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.end_time}
                                 locale={"no"}
-                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                onChange={this.handleEndTime}
                             />
                         </div>
                     </div>
@@ -143,11 +153,8 @@ export class AddEvent extends Component {
     }
 
     register() {
-        /*
-        if (!this.form || !this.form.checkValidity()) {
-            return Alert.danger('Please fill empty fields');
-        }
-        */
+        this.createEvent.start_time = this.state.start_time;
+        this.createEvent.end_time = this.state.end_time;
         eventService
             .createEvent(this.createEvent)
             .then(() => {
