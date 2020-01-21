@@ -22,9 +22,6 @@
 
 .navbar {
     background-color: transparent;
-    height: 70px;
-    z-index: 100;
-    transition: background-color 1s ease 0s;
 }
 
 .navbar > a {
@@ -32,11 +29,12 @@
 }
 
 .navbar {
-    background-color: var(--color-light-beige);
+    background-color: transparent;
+    transition: background-color 0.5s ease 0s;
 }
 
-.navbar-default {
-    background-color: transparent;
+.navbar.solid {
+    background-color: var(--color-light-beige);
 }
 
 .text-light{
