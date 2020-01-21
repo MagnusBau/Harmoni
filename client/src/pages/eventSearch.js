@@ -20,12 +20,15 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
             });
         }).catch((error: Error) => console.log(error.message));
     }
+    viewEvent(e){
+        history.push("/event/" + e + "/view")
+    }
     render() {
         return (
             <div className="container">
                 <div className="card-columns">
                     {this.events.map(events => (
-                        <div className="card" onClick={() => history.push("/event/" + events.event_id + "/view")}>
+                        <div className="card" onClick={() => this.viewEvent(events.event_id)}>
                             <img className="card-img-top img-fluid" src="" alt=""/>
                             <div className="card-body">
                                 <h5>

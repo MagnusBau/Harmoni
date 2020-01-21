@@ -9,7 +9,7 @@ import {AddEquipment} from "./pages/addEquipment";
 import { UserLogin, UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
-import {TicketAdd, listTicketType} from "./components/ticket_add";
+import {TicketAdd, listTicketType} from "./components/Ticket/ticket_add";
 import {TicketEdit} from "./components/Ticket/ticket_edit";
 //import {RiderList, RiderEdit, addRiderType, RiderComp} from "./pages/rider";
 import UserOverview from "./pages/userOverview";
@@ -53,7 +53,7 @@ if (root)
                     <Route exact path="/event/search/:input" component={EventSearch}/>
                     <Route exact path="/event/:eventId/view" component={eventVisit}/>
                     <Route exact path="/404" component={NotFoundPage}/>
-                    <Route exact="/contact" component={ContactForm}/>
+                    <Route exact path="/contact" component={ContactForm}/>
                     <Redirect to="/404"/>
                 </Switch>
                 <Footer/>
