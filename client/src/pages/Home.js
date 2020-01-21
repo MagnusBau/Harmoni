@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import {Event, eventService} from "../services/eventService";
 import {createHashHistory} from "history";
-
 import "../../public/css/home.css";
 
 /**
@@ -12,6 +11,9 @@ import "../../public/css/home.css";
  *
  * @author Victoria Blichfeldt
  */
+
+const history = createHashHistory();
+
 class Home extends Component {
     events: Event[] = [];
 
@@ -24,12 +26,10 @@ class Home extends Component {
                 <div className="image-header">
                     <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
                 </div>
-
-
                 <div className="container mt-4">
                     <div className="card-columns">
                         {this.events.map(events => (
-                            <div className="card">
+                            <div className="card" onClick={() => this.viewEvent(events.event_id)}>
                                 <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
                                 <div className="card-body">
                                     <h5>

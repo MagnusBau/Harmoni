@@ -170,8 +170,9 @@ class NavBar extends Component {
 
                <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
                    <div className="nav form-group form-inline mr-auto">
-                       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                       <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                       <SearchBar>
+
+                       </SearchBar>
                    </div>
                    <div className="nav-item">
                         {userIcon}

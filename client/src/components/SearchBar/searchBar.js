@@ -21,7 +21,7 @@ export class SearchBar extends Component {
     render() {
         return (
             <div className="dropdown show">
-                <input className="form-control mr-sm-2 dropdown-toggle" type="text" value={this.input} placeholder="Search" id="search"
+                <input className="form-control mr-sm-2 dropdown-toggle" type="text" value={this.input} placeholder="Søk" id="search"
                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                     this.input = event.target.value;
                     this.mounted();
@@ -29,14 +29,14 @@ export class SearchBar extends Component {
                 <div className="dropdown-menu">
                     <div className="list-group list-group-flush">
                         {this.events.map( event => (
-                            <button onKeyPress={this.ifEnterInList} onClick={() => history.push("/event/" + event.event_id + "/view")} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
+                            <button onKeyPress={this.ifEnterInList} onClick={() => this.viewEvent(event.event_id)} type="button" className="list-group-item list-group-item-action dropdown-item">{event.title}</button>
                         ))}
                     </div>
                 </div>
+                <button className="btn btn-outline-success my-2 my-sm-0" type="button" onClick={() => history.push("/event/search/" + this.input)}>Søk</button>
             </div>
         );
     }
-
 
     mounted() {
         if(this.input.length > 0) {
@@ -50,7 +50,9 @@ export class SearchBar extends Component {
             this.events = [];
         }
     }
-
+    viewEvent(e) {
+        history.push("/event/" + e + "/view")
+    }
     ifEnter = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
