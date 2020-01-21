@@ -62,12 +62,13 @@ export default class AddEquipment extends Component {
      */
     onSubmit(e) {
         e.preventDefault();
-        equipmentService.addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount);
+        equipmentService.addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount).then(response => {
+            this.fetchData();
+        });
         this.newEquipment = {
             item: '',
             amount: 1
         };
-        this.fetchData();
     }
 
     /**
@@ -94,8 +95,9 @@ export default class AddEquipment extends Component {
      * @param eventEquipment
      */
     deleteEquipment(eventEquipment) {
-        equipmentService.removeEquipmentFromEvent(eventEquipment);
-        this.fetchData();
+        equipmentService.removeEquipmentFromEvent(eventEquipment).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -104,8 +106,9 @@ export default class AddEquipment extends Component {
      */
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
-        equipmentService.updateEquipmentOnEvent(equipment);
-        this.fetchData();
+        equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -115,8 +118,9 @@ export default class AddEquipment extends Component {
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
-            equipmentService.updateEquipmentOnEvent(equipment);
-            this.fetchData();
+            equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+                this.fetchData();
+            });
         }
     }
 

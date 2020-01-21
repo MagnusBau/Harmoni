@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
+DROP TABLE IF EXISTS category;
 
 DROP PROCEDURE IF EXISTS raise;
 
@@ -124,6 +125,18 @@ CREATE TABLE rider
   document    INT                NOT NULL,
   CONSTRAINT rider_fk1 FOREIGN KEY (document) REFERENCES document (document_id)
 );
+
+CREATE TABLE category
+(
+  name VARCHAR(50) PRIMARY KEY
+);
+
+
+INSERT INTO category VALUES('Konsert');
+INSERT INTO category VALUES('Festival');
+INSERT INTO category VALUES('Party');
+INSERT INTO category VALUES('Karneval');
+INSERT INTO category VALUES('Høytids-sammenkomst');
 
 CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))
 BEGIN
