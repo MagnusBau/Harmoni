@@ -69,7 +69,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     handleEventEdit() {
         this.setState({
             isEditingEvent: false,
-        })
+        });
+        this.loadEvent();
     }
 
     handleTicketView(){
@@ -109,28 +110,42 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingRiders: true,
         })
     }
-    mounted(){
-        this.currentEvent = this.props.match.params.eventId;
-        console.log("current event:" + this.currentEvent);
+
+    loadEvent() {
         eventService
             .getEventById(this.currentEvent)
             .then(eventOverview => (this.eventOverview = eventOverview))
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadTicket() {
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets => (this.tickets = tickets[0]))
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadEquipment() {
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
             .then(eventEquipment => this.eventEquipment = eventEquipment[0])
             .catch((error: Error) => console.log(error.message));
+    }
 
+    loadArtist() {
         artistService
             .getArtistByUser(userService.getUserId())
             .then(artists => {this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)})})
             .catch((error: Error) => console.log(error.message));
+    }
+
+    mounted(){
+        this.currentEvent = this.props.match.params.eventId;
+        console.log("current event:" + this.currentEvent);
+        this.loadEvent();
+        this.loadTicket();
+        this.loadEquipment();
+        this.loadArtist();
     }
 
     render() {
@@ -171,6 +186,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                             onClick={this.handleTicketEdit}/>
             }else {
                 ticketContent = <TicketView triggerParentUpdate={this.editThisTicket} eventId={this.currentEvent}
+                                            loadTicket={this.loadTicket}
                                             handleEditTicketClick={this.handleTicketView}
                                             handleAddTicketClick={this.handleTicketAdd} isArtist={this.state.isArtist}/>
             }
@@ -178,7 +194,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         }
 
         if (isEditingArtist) {
-            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }/>
+            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }
+                                            loadArtist={this.loadArtist()}/>
         }
 
 
@@ -187,6 +204,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         }else{
             if (!this.state.isArtist) {
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
+                //loadRider={this.loadRider}
             }
         }
         return (
@@ -242,7 +260,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
-                                    <AddEquipment eventId={this.currentEvent} isArtist={this.state.isArtist}/>
+                                    <AddEquipment eventId={this.currentEvent}
+                                                  loadEquipment={this.loadEquipment}
+                                                  isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
                                     <h5>Dokumenter</h5>
