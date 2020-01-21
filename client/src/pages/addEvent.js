@@ -77,18 +77,18 @@ export class AddEvent extends Component {
                                               (this.createEvent.description = event.target.value)}
                                 />
                             </div>
-                            <div className={"form-group m-2"}>
+                            {/*<div className={"form-group m-2"}>
                                 <label>Lokasjon:</label>
                                 <br></br>
                                 <input type={"text"}
                                        className={"form-control"}
                                        id={"event-location"}
-                                       placeholder={"Lokasjon"}
+                                       defaultValue={this.createEvent.location}
                                        required={true}
                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                            (this.createEvent.location = event.target.value)}
                                 />
-                            </div>
+                            </div>*/}
                             <div className={"form-group m-2"}>
                                 <label>Start tidspunkt:</label>
                                 <br></br>
@@ -97,7 +97,8 @@ export class AddEvent extends Component {
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
                                         locale={"no"}
-                                        onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                            (this.createEvent.start_time = event.target.value)}
                                     />
                                 </div>
                             </div>
@@ -109,7 +110,8 @@ export class AddEvent extends Component {
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
                                         locale={"no"}
-                                        onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                            (this.createEvent.end_time = event.target.value)}
                                     />
                                 </div>
                             </div>
@@ -159,7 +161,8 @@ export class AddEvent extends Component {
                     </div>
                 </div>
                 <div className={"col"}>
-                    <SimpleMap>
+                    <SimpleMap
+                        onchange={(this.createEvent.location = map.state.address)}>
 
                     </SimpleMap>
                 </div>

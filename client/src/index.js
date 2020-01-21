@@ -15,6 +15,7 @@ import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
 import UserOverview from "./pages/userOverview";
 import { FileMain} from './pages/file'
 import {SimpleMap} from "./components/simplemap";
+import {Map} from "./components/map";
 
 
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
