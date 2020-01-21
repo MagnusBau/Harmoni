@@ -21,12 +21,11 @@ class Home extends Component {
     render(){
         return (
             <div>
-                <div className="image-header">
-                    <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
+                <div className="image-header" id="wrap">
+                    <img id="test" src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
                 </div>
 
-
-                <div className="container mt-4">
+                <div className="container mt-4" id="frontpage">
                     <div className="card" id="frontpage-card-container">
                         <div className="card-header">KOMMENDE ARRANGEMENTER</div>
                         <div className="card-body" id="frontpage-card-container">
@@ -44,6 +43,7 @@ class Home extends Component {
                                     </div>
                                 </div>
                             ))}
+                        </div>
                         </div>
                     </div>
                     </div>

@@ -5,7 +5,11 @@
     --color-dark-blue: #21393F;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
+<<<<<<< HEAD
     --color-brown-black: #331A21;
+=======
+    --color-brown-black: #331920;
+>>>>>>> c72ad1d881f89326a1d6ca782e45bf9392e4d7d4
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
@@ -20,12 +24,20 @@
     background-color: var(--color-light-beige);
 }
 
-.navbar{
-    background-color: var(--color-light-beige);
-    height: 70px;
+.navbar {
+    background-color: transparent;
 }
 
-.navbar-collapse{
+.navbar > a {
+    color: var(--color-brown-black)
+}
+
+.navbar {
+    background-color: transparent;
+    transition: background-color 0.5s ease 0s;
+}
+
+.navbar.solid {
     background-color: var(--color-light-beige);
 }
 
