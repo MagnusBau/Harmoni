@@ -57,8 +57,8 @@ END;
  */
 CREATE PROCEDURE delete_document(IN path_in VARCHAR(500))
 BEGIN
-    IF ((SELECT COUNT(*) FROM contract c LEFT JOIN document d on d.document_id = c.document WHERE d.path=path_in) > 0) THEN
+    /*IF ((SELECT COUNT(*) FROM contract c LEFT JOIN document d on d.document_id = c.document WHERE d.path=path_in) > 0) THEN
       CALL raise(2000, 'Document cannot be deleted because of an existing contract bound to this.');
-    END IF;
+    END IF;*/
     DELETE FROM document WHERE path = path_in;
 END;

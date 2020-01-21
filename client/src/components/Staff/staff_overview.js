@@ -8,6 +8,7 @@ import {artistService} from "../../services/artistService";
 import {userService} from "../../services/userService";
 import {Modal} from "react-bootstrap";
 import {Button} from "../widgets";
+import {Alert} from "../widgets";
 
 const history = createHashHistory();
 
@@ -80,7 +81,17 @@ export default class AddRole extends Component {
         eventRole.event = this.currentEvent;
         eventRole.count = 1;
         roleService.assignRole(eventRole).then(response => {
-            this.load();
+            if (response.error) {
+                // Duplicate entry key error from database
+                if (response.error.errno === 1062) {
+                    Alert.danger("Personell er allerede tilknyttet dette arrangementet!");
+                } else {
+                    Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                }
+            } else {
+                this.load();
+            }
+
         });
         //window.location.reload();
     }
@@ -118,6 +129,7 @@ export default class AddRole extends Component {
     render() {
         return (
             <div className="m-2">
+                <Alert/>
                 {!this.props.isArtist ?
                     <form className={"form-inline"} onSubmit={this.onSubmit}>
                         <div className="form-group m-2">

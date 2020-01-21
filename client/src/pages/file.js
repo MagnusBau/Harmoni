@@ -120,8 +120,8 @@ export class FileMain extends Component {
     render() {
         return (
             <div className="w-100 m-2">
-                <Alert/>
                 <h4>{`Dokumenter`}</h4>
+                <Alert/>
                 {!this.props.isArtist ?
                     <form className="form-inline" onSubmit={this.handleUpload}>
                         <div className="form-group m-2">
@@ -147,7 +147,7 @@ export class FileMain extends Component {
                         </div>
                         <button type="submit" className="btn btn-success m-2">Last opp</button>
                     </form>
-                    : null}
+                : null}
                 <table className="table">
                     <thead>
                     <tr className="d-flex">
@@ -159,20 +159,22 @@ export class FileMain extends Component {
                     {this.fileList.map(f => (
                         <tr className="d-flex">
                             <td className="col-10">{f.name}</td>
-                            <td className="col-1">
-                                <div className="form-inline">
-                                    {!this.props.isArtist ?
-                                        <button type="button" className="btn btn-link"
-                                                onClick={(event) => this.handleDownload(event)}>
-                                            <img src="./img/icons/download.svg" width="24" height="24"/></button>
-                                        : null}
+                            {!this.props.isArtist ?
+                                <div>
+                                    <td className="col-1">
+                                                <button type="button" className="btn btn-link"
+                                                        onClick={(event) => this.handleDownload(event)}>
+                                                    <img src="./img/icons/download.svg" width="24" height="24"/>
+                                                </button>
+
+                                    </td>
+                                    <td className="col-1">
+                                        <button type="button" className="btn btn-danger"
+                                                onClick={() => {this.setState({selected: f.name, showConfirmDelete: true})}}>Fjern
+                                        </button>
+                                    </td>
                                 </div>
-                            </td>
-                            <td className="col-1">
-                                <button type="button" className="btn btn-danger"
-                                        onClick={() => {this.setState({selected: f.name, showConfirmDelete: true})}}>Fjern
-                                </button>
-                            </td>
+                            : null}
                         </tr>
                     ))}
                     </tbody>
@@ -272,10 +274,11 @@ export class FileMain extends Component {
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
                 if (response.error) {
-                    if (response.error.errno === 2000) {
+                    // Foreign key update fail from database
+                    if (response.error.errno === 1451) {
                         Alert.danger("Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
                     } else {
-                        Alert.danger("En feil har oppstått");
+                        Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
                     }
                 } else {
                     this.mounted();
