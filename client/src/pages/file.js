@@ -1,12 +1,13 @@
+//@flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
-import axios from 'axios';
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
-import { userService } from "../services/userService";
+import {Alert} from "../components/widgets";
 
-export class FileMain extends Component <{match: {params: {eventId: number}}}> {
+export class FileMain extends Component {
     constructor(props) {
         super(props);
         this.state = {file: null};
@@ -71,6 +72,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
                             >Last ned</button>
                         </form>
+                        <Alert/>
                         <p style={{color: "red"}}>{this.errorMessage}</p>
                     </div>
                 </div>
@@ -78,7 +80,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                     <div className="list-group">
                         <li className="list-group-item" style={{}}>
                             <div className="row justify-content-center">
-                                Documents with event_id: {this.props.match.params.event}
+                                Documents with event_id: {this.props.event}
                             </div>
                         </li>
                         <ul>
@@ -101,7 +103,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     }
 
     fetch() {
-        fileInfoService.getFileInfo(this.props.match.params.eventId).then(response => {
+        fileInfoService.getFileInfo(this.props.eventId).then(response => {
             this.fileList = response[0];
             console.log(response[0]);
         })
@@ -117,23 +119,24 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
         let file = this.state.file;
         let formData = new FormData();
         if(this.state.file !== null){
-            fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+            fileInfoService.checkFileName(this.props.eventId, this.name)
                 .then(response => {
                     console.log("DUP?: "+ response[0][0].duplicate);
                     if(response[0][0].duplicate === 0){
 
-                        const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
+                        const myNewFile = new File([file], this.props.eventId + this.nameAddOn + file.name, {type: file.type});
 
                         formData.append('file', myNewFile);
                         formData.append('name', this.name);
                         formData.append('path', this.path + myNewFile.name);
 
-                        fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+                        fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
                             console.log("should have posted fileInfo to database");
                             this.mounted();
                         });
                     }else{
-                        this.errorMessage = "En fil med dette navnet finnes allerede";
+                        Alert.danger('En fil med dette navnet eksisterer allerede!');
+                        //this.errorMessage = "En fil med dette navnet finnes allerede";
                         this.mounted();
                     }
                 });
@@ -144,7 +147,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleDownload(e){
 
         if(this.state.selected !== undefined){
-            let filePath: string = this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected;
+            let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
             let encodedFilePath = btoa(filePath);
             window.open("http://localhost:4000/api/file/download/" + encodedFilePath, "_blank");
             console.log(encodedFilePath);
@@ -154,15 +157,15 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     }
     handleOverwrite(){
         if(this.state.selected !== undefined){
-            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
-            history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
+            let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
+            history.push("/event/" + this.props.eventId + "/edit/file/" + encodedFilePath);
         }
 
     }
 
     handleDelete(){
         if(this.state.selected !== undefined){
-            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+            let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
                 this.mounted();
             });
@@ -222,9 +225,9 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
         let formData = new FormData();
 
         if (!this.form || !this.form.checkValidity()) {
-            this.errorMessage = "Filen kan ikke være tom";
+            Alert.danger("Filnavn kan ikke stå tomt!");
+            //this.errorMessage = "Filen kan ikke være tom";
             this.mounted();
-            return;
         } else {
             let name= atob(this.props.match.params.filepath);
             name = name.replace(this.path, "");
@@ -235,7 +238,7 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
 
             fileInfoService.updateFile(formData).then(response => {
                 console.log("should have updated file");
-                history.push("/event/" + this.props.match.params.eventId + "/edit/file");
+                history.push("/event/" + this.props.eventId + "/edit/file");
             });
         }
     }
