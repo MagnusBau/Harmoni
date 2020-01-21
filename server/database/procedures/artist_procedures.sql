@@ -235,9 +235,13 @@ CREATE PROCEDURE add_artist_to_event(IN artist_name_in VARCHAR(50), IN first_nam
                                      IN document_id_in INT)
 BEGIN
   DECLARE artist_id_in INT;
+  DECLARE event_id_in INT;
   CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
 
-  CALL raise(300, 'Artist already bound to event');
+  SET event_id_in = IFNULL((SELECT event FROM document WHERE document_id=document_id_in LIMIT 1), 0);
+  IF (SELECT COUNT(*) FROM contract c LEFT JOIN document d on c.document = d.document_id WHERE c.artist=artist_id_in AND d.event=event_id_in) THEN
+    CALL raise(300, 'Artist already bound to event');
+  END IF;
 
   INSERT INTO contract (artist, document)
   VALUES (artist_id_in, document_id_in);
