@@ -202,6 +202,19 @@ BEGIN
   VALUES (artist_id_in, document_id_in);
 END;
 
+CREATE PROCEDURE add_artist_with_new_contract(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
+                                     IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
+                                     IN document_name_in VARCHAR(100), IN path_in VARCHAR(500), IN event_id_in INT(11))
+BEGIN
+    DECLARE artist_id_in INT;
+    DECLARE document_id_in INt;
+    CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
+    CALL
+
+    INSERT INTO contract (artist, document)
+    VALUES (artist_id_in, document_id_in);
+END;
+
 CREATE PROCEDURE get_artist_by_event(IN event_id_in INT)
 BEGIN
   SELECT a.artist_id,

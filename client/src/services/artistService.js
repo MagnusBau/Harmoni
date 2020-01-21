@@ -41,6 +41,16 @@ class ArtistService {
             .then(response => response.data);
     }
 
+    addArtistWithNewContract(artist: Artist, documentName: string, eventId: string, data: FormData){
+        axios.post(`http://localhost:4000/api/single/artist/${eventId}`, {artist_name: artist.artist_name,
+                                                                                    first_name: artist.first_name,
+                                                                                    last_name: artist.last_name,
+                                                                                    email: artist.email,
+                                                                                    phone: artist.phone,
+                                                                                    data: data})
+            .then(response => response.data);
+    }
+
     removeArtistFromEvent(eventId: number, artistId: number): void {
         axios.delete(`http://localhost:4000/api/event/${eventId}/artist/${artistId}`).then(response => response.data);
     }

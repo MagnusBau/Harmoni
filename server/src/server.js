@@ -213,9 +213,11 @@ const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
 const loginRoutes = require("./routes/login");
 import {FileInfoDAO} from './dao/fileInfoDao.js';
+import {ArtistDAO} from "./dao/artistDao";
 
 
 const fileInfoDao = new FileInfoDAO(pool);
+const artistDao = new ArtistDAO(pool);
 
 app.use("/api/artist", artistRoutes);
 app.use("/api/event", eventRoutes);
@@ -251,6 +253,23 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     let result = res;
     console.log(req.body.name);
     fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/single/artist/' + req.params.eventId);
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path
+    };
+    let result = res;
+    artistDao.addArtistWithNewContract(req.body.artist_name, req.body.first_name, req.body.last_name, req.body.email, req.body.phone, req.body.document_id, data, (err, rows) => {
         try {
             result.send(req.file);
         }catch(err) {

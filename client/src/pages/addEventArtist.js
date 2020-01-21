@@ -8,12 +8,13 @@ import {Modal} from 'react-bootstrap';
 import {Button} from "../components/widgets";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
+import {fileInfoService} from "../services/fileService";
 const history = createHashHistory();
 
 // TODO: Clean up this mess
 // TODO: Add alert on artist add
 
-export class AddEventArtist extends Component {
+export class AddEventArtist extends Component <{match: {params: {eventId: number}}}> {
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -21,6 +22,9 @@ export class AddEventArtist extends Component {
     eventDocuments: Document[] = [];
     artistFilter: string = "";
     documentId: number = -1;
+    name: string = "";
+    path: string = "./files/";
+    nameAddOn: string = "------";
 
     state = {
         showModal: false,
@@ -117,7 +121,34 @@ export class AddEventArtist extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        artistService.addArtistToEvent(this.newArtist, this.documentId);
+        if(Number.parseInt(this.documentId) === -1){
+            let file = this.state.file;
+            let formData = new FormData();
+            if(this.state.file !== null){
+                fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+                    .then(response => {
+                        console.log("DUP?: "+ response[0][0].duplicate);
+                        if(response[0][0].duplicate === 0){
+
+                            const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
+
+                            formData.append('file', myNewFile);
+                            formData.append('name', this.name);
+                            formData.append('path', this.path + myNewFile.name);
+
+                            fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+                                console.log("should have posted fileInfo to database");
+                                this.mounted();
+                            });
+                        }else{
+                            this.errorMessage = "En fil med dette navnet finnes allerede";
+                            this.mounted();
+                        }
+                    });
+            }
+        }else{
+            artistService.addArtistToEvent(this.newArtist, this.documentId);
+        }
         this.newArtist = {
             artist_id: -1,
             artist_name: "",
@@ -130,7 +161,43 @@ export class AddEventArtist extends Component {
         this.mounted();
     }
 
+    handleFile(e) {
+        let file = e.target.files[0];
+        this.setState({file: file});
+        this.name = file.name;
+    }
+
     render() {
+        let uploadBox;
+        if(Number.parseInt(this.documentId) === -1){
+            uploadBox = (
+                <div>
+                    <input
+                        type="text"
+                        className="form-control m-2"
+                        value={this.name}
+                        placeholder="Filnavn"
+                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.name = event.target.value)}
+                        required
+                        maxLength={50}
+                    />
+                    <input
+                        type="file"
+                        className="form-control m-2"
+                        value={this.file}
+                        placeholder="Fil"
+                        onChange={(e) => this.handleFile(e)}
+                        required
+                        style={{paddingBottom: "50px", paddingTop: "20px"}}
+                    />
+                </div>
+            )
+        }else{
+            uploadBox = (
+                <div>
+                </div>
+            )
+        }
         return (
             <div>
                 <div className="m-4">
@@ -138,7 +205,7 @@ export class AddEventArtist extends Component {
                     <div className="row">
                         <div className="col">
                             <select size="10" className="form-control m-2" id="exampleFormControlSelect1">
-                                {this.eventArtists.filter(artist => artist.artist_name.includes(this.artistFilter)).map(artist =>
+                                {this.eventArtists.filter(artist => artist.artist_name.toLowerCase().includes(this.artistFilter.toLowerCase())).map(artist =>
                                     <option value={artist} key={artist.artist_id}
                                             onClick={() => this.onSelect(artist)}>{artist.artist_name}</option>
                                 )}
@@ -224,11 +291,12 @@ export class AddEventArtist extends Component {
                             <div className="col">
                                 <select id="documentSelect" className="custom-select m-2" value={this.documentId}
                                         onChange={this.onChange} required>
-                                    <option selected value="">Velg dokument...</option>
+                                    <option selected value="-1">Velg dokument...</option>
                                     {this.eventDocuments.map(document =>
                                         <option value={document.document_id}>{document.name}</option>
                                     )}
                                 </select>
+                                {uploadBox}
                             </div>
                             <div className="col"/>
                         </div>
