@@ -45,7 +45,7 @@ class NavBar extends Component {
     }
 
     viewMyPage() {
-        history.push("/user/" + userService.getUserID() + "/overview");
+        history.push("/user/" + userService.getUserId() + "/overview");
     }
 
     viewNewEvent() {
@@ -53,12 +53,12 @@ class NavBar extends Component {
     }
 
      mounted(): void {
-        if(userService.getUserID() != null && userService.getUserID() !== "null") {
+        if(userService.getUserId() != null && userService.getUserId() !== "null") {
             this.username = userService.getUsername();
             this.firstName = userService.getFirstName();
             this.lastName = userService.getLastName();
         }
-         let id = userService.getUserID();
+         let id = userService.getUserId();
          let username = userService.getUsername();
          let fullName = `${userService.getFirstName()} ${userService.getLastName()}`;
          this.setState({userId: id, username: username, fullName: fullName});
@@ -67,8 +67,8 @@ class NavBar extends Component {
 
     render() {
         let userIcon;
-        if (userService.getUserID() > 0) {
-            console.log(userService.getUserID());
+        if (userService.getUserId() > 0) {
+            console.log(userService.getUserId());
             userIcon = (
                 <div className="form-inline">
                     <div className="dropdown m-1">

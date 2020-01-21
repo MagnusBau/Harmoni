@@ -110,7 +110,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     }
     mounted(){
         this.currentEvent = this.props.match.params.eventId;
-        console.log("current event" + this.currentEvent);
+        console.log("current event:" + this.currentEvent);
         eventService
             .getEventById(this.currentEvent)
             .then(eventOverview => (this.eventOverview = eventOverview))
@@ -192,7 +192,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             <div className="container">
                 <div className="card">
                     <div>
-                        <h5> {this.eventOverview[0].title}  </h5>
+                        <h5> {this.eventOverview.title}  </h5>
                         <div className="card-header">
                             <ul className="nav nav-tabs card-header-tabs" role="tablist" id="eventOverview">
                                 <li className="nav-item">

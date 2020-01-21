@@ -181,7 +181,7 @@ export default class UserEdit extends Component {
                                     <li className="list-group-item list-group-item-action list-group-item-dark"
                                         style={{marginTop: "20px"}}
                                         onClick={(e) => {
-                                            history.push("/user/" + userService.getUserID() + "/overview");
+                                            history.push("/user/" + userService.getUserId() + "/overview");
                                         }}>
                                         Tilbake
                                     </li>

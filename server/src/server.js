@@ -59,19 +59,24 @@ const verifyOptions = {
 };
 
 app.use("/auth/id/:id", (req, res, next) => {
+    let paramsId = req.params.id;
+    console.log("paramsId: " + paramsId)
     let token = req.headers["x-access-token"];
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");
             res.json({ error: "Token" });
         } else {
-            userDao.getUsername(Number.parseInt(req.params.id), (err, rows) => {
+            userDao.getUsername(paramsId, (err, rows) => {
+                if(rows[0][0].username) {
+                    console.log("username2:" + rows[0][0].username);
+                }
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username === decoded.username) {
                             console.log("Token ok: " + decoded.username);
                             if(req.body.user_id) {
-                                if(req.body.user_id === req.params.id) {
+                                if(req.body.user_id === paramsId) {
                                     console.log("Token ok: " + decoded.username);
                                     next();
                                 } else {
@@ -89,7 +94,7 @@ app.use("/auth/id/:id", (req, res, next) => {
                     } else {
                         console.log("Token ok: " + decoded.username);
                         if(req.body.user_id) {
-                            if(req.body.user_id === req.params.id) {
+                            if(req.body.user_id === paramsId) {
                                 console.log("Token ok: " + decoded.username);
                                 next();
                             } else {
@@ -250,12 +255,13 @@ const riderRoutes = require("./routes/riders");
 const contactRoutes = require("./routes/contact");
 const loginRoutes = require("./routes/login");
 import {FileInfoDAO} from './dao/fileInfoDao.js';
+const apiRoutes = require("./routes/api");
 
 
 const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/api/artist", artistRoutes);
-app.use("/api/event", eventRoutes);
+app.use("/auth/id/:id/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/auth/id/:id/user", userRoutes);
 app.use("/auth/id/:id/ticket", ticketRoutes);
@@ -263,7 +269,9 @@ app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
 app.use("/auth", loginRoutes);
+app.use("/api", apiRoutes);
 app.use("/api/contact", contactRoutes);
+
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){

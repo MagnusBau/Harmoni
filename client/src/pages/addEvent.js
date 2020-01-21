@@ -154,12 +154,12 @@ export class AddEvent extends Component {
                 Alert.success('You have created a new event!!!!');
             })
             .catch((error: Error) => Alert.danger(error.message));
-        history.push('/user/' + userService.getUserID() + '/overview');
+        history.push('/user/' + userService.getUserId() + '/overview');
     }
 
 
     mounted() {
-        this.createEvent.organizer = userService.getUserID();
+        this.createEvent.organizer = userService.getUserId();
         eventService
             .getEventByName()
             .then(event => (this.allEvents  = event))
