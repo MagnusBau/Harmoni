@@ -59,12 +59,19 @@ exports.updateFileInfo = (req, res, next) => {
 exports.deleteFileInfo = (req, res, next) => {
     console.log('Got request from client: DELETE /file/delete');
     let path: string = Buffer.from(req.params.file, 'base64').toString();
-    fileInfoDao.deleteFileInfo(path, (err, rows) => {
-        res.json(rows);
-        fs.unlink(path, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+    fileInfoDao.deleteFileInfo(path, (error, rows) => {
+        if (!error) {
+            fs.unlink(path, (err) => {
+                if (err) {
+                    console.error(err);
+                    res.json(err);
+                } else {
+                    res.json(rows);
+                }
+            });
+
+        } else {
+            res.json(rows);
+        }
     });
 };

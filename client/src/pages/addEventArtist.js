@@ -178,7 +178,7 @@ export class AddEventArtist extends Component {
     removeArtist(e) {
         artistService
             .removeArtistFromEvent(this.event.event_id, this.seeArtist.artist_id)
-            .then(this.fetchData());
+            .then(response => this.fetchData());
         this.seeArtist = {
             artist_id: -1,
             artist_name: "",
@@ -198,7 +198,7 @@ export class AddEventArtist extends Component {
         userService
             .generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
                                 this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id)
-            .then(this.fetchData());
+            .then(response => this.fetchData());
         this.setState({showConfirmAddUser: false});
     }
 
@@ -220,7 +220,7 @@ export class AddEventArtist extends Component {
             .addArtistToEvent(this.newArtist, this.documentId)
             .then(result => {
                 if (result.error) {
-                    if (result.error.errno === 300) {
+                    if (result.error.errno === 2001) {
                         Alert.danger("Artist er allerede tilknyttet arrangement");
                     } else {
                         Alert.danger("En feil har oppstått");

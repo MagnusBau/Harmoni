@@ -5,6 +5,7 @@ DELETE FROM event;
 DELETE FROM user;
 DELETE FROM contact;
 DELETE FROM document;
+DELETE FROM category;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default, 'Mario', 'Bros', 'its@me', '01001010');
