@@ -8,7 +8,7 @@ import { contactUsService, ContactUs } from '../services/contactService';
 const history = createHashHistory();
 
 export class ContactForm extends Component {
-
+    errorMessage :string="";
     contactUsData = new ContactUs();
     form = null;
 

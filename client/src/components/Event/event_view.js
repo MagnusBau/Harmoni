@@ -10,6 +10,7 @@ import {ModalWidget, Button} from "../widgets";
 import {Alert} from "../Alert/alert";
 
 export default class EventView extends Component {
+    errorMessage:string="";
     currentEvent: number = 0;
     eventOverview: Event = null;
     tickets: Ticket[] = [];
@@ -74,7 +75,12 @@ export default class EventView extends Component {
         this.currentEvent = this.props.eventId;
         eventService
             .getEventById(this.currentEvent)
-            .then(eventOverview => (this.eventOverview = eventOverview))
+            .then(eventOverview => {
+                this.eventOverview = eventOverview;
+                if(eventOverview.body.error) {
+                    this.errorMessage = eventOverview.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
     }
 

@@ -17,8 +17,8 @@ export class TicketEdit extends Component {
         '',
         '',
         ''
-
     );
+    errorMessage: string="";
 
     render() {
         if (!this.ticket) return null;
@@ -113,15 +113,23 @@ export class TicketEdit extends Component {
         console.log(this.currentTicketID);
         ticketService
             .getTicketId(this.currentTicketID)
-            .then(t => (this.ticket = t[0][0]))
+            .then((response) => {
+                this.ticket = response[0][0];
+                    if(response.body.error) {
+                        this.errorMessage = response.body.error;
+                    }
+            })
             .catch((error: Error) => console.log(error.message));
     }
 
     delete(){
         if(!this.ticket) return null;
 
-        ticketService.removeTicket(this.currentTicketID).then(() => {
+        ticketService.removeTicket(this.currentTicketID).then((response) => {
             if (this.ticket) this.props.handleDelete();
+                if(response.body.error) {
+                    this.errorMessage = response.body.error;
+                }
         }).catch(error => error.message);
     }
 
@@ -131,9 +139,11 @@ export class TicketEdit extends Component {
             alert('pris eller antall kan ikke være under 0!');
             return;
         }
-        ticketService.updateTicket(this.ticket, this.currentTicketID).then(() => {
-            if (this.ticket) this.props.handleSaveEdit();//history.push('/event/edit/' + this.ticket.event + '/ticket');
-
+        ticketService.updateTicket(this.ticket, this.currentTicketID).then((response) => {
+            if (this.ticket) this.props.handleSaveEdit();
+            if(response.body.error) {
+                this.errorMessage = response.body.error;
+            }
         }).catch(error => error.message);
     }
 }

@@ -10,6 +10,7 @@ import {Ticket, ticketService} from "../services/ticketService";
 
 
 export class eventVisit extends Component <{match: {params: {eventId: number}}}> {
+    errorMessage:string="";
     currentEvent: number = 0;
     event: Event = null;
     artists: Artist[] = [];
@@ -19,15 +20,24 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
         this.currentEvent = this.props.match.params.eventId;
         eventService
             .getEventById(this.currentEvent)
-            .then(event => this.event = event)
+            .then(event =>{
+                this.event = event;
+                if(event.body.error) this.errorMessage = event.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
         artistService
             .getArtistByEvent(this.currentEvent)
-            .then(artists => this.artists = artists[0])
+            .then(artists =>{
+                this.artists = artists[0];
+                if(artists.body.error) this.errorMessage = artists.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
         ticketService
             .getAllTicket(this.currentEvent)
-            .then(tickets => this.tickets = tickets[0])
+            .then(tickets =>{
+                this.tickets = tickets[0];
+                if(tickets.body.error) this.errorMessage = tickets.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
     }
     render() {

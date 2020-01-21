@@ -6,8 +6,15 @@ import { createHashHistory } from 'history';
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
 import {Alert} from "../components/widgets";
+import {AddRiderType} from "../components/Rider/rider";
+import {Rider} from "../services/riderService";
 
 export class FileMain extends Component {
+    errorMessage:string="";
+    rider = new Rider(
+        '',
+        ''
+    );
     constructor(props) {
         super(props);
         this.state = {file: null};
@@ -74,6 +81,8 @@ export class FileMain extends Component {
                         </form>
                         <Alert/>
                         <p style={{color: "red"}}>{this.errorMessage}</p>
+
+
                     </div>
                 </div>
                 <div className="card" style={{width: "25%"}}>
@@ -87,10 +96,16 @@ export class FileMain extends Component {
                         {this.fileList.map(f => (
                             <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
                                 this.setState({selected: event.target.innerText});
+                                this.rider.document = f.document_id;
                             }}>
                                 {f.name}
+
+
                             </li>
                         ))}
+                            <div>
+                                <AddRiderType documentId={this.rider.document}/>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -105,6 +120,9 @@ export class FileMain extends Component {
     fetch() {
         fileInfoService.getFileInfo(this.props.eventId).then(response => {
             this.fileList = response[0];
+            if(response.body.error) {
+                this.errorMessage = response.body.error;
+            }
             console.log(response[0]);
         })
     }
@@ -167,6 +185,9 @@ export class FileMain extends Component {
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
+                if(response.body.error) {
+                    this.errorMessage = response.body.error;
+                }
                 this.mounted();
             });
         }
@@ -229,7 +250,7 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
             //this.errorMessage = "Filen kan ikke være tom";
             this.mounted();
         } else {
-            let name= atob(this.props.match.params.filepath);
+            let name = atob(this.props.match.params.filepath);
             name = name.replace(this.path, "");
             let data = new Blob([this.text], {type: 'text/plain'});
             const myNewFile = new File([data], name, {type: "text/plain"});

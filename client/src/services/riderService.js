@@ -28,7 +28,7 @@ class RiderService{
         return axios.get<Rider[]>(`http://localhost:4000/api/rider/all/${document}`).then(response => response.data);
     }
 
-    updateRider(rider : Rider, id:number): void {
+    updateRider(rider : Rider, id: number): void {
         return axios.put('http://localhost:4000/api/rider/' + id, rider).then(response => response.data);
 
     }

@@ -11,6 +11,7 @@ import moment from "moment";
 const history = createHashHistory();
 
 export class EditEvent extends Component<{match: { params: {event_id: number}}}> {
+    errorMessage:string="";
     allEvents = [];
     event = new Event();
     updateEvent = new CreateEvent();
@@ -144,8 +145,9 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
     update() {
         eventService
             .updateEvent(this.props.match.params.event_id, this.event)
-            .then(() => {
+            .then((response) => {
                 Alert.success('You have updated your event');
+                if(response.body.error) this.errorMessage = response.body.error;
             })
             .catch((error: Error) => Alert.danger(error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
@@ -155,7 +157,10 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
 
         eventService
             .getEventIDUpdate(this.props.match.params.event_id)
-            .then(event => (this.event = event[0][0]))
+            .then(event => {
+                this.event = event[0][0];
+                if(event.body.error) this.errorMessage = event.body.error;
+            })
             .catch((error: Error) => Alert.danger(error.message));
     }
 }

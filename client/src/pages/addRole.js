@@ -10,6 +10,7 @@ import {userService} from "../services/userService";
 const history = createHashHistory();
 
 export class AddRole extends Component <{match: {params: {eventId: number}}}> {
+    errorMessage:string="";
     currentEvent: number = 1;
     roles: Role[] = [];
     eventRoles: EventRole[] = [];
@@ -24,16 +25,28 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
         this.newRole.event = this.currentEvent;
         roleService
             .getAllRoles()
-            .then(roles => this.roles = roles[0])
+            .then(roles =>{
+                this.roles = roles[0];
+                if(roles.body.error) {
+                    this.errorMessage = roles.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
         roleService
             .getEventRoles(this.currentEvent)
-            .then(eventRoles => this.eventRoles = eventRoles[0])
+            .then(eventRoles =>{
+                this.eventRoles = eventRoles[0];
+                if(eventRoles.body.error) this.errorMessage = eventRoles.body.error;
+
+            })
             .catch((error: Error) => console.log(error.message));
 
         artistService
             .getArtistByUser(userService.getUserID())
-            .then(artists => this.setState({isArtist: (artists[0].length > 0)}))
+            .then(artists => {
+                this.setState({isArtist: (artists[0].length > 0)})
+                if(artists.body.error) this.errorMessage = artists.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
     }
     onChange(e) {
