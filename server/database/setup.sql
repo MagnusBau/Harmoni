@@ -131,13 +131,6 @@ CREATE TABLE category
   name VARCHAR(50) PRIMARY KEY
 );
 
-
-INSERT INTO category VALUES('Konsert');
-INSERT INTO category VALUES('Festival');
-INSERT INTO category VALUES('Party');
-INSERT INTO category VALUES('Karneval');
-INSERT INTO category VALUES('Høytids-sammenkomst');
-
 CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))
 BEGIN
   SIGNAL SQLSTATE

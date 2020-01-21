@@ -38,9 +38,6 @@ END;
 
 CREATE PROCEDURE assign_to_event(IN role_in INT, IN event_in INT, IN count_in INT)
 BEGIN
-    IF ((SELECT COUNT(*) FROM event_role WHERE role=role_in AND event=event_id) > 0) THEN
-        CALL raise(2001, 'Role is already assigned to event');
-    END IF;
     INSERT INTO event_role(role, event, count) VALUES (role_in, event_in, count_in);
 END;
 
