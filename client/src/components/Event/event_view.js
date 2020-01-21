@@ -56,12 +56,12 @@ export default class EventView extends Component {
                 : null}
 
                 {!this.props.isArtist ?
-                    <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
-                : null}
+                    <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#showModal">Avlys arrangement</button>
+                    : null}
 
-                <ModalWidget show={this.state.setShowModal} onHide={this.close} title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <Button.Light onClick={this.close}>Lukk</Button.Light>
-                    <Button.Red onClick={this.cancelEvent}>Avlys</Button.Red>
+                <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
+                    <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
+                    <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
                 </ModalWidget>
 
             </div>
