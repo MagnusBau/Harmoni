@@ -151,4 +151,8 @@ export class EventDAO extends Dao {
         console.log("New capacity: ", newCapacity);
         super.query("CALL update_event_capacity(?, ?)", newCapacity, callback);
     }
+
+    getCategories(callback: (status: string, data: string) => void) {
+        super.query("CALL get_categories()", [], callback);
+    }
 }

@@ -33,5 +33,4 @@ router.put("/:eventId/role", roleController.updateRoleCount);
 router.get("/edit/:event_id", eventController.getEventByIdUpdate);
 router.post("/new", eventController.createEvent);
 router.get("/:eventId/artist", artistController.getArtistByEvent);
-
 module.exports = router;

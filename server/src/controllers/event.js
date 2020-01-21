@@ -283,4 +283,9 @@ exports.getDocumentByEvent = (req, res, next) => {
     });
 };
 
-
+exports.getCategories = (req, res, next) => {
+    console.log('GET request from client: /categories');
+    eventDao.getCategories((err, rows) => {
+        res.json(rows);
+    })
+};

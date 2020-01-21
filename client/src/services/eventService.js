@@ -234,6 +234,11 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
+    getCategories() {
+        return axios.get('http://localhost:4000/api/categories')
+            .then(response => response.data)
+            .catch(error => console.log("error" + error));
+    }
 
     //DENNE ER I FEIL SERVICE
     getDocumentByEvent(eventId: number): Document[] {
