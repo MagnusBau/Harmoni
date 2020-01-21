@@ -16,6 +16,7 @@ DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
 DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 DROP PROCEDURE IF EXISTS get_all_events_by_input;
+DROP PROCEDURE IF EXISTS get_categories;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -240,4 +241,11 @@ CREATE PROCEDURE get_all_events_by_input(IN input_in VARCHAR(40))
 BEGIN
     SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time FROM event
     WHERE UPPER(title) LIKE CONCAT('%', input_in,'%');
+END;
+/**
+  Get all categories
+ */
+CREATE PROCEDURE get_categories()
+BEGIN
+    SELECT name FROM category;
 END;

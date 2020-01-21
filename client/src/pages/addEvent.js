@@ -18,6 +18,7 @@ moment.locale("no");
 export class AddEvent extends Component {
     event: Event[] = [];
     allEvents = [];
+    categories: string[] = [];
     createEvent = new Event();
     state = {
         date: new Date(),
@@ -33,6 +34,7 @@ export class AddEvent extends Component {
     }
 
     render() {
+        console.log(this.categories);
         return(
             <div className={"m-2"}>
                 <form className="form-group">
@@ -109,14 +111,14 @@ export class AddEvent extends Component {
                     <div className={"form-group m-2"}>
                         <label>Type arrangement:</label>
                         <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"category"}
-                               placeholder={"konsert"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.category = event.target.value)}
-                        />
+                        <select name={"category"} className="custom-select w-25"
+                                onChange={event => this.createEvent.category = event.target.value}
+                                value={this.createEvent.category}>
+                            <option selected value="">Velg kategori...</option>
+                            {this.categories.map(category =>
+                                <option value={category.name}>{category.name}</option>
+                            )}
+                        </select>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Total kapasitet:</label>
@@ -164,6 +166,10 @@ export class AddEvent extends Component {
             .getEventByName()
             .then(event => (this.allEvents  = event))
             .catch((error: Error) => Alert.danger(error.message));
+        eventService
+            .getCategories()
+            .then(categories => this.categories = categories[0])
+            .catch((error: Error) => console.log(error.message));
     }
 
 }
