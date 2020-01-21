@@ -20,7 +20,7 @@ export class FileMain extends Component {
     path: string = "./files/";
     nameAddOn: string = "------";
 
-    render() {
+    /*render() {
         return(
             <div>
                 <Alert/>
@@ -85,18 +85,98 @@ export class FileMain extends Component {
                                     Dokumenter
                                 </div>
                             </li>
-                            <ul>
-                            {this.fileList.map(f => (
-                                <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
-                                    this.setState({selected: event.target.innerText});
-                                }}>
-                                    {f.name}
-                                </li>
-                            ))}
-                            </ul>
+                            <select size="10" className="form-control" id="selectDocument">
+                                {this.fileList.map(f =>
+                                    <option value={f.document_id} key={"fileId" + f.document_id}
+                                            onClick={(event) => this.setState({selected: event.target.innerText})}>{f.name}</option>
+                                )}
+                            </select>
                         </div>
                     </div>
                 </div>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du ønsker å slette denne filen?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            id="closeConfirmDelete"
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        )
+    }*/
+
+    render() {
+        return (
+            <div className="w-100 m-2">
+                <Alert/>
+                <h4>{`Dokumenter`}</h4>
+                {!this.props.isArtist ?
+                    <form className="form-inline" onSubmit={this.handleUpload}>
+                        <div className="form-group m-2">
+                            <input
+                                type="file"
+                                className="form-control"
+                                value={this.file}
+                                placeholder="Fil"
+                                onChange={(e) => this.handleFile(e)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group m-2">
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={this.name}
+                                placeholder="Filnavn"
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.name = event.target.value)}
+                                required
+                                maxLength={50}
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-success m-2">Last opp</button>
+                    </form>
+                    : null}
+                <table className="table">
+                    <thead>
+                    <tr className="d-flex">
+                        <th className="col-7">Filnavn</th>
+                        <th className="col-5"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.fileList.map(f => (
+                        <tr className="d-flex">
+                            <td className="col-10">{f.name}</td>
+                            <td className="col-1">
+                                <div className="form-inline">
+                                    {!this.props.isArtist ?
+                                        <button type="button" className="btn btn-link"
+                                                onClick={(event) => this.handleDownload(event)}>
+                                            <img src="./img/icons/download.svg" width="24" height="24"/></button>
+                                        : null}
+                                </div>
+                            </td>
+                            <td className="col-1">
+                                <button type="button" className="btn btn-danger"
+                                        onClick={() => {this.setState({selected: f.name, showConfirmDelete: true})}}>Fjern
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
                 <Modal
                     show={this.state.showConfirmDelete}
                     onHide={() => this.setState({showConfirmDelete: false})}
@@ -154,6 +234,8 @@ export class FileMain extends Component {
 
                         fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
                             console.log("should have posted fileInfo to database");
+                            this.setState({file: null});
+                            this.name = "";
                             this.mounted();
                         });
                     }else{
@@ -167,7 +249,7 @@ export class FileMain extends Component {
     }
 
     handleDownload(e){
-
+        this.setState({selected: e.target.innerText});
         if(this.state.selected !== undefined){
             let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
             let encodedFilePath = btoa(filePath);

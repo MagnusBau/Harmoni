@@ -5,8 +5,6 @@ import {Component} from "react-simplified";
 
 import {equipmentService, Equipment, EventEquipment} from "../../services/equipmentService";
 import Autosuggest from 'react-autosuggest';
-import {userService} from "../../services/userService";
-import {artistService} from "../../services/artistService";
 
 // When suggestion is clicked, Autosuggest needs to populate the input
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -201,7 +199,7 @@ export default class AddEquipment extends Component {
                                    id="equipmentType"
                                    placeholder="Ant." value={this.newEquipment.amount} onChange={this.onChange} required/>
                         </div>
-                        <button type="submit" className="btn btn-primary m-2">Legg til</button>
+                        <button type="submit" className="btn btn-success m-2">Legg til</button>
                     </form>
                 : null}
                 <table className="table">

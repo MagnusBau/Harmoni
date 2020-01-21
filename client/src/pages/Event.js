@@ -245,7 +245,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     <AddEquipment eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
-                                    <h5>Dokumenter</h5>
                                     <FileMain eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
