@@ -9,6 +9,6 @@ router.put("/:artistId", artistController.updateArtist);
 router.delete("/:artistId", artistController.deleteArtist);
 router.get("/", artistController.getAllArtists);
 router.get("/:artistId", artistController.getArtistById);
-router.post("/contract", artistController.addArtistWithNewContract);
+router.post("/contract/:eventId", artistController.addArtistWithNewContract);
 
 module.exports = router;

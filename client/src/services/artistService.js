@@ -42,7 +42,7 @@ class ArtistService {
     }
 
     addArtistWithNewContract(artist: Artist, documentName: string, eventId: number, path: string){
-       return axios.post(`http://localhost:4000/api/event/${eventId}/artist/contract`, {artist_name: artist.artist_name,
+       return axios.post(`http://localhost:4000/api/artist/contract/${eventId}`, {artist_name: artist.artist_name,
                                                                                     first_name: artist.first_name,
                                                                                     last_name: artist.last_name,
                                                                                     email: artist.email,
