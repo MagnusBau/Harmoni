@@ -298,7 +298,7 @@ class UserService {
 
     checkToken() {
         if(localStorage.getItem("token_time") != null) {
-            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 600x 00) {
+            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 60000) {
                 localStorage.setItem("token_time", (new Date()).toString());
                 this.updateToken();
                 console.log("updated token");
