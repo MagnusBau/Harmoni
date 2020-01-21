@@ -119,7 +119,8 @@ function login(bool: boolean, username: string, res: Response) {
 }
 
 function validateUsername(data: Object, username: string, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
-    if(username.match("^[A-Za-z0-9]+$") && 2 < username.length <= 50) {
+    let regex =/^[A-Za-z0-9-æøåÆØÅ]{4,30}$/;
+    if(username.match(regex)) {
         if (data.artist_name) {
             userDao.checkAndVerifyArtistUsername(username, (err, rows) => {
                 console.log(rows);
@@ -147,11 +148,12 @@ function validateUsername(data: Object, username: string, password: string, emai
 }
 
 function validatePassword(data: Object, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
-    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length <= 256) {
+    let regex =/^[A-Za-z0-9-æøåÆØÅ]{8,256}$/;
+    if(password.match(regex)){
         return validateEmail(data, email, first_name, last_name, phone, res);
     } else {
         console.log("Invalid");
-        res.json({ error: "Invalid password" });
+        res.json({ error: "Invalid password. Has to contain at least 8 to 256 characters" });
         return false;
     }
 }
@@ -170,17 +172,19 @@ function validateEmail(data: Object, email: string, first_name: string, last_nam
 }
 
 function validateFirstName(data: Object, first_name: string, last_name: string, phone: string, res: Response) {
-    if(first_name.match("^[A-Za-z]+$") && 2 < first_name.length < 50) {
+    let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
+    if(first_name.match(regex) && 2 < first_name.length < 50) {
         return validateLastName(data, last_name, phone, res);
     } else {
-        console.log("Invalid first name");
-        res.json({ error: "Invalid first name" });
+        console.log("Invalid first name, cannot contain non english-norwegian letters");
+        res.json({ error: "Invalid first name, cannot contain non english-norwegian letters" });
         return false;
     }
 }
 
 function validateLastName(data: Object, last_name: string, phone: string, res: Response) {
-    if(last_name.match("^[A-Za-z]+$") && 2 < last_name.length < 50) {
+    let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
+    if(last_name.match(regex) && 2 < last_name.length < 50) {
         return validatePhone(data, phone, res);
     } else {
         console.log("Invalid last name");
@@ -191,7 +195,7 @@ function validateLastName(data: Object, last_name: string, phone: string, res: R
 
 function validatePhone(data: Object, phone: string, res: Response) {
     if(!phone.match(/\D/)) {
-        if(phone.length == 8) {
+        if(phone.length === 8) {
             return register(data, res);
         } else if(phone.length === 12 && phone.substring(0, 3) === "0047") {
             return register(data, res);
@@ -302,8 +306,9 @@ exports.updateUser = (req, res, next) => {
     let data: Object = req.body;
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(re.test(String(data.email).toLowerCase())) {
-        if(data.first_name.match("^[A-Za-z]+$") && 2 < data.first_name.length < 50) {
-            if(data.last_name.match("^[A-Za-z]+$") && 2 < data.last_name.length < 50) {
+        let regexName =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
+        if(data.first_name.match(regexName) && 2 < data.first_name.length < 50) {
+            if(data.last_name.match(regexName) && 2 < data.last_name.length < 50) {
                 if(data.phone.length === 8 || (data.phone.length === 12 && data.phone.substring(0, 3) === "0047")) {
                     userDao.getContact(id, (err, rows) => {
                         if(rows[0][0].contact_id) {
@@ -405,7 +410,8 @@ exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;
     let newPassword = req.body.newPassword;
     let id = req.params.userId;
-    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length <= 256) {
+    let regex =/^[A-Za-z0-9-æøåÆØÅ]{8,256}$/;
+    if(password.match(regex)){
         userDao.getPassword(req.body.username, (err, rows) => {
             if(rows[0][0]) {
                 if(rows[0][0].password) {

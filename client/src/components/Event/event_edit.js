@@ -124,9 +124,9 @@ export class EventEdit extends Component {
                                    (this.event.organizer = event.target.value)}
                         />
                     </div>
-                </form>
+
                 <div className="text-center">
-                    <button type="button"
+                    <button type="submit"
                             className="btn btn-outline-dark center-block"
                             onClick ={() => {this.props.onClick(); this.update()}}>
                         {' '}Lagre{' '}
@@ -139,6 +139,7 @@ export class EventEdit extends Component {
                         Avbryt
                     </button>
                 </div>
+                </form>
             </div>
         )
     }

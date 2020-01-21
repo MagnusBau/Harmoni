@@ -71,12 +71,12 @@ export class ContactForm extends Component {
                         /></p>
                     </div>
 
-                </form>
+
 
                 <div style={{textAlign: "center"}}>
-                    <button type="button" className="btn btn-outline-primary" onClick={this.sendEmail}>Send</button>
+                    <button type="submit" className="btn btn-outline-primary" onClick={this.sendEmail}>Send</button>
                 </div>
-
+            </form>
             </div>
         )
     }

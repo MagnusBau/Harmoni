@@ -43,7 +43,7 @@ export default class TicketView extends Component {
                             <b>Antall billetter:</b>
                             <hr/>
                             <p>{tickets.count}</p>
-                            {this.props.isArtist ?
+                            {!this.props.isArtist ?
                                 <Row>
                                     <button type="submit" className="btn btn-outline-primary"
                                         onClick={() => {this.props.triggerParentUpdate(tickets.ticket_id); this.props.handleEditTicketClick()}}>

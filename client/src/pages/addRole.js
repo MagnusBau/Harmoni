@@ -97,7 +97,7 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
                                 <td className="col-7">{role.type}</td>
                                 {!this.state.isArtist ?
                                     <div>
-                                        <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
+                                        <td><button className="btn-primary" type="submit" onClick={() => this.addToEvent(role)}>Legg til</button></td>
                                         <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
                                     </div>
                                 : null}
