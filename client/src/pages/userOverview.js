@@ -45,7 +45,7 @@ export default class UserOverview extends Component {
 
     mounted() {
 //TODO get events by user
-        eventService.getEventByUser(userService.getUserID()).then(respons => {
+        eventService.getEventByUser(userService.getUserId()).then(respons => {
             console.log(respons);
             if(respons != null) {
                 this.events = [];
@@ -58,7 +58,7 @@ export default class UserOverview extends Component {
             }
         });
 
-        eventService.getEndedEventsByUser(userService.getUserID()).then(response => {
+        eventService.getEndedEventsByUser(userService.getUserId()).then(response => {
             if(response) {
                 this.endedEvents = [];
                 response.map(events => {
@@ -72,7 +72,7 @@ export default class UserOverview extends Component {
     deleteEndedEvents() {
 
         eventService
-            .deleteEndedEvents(userService.getUserID())
+            .deleteEndedEvents(userService.getUserId())
             .then(window.location.reload())
             .then(console.log("Arrangement slettet!"))
             .catch((error: Error) => console.log(error.message));
@@ -124,7 +124,7 @@ export default class UserOverview extends Component {
                                         <h5>Phone:</h5> {userService.getPhone()}
                                     </li>
                                     <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                        history.push("/user/" + userService.getUserID() + "/edit");
+                                        history.push("/user/" + userService.getUserId() + "/edit");
                                     }}>
                                         Endre Profil
                                     </li>

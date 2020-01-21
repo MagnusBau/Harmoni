@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import {Contact} from "./TempCancelEventService";
+import { userService } from "./userService";
 
 //axios.interceptors.response.use(response => response.data);
 
@@ -39,66 +40,199 @@ export class CreateEvent {
 export class EventService {
     getAllEvents() {
         return axios
-            .get("http://localhost:4000/api/event")
-            .then(response => response.data)
+            .get("http://localhost:4000/api/event").then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
             .catch(error => console.log("error" + error));
     }
 
     getEventById(eventId: number): Event[] {
-        return axios.get<Event[]>(`http://localhost:4000/api/event/` + eventId).then(response => response.data);
+        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }})
+            .then(response => {
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getEventIDUpdate(eventID: number): Event[] {
-        return axios.get('http://localhost:4000/api/event/edit/' + eventID).then(response => response.data);
+        return axios.get('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/edit/' + eventID, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getEventByName(name: string): Promise<Event[]> {
-        return axios.get('/' + name).then(response => response.data);
+        return axios.get('/' + name, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getEventByUser(userId: number): Event[] {
-        return axios.get<Event[]>('http://localhost:4000/api/event/user/' + userId).then(response => response.data);
+        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getEndedEventsByUser(userId: number): Event[] {
-        return axios.get<Event[]>('http://localhost:4000/api/event/user/' + userId + "/ended").then(response => response.data);
+        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId + "/ended", {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     createEvent(createEvent: Event): Promise<void> {
-        return axios.post("http://localhost:4000/api/event", createEvent).then(response => response.data);
+        return axios.post('http://localhost:4000/auth/id/' + userService.getUserId() + '/event', createEvent, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     updateEvent(eventID: number, updateEvent: CreateEvent): Promise<void> {
-        return axios.put('http://localhost:4000/api/event/edit/' + eventID, updateEvent).then(response => response.data);
+        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/edit/' + eventID, updateEvent, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getCancelledEvents() {
-        return axios.get<Event[]>('http://localhost:4000/api/event?cancelled=true').then(response => response.data);
+        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event?cancelled=true', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     deleteEvent(eventId: number) {
-        return axios.delete<Event>('http://localhost:4000/api/event/' + eventId).then(response => response.data);
+        return axios.delete<Event>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId, {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     deleteEndedEvents(userId: number) {
-        return axios.delete<Event[]>('http://localhost:4000/api/event/user/' + userId + '/ended').then(response => response.data);
+        return axios.delete<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId + '/ended', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     cancelEvent(eventId: number) {
-        return axios.put(`http://localhost:4000/api/event/${eventId}/cancel`).then(response => response.data);
+        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/cancel', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     //Temp add
     getFrontpageEvents() {
-        return axios.get<Event[]>('http://localhost:4000/api/event').then(response => response.data);
+        return axios.get<Event[]>('http://localhost:4000/api/event', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
     getCancelledEventInfo(eventId: number) {
-        return axios.get<Contact>(`http://localhost:4000/api/event/${eventId}/email`).then(response => response.data);
+        return axios.get<Contact>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/email', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 
+
+    //DENNE ER I FEIL SERVICE
     getDocumentByEvent(eventId: number): Document[] {
-        return axios.get<Document[]>(`http://localhost:4000/api/event/${eventId}/document`).then(response => response.data);
+        return axios.get<Document[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/document', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
     }
 }
 

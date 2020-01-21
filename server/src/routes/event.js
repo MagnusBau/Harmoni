@@ -9,7 +9,6 @@ const roleController = require("../controllers/role");
 
 const router = express.Router();
 
-router.get("/", eventController.getEvents);
 router.get("/:eventId", eventController.getEventById);
 router.get("/:eventId/email", eventController.getEventEmail);
 router.get("/:eventId", eventController.getEventById);

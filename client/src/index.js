@@ -6,7 +6,7 @@ import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
 import EventOverview from "./pages/Event.js";
 import {AddEquipment} from "./pages/addEquipment";
-import {UserRegister, TokenBoi} from "./pages/user";
+import { UserLogin, UserRegister, TokenBoi} from "./pages/user";
 import {AddEvent} from "./pages/addEvent";
 import {EditEvent} from "./pages/editEvent";
 import {TicketAdd, TicketEdit, listTicketType} from "./components/ticket_add";
@@ -42,6 +42,7 @@ if (root)
                     <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
                     <Route exact path="/event/:eventId/edit/file" component={FileMain} />
                     <Route exact path="/register" component={UserRegister} />
+                    <Route exact path="/login" component={UserLogin} />
                     <Route exact path="/" component={TokenBoi} />
                     <Route exact path="/user/:userId/overview" component={UserOverview} />
                     <Route exact path="/user/:userId/edit" component={UserEdit}/>

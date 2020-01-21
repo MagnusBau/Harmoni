@@ -11,7 +11,7 @@ class UserService {
     attemptLogin(username: string, password: string, next) {
         userService.postLogin(username, password).then(response => {
             if(this.error(response)){
-                return response;
+                return this.error(response);
             }
             console.log("this:");
             console.log(response);
@@ -75,7 +75,7 @@ class UserService {
             .postArtistUser(data)
             .then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 if (response.error != null) {
                     console.log(response.error);
@@ -100,14 +100,16 @@ class UserService {
             .postUser(data)
             .then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 if(response.error != null) {
                     console.log(response.error);
                     console.log("failed");
                     return false;
                 }
+                console.log(response);
                 if(response.user != null) {
+                    console.log("click3");
                     localStorage.setItem("user_id", response.user.user_id);
                     localStorage.setItem("username", response.user.username);
                     localStorage.setItem("image", response.user.image);
@@ -119,6 +121,7 @@ class UserService {
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("artist_id", response.artist.artist_id);
                     localStorage.setItem("artist_name", response.artist.artist_name);
+                    this.mountDropdown();
                     history.push("/");
                     return true;
                 }
@@ -135,7 +138,7 @@ class UserService {
             })
             .then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 localStorage.setItem("token", response.token);
                 console.log(response.token);
@@ -150,30 +153,30 @@ class UserService {
             "last_name": lastName,
             "phone": phone
         };
-        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserID() + '/user/user/' + userService.getUserID(), data, {
+        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserId() + '/user/user/' + userService.getUserId(), data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 return response.data;
             });
     }
 
     updatePassword(password: string, newPassword: string) {
-        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserID() + '/user/user/' + this.getUserID() + '/password', {"password": password, "newPassword": newPassword, "username": this.getUsername()}, {
+        return axios.put('http://' + ip +':4000/auth/id/' + this.getUserId() + '/user/user/' + this.getUserId() + '/password', {"password": password, "newPassword": newPassword, "username": this.getUsername()}, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 return response.data;
             });
     }
 
-    getUserID() {
+    getUserId() {
         return localStorage.getItem("user_id");
     }
 
@@ -224,7 +227,7 @@ class UserService {
         };
         return axios.post('http://' + ip + ':4000/auth/login', data).then(response => {
             if(this.error(response)){
-                return false;
+                return this.error(response);
             }
             return response.data;
         });
@@ -232,12 +235,12 @@ class UserService {
     }
 
     getUser() {
-        return axios.get('http://' + ip + ':4000/auth/id/' + userService.getUserID() + "/user/user/" + userService.getUserID(), {
+        return axios.get('http://' + ip + ':4000/auth/id/' + userService.getUserId() + "/user/user/" + userService.getUserId(), {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
             if(this.error(response)){
-                return false;
+                return this.error(response);
             }
             console.log(response.data);
             if (response.data.user != null) {
@@ -257,19 +260,19 @@ class UserService {
     postUser(data: Object) {
         return axios.post('http://' + ip +':4000/auth/register', data).then(response => {
             if(this.error(response)){
-                return false;
+                return this.error(response);
             }
             return response.data;
         });
     }
 
     postArtistUser(data: Object) {
-        return axios.post(`http://${ip}:4000/auth/id/${userService.getUserID()}/user/artist`, data, {
+        return axios.post(`http://${ip}:4000/auth/id/${userService.getUserId()}/user/artist`, data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 return response.data;
             });
@@ -285,7 +288,7 @@ class UserService {
                 'x-access-token': this.getToken()
             }}).then(response => {
                 if(this.error(response)){
-                    return false;
+                    return this.error(response);
                 }
                 return response.data;
             });
@@ -315,6 +318,8 @@ class UserService {
                     return res.data;
                 } else if(res.data.error === "Not authorized") {
                     history.push("/404");
+                    return res.data;
+                } else {
                     return res.data;
                 }
             }

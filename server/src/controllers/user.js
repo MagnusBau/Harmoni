@@ -300,15 +300,39 @@ exports.updateUser = (req, res, next) => {
     console.log(req.body);
     let id: number = Number.parseInt(req.params.userId);
     let data: Object = req.body;
-    userDao.getContact(id, (err, rows) => {
-        if(rows[0][0].contact_id) {
-           let contactId = rows[0][0].contact_id;
-            userDao.updateContact(contactId, data, (err, rows) => {
-                console.log("Bruker oppdatert");
-                res.json(rows);
-            });
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(re.test(String(data.email).toLowerCase())) {
+        if(data.first_name.match("^[A-Za-z]+$") && 2 < data.first_name.length < 50) {
+            if(data.last_name.match("^[A-Za-z]+$") && 2 < data.last_name.length < 50) {
+                if(data.phone.length === 8 || (data.phone.length === 12 && data.phone.substring(0, 3) === "0047")) {
+                    userDao.getContact(id, (err, rows) => {
+                        if(rows[0][0].contact_id) {
+                            let contactId = rows[0][0].contact_id;
+                            userDao.updateContact(contactId, data, (err, rows) => {
+                                console.log("Bruker oppdatert");
+                                res.json(rows);
+                            });
+                        } else {
+                            console.log("Finner ikke kontakt");
+                            res.json({ error: "Not authorized" });
+                        }
+                    });
+                } else {
+                    console.log("phone IKKE ok");
+                    res.json({ error: "Not accepted phone" });
+                }
+            } else {
+                console.log("last_name IKKE ok");
+                res.json({ error: "Not accepted last_name" });
+            }
+        } else {
+            console.log("first_name IKKE ok");
+            res.json({ error: "Not accepted first_name" });
         }
-    });
+    } else {
+        console.log("email IKKE ok");
+        res.json({ error: "Not accepted email" });
+    }
 
 };
 
@@ -378,38 +402,42 @@ exports.getUser = (req, res, next) => {
 }
 
 exports.updateUserPassword = (req, res, next) => {
-    console.log(req.body);
     let password = req.body.password;
     let newPassword = req.body.newPassword;
     let id = req.params.userId;
-    userDao.getPassword(req.body.username, (err, rows) => {
-        if(rows[0][0]) {
-            if(rows[0][0].password) {
-                let savedHash = rows[0][0].password;
-                bcrypt.compare(password, savedHash, function(err, response) {
-                    if(response) {
-                        bcrypt.genSalt(10, function(err, salt) {
-                            bcrypt.hash(newPassword, salt, function(err, hash) {
-                                console.log("Passord OK");
-                                userDao.updatePassword(id, hash, (err, rows) => {
-                                    console.log("Passord oppdatert");
-                                    res.json(rows);
+    if(password.match("^[A-Za-z0-9]+$") && 2 < password.length <= 256) {
+        userDao.getPassword(req.body.username, (err, rows) => {
+            if(rows[0][0]) {
+                if(rows[0][0].password) {
+                    let savedHash = rows[0][0].password;
+                    bcrypt.compare(password, savedHash, function(err, response) {
+                        if(response) {
+                            bcrypt.genSalt(10, function(err, salt) {
+                                bcrypt.hash(newPassword, salt, function(err, hash) {
+                                    console.log("Passord OK");
+                                    userDao.updatePassword(id, hash, (err, rows) => {
+                                        console.log("Passord oppdatert");
+                                        res.json(rows);
+                                    })
                                 })
-                            })
-                        });
-                    } else {
-                        console.log("Passord IKKE ok1");
-                        res.json({ error: "Not authorized" });
-                    }
-                });
+                            });
+                        } else {
+                            console.log("Passord IKKE ok1");
+                            res.json({ error: "Wrong password" });
+                        }
+                    });
+                } else {
+                    console.log("Passord IKKE ok2");
+                    res.json({ error: "Not authorized" });
+                }
             } else {
-                console.log("Passord IKKE ok2");
+                console.log("Passord IKKE ok3");
                 res.json({ error: "Not authorized" });
             }
-        } else {
-            console.log("Passord IKKE ok3");
-            res.json({ error: "Not authorized" });
-        }
-    });
+        });
+    } else {
+        console.log("Passord IKKE ok4");
+        res.json({ error: "Password not accepted" });
+    }
 };
 //lag tester for dao, mangler noen metoder (minst 1)

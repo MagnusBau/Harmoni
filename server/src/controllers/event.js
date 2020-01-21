@@ -64,13 +64,14 @@ exports.getEventById = (req, res, next) => {
 };
 
 exports.getEventByUser = (req, res, next) => {
-    console.log('GET-request from client');
+    console.log('GET-request from client (getEventByUser');
     userDao.getContact(req.params.userId, (err, [rows]) => {
         console.log(rows);
         if(rows[0]) {
             if(rows[0].contact_id) {
-                eventDao.getEventByUser(rows[0].contact_id, (err, [rows]) => {
-                    res.json(rows)
+                console.log("tralala:" + rows[0].contact_id);
+                eventDao.getEventByUser(rows[0].contact_id, (err, [rows2]) => {
+                    res.json(rows2)
                 })
             }
         }

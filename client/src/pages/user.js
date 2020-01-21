@@ -7,7 +7,7 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory();
 
-/*export class UserLogin extends Component {
+export class UserLogin extends Component {
     form: any = null;
     username: string = "";
     password: string = "";
@@ -59,13 +59,14 @@ const history = createHashHistory();
     }
 
     attemptLogin() {
-        userService.attemptLogin(this.username, this.password, history)
+        userService.attemptLogin(this.username, this.password, ()=>{});
+        history.push("/");
     }
 
     register() {
         history.push("/register");
     }
-}*/
+}
 
 export class UserRegister extends Component {
 
@@ -165,6 +166,7 @@ export class UserRegister extends Component {
             this.errorMessage = "Fyll ut de røde feltene";
             return;
         }
+        console.log("click2");
         userService.attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
     }
 }

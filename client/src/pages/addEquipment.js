@@ -139,7 +139,7 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             value: this.newEquipment.item,
             onChange: this.onDropdownChange,
             className: "form-control",
-            required: "true",
+            required: true,
             onKeyDown: this.onKeyDown
         };
         return (
