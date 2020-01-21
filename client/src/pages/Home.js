@@ -27,18 +27,25 @@ class Home extends Component {
 
 
                 <div className="container mt-4">
-                    <div className="card-columns">
-                        {this.events.map(events => (
-                            <div className="card">
-                                <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
-                                <div className="card-body">
-                                    <h5>
-                                        {events.title} {events.start_time}
-                                    </h5>
+                    <div className="card" id="frontpage-card-container">
+                        <div className="card-header">KOMMENDE ARRANGEMENTER</div>
+                        <div className="card-body" id="frontpage-card-container">
+                        <div className="card-columns">
+                            {this.events.map(events => (
+                                <div className="card" id="frontpageCard">
+                                    <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                                    <div className="card-body">
+                                        <h5 className="card-title">
+                                            {events.title}
+                                        </h5>
+                                        <h6 className="card-subtitle mb-2 text-muted">
+                                            {events.start_time}
+                                        </h6>
+                                    </div>
                                 </div>
-
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
     --color-dark-blue: #21393F;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
-    --color-brown-black: #170909;
+    --color-brown-black: rgb(51, 25, 32);
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
@@ -40,4 +40,21 @@
 .card{
     background-color: var(--color-light-blue);
     border-radius: 0;
+    border-color: var(--color-dark-blue);
+}
+.card-header{
+    background-color: var(--color-dark-blue);
+    color: var(--color-light-beige);
+    border-radius: 0;
+}
+.card-header:first-child {
+    border-radius: 0;
+}
+
+a {
+    color: var(--color-dark-blue);
+}
+
+a:hover{
+    color: var(--color-meduim-blue);
 }

@@ -12,3 +12,17 @@
     position: relative;
 
 }
+
+#frontpage-card-container{
+    border-color: transparent;
+}
+#frontpage-card-body{
+    padding: 15px 15px 15px 15px;
+    border-color: transparent;
+}
+
+#frontpageCard{
+    background: var(--color-light-beige);
+    border: 5px 5px 5px 5px var(--color-light-blue);
+    margin: 10px 5px 10px 5px;
+}
