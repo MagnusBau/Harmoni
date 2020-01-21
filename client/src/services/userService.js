@@ -130,23 +130,6 @@ class UserService {
 
     }
 
-    updateToken() {
-        userService
-            .postToken({
-                "user_id": localStorage.getItem("user_id"),
-                "username": localStorage.getItem("username"),
-                "token": localStorage.getItem("token")
-            })
-            .then(response => {
-                if(this.error(response)){
-                    return this.error(response);
-                }
-                localStorage.setItem("token", response.token);
-                console.log(response.token);
-            });
-
-    }
-
     updateUser(email: string, firstName: string, lastName: string, phone: string) {
         let data = {
             "email": email,
@@ -279,18 +262,22 @@ class UserService {
             });
     }
 
-    postToken(input: Object) {
+    updateToken() {
         let data = {
-            "user_id": input.user_id,
-            "username": input.username
+            "user_id": localStorage.getItem("user_id"),
+            "username": localStorage.getItem("username"),
+            "token": localStorage.getItem("token")
         };
-        return axios.post('http://' + ip +':4000/auth/token', data, {
+        return axios.post('http://' + ip +':4000/auth/id/' + this.getUserId() + '/user/token', data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
                 if(this.error(response)){
                     return this.error(response);
                 }
+                console.log("token-----------");
+                console.log(response.data);
+                localStorage.setItem("token", response.data.data.token);
                 return response.data;
             });
     }
@@ -309,7 +296,24 @@ class UserService {
         localStorage.setItem("artist_name", null);
     }
 
-    error(res: Response) {
+    checkToken() {
+        if(localStorage.getItem("token_time") != null) {
+            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 600x 00) {
+                localStorage.setItem("token_time", (new Date()).toString());
+                this.updateToken();
+                console.log("updated token");
+            }
+        } else {
+            localStorage.setItem("token_time", (new Date()).toString());
+            this.updateToken();
+            console.log("updated token2");
+        }
+    }
+
+    error(res: Response, token: boolean) {
+        if(!token) {
+            this.checkToken();
+        }
         if(res.data) {
             if(res.data.error) {
                 if(res.data.error === "Token") {
