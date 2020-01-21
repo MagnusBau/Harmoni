@@ -64,9 +64,9 @@ export default class AddEquipment extends Component {
      */
     onSubmit(e) {
         e.preventDefault();
-        equipmentService
-            .addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount)
-            .then(this.fetchData());
+        equipmentService.addEquipmentToEvent(this.props.eventId, {item: this.newEquipment.item}, this.newEquipment.amount).then(response => {
+            this.fetchData();
+        });
         this.newEquipment = {
             item: '',
             amount: 1
@@ -98,9 +98,10 @@ export default class AddEquipment extends Component {
      * Deletes the selected equipment from the event
      * @param eventEquipment
      */
-    deleteEquipment() {
-        equipmentService.removeEquipmentFromEvent(this.state.selected);
-        this.fetchData();
+    deleteEquipment(eventEquipment) {
+        equipmentService.removeEquipmentFromEvent(this.state.selected).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -109,8 +110,9 @@ export default class AddEquipment extends Component {
      */
     incrementAmount(equipment: EventEquipment) {
         equipment.amount++;
-        equipmentService.updateEquipmentOnEvent(equipment);
-        this.fetchData();
+        equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+            this.fetchData();
+        });
     }
 
     /**
@@ -120,8 +122,9 @@ export default class AddEquipment extends Component {
     decrementAmount(equipment: EventEquipment) {
         if (equipment.amount > 1) {
             equipment.amount--;
-            equipmentService.updateEquipmentOnEvent(equipment);
-            this.fetchData();
+            equipmentService.updateEquipmentOnEvent(equipment).then(response => {
+                this.fetchData();
+            });
         }
     }
 

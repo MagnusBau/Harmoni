@@ -74,3 +74,9 @@ INSERT INTO rider (description, document)
 VALUES ('Mathias har problemer, han trenger hjelp', 2);
 INSERT INTO rider (description, document)
 VALUES ('Magnus trenger ikke noe, han er ikke kravstor', 1);
+
+INSERT INTO category VALUES('Konsert');
+INSERT INTO category VALUES('Festival');
+INSERT INTO category VALUES('Party');
+INSERT INTO category VALUES('Karneval');
+INSERT INTO category VALUES('Høytids-sammenkomst');

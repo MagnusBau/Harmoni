@@ -29,6 +29,7 @@ class UserService {
                 localStorage.setItem("artist_name", response.artist.artist_name);
                 console.log("success:" + username + response.user.user_id + response.user.username);
                 console.log(response.token);
+                this.mountDropdown();
                 next();
             } else {
                 console.log("fail");
