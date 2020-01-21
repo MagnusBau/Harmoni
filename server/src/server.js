@@ -60,8 +60,8 @@ const verifyOptions = {
 
 app.use("/auth/id/:id", (req, res, next) => {
     let paramsId = req.params.id;
-    console.log("paramsId: " + paramsId)
     let token = req.headers["x-access-token"];
+    console.log(token);
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");

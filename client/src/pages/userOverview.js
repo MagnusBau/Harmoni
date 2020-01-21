@@ -46,11 +46,9 @@ export default class UserOverview extends Component {
     mounted() {
 //TODO get events by user
         eventService.getEventByUser(userService.getUserId()).then(respons => {
-            console.log(respons);
             if(respons != null) {
                 this.events = [];
                 respons.map(e => {
-                    console.log(e);
                     this.events.push(e);
                 });
             } else {
