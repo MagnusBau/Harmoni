@@ -23,7 +23,7 @@ export class EventEquipment extends Equipment{
 
 class EquipmentService {
     getEquipment(): Equipment[] {
-        return axios.get<Equipment[]>(`http://localhost:4000/api/equipment`, {
+        return axios.get<Equipment[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/equipment`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -37,7 +37,7 @@ class EquipmentService {
     }
 
     getEquipmentByEvent(eventId: number): EventEquipment[] {
-        return axios.get<EventEquipment[]>(`http://localhost:4000/api/equipment?event=${eventId}`, {
+        return axios.get<EventEquipment[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/equipment?event=${eventId}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
