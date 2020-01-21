@@ -72,7 +72,7 @@ class ArtistService {
     }
 
     addArtistToEvent(artist: Artist, documentId: number, eventId): void {
-        axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist`,
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist`,
             {artist_name: artist.artist_name,
                   first_name: artist.first_name,
                   last_name: artist.last_name,
@@ -107,7 +107,7 @@ class ArtistService {
     }
 
     removeArtistFromEvent(eventId: number, artistId: number): void {
-        axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist/${artistId}`, {
+        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist/${artistId}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})

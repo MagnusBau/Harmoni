@@ -41,7 +41,7 @@ class FileInfoService {
         return axios.get(`http://` + ip +`:4000/api/file/edit/${encodedFile}`);
     }
     deleteFile(encodedFile: string){
-        return axios.delete(`http://` + ip +`:4000/api/file/delete/${encodedFile}`);
+        return axios.delete(`http://` + ip +`:4000/api/file/delete/${encodedFile}`).then(response => response.data);
     }
 }
 

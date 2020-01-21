@@ -5,12 +5,13 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
-import {Alert} from "../components/widgets";
+import {Alert, Button} from "../components/widgets";
+import {Modal} from "react-bootstrap";
 
 export class FileMain extends Component {
     constructor(props) {
         super(props);
-        this.state = {file: null};
+        this.state = {file: null, showConfirmDelete: false};
     }
     form: any = null;
     name: string = "";
@@ -21,79 +22,100 @@ export class FileMain extends Component {
 
     render() {
         return(
-            <div className="row justify-content-center">
-                <div className="row" style={{}}>
-                    <div className="card" style={{}}>
-                        <form ref={e => (this.form = e)}>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.name}
-                                placeholder="Filnavn"
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.name = event.target.value)}
-                                required
-                                maxLength={50}
-                            />
-                            <input
-                                type="file"
-                                className="form-control"
-                                value={this.file}
-                                placeholder="Fil"
-                                onChange={(e) => this.handleFile(e)}
-                                required
-                                style={{paddingBottom: "50px", paddingTop: "20px"}}
-                            />
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleUpload(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Last opp</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleOverwrite(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Skriv over</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleDelete(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Slett</button>
-                            <button
-                                type="button"
-                                className="btn btn-dark"
-                                style={{}}
-                                onClick={e => this.handleDownload(e)}
-                                style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                            >Last ned</button>
-                        </form>
-                        <Alert/>
-                        <p style={{color: "red"}}>{this.errorMessage}</p>
+            <div>
+                <Alert/>
+                <div className="row justify-content-center">
+                    <div className="row" style={{}}>
+                        <div className="card" style={{}}>
+                            <form ref={e => (this.form = e)}>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.name}
+                                    placeholder="Filnavn"
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.name = event.target.value)}
+                                    required
+                                    maxLength={50}
+                                />
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    value={this.file}
+                                    placeholder="Fil"
+                                    onChange={(e) => this.handleFile(e)}
+                                    required
+                                    style={{paddingBottom: "50px", paddingTop: "20px"}}
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleUpload(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Last opp</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleOverwrite(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Skriv over</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={() => {this.setState({showConfirmDelete: true})}}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Slett</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    style={{}}
+                                    onClick={e => this.handleDownload(e)}
+                                    style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                                >Last ned</button>
+                            </form>
+                            <p style={{color: "red"}}>{this.errorMessage}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="card" style={{width: "25%"}}>
-                    <div className="list-group">
-                        <li className="list-group-item" style={{}}>
-                            <div className="row justify-content-center">
-                                Documents with event_id: {this.props.event}
-                            </div>
-                        </li>
-                        <ul>
-                        {this.fileList.map(f => (
-                            <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
-                                this.setState({selected: event.target.innerText});
-                            }}>
-                                {f.name}
+                    <div className="card" style={{width: "25%"}}>
+                        <div className="list-group">
+                            <li className="list-group-item" style={{}}>
+                                <div className="row justify-content-center">
+                                    Dokumenter
+                                </div>
                             </li>
-                        ))}
-                        </ul>
+                            <ul>
+                            {this.fileList.map(f => (
+                                <li id="document" key={"fileId" + f.document_id} className="list-group-item list-group-item-action" value={f.document_id} onClick={(event) => {
+                                    this.setState({selected: event.target.innerText});
+                                }}>
+                                    {f.name}
+                                </li>
+                            ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du ønsker å slette denne filen?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light
+                            id="closeConfirmDelete"
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }
@@ -168,7 +190,7 @@ export class FileMain extends Component {
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
                 if (response.error) {
-                    if (response.error.errno === 2001) {
+                    if (response.error.errno === 2000) {
                         Alert.danger("Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
                     } else {
                         Alert.danger("En feil har oppstått");
@@ -189,35 +211,37 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
 
     render() {
         return (
-            <div className="row justify-content-center">
-                <div className="mb-4 border-0 " style={{width: '75%'}}>
-                    <div className="card-body">
-                        <form ref={e => (this.form = e)}>
+            <div>
+                <div className="row justify-content-center">
+                    <div className="mb-4 border-0 " style={{width: '75%'}}>
+                        <div className="card-body">
+                            <form ref={e => (this.form = e)}>
 
-                            <label htmlFor="basic-url">Tekst: </label>
-                            <div className="input-group">
-                                <div className="input-group-prepend">
+                                <label htmlFor="basic-url">Tekst: </label>
+                                <div className="input-group">
+                                    <div className="input-group-prepend">
+                                    </div>
+                                    <textarea
+                                        className="form-control"
+                                        required
+                                        minLength={1}
+                                        aria-label="tekst"
+                                        rows="10"
+                                        value={this.text}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
                                 </div>
-                                <textarea
-                                    className="form-control"
-                                    required
-                                    minLength={1}
-                                    aria-label="tekst"
-                                    rows="10"
-                                    value={this.text}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.text = event.target.value)}> </textarea>
-                            </div>
-                        </form>
+                            </form>
 
+                        </div>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            onClick={this.post}
+                            style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
+                        >Oppdater
+                        </button>
+                        <p style={{color: "red"}}>{this.errorMessage}</p>
                     </div>
-                    <button
-                        type="button"
-                        className="btn btn-dark"
-                        onClick={this.post}
-                        style={{marginBottom: "0px", marginTop: "20px", width: "100%"}}
-                    >Oppdater
-                    </button>
-                    <p style={{color: "red"}}>{this.errorMessage}</p>
                 </div>
             </div>
         )
