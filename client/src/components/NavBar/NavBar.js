@@ -173,7 +173,6 @@ class NavBar extends Component {
                        <SearchBar>
 
                        </SearchBar>
-                       <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Søk</button>
                    </div>
                    <div className="nav-item">
                         {userIcon}

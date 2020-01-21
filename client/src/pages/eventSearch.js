@@ -14,8 +14,8 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
     mounted(){
         this.input = this.props.match.params.input;
         eventService.getEventBy(this.input).then(response => {
-            this.events = [];
-            response[0].map(e => {
+            this.events = response;
+            response.map(e => {
                 this.events.push(e);
             });
         }).catch((error: Error) => console.log(error.message));
@@ -35,7 +35,6 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
                                     {events.title} {events.start_time}
                                 </h5>
                             </div>
-
                         </div>
                     ))}
                 </div>
