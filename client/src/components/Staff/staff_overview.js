@@ -197,10 +197,12 @@ export default class AddRole extends Component {
                                         : null}
                                 </td>
                                 <td>
-                                    <button type="button" className="btn-danger" onClick={() => {
-                                        this.setState({selected: eventRole, showConfirmRemove: true})
-                                    }}>Fjern
-                                    </button>
+                                    {!this.props.isArtist ?
+                                        <button type="button" className="btn-danger" onClick={() => {
+                                            this.setState({selected: eventRole, showConfirmRemove: true})
+                                        }}>Fjern
+                                        </button>
+                                    : null}
                                 </td>
                             </tr>
                     ))}
