@@ -57,17 +57,22 @@ export default class AddRole extends Component {
         e.preventDefault();
         if (this.newRole.type !== '') {
             console.log(this.newRole.type);
-            roleService.createRole(this.newRole);
+            roleService.createRole(this.newRole).then(response => {
+                this.load();
+            });
+
             this.newRole.type = '';
-            this.load();
+
             //window.location.reload();
         }
     }
 
     remove() {
-        roleService.removeRole(this.state.selected);
-        this.setState({selected: null, showConfirmDelete: false});
-        this.load();
+        roleService.removeRole(this.state.selected.role_id).then(response => {
+            this.setState({selected: null, showConfirmDelete: false});
+            this.load();
+        });
+
         //window.location.reload();
     }
 
@@ -84,23 +89,29 @@ export default class AddRole extends Component {
         let selected = {...this.state.selected};
         selected.event = this.currentEvent;
         this.setState({selected});
-        roleService.removeRoleFromEvent(this.state.selected);
-        this.setState({selected: null, showConfirmRemove: false});
-        this.load();
+        roleService.removeRoleFromEvent(this.state.selected).then(response => {
+            this.setState({selected: null, showConfirmRemove: false});
+            this.load();
+        });
+
         //window.location.reload();
     }
 
     incrementRole(eventRole) {
         eventRole.event = this.currentEvent;
         eventRole.count++;
-        roleService.updateRoleCount(eventRole);
+        roleService.updateRoleCount(eventRole).then(response => {
+            this.load();
+        });
     }
 
     decrementRole(eventRole) {
         if (eventRole.count > 1) {
             eventRole.event = this.currentEvent;
             eventRole.count--;
-            roleService.updateRoleCount(eventRole);
+            roleService.updateRoleCount(eventRole).then(response => {
+                this.load();
+            });
         }
     }
 
