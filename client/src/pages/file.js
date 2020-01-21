@@ -7,8 +7,15 @@ const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
 import {Alert, Button} from "../components/widgets";
 import {Modal} from "react-bootstrap";
+import {AddRiderType} from "../components/Rider/rider";
+import {Rider} from "../services/riderService";
 
 export class FileMain extends Component {
+    errorMessage:string="";
+    rider = new Rider(
+        '',
+        ''
+    );
     constructor(props) {
         super(props);
         this.state = {file: null, showConfirmDelete: false};
@@ -198,6 +205,9 @@ export class FileMain extends Component {
                         <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
                     </Modal.Footer>
                 </Modal>
+                            <div>
+                                <AddRiderType documentId={this.rider.document}/>
+                            </div>
             </div>
         )
     }
@@ -209,6 +219,9 @@ export class FileMain extends Component {
     fetch() {
         fileInfoService.getFileInfo(this.props.eventId).then(response => {
             this.fileList = response[0];
+            if(response.body.error) {
+                this.errorMessage = response.body.error;
+            }
             console.log(response[0]);
         })
     }
@@ -346,7 +359,7 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
             //this.errorMessage = "Filen kan ikke være tom";
             this.mounted();
         } else {
-            let name= atob(this.props.match.params.filepath);
+            let name = atob(this.props.match.params.filepath);
             name = name.replace(this.path, "");
             let data = new Blob([this.text], {type: 'text/plain'});
             const myNewFile = new File([data], name, {type: "text/plain"});

@@ -12,6 +12,7 @@ export default class TicketView extends Component {
     eventOverview: Event = null;
     tickets: Ticket_ID[] = [];
     eventEquipment: EventEquipment[] =[];
+    errorMessage: string = "";
 
     constructor(props){
         super(props);
@@ -68,8 +69,11 @@ export default class TicketView extends Component {
     }
 
     delete(currentTicketID){
-        ticketService.removeTicket(currentTicketID).then(() => {
+        ticketService.removeTicket(currentTicketID).then((response) => {
             if (this.ticket) this.props.handleDelete();
+            if(response.body.error) {
+                this.errorMessage = response.body.error;
+            }
             window.location.reload()
         }).catch(error => error.message);
 
@@ -80,7 +84,12 @@ export default class TicketView extends Component {
         this.currentTicketID = this.props.ticketId;
         ticketService
             .getAllTicket(this.currentEvent)
-            .then(tickets => (this.tickets = tickets[0]))
+            .then(tickets => {
+                this.tickets = tickets[0];
+                if(tickets.body.error) {
+                    this.errorMessage = tickets.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
 
 

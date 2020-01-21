@@ -8,6 +8,7 @@ import {Ticket} from "../services/ticketService";
 import {EventEquipment} from "../services/equipmentService";
 
 export default class EventControl extends Component {
+    errorMessage : string = "";
     currentEvent: number = 0;
     eventOverview: Event = null;
     tickets: Ticket[] = [];
@@ -47,7 +48,10 @@ export default class EventControl extends Component {
         this.currentEvent = this.props.eventId;
         eventService
             .getEventById(this.currentEvent)
-            .then(eventOverview => (this.eventOverview = eventOverview))
+            .then(eventOverview =>{
+                (this.eventOverview = eventOverview);
+                if(eventOverview.body.error) this.errorMessage = eventOverview.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
     }
 

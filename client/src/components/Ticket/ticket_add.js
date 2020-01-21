@@ -21,6 +21,7 @@ export class listTicketType extends Component <{match: {params: {eventId: number
         '');
 
     ticketTypeList: Ticket[] = [];
+    errorMessage: string = "";
     render(){
         return(
             <form>
@@ -177,7 +178,10 @@ export class TicketAdd extends Component{
             return;
         }
         ticketService.postTicket(this.ticket)
-            .then(() => {
+            .then((response) => {
+                    if(response.body.error) {
+                        this.errorMessage = response.body.error;
+                    }
                 if(this.ticket) {
                     this.props.postedTicket();
                 }

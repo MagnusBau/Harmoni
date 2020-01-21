@@ -114,28 +114,49 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     loadEvent() {
         eventService
             .getEventById(this.currentEvent)
-            .then(eventOverview => (this.eventOverview = eventOverview))
+            .then(eventOverview => {
+                this.eventOverview = eventOverview;
+                if(eventOverview.body.error) {
+                    this.errorMessage = eventOverview.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
     }
 
     loadTicket() {
         ticketService
             .getAllTicket(this.currentEvent)
-            .then(tickets => (this.tickets = tickets[0]))
+            .then(tickets => {
+                this.tickets = tickets[0];
+                if(tickets.body.error) {
+                    this.errorMessage = tickets.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
     }
 
     loadEquipment() {
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
+            .then(eventEquipment =>{
+                this.eventEquipment = eventEquipment[0];
+                if(eventEquipment.body.error) {
+                    this.errorMessage = eventEquipment.body.error;
+                }
+            })
             .catch((error: Error) => console.log(error.message));
     }
 
     loadArtist() {
         artistService
             .getArtistByUser(userService.getUserId())
-            .then(artists => {this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)})})
+            .then(artists => {
+                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() !== this.eventOverview[0].organizer)});
+                if(artists.body.error) {
+                    this.errorMessage = artists.body.error;
+                }
+
+            })
             .catch((error: Error) => console.log(error.message));
     }
 

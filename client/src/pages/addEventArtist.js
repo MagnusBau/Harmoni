@@ -20,6 +20,7 @@ const renderSuggestion = suggestion => (
 );
 
 export class AddEventArtist extends Component {
+    errorMessage:string="";
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -75,31 +76,46 @@ export class AddEventArtist extends Component {
         this.eventArtists = [];
         eventService
             .getEventById(this.props.eventId)
-            .then(event => this.event = event[0])
+            .then(event =>{
+                this.event = event[0];
+                if(event.body.error) this.errorMessage = event.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
 
         artistService
             .getArtistByEvent(this.props.eventId)
-            .then(artists => this.eventArtists = artists[0])
+            .then(artists =>{
+                this.eventArtists = artists[0];
+                if(artists.body.error) this.errorMessage = artists.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
 
         this.setState({eventArtists: []}, () => {
             artistService
                 .getArtistByEvent(this.props.eventId)
-                .then(artists => this.setState({eventArtists: artists[0]}))
+                .then(artists =>{
+                    this.setState({eventArtists: artists[0]});
+                    if(artists.body.error) this.errorMessage = artists.body.error;
+                })
                 .catch((error: Error) => console.log(error.message));
         });
 
         this.setState({storedArtists: []}, () => {
             artistService
                 .getArtistByEvent(this.props.eventId)
-                .then(artists => this.setState({storedArtists: artists[0]}))
+                .then(artists =>{
+                    this.setState({storedArtists: artists[0]});
+                    if(artists.body.error) this.errorMessage = artists.body.error;
+                })
                 .catch((error: Error) => console.log(error.message));
         });
 
         eventService
             .getDocumentByEvent(this.props.eventId)
-            .then(documents => this.eventDocuments = documents[0])
+            .then(documents =>{
+                this.eventDocuments = documents[0];
+                if(documents.body.error) this.errorMessage = documents.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
     }
 

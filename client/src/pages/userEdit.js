@@ -273,9 +273,10 @@ export default class UserEdit extends Component {
         userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
             if(response.error) {
                 console.log("fail");
-                this.errorMessage = "Brukerinformasjon server error";
+                this.errorMessage = response.error;
                 return;
             } else {
+                console.log(response);
                 console.log("success");
                 userService.getUser().then(response => {
                     this.errorMessage = "Brukerinformasjon oppdatert";

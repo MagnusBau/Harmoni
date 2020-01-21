@@ -43,6 +43,7 @@ export class CreateEvent {
 }
 
 export class EventService {
+
     getAllEvents() {
         return axios
             .get("http://localhost:4000/api/event").then(response => {
