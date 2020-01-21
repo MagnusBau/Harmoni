@@ -10,5 +10,14 @@
 
 .container {
     position: relative;
+}
 
+#frontpageCard:hover {
+    box-shadow: 1px 8px 15px grey;
+    -webkit-transition:  box-shadow
+}
+
+#wrap {
+    position: absolute;
+    top: 0
 }

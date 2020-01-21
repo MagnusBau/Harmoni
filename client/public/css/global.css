@@ -5,7 +5,7 @@
     --color-dark-blue: #21393F;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
-    --color-brown-black: #170909;
+    --color-brown-black: #331920;
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
@@ -20,13 +20,23 @@
     background-color: var(--color-light-beige);
 }
 
-.navbar{
-    background-color: var(--color-light-beige);
+.navbar {
+    background-color: transparent;
     height: 70px;
+    z-index: 100;
+    transition: background-color 1s ease 0s;
 }
 
-.navbar-collapse{
+.navbar > a {
+    color: var(--color-brown-black)
+}
+
+.navbar {
     background-color: var(--color-light-beige);
+}
+
+.navbar-default {
+    background-color: transparent;
 }
 
 .text-light{

@@ -21,15 +21,16 @@ class Home extends Component {
     render(){
         return (
             <div>
-                <div className="image-header">
-                    <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
+                <div id="wrap">
+                    <div className="image-header">
+                        <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
+                    </div>
                 </div>
 
-
-                <div className="container mt-4">
+                <div className="container mt-4" id="eventColumn">
                     <div className="card-columns">
                         {this.events.map(events => (
-                            <div className="card">
+                            <div className="card" id="frontpageCard">
                                 <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
                                 <div className="card-body">
                                     <h5>
