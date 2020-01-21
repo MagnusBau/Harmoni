@@ -240,7 +240,7 @@ BEGIN
 
   SET event_id_in = IFNULL((SELECT event FROM document WHERE document_id=document_id_in LIMIT 1), 0);
   IF (SELECT COUNT(*) FROM contract c LEFT JOIN document d on c.document = d.document_id WHERE c.artist=artist_id_in AND d.event=event_id_in) THEN
-    CALL raise(300, 'Artist already bound to event');
+    CALL raise(2001, 'Artist already bound to event');
   END IF;
 
   INSERT INTO contract (artist, document)

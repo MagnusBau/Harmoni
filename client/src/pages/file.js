@@ -167,7 +167,15 @@ export class FileMain extends Component {
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
-                this.mounted();
+                if (response.error) {
+                    if (response.error.errno === 2001) {
+                        Alert.danger("Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
+                    } else {
+                        Alert.danger("En feil har oppstått");
+                    }
+                } else {
+                    this.mounted();
+                }
             });
         }
     }

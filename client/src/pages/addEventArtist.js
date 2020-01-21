@@ -220,7 +220,7 @@ export class AddEventArtist extends Component {
             .addArtistToEvent(this.newArtist, this.documentId)
             .then(result => {
                 if (result.error) {
-                    if (result.error.errno === 300) {
+                    if (result.error.errno === 2001) {
                         Alert.danger("Artist er allerede tilknyttet arrangement");
                     } else {
                         Alert.danger("En feil har oppstått");
