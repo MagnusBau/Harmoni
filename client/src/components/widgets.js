@@ -137,7 +137,7 @@ export class Button {
 }
 
 export class Alert extends Component {
-    alerts: { id: number, text: React.Node, type: string }[];
+    alerts: { id: number, text: React.Node, type: string }[] = [];
     static nextId = 0;
     
     render() {

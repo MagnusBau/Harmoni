@@ -22,6 +22,7 @@ import {TicketAdd} from "../components/Ticket/ticket_add";
 import {TicketEdit} from "../components/Ticket/ticket_edit"
 import {artistService} from "../services/artistService";
 import {userService} from "../services/userService";
+import {FileMain} from "./file";
 /**
  * Class for the view of one event
  *
@@ -127,7 +128,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .catch((error: Error) => console.log(error.message));
 
         artistService
-            .getArtistByUser(userService.getUserID())
+            .getArtistByUser(userService.getUserId())
             .then(artists => {this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)})})
             .catch((error: Error) => console.log(error.message));
     }
@@ -245,15 +246,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
                                     <h5>Dokumenter</h5>
-                                    {!this.state.isArtist ?
-                                        <button
-                                            size="sm"
-                                            className="m"
-                                            variant="outline-secondary"
-                                            href={"/#/event/" + "/equipment"}>
-                                            Rediger dokumenter
-                                        </button>
-                                    : null}
+                                    <FileMain eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
                                     <AddEventArtist eventId={this.currentEvent} isArtist={this.state.isArtist}/>
