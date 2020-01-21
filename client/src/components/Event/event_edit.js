@@ -1,10 +1,16 @@
+//@flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {Event, eventService, CreateEvent} from "../../services/eventService";
+import DateTime from "react-datetime";
+import moment from "moment";
 
 
 const history = createHashHistory();
+
+moment.locale("no");
 
 export class EventEdit extends Component {
     currentEvent: number = 0;
@@ -12,8 +18,25 @@ export class EventEdit extends Component {
     event = new Event();
     updateEvent = new CreateEvent();
 
+    state = {
+        start_time: new moment(),
+        end_time: new moment()
+    };
+
     constructor(props, context) {
         super(props, context);
+    }
+
+    handleStartTime(moment){
+        this.setState({
+            start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
+        })
+    };
+
+    handleEndTime(moment) {
+        this.setState({
+            end_time: moment.format("YYYY-MM-DDTHH:mm:ss")
+        });
     }
 
     render() {
@@ -58,24 +81,30 @@ export class EventEdit extends Component {
                     <div className={"form-group m-2"}>
                         <label>Start tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-start-time"
-                               required={true}
-                               name="start-time"
-                               defaultValue={this.event.start_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.start_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                id={"start_time"}
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                defaultValue={this.event.start_time}
+                                locale={"no"}
+                                onChange={this.handleStartTime}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Slutt tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-end-time"
-                               required={true}
-                               name="end-time"
-                               defaultValue={this.event.end_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.end_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                id={"end_time"}
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                defaultValue={this.event.end_time}
+                                locale={"no"}
+                                onChange={this.handleEndTime}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Antall billettyper:</label>
@@ -145,6 +174,8 @@ export class EventEdit extends Component {
     }
 
     update() {
+        this.event.start_time = this.state.start_time;
+        this.event.end_time = this.state.end_time;
         eventService
             .updateEvent(this.currentEvent, this.event)
             .then(() => {
