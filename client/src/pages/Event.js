@@ -9,7 +9,6 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
-import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
 import {AddEventArtist} from "./addEventArtist";
 
 import {Rider, riderService} from "../services/riderService";
@@ -19,7 +18,8 @@ import {Column} from "../components/widgets";
 import {createHashHistory} from "history";
 import AddRole from "../components/Staff/staff_overview"
 import {roleService} from "../services/roleService";
-import {TicketAdd, TicketEdit} from "../components/ticket_add";
+import {TicketAdd} from "../components/ticket_add";
+import {TicketEdit} from "../components/Ticket/ticket_edit"
 import {artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 /**
@@ -147,21 +147,33 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
         if(isEditingEvent) {
-            eventContent = <EventEdit eventId={this.currentEvent} onClick={this.handleEventEdit} handleClickCancel={this.handleEventEdit}/>;
+            eventContent = <EventEdit
+                eventId={this.currentEvent}
+                onClick={this.handleEventEdit}
+                handleClickCancel={this.handleEventEdit}/>;
         }else {
             eventContent = <EventView eventId={this.currentEvent} handleClick={this.handleEventView} isArtist={this.state.isArtist}/>;
         }
         if(isAddingTicket){
-            ticketContent = <TicketAdd match={this.currentEvent} postedTicket={this.handleTicketAdd}/>
+            ticketContent = <TicketAdd
+                eventId={this.currentEvent}
+                postedTicket={this.handleTicketAdd}
+                handleCancel={this.handleTicketAdd}
+            />
+
         }else {
             if (isEditingTicket) {
-                ticketContent = <TicketEdit ticketId={this.state.currentTicketID} handleSaveEdit={this.handleTicketEdit}
-                                            handleDelete={this.handleTicketEdit} handleCancel={this.handleTicketEdit}/>
-            } else {
+                ticketContent = <TicketEdit ticketId={this.state.currentTicketID}
+                                            handleSaveEdit={this.handleTicketEdit}
+                                            handleDelete={this.handleTicketEdit}
+                                            handleCancel={this.handleTicketEdit}
+                                            onClick={this.handleTicketEdit}/>
+            }else {
                 ticketContent = <TicketView triggerParentUpdate={this.editThisTicket} eventId={this.currentEvent}
                                             handleEditTicketClick={this.handleTicketView}
                                             handleAddTicketClick={this.handleTicketAdd} isArtist={this.state.isArtist}/>
             }
+
         }
 
         if (isEditingArtist) {
