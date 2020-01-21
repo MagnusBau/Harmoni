@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 
-//TODO legg til link til rapporter problemsiden
 export class NotFoundPage extends Component {
     render() {
         return (

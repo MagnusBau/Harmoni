@@ -15,7 +15,7 @@ export class UserLogin extends Component {
 
     render() {
         return(
-            <div>
+            <div className="container">
                 <div className="card" style={{width: "25%"}}>
                     <form ref={e => (this.form = e)}>
                         <p>Brukernavn:</p>

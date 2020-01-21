@@ -9,11 +9,11 @@
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
-    background-color: var(--color-dark-blue);
+    background-color: var(--color-light-beige);
 }
 
-.icon {
-    fill: var(--color-icon);
+.container{
+    margin: ;
 }
 
 .main-container{
@@ -57,4 +57,9 @@ a {
 
 a:hover{
     color: var(--color-meduim-blue);
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
