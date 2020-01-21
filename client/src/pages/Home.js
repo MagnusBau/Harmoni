@@ -18,6 +18,7 @@ class Home extends Component {
     viewEvent(e) {
         history.push("/event/" + e + "/view")
     };
+
     render(){
         return (
             <div>
@@ -30,15 +31,15 @@ class Home extends Component {
                         <div className="card-header">KOMMENDE ARRANGEMENTER</div>
                         <div className="card-body" id="frontpage-card-container">
                         <div className="card-columns">
-                            {this.events.map(events => (
+                            {this.events.map(event => (
                                 <div className="card" id="frontpageCard">
                                     <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
                                     <div className="card-body">
                                         <h5 className="card-title">
-                                            {events.title}
+                                            {event.title}
                                         </h5>
                                         <h6 className="card-subtitle mb-2 text-muted">
-                                            {events.start_time}
+                                            {event.start_time}
                                         </h6>
                                     </div>
                                 </div>
@@ -47,7 +48,6 @@ class Home extends Component {
                         </div>
                     </div>
                     </div>
-                </div>
             </div>
         )
     }

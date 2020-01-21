@@ -1,29 +1,37 @@
+/*CSS for global components*/
+
 :root{
     --color-white: #FAFAFA;
     --color-light-blue: #ABC3C9;
     --color-meduim-blue: #63ACBE;
     --color-dark-blue: #21393F;
+    --color-x-light-beige: #f5f1e8;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
-<<<<<<< HEAD
-    --color-brown-black: #331A21;
-=======
     --color-brown-black: #331920;
->>>>>>> c72ad1d881f89326a1d6ca782e45bf9392e4d7d4
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
     background-color: var(--color-light-beige);
 }
 
-.container{
-    margin: ;
-}
+/* containers/div */
 
-.main-container{
+html, body {
+    height: 100%;
     background-color: var(--color-light-beige);
 }
 
+
+
+.container{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 10rem auto 10rem auto;
+}
+
+/*navbar*/
 .navbar {
     background-color: transparent;
 }
@@ -41,6 +49,7 @@
     background-color: var(--color-light-beige);
 }
 
+/*text*/
 .text-light{
     color: var(--color-white);
 }
@@ -49,6 +58,7 @@
     color: var(--color-brown-black);
 }
 
+/*bootstrap card*/
 .card{
     background-color: var(--color-light-blue);
     border-radius: 0;
@@ -63,6 +73,8 @@
     border-radius: 0;
 }
 
+/*link*/
+
 a {
     color: var(--color-dark-blue);
 }
@@ -70,8 +82,36 @@ a {
 a:hover{
     color: var(--color-meduim-blue);
 }
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+
+/*buttons*/
+.btn-outline-primary {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+}
+
+.btn-outline-primary:hover {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
+/*borders*/
+.border-dark{
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue) !important;
+}
+
+/*input field*/
+
+input{
+
+}
+
+.form-control{
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background-color: var(--color-x-light-beige);
+    color: var(--color-medium-beige);
+    border-bottom: 10px var(--color-brown-black) !important;
 }

@@ -261,6 +261,7 @@ const apiRoutes = require("./routes/api");
 const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/api/artist", artistRoutes);
+app.use("api/event", eventRoutes);
 app.use("/auth/id/:id/event", eventRoutes);
 app.use("/api/equipment", equipmentRoutes);
 app.use("/auth/id/:id/user", userRoutes);
