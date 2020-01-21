@@ -17,6 +17,7 @@ const history = createHashHistory();
 
     //TODO kunne bruke skjema i popup for å logge inn
     //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
+    //TODO rette opp navbar
 class NavBar extends Component {
     form: any = null;
     firstName: string = "";
@@ -74,7 +75,7 @@ class NavBar extends Component {
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
+                            <img  className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
@@ -112,7 +113,7 @@ class NavBar extends Component {
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
+                            <img className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
@@ -157,12 +158,24 @@ class NavBar extends Component {
             );
         }
 
+        //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light bg-light sticky-top">
+           <nav className="navbar navbar-light navbar-expand-md sticky-top">
                <a className="navbar-brand"  href="#">Harmoni</a>
-               <div className="form-inline">
-                   <SearchBar/>
-                   {userIcon}
+               <button className="navbar-toggler" type="button" data-toggle="collapse"
+                       data-target="#navbarContent" aria-controls="navbarContent"
+                       aria-expanded="false" aria-label="Toggle navigation">
+                   <span className="navbar-toggler-icon"/>
+               </button>
+
+               <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
+                   <div className="nav form-group form-inline mr-auto">
+                       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                       <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                   </div>
+                   <div className="nav-item">
+                        {userIcon}
+                   </div>
                </div>
            </nav>
         )

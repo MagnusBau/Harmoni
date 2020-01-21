@@ -1,17 +1,23 @@
-import * as React from 'react';
-import { Component } from 'react-simplified';
-import { NavLink } from 'react-router-dom';
+// @flow
 
+import * as React from 'react';
+import {Component} from "react-simplified";
+
+/**
+ * Renders alert messages using Bootstrap classes.
+ */
 export class Alert extends Component {
-    alerts: { text: React.Node, type: string }[] = [];
+    alerts: { id: number, text: React.Node, type: string }[] = [];
+    static nextId = 0;
 
     render() {
         return (
             <>
                 {this.alerts.map((alert, i) => (
-                    <div key={i} className={'alert alert-' + alert.type} role="alert">
+                    <div key={alert.id} className={'alert alert-' + alert.type} role="alert" style={{marginBottom: 0}}>
                         {alert.text}
                         <button
+                            type="button"
                             className="close"
                             onClick={() => {
                                 this.alerts.splice(i, 1);
@@ -24,32 +30,32 @@ export class Alert extends Component {
             </>
         );
     }
+
     static success(text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ text: text, type: 'success' });
+            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'success' });
         });
     }
 
     static info(text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ text: text, type: 'info' });
+            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'info' });
         });
     }
 
     static warning(text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ text: text, type: 'warning' });
+            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'warning' });
         });
     }
 
     static danger(text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ text: text, type: 'danger' });
+            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'danger' });
         });
     }
 }
-

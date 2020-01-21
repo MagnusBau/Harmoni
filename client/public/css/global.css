@@ -1,0 +1,43 @@
+:root{
+    --color-white: #FAFAFA;
+    --color-light-blue: #ABC3C9;
+    --color-meduim-blue: #63ACBE;
+    --color-dark-blue: #21393F;
+    --color-light-beige: #E0DCD3;
+    --color-medium-beige: #CCBE9F;
+    --color-brown-black: #170909;
+    --color-icon: var(--color-light-beige);
+    font-family: 'Source Sans Pro', sans-serif;
+    border: transparent;
+    background-color: var(--color-dark-blue);
+}
+
+.icon {
+    fill: var(--color-icon);
+}
+
+.main-container{
+    background-color: var(--color-light-beige);
+}
+
+.navbar{
+    background-color: var(--color-light-beige);
+    height: 70px;
+}
+
+.navbar-collapse{
+    background-color: var(--color-light-beige);
+}
+
+.text-light{
+    color: var(--color-white);
+}
+
+.text-dark{
+    color: var(--color-brown-black);
+}
+
+.card{
+    background-color: var(--color-light-blue);
+    border-radius: 0;
+}
