@@ -8,12 +8,9 @@
     margin: 0 0 0 0;
 }
 
-.container {
+#frontpage {
     position: relative;
     top: 0;
-}
-
-<<<<<<< HEAD
 }
 
 #frontpage-card-container{
@@ -24,18 +21,17 @@
     border-color: transparent;
 }
 
-#frontpageCard{
+#frontpageCard {
     background: var(--color-light-beige);
     border: 5px 5px 5px 5px var(--color-light-blue);
     margin: 10px 5px 10px 5px;
-=======
+}
+
 #frontpageCard:hover {
-    box-shadow: 1px 8px 15px grey;
-    -webkit-transition:  box-shadow
+    -webkit-box-shadow: -2px 3px 47px 3px rgba(0,0,0,0.22);
 }
 
 #wrap {
     position: absolute;
     top: 0
->>>>>>> c72ad1d881f89326a1d6ca782e45bf9392e4d7d4
 }

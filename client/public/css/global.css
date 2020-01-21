@@ -5,27 +5,15 @@
     --color-dark-blue: #21393F;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
-<<<<<<< HEAD
-    --color-brown-black: #331A21;
-=======
     --color-brown-black: #331920;
->>>>>>> c72ad1d881f89326a1d6ca782e45bf9392e4d7d4
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
     border: transparent;
     background-color: var(--color-light-beige);
 }
 
-.container{
-    margin: ;
-}
-
 .main-container{
     background-color: var(--color-light-beige);
-}
-
-.navbar {
-    background-color: transparent;
 }
 
 .navbar > a {
@@ -33,7 +21,7 @@
 }
 
 .navbar {
-    background-color: transparent;
+    background-color: rgba(104, 103, 104, 0.1);
     transition: background-color 0.5s ease 0s;
 }
 
@@ -71,7 +59,7 @@ a:hover{
     color: var(--color-meduim-blue);
 }
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
