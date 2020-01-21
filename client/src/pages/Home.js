@@ -26,8 +26,6 @@ class Home extends Component {
                 <div className="image-header">
                     <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
                 </div>
-
-
                 <div className="container mt-4">
                     <div className="card-columns">
                         {this.events.map(events => (
