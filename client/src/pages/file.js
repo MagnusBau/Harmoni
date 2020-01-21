@@ -128,6 +128,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                         formData.append('name', this.name);
                         formData.append('path', this.path + myNewFile.name);
 
+
                         fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
                             console.log("should have posted fileInfo to database");
                             this.mounted();

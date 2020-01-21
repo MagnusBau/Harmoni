@@ -87,10 +87,9 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
-    addArtistWithNewContract(artistName: string, firstName: string, lastName: string, email: string, phone: string,
-                             documentId: number, data: any, callback: (status: string, data: string) => void) {
-        let values = [artistName, firstName, lastName, email, phone, documentId, data.name, data.path, data.eventId];
-        super.query("CALL add_artist_with_new_contract(?,?,?,?,?,?,?,?,?)",
+    addArtistWithNewContract(data, callback: (status: string, data: string) => void) {
+        let values = [data.artist_name, data.first_name, data.last_name, data.email, data.phone, data.name, data.eventId, data.path];
+        super.query("CALL add_artist_with_new_contract(?,?,?,?,?,?,?,?)",
             values,
             callback);
     }

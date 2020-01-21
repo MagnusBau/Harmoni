@@ -14,7 +14,7 @@ const history = createHashHistory();
 // TODO: Clean up this mess
 // TODO: Add alert on artist add
 
-export class AddEventArtist extends Component <{match: {params: {eventId: number}}}> {
+export class AddEventArtist extends Component {
     event: Event = new Event();
     newArtist: Artist;
     seeArtist: Artist;
@@ -43,6 +43,7 @@ export class AddEventArtist extends Component <{match: {params: {eventId: number
 
     constructor(props) {
         super(props);
+        this.state = {file: null};
 
         this.newArtist = {
             artist_id: -1,
@@ -120,24 +121,39 @@ export class AddEventArtist extends Component <{match: {params: {eventId: number
     }
 
     onSubmit(e) {
+        let file = this.state.file;
+        let formData = new FormData();
         e.preventDefault();
         if(Number.parseInt(this.documentId) === -1){
-            let file = this.state.file;
-            let formData = new FormData();
             if(this.state.file !== null){
-                fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
+                fileInfoService.checkFileName(this.props.eventId, this.name)
                     .then(response => {
                         console.log("DUP?: "+ response[0][0].duplicate);
                         if(response[0][0].duplicate === 0){
 
-                            const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
+                            const myNewFile = new File([file], this.props.eventId + this.nameAddOn + file.name, {type: file.type});
 
                             formData.append('file', myNewFile);
                             formData.append('name', this.name);
                             formData.append('path', this.path + myNewFile.name);
 
-                            fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+
+                            let path = this.path + myNewFile.name;
+
+                            artistService.addArtistWithNewContract(this.newArtist, this.name, this.props.eventId, path).then(response => {
+                                fileInfoService.updateFile(formData).then(res =>{
+                                    console.log("should have posted to server");
+                                });
                                 console.log("should have posted fileInfo to database");
+                                this.newArtist = {
+                                    artist_id: -1,
+                                    artist_name: "",
+                                    first_name: "",
+                                    last_name: "",
+                                    email: "",
+                                    phone: ""
+                                };
+                                this.documentId = -1;
                                 this.mounted();
                             });
                         }else{
@@ -147,18 +163,18 @@ export class AddEventArtist extends Component <{match: {params: {eventId: number
                     });
             }
         }else{
-            artistService.addArtistToEvent(this.newArtist, this.documentId);
+            artistService.addArtistToEvent(this.newArtist, this.documentId).then( res => {
+                this.newArtist = {
+                    artist_id: -1,
+                    artist_name: "",
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    phone: ""
+                };
+                this.documentId = -1;
+            })
         }
-        this.newArtist = {
-            artist_id: -1,
-            artist_name: "",
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: ""
-        };
-        this.documentId = -1;
-        this.mounted();
     }
 
     handleFile(e) {

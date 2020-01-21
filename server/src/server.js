@@ -251,7 +251,7 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
         "path": req.body.path
     };
     let result = res;
-    console.log(req.body.name);
+    console.log(req.file);
     fileInfoDao.postFileInfo(data, (err, res) => {
         try {
             result.send(req.file);
@@ -266,10 +266,16 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
-        "path": req.body.path
+        "path": req.body.path,
+        "artist_name": req.body.artist_name,
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "email": req.body.email,
+        "phone": req.body.phone
     };
     let result = res;
-    artistDao.addArtistWithNewContract(req.body.artist_name, req.body.first_name, req.body.last_name, req.body.email, req.body.phone, req.body.document_id, data, (err, rows) => {
+    console.log(req.file);
+    artistDao.addArtistWithNewContract(data, (err, res) => {
         try {
             result.send(req.file);
         }catch(err) {

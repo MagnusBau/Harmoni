@@ -41,13 +41,14 @@ class ArtistService {
             .then(response => response.data);
     }
 
-    addArtistWithNewContract(artist: Artist, documentName: string, eventId: string, data: FormData){
-        axios.post(`http://localhost:4000/api/single/artist/${eventId}`, {artist_name: artist.artist_name,
+    addArtistWithNewContract(artist: Artist, documentName: string, eventId: number, path: string){
+       return axios.post(`http://localhost:4000/api/event/${eventId}/artist/contract`, {artist_name: artist.artist_name,
                                                                                     first_name: artist.first_name,
                                                                                     last_name: artist.last_name,
                                                                                     email: artist.email,
                                                                                     phone: artist.phone,
-                                                                                    data: data})
+                                                                                    name: documentName,
+                                                                                    path: path})
             .then(response => response.data);
     }
 

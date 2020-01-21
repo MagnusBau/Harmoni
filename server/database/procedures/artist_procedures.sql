@@ -13,6 +13,7 @@ DROP PROCEDURE IF EXISTS get_artist_by_event;
 DROP PROCEDURE IF EXISTS get_artist_by_contact;
 DROP PROCEDURE IF EXISTS add_artist_to_event;
 DROP PROCEDURE IF EXISTS remove_artist_from_event;
+DROP PROCEDURE IF EXISTS add_artist_with_new_contract;
 
 /**
   Inserts a new newArtist with contact information
@@ -202,14 +203,26 @@ BEGIN
   VALUES (artist_id_in, document_id_in);
 END;
 
+/**
+  Posts an artist and a document, and connects them in contract
+
+  IN artist_name_in: name of artist
+  IN first_name_in: firstname of artist
+  IN last_name_in: lastname of artist
+  IN email_in_ the email of the artist
+  IN phone_in: the phone number of the artist
+  IN document_name_in: name of the document
+  IN path_in: the path of the document
+  IN event_id_in: the id of the event the document belongs to
+ */
 CREATE PROCEDURE add_artist_with_new_contract(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
                                      IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
-                                     IN document_name_in VARCHAR(100), IN path_in VARCHAR(500), IN event_id_in INT(11))
+                                     IN document_name_in VARCHAR(100), IN event_id_in INT(11), IN path_in VARCHAR(500))
 BEGIN
     DECLARE artist_id_in INT;
     DECLARE document_id_in INt;
     CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
-    CALL
+    CALL add_document(document_id_in, document_name_in, path_in, event_id_in);
 
     INSERT INTO contract (artist, document)
     VALUES (artist_id_in, document_id_in);
