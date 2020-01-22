@@ -4,19 +4,36 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from "history";
 import {eventService, Event, CreateEvent} from "../services/eventService";
-import {Alert} from "../widgets.js";
+import {Alert} from "../components/Alert/alert.js";
 import DateTime from "react-datetime";
 import moment from "moment";
 
 const history = createHashHistory();
 
 export class EditEvent extends Component<{match: { params: {event_id: number}}}> {
+    errorMessage:string="";
     allEvents = [];
     event = new Event();
     updateEvent = new CreateEvent();
+    state = {
+        start_time: new moment(),
+        end_time: new moment()
+    };
 
     constructor(props, context) {
         super(props, context);
+    }
+
+    handleStartTime(moment){
+        this.setState({
+            start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
+        })
+    };
+
+    handleEndTime(moment) {
+        this.setState({
+            end_time: moment.format("YYYY-MM-DDTHH:mm:ss")
+        });
     }
 
     render() {
@@ -63,10 +80,13 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <br></br>
                         <div>
                             <DateTime
+                                id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.start_time}
                                 locale={"no"}
-                                onChange={this.createEvent.start_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                inputProps={{readOnly: true}}
+                                onChange={this.handleStartTime}
                             />
                         </div>
                     </div>
@@ -75,10 +95,13 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                         <br></br>
                         <div>
                             <DateTime
+                                id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
+                                value={this.state.end_time}
                                 locale={"no"}
-                                onChange={this.createEvent.end_time = moment().format("YYYY-MM-DDTHH:mm:ss")}
+                                inputProps={{readOnly: true}}
+                                onChange={this.handleEndTime}
                             />
                         </div>
                     </div>
@@ -142,10 +165,13 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
     }
 
     update() {
+        this.createEvent.start_time = this.state.start_time;
+        this.createEvent.end_time = this.state.end_time;
         eventService
             .updateEvent(this.props.match.params.event_id, this.event)
-            .then(() => {
+            .then((response) => {
                 Alert.success('You have updated your event');
+                if(response.body.error) this.errorMessage = response.body.error;
             })
             .catch((error: Error) => Alert.danger(error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
@@ -155,7 +181,10 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
 
         eventService
             .getEventIDUpdate(this.props.match.params.event_id)
-            .then(event => (this.event = event[0][0]))
+            .then(event => {
+                this.event = event[0][0];
+                if(event.body.error) this.errorMessage = event.body.error;
+            })
             .catch((error: Error) => Alert.danger(error.message));
     }
 }

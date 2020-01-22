@@ -1,30 +1,15 @@
 //@flow
-
+/*
 import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 import Modal from 'react-bootstrap/Modal';
 import { riderService, Rider} from "../services/riderService";
-import { Row, Column} from "../widgets";
+import { Row, Column} from "../components/widgets";
 import Autosuggest from 'react-autosuggest';
 import {Ticket, ticketService} from "../services/ticketService";
 
-/*
-export class RiderComp extends Component <{rider_id: React.Node, description: React.Node, url: React.Node}> {
-    render(){
-        return (
-
-            <div>
-
-            <RiderList />
-            </div>
-        )
-    }
-
-}
-
- */
 
 
 export class RiderCard extends Component <{rider_id: React.Node, description: React.Node, url: React.Node}> {
@@ -82,7 +67,7 @@ export class RiderCard extends Component <{rider_id: React.Node, description: Re
         riderService
             .deleteRider(parseInt(this.props.rider_id))
             .then((response) => {
-                console.log("Rider deleted")
+                console.log("Rider deleted");
                 this.handleClose();
             })
             .catch((error: Error) => console.error(error.message));
@@ -238,3 +223,5 @@ export class AddRiderType extends Component<{ description: React.Node, documentI
     }
 
 }
+
+*/

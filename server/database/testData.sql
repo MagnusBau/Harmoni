@@ -5,6 +5,7 @@ DELETE FROM event;
 DELETE FROM user;
 DELETE FROM contact;
 DELETE FROM document;
+DELETE FROM category;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default, 'Mario', 'Bros', 'its@me', '01001010');
@@ -22,13 +23,13 @@ INSERT INTO artist(artist_name, contact)
 VALUES ('Svein Blipp', 3);
 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', NOW(), NOW(), 'Sport', 7000, 1, 0);
+VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-09 12:06:00', '2020-01-09 12:06:00', 'Sport', 7000, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', NOW(), NOW(), 'Kategori', 200, 1, 0);
+VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 3, 1);
+VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 3, 1);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', NOW(), NOW(), 'Kategori', 200, 1, 0);
+VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
@@ -50,6 +51,7 @@ VALUES (1, 4, 4);
 INSERT INTO event_equipment (event, equipment, amount)
 VALUES (2, 4, 8);
 
+INSERT INTO document (document_id, name, path, event) VALUES (DEFAULT, 'Carl', 'Barks', 1);
 insert into ticket (title, info, price, count, event) values ( 'enTittel',  'enInfo_in',  1, 1, 1);
 insert into ticket (title, info, price, count, event) values ( 'andreTittel',  'andreInfo_in',  2, 2, 1);
 
@@ -73,3 +75,9 @@ INSERT INTO rider (description, document)
 VALUES ('Mathias har problemer, han trenger hjelp', 2);
 INSERT INTO rider (description, document)
 VALUES ('Magnus trenger ikke noe, han er ikke kravstor', 1);
+
+INSERT INTO category VALUES('Konsert');
+INSERT INTO category VALUES('Festival');
+INSERT INTO category VALUES('Party');
+INSERT INTO category VALUES('Karneval');
+INSERT INTO category VALUES('Høytids-sammenkomst');

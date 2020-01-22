@@ -42,9 +42,30 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    checkAndVerifyArtistUsername(username: string, callback: (status: string, data: string) => void) {
+        let values = [username];
+        super.query("CALL check_and_verify_artist_username(?)",
+            values,
+            callback);
+    }
+
+    getUserById(userId: number, callback: (status: string, data: string) => void){
+        let values = [userId];
+        super.query("CALL get_user_by_id(?)",
+            values,
+            callback);
+    }
+
     getContact(user_id: number, callback: (status: string, data: string) => void){
         let values = [user_id];
         super.query("CALL get_contact(?)",
+            values,
+            callback);
+    }
+
+    getUserByArtist(artistId: number, callback: (status: string, data: string) => void) {
+        let values = [artistId];
+        super.query("CALL get_user_by_artist(?)",
             values,
             callback);
     }
@@ -65,9 +86,13 @@ export class UserDAO extends Dao {
 
     //<DO NOT TOUCH>
     postContact(data, callback: ()=>void) {
+        let first_name = data.first_name;
+        let last_name = data.last_name;
+        let email = data.email;
+        let phone = data.phone;
         super.query(
             "INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default,?,?,?,?)",
-            [data.first_name, data.last_name, data.email, data.phone],
+            [first_name, last_name, email, phone],
             callback
         );
     }

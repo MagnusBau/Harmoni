@@ -1,4 +1,5 @@
 // @flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
@@ -8,17 +9,18 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
-import {editTicketType, addTicketType, listTicketType} from"../components/ticket_add";
 import {AddEventArtist} from "./addEventArtist";
 
 import {Rider, riderService} from "../services/riderService";
 import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
 const history = createHashHistory();
-import {Column} from "../components/widgets";
 import {createHashHistory} from "history";
 import AddRole from "../components/Staff/staff_overview"
-import {roleService} from "../services/roleService";
-import {TicketAdd, TicketEdit} from "../components/ticket_add";
+import {TicketAdd} from "../components/Ticket/ticket_add";
+import {TicketEdit} from "../components/Ticket/ticket_edit"
+import {artistService} from "../services/artistService";
+import {userService} from "../services/userService";
+import {FileMain} from "./file";
 /**
  * Class for the view of one event
  *
@@ -49,6 +51,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingArtist: false,
             isAddingTicket: false,
             currentTicketID: 0,
+            isArtist: false
         }
     }
 
@@ -65,7 +68,8 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
     handleEventEdit() {
         this.setState({
             isEditingEvent: false,
-        })
+        });
+        this.loadEvent();
     }
 
     handleTicketView(){
@@ -105,30 +109,64 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingRiders: true,
         })
     }
-    mounted(){
-        this.currentEvent = this.props.match.params.eventId;
-        console.log("current event" + this.currentEvent);
+
+    loadEvent() {
         eventService
             .getEventById(this.currentEvent)
-            .then(eventOverview => (this.eventOverview = eventOverview))
-            .catch((error: Error) => console.log(error.message));
-
-        ticketService
-            .getAllTicket(this.currentEvent)
-            .then(tickets => (this.tickets = tickets[0]))
-            .catch((error: Error) => console.log(error.message));
-
-        equipmentService
-            .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
-            .catch((error: Error) => console.log(error.message));
-
+            .then(eventOverview => {
+                this.eventOverview = eventOverview;
+                if(eventOverview.body.error) {
+                    this.errorMessage = eventOverview.body.error;
+                }
+            })
+            .catch((error: Error) => error.message);
     }
 
+    loadTicket() {
+        ticketService
+            .getAllTicket(this.currentEvent)
+            .then(tickets => {
+                this.tickets = tickets[0];
+                if(tickets.body.error) {
+                    this.errorMessage = tickets.body.error;
+                }
+            })
+            .catch((error: Error) => error.message);
+    }
 
-    render(){
+    loadEquipment() {
+        equipmentService
+            .getEquipmentByEvent(this.currentEvent)
+            .then(eventEquipment =>{
+                this.eventEquipment = eventEquipment[0];
+                if(eventEquipment.body.error) {
+                    this.errorMessage = eventEquipment.body.error;
+                }
+            })
+            .catch((error: Error) => error.message);
+    }
 
-        console.log();
+    loadArtist() {
+        artistService
+            .getArtistByUser(userService.getUserId())
+            .then(artists => {
+                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)});
+                if(artists.body.error) {
+                    this.errorMessage = artists.body.error;
+                }
+            })
+            .catch((error: Error) => error.message);
+    }
+
+    mounted(){
+        this.currentEvent = this.props.match.params.eventId;
+        this.loadEvent();
+        this.loadTicket();
+        this.loadEquipment();
+        this.loadArtist();
+    }
+
+    render() {
         const isEditingEvent = this.state.isEditingEvent;
         const isEditingTicket = this.state.isEditingTicket;
         const isEditingRiders = this.state.isEditingRiders;
@@ -142,38 +180,47 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
         if(isEditingEvent) {
-            eventContent = <EventEdit eventId={this.currentEvent} onClick={this.handleEventEdit} handleClickCancel={this.handleEventEdit}/>;
+            eventContent = <EventEdit
+                eventId={this.currentEvent}
+                onClick={this.handleEventEdit}
+                handleClickCancel={this.handleEventEdit}/>;
         }else {
-            eventContent = <EventView eventId={this.currentEvent} handleClick={this.handleEventView}/>;
+            eventContent = <EventView eventId={this.currentEvent} handleClick={this.handleEventView} isArtist={this.state.isArtist}/>;
         }
         if(isAddingTicket){
-            ticketContent = <TicketAdd match={this.currentEvent} postedTicket={this.handleTicketAdd}/>
+            ticketContent = <TicketAdd
+                eventId={this.currentEvent}
+                postedTicket={this.handleTicketAdd}
+                handleCancel={this.handleTicketAdd}
+            />
+
         }else {
             if (isEditingTicket) {
-                ticketContent = <TicketEdit ticketId={this.state.currentTicketID} handleSaveEdit={this.handleTicketEdit}
-                                            handleDelete={this.handleTicketEdit} handleCancel={this.handleTicketEdit}/>
-            } else {
+                ticketContent = <TicketEdit ticketId={this.state.currentTicketID}
+                                            handleSaveEdit={this.handleTicketEdit}
+                                            handleDelete={this.handleTicketEdit}
+                                            handleCancel={this.handleTicketEdit}
+                                            onClick={this.handleTicketEdit}/>
+            }else {
                 ticketContent = <TicketView triggerParentUpdate={this.editThisTicket} eventId={this.currentEvent}
                                             handleEditTicketClick={this.handleTicketView}
-                                            handleAddTicketClick={this.handleTicketAdd}/>
+                                            handleAddTicketClick={this.handleTicketAdd} isArtist={this.state.isArtist}/>
             }
-        }
 
-        if (isEditingArtist) {
-            artistContent = <AddEventArtist match={{ params: { eventId: this.currentEvent } } }/>
         }
-
 
         if(isEditingRiders){
             riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
         }else{
-            riderContent = <AddRiderType onClick={this.handleRiderView}/>
+            if (!this.state.isArtist) {
+                riderContent = <AddRiderType onClick={this.handleRiderView}/>
+            }
         }
         return (
             <div className="container">
                 <div className="card">
                     <div>
-                        <h5> {this.eventOverview[0].title}  </h5>
+                        <h5> {this.eventOverview.title}  </h5>
                         <div className="card-header">
                             <ul className="nav nav-tabs card-header-tabs" role="tablist" id="eventOverview">
                                 <li className="nav-item">
@@ -206,7 +253,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="staff" role="tabpanel">
                                     <h5>Personell oversikt</h5>
-                                    <AddRole eventId={this.currentEvent}/>
+                                    <AddRole eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="ticket" role="tabpanel">
                                     {ticketContent}
@@ -222,22 +269,14 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {riderContent}
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
-                                    <h5>Utstyr</h5>
-                                    <AddEquipment eventId={this.currentEvent}/>
+                                    <AddEquipment eventId={this.currentEvent}
+                                                  isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">
-                                    <h5>Dokumenter</h5>
-                                    <button
-                                        size="sm"
-                                        className="m"
-                                        variant="outline-secondary"
-                                        href={"/#/event/" +  "/equipment"}>
-                                        Rediger dokumenter
-                                    </button>
+                                    <FileMain eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="artist" role="tabpanel">
-                                    <h5>Artister</h5>
-                                    <AddEventArtist eventId={this.currentEvent}/>
+                                    <AddEventArtist eventId={this.currentEvent} isArtist={this.state.isArtist}/>
                                 </div>
                             </div>
                         </div>

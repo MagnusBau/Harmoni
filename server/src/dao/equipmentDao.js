@@ -10,11 +10,12 @@ export class EquipmentDAO extends Dao {
     /**
      * Inserts a new piece of equipment
      * @param name
+     * @param userId
      * @param callback
      */
-    insertEquipment(name: string, callback: (status: string, data: string) => void) {
-        let values = [name];
-        super.query("CALL insert_equipment(?)",
+    insertEquipment(name: string, userId: number, callback: (status: string, data: string) => void) {
+        let values = [name, userId];
+        super.query("CALL insert_equipment(?, ?)",
             values,
             callback);
     }

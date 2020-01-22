@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
+DROP TABLE IF EXISTS category;
 
 DROP PROCEDURE IF EXISTS raise;
 
@@ -103,6 +104,7 @@ CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   path        VARCHAR(500)           NOT NULL DEFAULT './files/error.txt',
   event       INT                NOT NULL,
+  alt VARCHAR(50) NOT NULL DEFAULT 'it''sa me, Mario',
   name        VARCHAR(100)       NOT NULL,
   CONSTRAINT document_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
@@ -122,6 +124,11 @@ CREATE TABLE rider
   description VARCHAR(100)       NOT NULL,
   document    INT                NOT NULL,
   CONSTRAINT rider_fk1 FOREIGN KEY (document) REFERENCES document (document_id)
+);
+
+CREATE TABLE category
+(
+  name VARCHAR(50) PRIMARY KEY
 );
 
 CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))

@@ -7,7 +7,7 @@ import { createHashHistory } from 'history';
 
 const history = createHashHistory();
 
-/*export class UserLogin extends Component {
+export class UserLogin extends Component {
     form: any = null;
     username: string = "";
     password: string = "";
@@ -38,34 +38,37 @@ const history = createHashHistory();
                             required
                             maxLength={256}
                         />
+                        <br/>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            style={{}}
+                            onClick={this.attemptLogin}
+                            >Logg inn</button>
+                        <p>{this.errorMessage}</p>
+                        <button
+                            type="button"
+                            className="btn btn-light"
+                            style={{}}
+                            onClick={this.register}
+                        >Registrer</button>
                     </form>
-                    <br/>
-                    <button
-                        type="button"
-                        className="btn btn-dark"
-                        style={{}}
-                        onClick={this.attemptLogin}
-                    >Logg inn</button>
-                    <p>{this.errorMessage}</p>
-                    <button
-                        type="button"
-                        className="btn btn-light"
-                        style={{}}
-                        onClick={this.register}
-                    >Registrer</button>
                 </div>
             </div>
         )
     }
 
     attemptLogin() {
-        userService.attemptLogin(this.username, this.password, history)
+        userService.attemptLogin(this.username, this.password, (response )=>{
+            console.log(response);
+            history.push("/");
+        });
     }
 
     register() {
         history.push("/register");
     }
-}*/
+}
 
 export class UserRegister extends Component {
 
@@ -101,6 +104,7 @@ export class UserRegister extends Component {
                             placeholder="Mario"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
                             required
+
                             maxLength={50}
                         />
                         <p>Etternavn:</p>
@@ -132,7 +136,7 @@ export class UserRegister extends Component {
                             placeholder="Mario"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
                             required
-                            minLength={1}
+                            minLength={3}
                             maxLength={50}
                         />
                         <br/>
@@ -143,19 +147,30 @@ export class UserRegister extends Component {
                             placeholder="Passord"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
                             required
-                            minLength={1}
+                            minLength={5}
                             maxLength={256}
                         />
+                        <br/>
+                        <p style={{color: "red"}}>{this.errorMessage}</p>
+                        <button
+                            type="button"
+                            className="btn btn-dark"
+                            style={{width: "100%"}}
+                            onClick={this.attemptRegister}
+                            >
+                            Registrer deg
+                        </button>
                     </form>
                     <br/>
                     <button
                         type="button"
                         className="btn btn-dark"
-                        style={{}}
-                        onClick={this.attemptRegister}
-                    >Registrer deg</button>
+                        style={{width: "100%"}}
+                        onClick={(e)=> (history.push("/login"))}
+                    >
+                        Logg inn
+                    </button>
                     <br/>
-                    <p style={{color: "red"}}>{this.errorMessage}</p>
                 </div>
             </div>
         )

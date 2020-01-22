@@ -4,6 +4,11 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {roleService, Role, EventRole} from "../../services/roleService";
+import {artistService} from "../../services/artistService";
+import {userService} from "../../services/userService";
+import {Modal} from "react-bootstrap";
+import {Button} from "../widgets";
+import {Alert} from "../widgets";
 
 const history = createHashHistory();
 
@@ -17,18 +22,23 @@ export default class AddRole extends Component {
         super(props, context);
         this.newRole = {type: '', event: 0};
         this.state = {
-            lmao: 1
+            lmao: 1,
+            showConfirmRemove: false,
+            selected: null,
+            showConfirmDelete: false
         }
     }
+
     mounted() {
         this.currentEvent = this.props.eventId;
         this.newRole.event = this.currentEvent;
 
         this.load();
     }
+
     load = direction => {
         if (direction) {
-            this.setState({lmao: this.state.lmao +1});
+            this.setState({lmao: this.state.lmao + 1});
         }
         roleService
             .getAllRoles()
@@ -39,94 +49,201 @@ export default class AddRole extends Component {
             .then(eventRoles => this.eventRoles = eventRoles[0])
             .catch((error: Error) => console.log(error.message));
     };
+
     onChange(e) {
         this.newRole.type = e.target.value;
     }
+
     onSubmit(e) {
         e.preventDefault();
         if (this.newRole.type !== '') {
             console.log(this.newRole.type);
-            roleService.createRole(this.newRole);
+            roleService.createRole(this.newRole).then(response => {
+                this.load();
+            });
+
             this.newRole.type = '';
-            this.load();
+
             //window.location.reload();
         }
     }
-    remove(role) {
-        roleService.removeRole(role.role_id);
-        this.load();
+
+    remove() {
+        roleService.removeRole(this.state.selected.role_id).then(response => {
+            this.setState({selected: null, showConfirmDelete: false});
+            this.load();
+        });
+
         //window.location.reload();
     }
+
     addToEvent(eventRole) {
         eventRole.event = this.currentEvent;
         eventRole.count = 1;
-        roleService.assignRole(eventRole);
-        this.load();
+        roleService.assignRole(eventRole).then(response => {
+            if (response.error) {
+                // Duplicate entry key error from database
+                if (response.error.errno === 1062) {
+                    Alert.danger("Personell er allerede tilknyttet dette arrangementet!");
+                } else {
+                    Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                }
+            } else {
+                this.load();
+            }
+
+        });
         //window.location.reload();
     }
-    removeFromEvent(eventRole) {
-        eventRole.event = this.currentEvent;
-        roleService.removeRoleFromEvent(eventRole);
-        this.load();
+
+    removeFromEvent() {
+        let selected = {...this.state.selected};
+        selected.event = this.currentEvent;
+        this.setState({selected});
+        roleService.removeRoleFromEvent(this.state.selected).then(response => {
+            this.setState({selected: null, showConfirmRemove: false});
+            this.load();
+        });
+
         //window.location.reload();
     }
+
     incrementRole(eventRole) {
         eventRole.event = this.currentEvent;
         eventRole.count++;
-        roleService.updateRoleCount(eventRole);
+        roleService.updateRoleCount(eventRole).then(response => {
+            this.load();
+        });
     }
+
     decrementRole(eventRole) {
-        if(eventRole.count > 1) {
+        if (eventRole.count > 1) {
             eventRole.event = this.currentEvent;
             eventRole.count--;
-            roleService.updateRoleCount(eventRole);
+            roleService.updateRoleCount(eventRole).then(response => {
+                this.load();
+            });
         }
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <div className="m-2">
-                <form className={"form-inline"} onSubmit={this.onSubmit}>
-                    <div className="form-group m-2">
-                        <input type="text"
-                               className="form-control"
-                               id="role-type"
-                               defaultValue={this.newRole.type}
-                               placeholder="Rollenavn"
-                               onChange={this.onChange}/>
-                    </div>
-                    <button type="submit" className="btn-primary m-2">Legg til</button>
-                </form>
+                <Alert/>
+                {!this.props.isArtist ?
+                    <form className={"form-inline"} onSubmit={this.onSubmit}>
+                        <div className="form-group m-2">
+                            <input type="text"
+                                   className="form-control"
+                                   id="role-type"
+                                   defaultValue={this.newRole.type}
+                                   placeholder="Rollenavn"
+                                   onChange={this.onChange}
+                                   required/>
+                        </div>
+                        <button type="submit" className="btn-primary m-2">Legg til</button>
+                    </form>
+                    : null}
                 <table className="table w-50">
-                    <thead><tr><th>Personell</th></tr></thead>
+                    <thead>
+                    <tr>
+                        <th>Personell</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
                                 <td className="col-7">{role.type}</td>
-                                <td><button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg til</button></td>
-                                <td><button className="btn-danger" onClick={() => this.remove(role)}>Fjern</button></td>
+                                {!this.props.isArtist ?
+                                    <div>
+                                        <td>
+                                            <button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg
+                                                til
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button className="btn-danger" onClick={() => this.setState({
+                                                selected: role,
+                                                showConfirmDelete: true
+                                            })}>Fjern
+                                            </button>
+                                        </td>
+                                    </div>
+                                    : null}
                             </tr>
                     ))}
                     </tbody>
                 </table>
                 <table className="table w-50">
-                    <thead><tr><th>Personell i arrangementet</th></tr></thead>
+                    <thead>
+                    <tr>
+                        <th>Personell i arrangementet</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     {this.eventRoles.map((eventRole =>
                             <tr key={eventRole.role_id} className="d-flex">
                                 <td className="col-7">{eventRole.type}</td>
                                 <td className="col-7">{eventRole.count}
-                                    <div className="btn-group-vertical" role="group">
-                                        <button type="button" className="btn-link" onClick={() => this.incrementRole(eventRole)}>
-                                            <img src="../img/icons/chevron-up.svg"/></button>
-                                        <button type="button" className="btn-link" onClick={() => this.decrementRole(eventRole)}>
-                                            <img src="../img/icons/chevron-down.svg"/></button>
-                                    </div>
+                                    {!this.props.isArtist ?
+                                        <div className="btn-group-vertical" role="group">
+                                            <button type="button" className="btn-link"
+                                                    onClick={() => this.incrementRole(eventRole)}>
+                                                <img src="../img/icons/chevron-up.svg"/></button>
+                                            <button type="button" className="btn-link"
+                                                    onClick={() => this.decrementRole(eventRole)}>
+                                                <img src="../img/icons/chevron-down.svg"/></button>
+                                        </div>
+                                        : null}
                                 </td>
-                                <td><button type="button" className="btn-danger" onClick={() => this.removeFromEvent(eventRole)}>Fjern</button></td>
+                                <td>
+                                    {!this.props.isArtist ?
+                                        <button type="button" className="btn-danger" onClick={() => {
+                                            this.setState({selected: eventRole, showConfirmRemove: true})
+                                        }}>Fjern
+                                        </button>
+                                    : null}
+                                </td>
                             </tr>
                     ))}
                     </tbody>
                 </table>
+                <Modal
+                    show={this.state.showConfirmRemove}
+                    onHide={() => this.setState({showConfirmRemove: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du vil slette denne rollen fra dette arrangementet?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light id="closeWarning"
+                                      onClick={() => this.setState({showConfirmRemove: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={this.removeFromEvent}>Slett</Button.Red>
+                    </Modal.Footer>
+                </Modal>
+                <Modal
+                    show={this.state.showConfirmDelete}
+                    onHide={() => this.setState({showConfirmDelete: false})}
+                    centered>
+                    <Modal.Header>
+                        <Modal.Title>Advarsel</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>
+                            Er du sikker på at du vil slette denne rollen fra ditt register?
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Light id="closeWarning"
+                                      onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
+                        <Button.Red onClick={this.remove}>Slett</Button.Red>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

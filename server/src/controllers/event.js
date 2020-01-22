@@ -32,7 +32,7 @@ exports.getEvents = (req, res, next) => {
         })
     } else {
         console.log("that");
-        eventDao.getAllEvents((err, [rows]) => {
+        eventDao.getFrontpageEvents((err, [rows]) => {
             res.json(rows);
         })
     }
@@ -64,13 +64,14 @@ exports.getEventById = (req, res, next) => {
 };
 
 exports.getEventByUser = (req, res, next) => {
-    console.log('GET-request from client');
+    console.log('GET-request from client (getEventByUser');
     userDao.getContact(req.params.userId, (err, [rows]) => {
         console.log(rows);
         if(rows[0]) {
             if(rows[0].contact_id) {
-                eventDao.getEventByUser(rows[0].contact_id, (err, [rows]) => {
-                    res.json(rows)
+                console.log("tralala:" + rows[0].contact_id);
+                eventDao.getEventByUser(rows[0].contact_id, (err, [rows2]) => {
+                    res.json(rows2)
                 })
             }
         }
@@ -111,10 +112,17 @@ exports.deleteEvent = (req, res, next) => {
 
 exports.deleteEventByEndTime = (req, res, next) => {
 
-    console.log(`DELETE-request from client: /event/${req.params.eventId}/delete`);
+    console.log(`DELETE-request from client: /event/user/${req.params.contact_id}/ended`);
 
-    eventDao.deleteEventsByEndTime(req.params.organizer, (err, rows) => {
-        res.json(rows);
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                eventDao.deleteEventsByEndTime(rows[0].contact_id, (err, rows) => {
+                    res.send(rows);
+                });
+            }
+        }
     });
 
 };
@@ -165,6 +173,17 @@ exports.cancelEvent = (req, res, next) => {
 
 
 
+};
+
+//Get events by input
+exports.getEventByInput = (req, res, next) => {
+    console.log("getEventByInput");
+    console.log(`Get-request from client: event/search/${req.params.input}`);
+    console.log("input controller " + req.params.input);
+
+    eventDao.getEventByInput(req.params.input, (err, rows) => {
+        res.json(rows);
+    })
 };
 
 //Get event by id for update
@@ -264,4 +283,9 @@ exports.getDocumentByEvent = (req, res, next) => {
     });
 };
 
-
+exports.getCategories = (req, res, next) => {
+    console.log('GET request from client: /categories');
+    eventDao.getCategories((err, rows) => {
+        res.json(rows);
+    })
+};

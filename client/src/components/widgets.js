@@ -1,5 +1,6 @@
 
 // @flow
+/* eslint eqeqeq: "off" */
 
 import * as React from 'react';
 import {Component} from "react-simplified";
@@ -111,7 +112,7 @@ class LightButton extends Component< { onClick: () => mixed, children?: React.No
         );
     }
 }
-class BlueButton extends Component< { onClick: () => mixed, children?: React.Node} > {
+class BlueButton extends Component< { onClick: () => mixed, style?: React.Node, children?: React.Node} > {
 
     render() {
         return (
@@ -135,18 +136,15 @@ export class Button {
     static Blue = BlueButton;
 }
 
-/**
- * Renders alert messages using Bootstrap classes.
- */
 export class Alert extends Component {
     alerts: { id: number, text: React.Node, type: string }[] = [];
     static nextId = 0;
-
+    
     render() {
         return (
             <>
                 {this.alerts.map((alert, i) => (
-                    <div key={alert.id} className={'alert alert-' + alert.type} role="alert" style={{marginBottom: 0}}>
+                    <div key={alert.id} className={'fade-in alert alert-' + alert.type} role="alert" style={{marginBottom: 0}}>
                         {alert.text}
                         <button
                             type="button"
@@ -185,13 +183,10 @@ export class Alert extends Component {
     }
 
     static danger(text: React.Node) {
+        console.log(Alert.instances());
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'danger' });
+            for (let instance of Alert.instances()) if (instance instanceof Alert) { instance.alerts.push({ id: Alert.nextId++, text: text, type: 'danger' }) };
         });
     }
 }
-
-
-
-

@@ -1,19 +1,43 @@
+//@flow
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {Event, eventService, CreateEvent} from "../../services/eventService";
+import DateTime from "react-datetime";
+import moment from "moment";
 
 
 const history = createHashHistory();
+
+moment.locale("no");
 
 export class EventEdit extends Component {
     currentEvent: number = 0;
     allEvents = [];
     event = new Event();
     updateEvent = new CreateEvent();
+    categories: string[] = [];
+
+    state = {
+        start_time: moment(),
+        end_time: moment()
+    };
 
     constructor(props, context) {
         super(props, context);
+    }
+
+    handleStartTime(moment){
+        this.setState({
+            start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
+        })
+    };
+
+    handleEndTime(moment) {
+        this.setState({
+            end_time: moment.format("YYYY-MM-DDTHH:mm:ss")
+        });
     }
 
     render() {
@@ -58,24 +82,32 @@ export class EventEdit extends Component {
                     <div className={"form-group m-2"}>
                         <label>Start tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-start-time"
-                               required={true}
-                               name="start-time"
-                               defaultValue={this.event.start_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.start_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                id={"start_time"}
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                value={this.event.start_time}
+                                locale={"no"}
+                                inputProps={{readOnly: true}}
+                                onChange={this.handleStartTime}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Slutt tidspunkt:</label>
                         <br></br>
-                        <input type="datetime-local" id="event-end-time"
-                               required={true}
-                               name="end-time"
-                               defaultValue={this.event.end_time}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.end_time = event.target.value)}
-                        />
+                        <div>
+                            <DateTime
+                                id={"end_time"}
+                                dateFormat={"YYYY-MM-DD"}
+                                timeFormat={"HH:mm"}
+                                value={this.event.end_time}
+                                locale={"no"}
+                                inputProps={{readOnly: true}}
+                                onChange={this.handleEndTime}
+                            />
+                        </div>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Antall billettyper:</label>
@@ -91,14 +123,14 @@ export class EventEdit extends Component {
                     <div className={"form-group m-2"}>
                         <label>Type arrangement:</label>
                         <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"category"}
-                               defaultValue={this.event.category}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.category = event.target.value)}
-                        />
+                        <select name={"category"} className="custom-select w-25"
+                                onChange={event => this.event.category = event.target.value}
+                                value={this.event.category}>
+                            <option selected value="">Velg kategori...</option>
+                            {this.categories.map(category =>
+                                <option value={category.name}>{category.name}</option>
+                            )}
+                        </select>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Total kapasitet:</label>
@@ -124,9 +156,9 @@ export class EventEdit extends Component {
                                    (this.event.organizer = event.target.value)}
                         />
                     </div>
-                </form>
+
                 <div className="text-center">
-                    <button type="button"
+                    <button type="submit"
                             className="btn btn-outline-dark center-block"
                             onClick ={() => {this.props.onClick(); this.update()}}>
                         {' '}Lagre{' '}
@@ -139,11 +171,14 @@ export class EventEdit extends Component {
                         Avbryt
                     </button>
                 </div>
+                </form>
             </div>
         )
     }
 
     update() {
+        this.event.start_time = this.state.start_time;
+        this.event.end_time = this.state.end_time;
         eventService
             .updateEvent(this.currentEvent, this.event)
             .then(() => {
@@ -158,7 +193,17 @@ export class EventEdit extends Component {
         this.currentEvent = this.props.eventId;
         eventService
             .getEventIDUpdate(this.currentEvent)
-            .then(event => (this.event = event[0][0]))
+            .then(event =>  {
+                this.event = event[0][0];
+                this.event.start_time = moment(this.event.start_time).format('YYYY-MM-DD HH:mm');
+                this.event.end_time = moment(this.event.end_time).format('YYYY-MM-DD HH:mm');
+                console.log(this.event.start_time);
+                console.log(this.event.end_time)
+            })
+            .catch((error: Error) => Alert.danger(error.message));
+        eventService
+            .getCategories()
+            .then(categories => this.categories = categories[0])
             .catch((error: Error) => Alert.danger(error.message));
     }
 }

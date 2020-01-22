@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import { userService} from "../../services/userService";
 import {Link} from "react-router-dom";
 import { createHashHistory } from 'history';
+import {SearchBar} from "../SearchBar/searchBar";
 
 const history = createHashHistory();
 
@@ -16,8 +17,12 @@ const history = createHashHistory();
 
     //TODO kunne bruke skjema i popup for å logge inn
     //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
+    //TODO rette opp navbar
 class NavBar extends Component {
+
     form: any = null;
+    firstName: string = "";
+    lastName: string = "";
     username: string = "";
     password: string = "";
 
@@ -42,7 +47,7 @@ class NavBar extends Component {
     }
 
     viewMyPage() {
-        history.push("/user/" + userService.getUserID() + "/overview");
+        history.push("/user/" + userService.getUserId() + "/overview");
     }
 
     viewNewEvent() {
@@ -50,27 +55,32 @@ class NavBar extends Component {
     }
 
      mounted(): void {
-         let id = userService.getUserID();
+        if(userService.getUserId() != null && userService.getUserId() !== "null") {
+            this.username = userService.getUsername();
+            this.firstName = userService.getFirstName();
+            this.lastName = userService.getLastName();
+        }
+         let id = userService.getUserId();
          let username = userService.getUsername();
          let fullName = `${userService.getFirstName()} ${userService.getLastName()}`;
          this.setState({userId: id, username: username, fullName: fullName});
+         userService.setMountDropdown(this.mounted);
      }
 
     render() {
         let userIcon;
-        if (userService.getUserID() > 0) {
-            console.log(userService.getUserID());
+        if (userService.getUserId() > 0) {
             userIcon = (
                 <div className="form-inline">
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
+                            <img  className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
-                                <h5>{userService.getFirstName() + " " + userService.getLastName()}</h5>
-                                <p className="form-text text-muted">{`@${userService.getUsername()}`}</p>
+                                <h5>{this.firstName + " " + this.lastName}</h5>
+                                <p className="form-text text-muted">{`@${this.username}`}</p>
                                 <div className="dropdown-divider"/>
                                 <button
                                     type="button"
@@ -103,7 +113,7 @@ class NavBar extends Component {
                     <div className="dropdown m-1">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
-                            <img src="./img/icons/person.svg" alt="login" width="22" height="22"/>
+                            <img className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
@@ -128,12 +138,14 @@ class NavBar extends Component {
                                         required
                                         maxLength={256}
                                     />
+
                                     <button
-                                        type="button"
+                                        type="submit"
                                         className="btn btn-dark"
                                         style={{}}
-                                        onClick={this.login}
-                                    >Logg inn</button>
+                                        onClick={this.login}>
+                                        Logg inn
+                                    </button>
                                 </form>
                                 <div>
                                     <p>
@@ -148,19 +160,33 @@ class NavBar extends Component {
             );
         }
 
+        //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light bg-light sticky-top">
-               <a className="navbar-brand"  href="#">Harmoni</a>
-               <div className="form-inline">
-                   <form className="form-inline my-2 my-lg-0">
-                       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                   </form>
-                   {userIcon}
+           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
+               <a className="navbar-brand"  href="#">
+                   <img src="./img/harmoni-logo-black-brown.png" height="50px" width="50px"/>
+                   Harmoni</a>
+               <button className="navbar-toggler" type="button" data-toggle="collapse"
+                       data-target="#navbarContent" aria-controls="navbarContent"
+                       aria-expanded="false" aria-label="Toggle navigation">
+                   <span className="navbar-toggler-icon"/>
+               </button>
+
+               <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
+                   <div className="nav form-group form-inline mr-auto">
+                       <SearchBar>
+
+                       </SearchBar>
+                   </div>
+                   <div className="nav-item">
+                        {userIcon}
+                   </div>
                </div>
            </nav>
         )
     }
+
 }
+
 
 export default NavBar;

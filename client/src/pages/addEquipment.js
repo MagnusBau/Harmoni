@@ -22,6 +22,7 @@ const renderSuggestion = suggestion => (
 );
 
 export class AddEquipment extends Component <{ match: { params: { eventId: number } } }> {
+    errorMessage:string="";
     // TODO: Verify that event exists before loading page
     currentEvent: number = 0;
     equipment: Equipment[] = [];
@@ -62,12 +63,18 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
         this.eventEquipment = [];
         equipmentService
             .getEquipment()
-            .then(equipment => this.equipment = equipment[0])
+            .then(equipment =>{
+                this.equipment = equipment[0];
+                if(equipment.body.error) this.errorMessage = equipment.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
 
         equipmentService
             .getEquipmentByEvent(this.currentEvent)
-            .then(eventEquipment => this.eventEquipment = eventEquipment[0])
+            .then(eventEquipment =>{
+                this.eventEquipment = eventEquipment[0];
+                if(eventEquipment.body.error) this.errorMessage = eventEquipment.body.error;
+            })
             .catch((error: Error) => console.log(error.message));
     }
 
@@ -139,7 +146,7 @@ export class AddEquipment extends Component <{ match: { params: { eventId: numbe
             value: this.newEquipment.item,
             onChange: this.onDropdownChange,
             className: "form-control",
-            required: "true",
+            required: true,
             onKeyDown: this.onKeyDown
         };
         return (

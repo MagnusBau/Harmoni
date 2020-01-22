@@ -23,6 +23,20 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
+    createArtistOnContact(artistName: string, contactId: number, callback: (status: string, data: string) => void) {
+        let values = [artistName, contactId];
+        super.query("CALL create_artist_on_contact(?, ?)",
+            values,
+            callback);
+    }
+
+    getArtistByPreviousContract(contactId: number, callback: (status: string, data: string) => void) {
+        let values = [contactId];
+        super.query("CALL get_artist_by_previous_contract(?)",
+            values,
+            callback);
+    }
+
     updateArtist(artistId: string, artistName: string, firstName: string, lastName: string, email: string, phone: string,
                  callback: (status: string, data: string) => void) {
         let values = [artistId, artistName, firstName, lastName, email, phone];
@@ -51,9 +65,30 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
+    getArtistByContact(contactId: string, callback: (status: string, data: string) => void) {
+        let values= [contactId];
+        super.query("CALL get_artist_by_contact(?)",
+            values,
+            callback);
+    }
+
     getArtistBySearch(searchString: string, callback: (status: string, data: string) => void) {
         let values = [searchString];
         super.query("CALL get_artist_by_search(?)",
+            values,
+            callback);
+    }
+
+    getArtistByContact(contactId: string, callback: (status: string, data: string) => void) {
+        let values= [contactId];
+        super.query("CALL get_artist_by_contact(?)",
+            values,
+            callback);
+    }
+
+    getArtistByUser(userId: number, callback: (status: string, data: string) => void) {
+        let values = [userId];
+        super.query("CALL get_artist_by_user(?)",
             values,
             callback);
     }

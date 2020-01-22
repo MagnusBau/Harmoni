@@ -17,6 +17,17 @@ export class EventDAO extends Dao {
         super.query("CALL get_all_events", [], callback);
     }
 
+    getFrontpageEvents(callback: (status: string, data: string) => void) {
+        super.query("CALL get_frontpage_events", [], callback);
+    }
+
+    //TODO lage query i db
+    //TODO lage test
+    getEventByInput(input: string, callback: (status: string, data: string) => void) {
+        let values = [input];
+        super.query("CALL get_all_events_by_input(?)", values, callback);
+    }
+
     getEventById(eventId: number, callback: (status: string, data:string) => void) {
         let values = [eventId];
         super.query("CALL get_event_by_id(?)", values, callback);
@@ -143,5 +154,9 @@ export class EventDAO extends Dao {
         let newCapacity = [json.capacity, event_id];
         console.log("New capacity: ", newCapacity);
         super.query("CALL update_event_capacity(?, ?)", newCapacity, callback);
+    }
+
+    getCategories(callback: (status: string, data: string) => void) {
+        super.query("CALL get_categories()", [], callback);
     }
 }
