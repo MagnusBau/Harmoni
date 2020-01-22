@@ -1,8 +1,11 @@
+/*CSS for global components*/
+
 :root{
     --color-white: #FAFAFA;
     --color-light-blue: #ABC3C9;
     --color-meduim-blue: #63ACBE;
     --color-dark-blue: #21393F;
+    --color-x-light-beige: #f5f1e8;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
     --color-brown-black: #331920;
@@ -14,6 +17,27 @@
 
 .main-container{
     background-color: var(--color-light-beige);
+}
+
+/* containers/div */
+
+html, body {
+    height: 100%;
+    background-color: var(--color-light-beige);
+}
+
+
+
+.container{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 10rem auto 10rem auto;
+}
+
+/*navbar*/
+.navbar {
+    background-color: transparent;
 }
 
 .navbar > a {
@@ -29,6 +53,7 @@
     background-color: var(--color-light-beige);
 }
 
+/*text*/
 .text-light{
     color: var(--color-white);
 }
@@ -37,6 +62,7 @@
     color: var(--color-brown-black);
 }
 
+/*bootstrap card*/
 .card{
     background-color: var(--color-light-blue);
     border-radius: 0;
@@ -51,6 +77,8 @@
     border-radius: 0;
 }
 
+/*link*/
+
 a {
     color: var(--color-dark-blue);
 }
@@ -58,8 +86,37 @@ a {
 a:hover{
     color: var(--color-meduim-blue);
 }
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+
+/*buttons*/
+.btn-outline-primary {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+>>>>>>> ecded22a6b0415480bc793e8e58ba03923ef54c7
+}
+
+.btn-outline-primary:hover {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
+/*borders*/
+.border-dark{
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue) !important;
+}
+
+/*input field*/
+
+input{
+
+}
+
+.form-control{
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background-color: var(--color-x-light-beige);
+    color: var(--color-medium-beige);
+    border-bottom: 10px var(--color-brown-black) !important;
 }

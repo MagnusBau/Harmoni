@@ -1,6 +1,4 @@
-.carousel-control-next, .carousel-control-prev {
-    filter: invert(100%)
-}
+/*CSS for home.js*/
 
 .image-header {
     top: 0;
@@ -35,3 +33,4 @@
     position: absolute;
     top: 0
 }
+

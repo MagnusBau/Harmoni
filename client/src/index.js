@@ -30,7 +30,7 @@ const root = document.getElementById("root");
 if (root)
     ReactDOM.render(
         <HashRouter>
-            <div className="main-container">
+            <div>
                 <NavBar/>
                 <Switch>
                     <Route exact path="/" component={Home} />
