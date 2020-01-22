@@ -5,7 +5,8 @@ import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
-import {Alert, Button} from "../components/widgets";
+import {Alert} from "../components/Alert/alert";
+import {Button} from "../components/Buttons/buttons";
 import {Modal} from "react-bootstrap";
 import {AddRiderType} from "../components/Rider/rider";
 import {Rider} from "../services/riderService";
@@ -128,7 +129,7 @@ export class FileMain extends Component {
         return (
             <div className="w-100 m-2">
                 <h4>{`Dokumenter`}</h4>
-                <Alert/>
+                <Alert name="fileAlert"/>
                 {!this.props.isArtist ?
                     <form className="form-inline" onSubmit={this.handleUpload}>
                         <div className="form-group m-2">
@@ -286,9 +287,9 @@ export class FileMain extends Component {
                 if (response.error) {
                     // Foreign key update fail from database
                     if (response.error.errno === 1451) {
-                        Alert.danger("Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
+                        Alert.danger("fileAlert", "Dokumentet kunne ikke slettes fordi det eksisterer en tilknyttet kontrakt!");
                     } else {
-                        Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                        Alert.danger("FileAlert", `En feil har oppstått! (Feilkode: ${response.error.errno})`);
                     }
                 } else {
                     this.mounted();
