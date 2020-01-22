@@ -17,6 +17,7 @@ export class EventEdit extends Component {
     allEvents = [];
     event = new Event();
     updateEvent = new CreateEvent();
+    categories: string[] = [];
 
     state = {
         start_time: new moment(),
@@ -120,14 +121,14 @@ export class EventEdit extends Component {
                     <div className={"form-group m-2"}>
                         <label>Type arrangement:</label>
                         <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"category"}
-                               defaultValue={this.event.category}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.category = event.target.value)}
-                        />
+                        <select name={"category"} className="custom-select w-25"
+                                onChange={event => this.event.category = event.target.value}
+                                value={this.event.category}>
+                            <option selected value="">Velg kategori...</option>
+                            {this.categories.map(category =>
+                                <option value={category.name}>{category.name}</option>
+                            )}
+                        </select>
                     </div>
                     <div className={"form-group m-2"}>
                         <label>Total kapasitet:</label>
@@ -191,6 +192,10 @@ export class EventEdit extends Component {
         eventService
             .getEventIDUpdate(this.currentEvent)
             .then(event => (this.event = event[0][0]))
+            .catch((error: Error) => Alert.danger(error.message));
+        eventService
+            .getCategories()
+            .then(categories => this.categories = categories[0])
             .catch((error: Error) => Alert.danger(error.message));
     }
 }
