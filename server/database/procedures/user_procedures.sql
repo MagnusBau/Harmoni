@@ -194,5 +194,5 @@ END;
 
 CREATE PROCEDURE get_organizer_username(IN organizer_in INT)
 BEGIN
-     SELECT username FROM user u LEFT JOIN contact c ON u.contact = c.contact_id WHERE organizer_in = u.user_id;
+     SELECT username FROM user u LEFT JOIN contact c ON u.contact = c.contact_id WHERE organizer_in = c.contact_id;
 END;

@@ -277,7 +277,7 @@ class UserService {
                 }
                 console.log("token-----------");
                 console.log(response.data);
-                localStorage.setItem("token", response.data.data.token);
+                localStorage.setItem("token", response.data.token);
                 return response.data;
             });
     }
@@ -340,8 +340,10 @@ class UserService {
         this.mountDropdown();
     }
     getOrganizerUsername(contactId: number) {
-        return axios.get("http://localhost:4000/api/event/" + contactId)
-            .then(response => response.data)
+        return axios.get('http://localhost:4000/api/event/' + contactId)
+            .then(response => {
+                console.log("Hello!");
+                return response.data})
             .catch(error => console.log(error.message));
     }
 }
