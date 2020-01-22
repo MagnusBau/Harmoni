@@ -16,6 +16,7 @@ DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
 DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 DROP PROCEDURE IF EXISTS get_all_events_by_input;
+DROP PROCEDURE IF EXISTS get_frontpage_events;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -53,9 +54,29 @@ BEGIN
          description,
          location,
          DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+         DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time,
+         capacity,
+         organizer,
          category
-  FROM event WHERE cancelled = 0 ORDER BY start_time LIMIT 9;
+  FROM event;
 END;
+
+/**
+  Fetch frontpage events
+
+  Issued by: getFrontpageEvents()
+ */
+CREATE PROCEDURE get_frontpage_events()
+BEGIN
+    SELECT event_id,
+           title,
+           description,
+           location,
+           DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+            category, organizer FROM event
+    WHERE cancelled = 0;
+END;
+
 
 
 /**

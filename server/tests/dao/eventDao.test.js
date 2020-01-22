@@ -41,11 +41,24 @@ test("Get all events", done => {
            `Test callback: status=${status}, data=${data}`
        );
        data = data[0];
-       expect(data.length).toBe(3);
+       expect(data.length).toBe(4);
 
        done();
    }
    eventDao.getAllEvents(callback);
+});
+
+test("Get frontpage events", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(4);
+
+        done();
+    }
+    eventDao.getFrontpageEvents(callback);
 });
 
 test("get not-cancelled events from db", done => {

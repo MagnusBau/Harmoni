@@ -32,7 +32,7 @@ exports.getEvents = (req, res, next) => {
         })
     } else {
         console.log("that");
-        eventDao.getAllEvents((err, [rows]) => {
+        eventDao.getFrontpageEvents((err, [rows]) => {
             res.json(rows);
         })
     }
