@@ -11,7 +11,7 @@ let database: {} = config.getTestingDatabase();
 let pool = mysql.createPool({
     connectionLimit: 1,
     host: database.host,
-    user: database.userRegister,
+    user: database.user,
     password: database.password,
     database: database.database,
     debug: false,
@@ -42,8 +42,8 @@ test("Get all events", done => {
        );
        data = data[0];
        expect(data.length).toBe(4);
-       expect(data[0].title).toBe("EM Håndball");
-       expect(data[1].title).toBe("Konsert");
+       expect(data[0].title).toBe("Konsert");
+       expect(data[1].title).toBe("Konsert m/ ballonger");
        done();
    }
    eventDao.getAllEvents(callback);

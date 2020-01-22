@@ -12,7 +12,7 @@ export class ContactUs {
 class ContactUsService {
 
     contactUs(contactForm: ContactUs) {
-        return axios.post<ContactUs>('http://localhost:4000/api/contact', contactForm).then(response => response.data);
+        return axios.post<ContactUs>('http://localhost:4000/api/contactUs', contactForm).then(response => response.data);
     }
 }
 
