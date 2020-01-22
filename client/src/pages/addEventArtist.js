@@ -142,7 +142,7 @@ export class AddEventArtist extends Component {
     onChange(e) {
         switch (e.currentTarget.id) {
             case "documentSelect":
-                this.documentId = e.target.value;
+                this.documentId = e.target.value !== "" ? e.target.value : -1;
                 break;
             case "artistFilter":
                 this.artistFilter = e.target.value;
@@ -243,7 +243,7 @@ export class AddEventArtist extends Component {
         let file = this.state.file;
         let formData = new FormData();
         e.preventDefault();
-        if(this.name !== file.name){
+        if(file && this.name !== file.name){
             if(this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)){
                 this.name = this.name + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)
             }
@@ -298,6 +298,7 @@ export class AddEventArtist extends Component {
                     });
             }
         }else{
+            console.log("I am here");
             artistService.addArtistToEvent(this.newArtist, this.documentId).then(response => {
                 if (response.error) {
                     if (response.error.errno === 2001) {
@@ -306,6 +307,7 @@ export class AddEventArtist extends Component {
                         Alert.danger("En feil har oppstått");
                     }
                 } else {
+                    this.fetchData();
                     this.newArtist = {
                         artist_id: -1,
                         artist_name: "",
