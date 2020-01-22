@@ -38,6 +38,10 @@ class FileInfoService {
         return axios.get(`http://` + ip +`:4000/api/file/download/${encodedFile}`);
     }
 
+    downloadContract(artistId: number){
+        return axios.get(`http://` + ip +`:4000/api/file/download/contract/${artistId}`);
+    }
+
     getFileContent(encodedFile: string){
         return axios.get(`http://` + ip +`:4000/api/file/edit/${encodedFile}`);
     }

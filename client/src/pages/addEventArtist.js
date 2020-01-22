@@ -120,6 +120,11 @@ export class AddEventArtist extends Component {
         this.mounted();
     }
 
+    download() {
+        window.open("http://localhost:4000/api/file/download/contract/" + this.seeArtist.artist_id, "_blank");
+        fileInfoService.downloadContract(this.seeArtist.artist_id).then( res => {});
+    }
+
     onSubmit(e) {
         let file = this.state.file;
         let formData = new FormData();
@@ -253,7 +258,7 @@ export class AddEventArtist extends Component {
                                     <p className="card-text"><b>Epost: </b>{this.seeArtist.email}</p>
                                     <p className="card-text"><b>Telefonnr.: </b>{this.seeArtist.phone}</p>
                                     {this.seeArtist.artist_name !== "" ? <p className="card-text">
-                                        <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
+                                        <a onClick={this.download} href="javascript:;"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
                                     </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
                                         <div className="align-bottom form-inline">

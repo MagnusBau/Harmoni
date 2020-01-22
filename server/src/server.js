@@ -239,6 +239,13 @@ var storage = multer.diskStorage({
 });
 
 const upload = multer({
+    fileFilter: function (req, file, callback) {
+        var ext = path.extname(file.originalname);
+        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx') {
+            return callback(new Error('Only text files are allowed'))
+        }
+        callback(null, true)
+    },
     storage,
     limits: 1024 * 1024 * 5
 });

@@ -45,6 +45,13 @@ exports.downloadFile = (req, res, next) => {
     res.download(path);
 };
 
+exports.downloadContract = (req, res, next) => {
+    console.log('Got request from client: GET /file/download/contract');
+    fileInfoDao.getContractByArtistId(req.params.artistId, (err, rows) => {
+        res.download(rows[0][0].path);
+    })
+};
+
 exports.getFileContent = (req, res, next) => {
     console.log('Got request from client: GET /file/edit');
     let path: string = Buffer.from(req.params.file, 'base64').toString();
