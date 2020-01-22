@@ -41,6 +41,7 @@ export class AddEvent extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            address: '',
             start_date: new Date(),
             end_date: new Date()
         };
