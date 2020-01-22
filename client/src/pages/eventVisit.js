@@ -24,21 +24,21 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                 this.event = event;
                 if(event.body.error) this.errorMessage = event.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
         artistService
             .getArtistByEvent(this.currentEvent)
             .then(artists =>{
                 this.artists = artists[0];
                 if(artists.body.error) this.errorMessage = artists.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets =>{
                 this.tickets = tickets[0];
                 if(tickets.body.error) this.errorMessage = tickets.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
     render() {
         if (!this.event) return null;

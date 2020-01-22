@@ -6,13 +6,11 @@ const eventController = require("../controllers/event");
 const equipmentController = require("../controllers/equipment");
 const artistController = require("../controllers/artist");
 const roleController = require("../controllers/role");
-const ticketController = require("../controllers/ticket");
 const fileInfoController = require("../controllers/fileInfo");
 
 const router = express.Router();
 
 router.get("/:eventId/email", eventController.getEventEmail);
-router.get("/:eventId/artist", artistController.getArtistByEvent);
 router.get("/:eventId/document", eventController.getDocumentByEvent);
 router.get("/:eventId/role", roleController.getRoleByEvent);
 router.post("/", eventController.insertEvent);
@@ -25,8 +23,6 @@ router.delete("/:eventId/role/:roleId", roleController.removeRoleFromEvent);
 router.put("/:eventId/equipment/:equipmentId", equipmentController.updateEquipmentOnEvent);
 router.put("/:eventId/cancel", eventController.cancelEvent);
 router.put("/:eventId/role", roleController.updateRoleCount);
-router.get("/:eventId/artist", artistController.getArtistByEvent);
-router.get("/:eventId/ticket", ticketController.getAllTickets);
 router.get("/:eventId/getFileInfo", fileInfoController.getFileInfoByEvent);
 router.post("/:eventId/checkFileName", fileInfoController.checkFileName);
 //router.delete("/:eventId", eventController.deleteEvent);

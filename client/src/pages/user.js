@@ -59,8 +59,10 @@ export class UserLogin extends Component {
     }
 
     attemptLogin() {
-        userService.attemptLogin(this.username, this.password, ()=>{});
-        history.push("/");
+        userService.attemptLogin(this.username, this.password, (response )=>{
+            console.log(response);
+            history.push("/");
+        });
     }
 
     register() {
@@ -102,6 +104,7 @@ export class UserRegister extends Component {
                             placeholder="Mario"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
                             required
+
                             maxLength={50}
                         />
                         <p>Etternavn:</p>
@@ -133,7 +136,7 @@ export class UserRegister extends Component {
                             placeholder="Mario"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
                             required
-                            minLength={1}
+                            minLength={3}
                             maxLength={50}
                         />
                         <br/>
@@ -144,7 +147,7 @@ export class UserRegister extends Component {
                             placeholder="Passord"
                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
                             required
-                            minLength={1}
+                            minLength={5}
                             maxLength={256}
                         />
                         <br/>

@@ -1,15 +1,18 @@
 //@flow
 
 import {ArtistDAO} from "../dao/artistDao";
+import {UserDAO} from "../dao/userDao";
 const pool = require("../server");
 const artistDao = new ArtistDAO(pool);
+const userDao = new UserDAO(pool);
 
 exports.insertArtist = (req, res, next) => {
     console.log(`Got request from client: POST /api/artist`);
-
-    if (req.body.contactId) {
-        artistDao.createArtistOnContact(req.body.artistName, req.body.contactId, (err, rows) => {
-            res.send(rows);
+    if (req.body.userId) {
+        userDao.getContact(req.body.userId, (err, contact) => {
+            artistDao.createArtistOnContact(req.body.artistName,contact[0][0].contact_id, (err, rows) => {
+                res.send(rows);
+            });
         });
     } else {
         artistDao.insertArtist(req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
