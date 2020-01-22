@@ -4,6 +4,7 @@ const contactController = require("../controllers/contact");
 const eventController = require("../controllers/event");
 const artistController = require("../controllers/artist");
 const ticketController = require("../controllers/ticket");
+const userController = require("../controllers/user");
 
 const router = express.Router();
 
@@ -17,7 +18,6 @@ router.get("/categories", eventController.getCategories);
 router.get("/user/:userId/event", eventController.getEventByUser);
 router.get("/user/:userId/event/ended", eventController.getEndedEventsByUser);
 router.get("/event/:eventId/ticket", ticketController.getAllTickets);
-
-
+router.get("/event/:contactId", userController.getOrganizerUsername);
 
 module.exports = router;

@@ -403,7 +403,7 @@ exports.getUser = (req, res, next) => {
             }
         });
     });
-}
+};
 
 exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;
@@ -445,4 +445,10 @@ exports.updateUserPassword = (req, res, next) => {
         res.json({ error: "Password not accepted" });
     }
 };
+exports.getOrganizerUsername = (req, res, next) => {
+    console.log("Got get request from client: organizerUsername")
+    userDao.getOrganizerUsername(req.params.contactId, (err, rows) => {
+        res.json(rows);
+    })
+}
 //lag tester for dao, mangler noen metoder (minst 1)

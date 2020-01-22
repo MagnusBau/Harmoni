@@ -13,6 +13,7 @@ DROP PROCEDURE IF EXISTS put_contact;
 DROP PROCEDURE IF EXISTS put_password;
 DROP PROCEDURE IF EXISTS check_and_verify_artist_username;
 DROP PROCEDURE IF EXISTS get_user_by_artist;
+DROP PROCEDURE IF EXISTS get_organizer_username;
 
 /**
   Inserts a new contact
@@ -185,4 +186,13 @@ CREATE PROCEDURE put_password(IN user_id_in INT(11), IN password_in VARCHAR(256)
 BEGIN
     UPDATE user set password = password_in
     WHERE user_id = user_id_in;
+END;
+
+/**
+  Gets username by organizer
+ */
+
+CREATE PROCEDURE get_organizer_username(IN organizer_in INT)
+BEGIN
+     SELECT username FROM user u LEFT JOIN contact c ON u.contact = c.contact_id WHERE organizer_in = c.contact_id;
 END;
