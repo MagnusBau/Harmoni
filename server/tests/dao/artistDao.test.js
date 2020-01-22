@@ -23,7 +23,10 @@ beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
             runSqlFile("database/procedures/artist_procedures.sql", pool, () => {
-                runSqlFile("database/testData.sql", pool, done);
+                runSqlFile("database/procedures/document_procedures.sql", pool, () => {
+                    runSqlFile("database/testData.sql", pool, done);
+                });
+
             })
         });
 });
