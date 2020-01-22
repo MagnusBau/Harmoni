@@ -26,7 +26,7 @@ class FileInfoService {
     }
 
     postFileInfo(name: string, eventId: number, data: FormData) {
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/single/${eventId}`,
+        return axios.post(`http://` + ip +`:4000/api/single/${eventId}`,
             data, {
                 'headers': {
                     'x-access-token': userService.getToken()
@@ -40,7 +40,7 @@ class FileInfoService {
             .catch(error => console.log("error" + error));
     }
     updateFile(data: FormData) {
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/single/update`,
+        return axios.post(`http://` + ip +`:4000/api/single/update`,
             data, {
                 'headers': {
                     'x-access-token': userService.getToken()

@@ -235,6 +235,11 @@ export class FileMain extends Component {
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
+        if(this.name !== file.name){
+            if(this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)){
+                this.name = this.name + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)
+            }
+        }
         if(this.state.file !== null){
             fileInfoService.checkFileName(this.props.eventId, this.name)
                 .then(response => {

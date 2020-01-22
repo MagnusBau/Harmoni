@@ -151,7 +151,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         artistService
             .getArtistByUser(userService.getUserId())
             .then(artists => {
-                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() !== this.eventOverview[0].organizer)});
+                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)});
                 if(artists.body.error) {
                     this.errorMessage = artists.body.error;
                 }
