@@ -339,6 +339,11 @@ class UserService {
     mountDropdown() {
         this.mountDropdown();
     }
+    getOrganizerUsername(contactId: number) {
+        return axios.get("http://localhost:4000/api/event/" + contactId)
+            .then(response => response.data)
+            .catch(error => console.log(error.message));
+    }
 }
 
 export let userService = new UserService();

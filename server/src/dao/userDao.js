@@ -125,5 +125,8 @@ export class UserDAO extends Dao {
             values,
             callback);
     }
-
+    getOrganizerUsername(contactId: number, callback: (status: string, data: string) => void){
+        let value = [contactId];
+        super.query("CALL get_organizer_username(?)", value, callback);
+    }
 }

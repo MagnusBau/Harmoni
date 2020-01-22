@@ -13,6 +13,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
     errorMessage:string="";
     currentEvent: number = 0;
     event: Event = null;
+    organizer: string ="";
     artists: Artist[] = [];
     tickets: Ticket[] = [];
 
@@ -38,6 +39,10 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                 this.tickets = tickets[0];
                 if(tickets.body.error) this.errorMessage = tickets.body.error;
             })
+            .catch((error: Error) => console.log(error.message));
+        userService
+            .getOrganizerUsername(this.event.organizer)
+            .then(organizer => this.organizer = organizer)
             .catch((error: Error) => console.log(error.message));
     }
     render() {
@@ -92,7 +97,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                 <table className="table w-50">
                     <thead><tr><th>Arrangør</th></tr></thead>
                     <tr className="d-flex">
-                        <td>{this.event[0].organizer}</td>
+                        <td>lol</td>
                     </tr>
                 </table>
             </div>
