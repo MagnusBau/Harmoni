@@ -101,7 +101,7 @@ test("Get artists from database by eventId", done => {
 
         data = data[0];
         expect(data.length).toBe(1);
-        expect(data.artist_name).toBe("Geir Lippestad");
+        expect(data[0].artist_name).toBe("Geir Lippestad");
         done();
     }
     artistDao.getArtistByEvent(1, callback);
