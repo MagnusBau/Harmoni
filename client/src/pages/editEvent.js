@@ -83,8 +83,9 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                 id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                value={this.state.start_time}
+                                value={this.event.start_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleStartTime}
                             />
                         </div>
@@ -97,8 +98,9 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                 id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                value={this.state.end_time}
+                                value={this.event.end_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleEndTime}
                             />
                         </div>
