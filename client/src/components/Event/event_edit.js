@@ -19,8 +19,8 @@ export class EventEdit extends Component {
     updateEvent = new CreateEvent();
 
     state = {
-        start_time: new moment(),
-        end_time: new moment()
+        start_time: moment(),
+        end_time: moment()
     };
 
     constructor(props, context) {
@@ -86,7 +86,7 @@ export class EventEdit extends Component {
                                 id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                defaultValue={this.event.start_time}
+                                value={this.event.start_time}
                                 locale={"no"}
                                 inputProps={{readOnly: true}}
                                 onChange={this.handleStartTime}
@@ -101,7 +101,7 @@ export class EventEdit extends Component {
                                 id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                defaultValue={this.event.end_time}
+                                value={this.event.end_time}
                                 locale={"no"}
                                 inputProps={{readOnly: true}}
                                 onChange={this.handleEndTime}
@@ -192,7 +192,15 @@ export class EventEdit extends Component {
         this.currentEvent = this.props.eventId;
         eventService
             .getEventIDUpdate(this.currentEvent)
-            .then(event => (this.event = event[0][0]))
+            .then(event =>  {
+                this.event = event[0][0];
+                this.event.start_time = moment(this.event.start_time).format('YYYY-MM-DD HH:mm');
+                this.event.end_time = moment(this.event.end_time).format('YYYY-MM-DD HH:mm');
+                console.log(this.event.start_time);
+                console.log(this.event.end_time)
+            })
             .catch((error: Error) => Alert.danger(error.message));
+
+
     }
 }
