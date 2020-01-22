@@ -16,13 +16,13 @@ class UserService {
                 return this.error(response);
             }
             if(response != null) {
-                localStorage.setItem("user_id", response.userRegister.user_id);
-                localStorage.setItem("username", response.userRegister.username);
-                localStorage.setItem("image", response.userRegister.image);
-                localStorage.setItem("first_name", response.userRegister.first_name);
-                localStorage.setItem("last_name", response.userRegister.last_name);
-                localStorage.setItem("email", response.userRegister.email);
-                localStorage.setItem("phone", response.userRegister.phone);
+                localStorage.setItem("user_id", response.user.user_id);
+                localStorage.setItem("username", response.user.username);
+                localStorage.setItem("image", response.user.image);
+                localStorage.setItem("first_name", response.user.first_name);
+                localStorage.setItem("last_name", response.user.last_name);
+                localStorage.setItem("email", response.user.email);
+                localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("contact_id", response.contact_id);
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("artist_id", response.artist.artist_id);
