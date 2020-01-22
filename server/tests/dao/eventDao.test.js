@@ -41,9 +41,8 @@ test("Get all events", done => {
            `Test callback: status=${status}, data=${data}`
        );
        data = data[0];
-       expect(data.length).toBe(4);
-       expect(data[0].title).toBe("Konsert");
-       expect(data[1].title).toBe("Konsert m/ ballonger");
+       expect(data.length).toBe(3);
+
        done();
    }
    eventDao.getAllEvents(callback);
