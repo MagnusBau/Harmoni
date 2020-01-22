@@ -66,6 +66,9 @@ VALUES (DEFAULT, 'thrud', 'thrud', 1);
 INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
 
+INSERT INTO contract (artist, document)
+VALUES (1, 1);
+
 INSERT INTO rider (description, document)
 VALUES ('Mathias må ha tre kameler og syv geiter', 2);
 INSERT INTO rider (description, document)
