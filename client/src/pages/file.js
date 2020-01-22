@@ -2,24 +2,27 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import { createHashHistory } from 'history';
+import {createHashHistory} from 'history';
+
 const history = createHashHistory();
-import { FileInfo, fileInfoService, fileService } from "../services/fileService";
+import {FileInfo, fileInfoService, fileService} from "../services/fileService";
 import {Alert, Button} from "../components/widgets";
 import {Modal} from "react-bootstrap";
 import {AddRiderType} from "../components/Rider/rider";
 import {Rider} from "../services/riderService";
 
 export class FileMain extends Component {
-    errorMessage:string="";
+    errorMessage: string = "";
     rider = new Rider(
         '',
         ''
     );
+
     constructor(props) {
         super(props);
         this.state = {file: null, showConfirmDelete: false};
     }
+
     form: any = null;
     name: string = "";
     fileList: Object[] = [];
@@ -154,7 +157,7 @@ export class FileMain extends Component {
                         </div>
                         <button type="submit" className="btn btn-success m-2">Last opp</button>
                     </form>
-                : null}
+                    : null}
                 <table className="table">
                     <thead>
                     <tr className="d-flex">
@@ -169,19 +172,24 @@ export class FileMain extends Component {
                             {!this.props.isArtist ?
                                 <div>
                                     <td className="col-1">
-                                                <button type="button" className="btn btn-link"
-                                                        onClick={(event) => this.handleDownload(event)}>
-                                                    <img src="./img/icons/download.svg" width="24" height="24"/>
-                                                </button>
+                                        <button type="button" className="btn btn-link"
+                                                onClick={(event) => {
+                                                    this.setState({selected: f.name});
+                                                    this.handleDownload(event)
+                                                }}>
+                                            <img src="./img/icons/download.svg" width="24" height="24"/>
+                                        </button>
 
                                     </td>
                                     <td className="col-1">
                                         <button type="button" className="btn btn-danger"
-                                                onClick={() => {this.setState({selected: f.name, showConfirmDelete: true})}}>Fjern
+                                                onClick={() => {
+                                                    this.setState({selected: f.name, showConfirmDelete: true})
+                                                }}>Fjern
                                         </button>
                                     </td>
                                 </div>
-                            : null}
+                                : null}
                         </tr>
                     ))}
                     </tbody>
@@ -202,12 +210,15 @@ export class FileMain extends Component {
                         <Button.Light
                             id="closeConfirmDelete"
                             onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
-                        <Button.Red onClick={() => {this.handleDelete(); this.setState({showConfirmDelete: false})}}>Bekreft</Button.Red>
+                        <Button.Red onClick={() => {
+                            this.handleDelete();
+                            this.setState({showConfirmDelete: false})
+                        }}>Bekreft</Button.Red>
                     </Modal.Footer>
                 </Modal>
-                            <div>
-                                <AddRiderType documentId={this.rider.document}/>
-                            </div>
+                <div>
+                    <AddRiderType documentId={this.rider.document}/>
+                </div>
             </div>
         )
     }
@@ -219,7 +230,7 @@ export class FileMain extends Component {
     fetch() {
         fileInfoService.getFileInfo(this.props.eventId).then(response => {
             this.fileList = response[0];
-            if(response.body.error) {
+            if (response.body.error) {
                 this.errorMessage = response.body.error;
             }
             console.log(response[0]);
@@ -235,16 +246,16 @@ export class FileMain extends Component {
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
-        if(this.name !== file.name){
-            if(this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)){
+        if (this.name !== file.name) {
+            if (this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)) {
                 this.name = this.name + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)
             }
         }
-        if(this.state.file !== null){
+        if (this.state.file !== null) {
             fileInfoService.checkFileName(this.props.eventId, this.name)
                 .then(response => {
-                    console.log("DUP?: "+ response[0][0].duplicate);
-                    if(response[0][0].duplicate === 0){
+                    console.log("DUP?: " + response[0][0].duplicate);
+                    if (response[0][0].duplicate === 0) {
 
                         const myNewFile = new File([file], this.props.eventId + this.nameAddOn + file.name, {type: file.type});
 
@@ -252,13 +263,13 @@ export class FileMain extends Component {
                         formData.append('name', this.name);
                         formData.append('path', this.path + myNewFile.name);
 
-                        fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
+                        fileInfoService.postFileInfo(this.name, this.props.eventId, formData).then(response => {
                             console.log("should have posted fileInfo to database");
-                            this.setState({file: null});
+                            //this.setState({file: null});
                             this.name = "";
                             this.mounted();
                         });
-                    }else{
+                    } else {
                         Alert.danger('En fil med dette navnet eksisterer allerede!');
                         //this.errorMessage = "En fil med dette navnet finnes allerede";
                         this.mounted();
@@ -268,10 +279,10 @@ export class FileMain extends Component {
 
     }
 
-    handleDownload(e){
-        this.setState({selected: e.target.innerText});
-        if(this.state.selected !== undefined){
+    handleDownload(e) {
+        if (this.state.selected !== undefined) {
             let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
+            console.log(filePath);
             let encodedFilePath = btoa(filePath);
             window.open("http://localhost:4000/api/file/download/" + encodedFilePath, "_blank");
             console.log(encodedFilePath);
@@ -279,16 +290,16 @@ export class FileMain extends Component {
                 console.log("laster ned " + this.state.selected));
         }
     }
-    handleOverwrite(){
-        if(this.state.selected !== undefined){
+
+    handleOverwrite() {
+        if (this.state.selected !== undefined) {
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             history.push("/event/" + this.props.eventId + "/edit/file/" + encodedFilePath);
         }
-
     }
 
-    handleDelete(){
-        if(this.state.selected !== undefined){
+    handleDelete() {
+        if (this.state.selected !== undefined) {
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
                 if (response.error) {
@@ -306,7 +317,7 @@ export class FileMain extends Component {
     }
 }
 
-export class FileEdit extends Component <{match: {params: {filepath: string, eventId: number}}}> {
+export class FileEdit extends Component <{ match: { params: { filepath: string, eventId: number } } }> {
     form = null;
     errorMessage: string = "";
     text: string = "";
