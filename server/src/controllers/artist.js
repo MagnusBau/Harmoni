@@ -99,3 +99,20 @@ exports.removeArtistFromEvent = (req, res, next) => {
         res.send(rows);
     })
 };
+
+exports.addArtistWithNewContract = (req, res, next) => {
+    console.log(`Got request from client: POST /api/event/${req.params.eventId}/artist/contract`);
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path,
+        "artist_name": req.body.artist_name,
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "email": req.body.email,
+        "phone": req.body.phone
+    };
+    artistDao.addArtistWithNewContract(data, (err, rows) => {
+        res.send(rows);
+    });
+};

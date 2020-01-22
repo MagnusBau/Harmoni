@@ -246,24 +246,27 @@ export class FileMain extends Component {
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
-        if (this.name !== file.name) {
-            if (this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)) {
+        if(this.name !== file.name){
+            if(this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)){
                 this.name = this.name + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)
             }
         }
-        if (this.state.file !== null) {
+        if(this.state.file !== null){
             fileInfoService.checkFileName(this.props.eventId, this.name)
                 .then(response => {
                     console.log("DUP?: " + response[0][0].duplicate);
                     if (response[0][0].duplicate === 0) {
 
-                        const myNewFile = new File([file], this.props.eventId + this.nameAddOn + file.name, {type: file.type});
+                        const myNewFile = new File([file], this.props.eventId + this.nameAddOn + this.name, {type: file.type});
 
                         formData.append('file', myNewFile);
                         formData.append('name', this.name);
                         formData.append('path', this.path + myNewFile.name);
 
-                        fileInfoService.postFileInfo(this.name, this.props.eventId, formData).then(response => {
+                        fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
+                            if(response.data === "error"){
+                                this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                            }
                             console.log("should have posted fileInfo to database");
                             //this.setState({file: null});
                             this.name = "";
@@ -302,6 +305,7 @@ export class FileMain extends Component {
         if (this.state.selected !== undefined) {
             let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
+                console.log(`Response: ${response}`);
                 if (response.error) {
                     // Foreign key update fail from database
                     if (response.error.errno === 1451) {
@@ -362,7 +366,7 @@ export class FileEdit extends Component <{ match: { params: { filepath: string, 
     }
 
     mounted() {
-        fileInfoService.getFileContent(this.props.match.params.filepath).then(response => {
+        fileInfoService.getFileContent(this.props.filepath).then(response => {
             this.text = response.data;
         });
     }
