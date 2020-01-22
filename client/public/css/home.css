@@ -1,6 +1,4 @@
-.carousel-control-next, .carousel-control-prev {
-    filter: invert(100%)
-}
+/*CSS for home.js*/
 
 .image-header {
     top: 0;
@@ -8,7 +6,31 @@
     margin: 0 0 0 0;
 }
 
-.container {
+#frontpage {
     position: relative;
-
+    top: 0;
 }
+
+#frontpage-card-container{
+    border-color: transparent;
+}
+#frontpage-card-body{
+    padding: 15px 15px 15px 15px;
+    border-color: transparent;
+}
+
+#frontpageCard {
+    background: var(--color-light-beige);
+    border: 5px 5px 5px 5px var(--color-light-blue);
+    margin: 10px 5px 10px 5px;
+}
+
+#frontpageCard:hover {
+    -webkit-box-shadow: -2px 3px 47px 3px rgba(33,57,63,0.22);
+}
+
+#wrap {
+    position: absolute;
+    top: 0
+}
+

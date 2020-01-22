@@ -161,8 +161,10 @@ class NavBar extends Component {
 
         //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light navbar-expand-md sticky-top">
-               <a className="navbar-brand"  href="#">Harmoni</a>
+           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
+               <a className="navbar-brand"  href="#">
+                   <img src="./img/harmoni-logo-black-brown.png" height="50px" width="50px"/>
+                   Harmoni</a>
                <button className="navbar-toggler" type="button" data-toggle="collapse"
                        data-target="#navbarContent" aria-controls="navbarContent"
                        aria-expanded="false" aria-label="Toggle navigation">

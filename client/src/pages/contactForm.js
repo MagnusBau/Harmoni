@@ -4,6 +4,7 @@ import * as React from "react";
 import {Component} from "react-simplified";
 import {createHashHistory} from "history";
 import { contactUsService, ContactUs } from '../services/contactService';
+import { BigHeader } from "../components/Header/headers";
 
 const history = createHashHistory();
 
@@ -19,8 +20,9 @@ export class ContactForm extends Component {
             <div className="container">
 
                 <div style={{textAlign: 'center'}}>
-                    <h1>Kontakt oss</h1>
+                    <BigHeader label="Kontakt oss"/>
                     <p style={{marginTop: 15}}>Bruk dette skjemaet for spørsmål, idéer, tilbakemeldinger eller andre henvendelser. </p>
+                    <hr/>
                 </div>
 
                 <form ref={e => {this.form = e}} className="form-group">

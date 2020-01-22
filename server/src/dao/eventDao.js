@@ -17,6 +17,10 @@ export class EventDAO extends Dao {
         super.query("CALL get_all_events", [], callback);
     }
 
+    getFrontpageEvents(callback: (status: string, data: string) => void) {
+        super.query("CALL get_frontpage_events", [], callback);
+    }
+
     //TODO lage query i db
     //TODO lage test
     getEventByInput(input: string, callback: (status: string, data: string) => void) {

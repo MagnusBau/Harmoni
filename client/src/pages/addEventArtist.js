@@ -6,7 +6,7 @@ import {Component} from 'react-simplified';
 import {Artist, artistService} from "../services/artistService";
 import {eventService, Event, Document} from "../services/eventService";
 import {Modal} from 'react-bootstrap';
-import {Button} from "../components/widgets";
+import {Button} from "../components/Buttons/buttons";
 import {userService} from "../services/userService";
 import Autosuggest from 'react-autosuggest';
 import {Alert} from '../components/widgets';

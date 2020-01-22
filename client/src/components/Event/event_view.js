@@ -6,7 +6,8 @@ import {createHashHistory} from 'history';
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
-import {ModalWidget, Button} from "../widgets";
+import {ModalWidget} from "../Modal/modal";
+import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
 
 export default class EventView extends Component {
@@ -58,12 +59,12 @@ export default class EventView extends Component {
                 : null}
 
                 {!this.props.isArtist ?
-                    <Button.Red onClick={this.show}>Avlys arrangement</Button.Red>
-                : null}
+                    <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target="#showModal">Avlys arrangement</button>
+                    : null}
 
-                <ModalWidget show={this.state.setShowModal} onHide={this.close} title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <Button.Light onClick={this.close}>Lukk</Button.Light>
-                    <Button.Red onClick={this.cancelEvent}>Avlys</Button.Red>
+                <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
+                    <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
+                    <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
                 </ModalWidget>
 
             </div>
@@ -102,12 +103,10 @@ export default class EventView extends Component {
                 .catch((error: Error) => Alert.danger(error));
 
         } else if (this.eventOverview[0].cancelled === 1) {
-
             console.log("Dette arrangementet er allerede avlyst");
             //return (Alert.info("Dette arrangementet er allerede avlyst"));
 
         } else {
-
             console.log("Noe gikk galt!");
             //return Alert.danger("Noe gikk galt!");
         }

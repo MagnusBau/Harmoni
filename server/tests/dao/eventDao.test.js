@@ -19,7 +19,6 @@ let pool = mysql.createPool({
 });
 
 const eventDao = new EventDAO(pool);
-
 beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
@@ -42,11 +41,22 @@ test("Get all events", done => {
        );
        data = data[0];
        expect(data.length).toBe(4);
-       expect(data[0].title).toBe("EM Håndball");
-       expect(data[1].title).toBe("Konsert");
        done();
    }
    eventDao.getAllEvents(callback);
+});
+
+test("Get frontpage events", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(3);
+
+        done();
+    }
+    eventDao.getFrontpageEvents(callback);
 });
 
 test("get not-cancelled events from db", done => {
@@ -54,11 +64,8 @@ test("get not-cancelled events from db", done => {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(3);
-
         done();
     }
     eventDao.getEventsByCancelled(false, callback);
@@ -69,15 +76,12 @@ test("get cancelled events from db", done => {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(1);
         expect(data[0].title).toBe('Konsert m/ ballonger');
         expect(data[0].description).toBe('Konsertbeskrivelse');
         expect(data[0].location).toBe('Trondheim');
         expect(data[0].organizer).toBe(3);
-
         done();
     }
     eventDao.getEventsByCancelled(true, callback);
@@ -88,14 +92,10 @@ test("get events on a user from db", done => {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(3);
-
         done();
     }
-
     eventDao.getEventByUser(1, callback);
 });
 
@@ -104,14 +104,10 @@ test("get ended events by a user from db", done => {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(1);
-
         done();
     }
-
     eventDao.getEndedEventsByUser(1, callback);
 });
 
@@ -122,12 +118,12 @@ test("create event", done => {
         done();
     }
     eventDao.createEvent({
-            "title": "test",
-            "description": "test",
-            "location": "test",
+            "title": "test.js",
+            "description": "description",
+            "location": "homepage.js",
             "start_time": "2020-01-01",
             "end_time": "2020-01-01",
-            "category": "test",
+            "category": "homepage.js",
             "capacity": "100",
             "organizer": "1"
         },
@@ -143,10 +139,10 @@ test("update event", done => {
     eventDao.updateEvent(4, {
         "title": "Test00",
         "description": "Test00description",
-        "location": "test",
+        "location": "homepage.js",
         "start_time": "2020-01-01",
         "end_time": "2020-01-01",
-        "category": "test",
+        "category": "homepage.js",
         "capacity": "100",
         "organizer": "1",
         "event_id": "4"
@@ -176,54 +172,40 @@ test("cancel event from db", done => {
     eventDao.cancelEvent(2, callback);
 });
 
-
-
-
-
 test("get cancelled event information", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(1);
         expect(data[0].title).toBe('Konsert m/ ballonger');
         expect(data[0].name).toBe('Mia Fornes');
         expect(data[0].email).toBe('mia@test.com');
-
         done();
     }
     eventDao.getCancelledEventInfo(3, callback);
 });
-
 /*
 test("delete_ ended event from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         //TODO change end_time in setup.sql
         expect(data.affectedRows).toBe(5);
         done();
     }
-
     eventDao.deleteEventsByEndTime(1, callback);
-
 test("search for event by title with string", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
-
         data = data[0];
-
         expect(data.length).toBe(2);
         expect(data[0].title).toBe('Konsert');
         expect(data[1].title).toBe('Konsert m/ ballonger');
-
         done();
     }
     eventDao.getEventByInput('KON', callback);
