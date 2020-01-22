@@ -36,7 +36,7 @@ VALUES ('Trommesett',1);
 INSERT INTO equipment (item, organizer)
 VALUES ('Gitarforsterker',1);
 INSERT INTO equipment (item, organizer)
-VALUES ('Bassforsterker',1);    |
+VALUES ('Bassforsterker',1);
 INSERT INTO equipment (item, organizer)
 VALUES ('XLR-kabel', 1);
 
