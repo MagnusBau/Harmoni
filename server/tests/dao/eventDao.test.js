@@ -122,12 +122,12 @@ test("create event", done => {
         done();
     }
     eventDao.createEvent({
-            "title": "test",
-            "description": "test",
-            "location": "test",
+            "title": "homepage.js",
+            "description": "homepage.js",
+            "location": "homepage.js",
             "start_time": "2020-01-01",
             "end_time": "2020-01-01",
-            "category": "test",
+            "category": "homepage.js",
             "capacity": "100",
             "organizer": "1"
         },
@@ -143,10 +143,10 @@ test("update event", done => {
     eventDao.updateEvent(4, {
         "title": "Test00",
         "description": "Test00description",
-        "location": "test",
+        "location": "homepage.js",
         "start_time": "2020-01-01",
         "end_time": "2020-01-01",
-        "category": "test",
+        "category": "homepage.js",
         "capacity": "100",
         "organizer": "1",
         "event_id": "4"

@@ -3,7 +3,3 @@
 .border-top{
     border-color: var(--color-dark-blue) !important;
 }
-
-.footer {
-    flex-shrink: 0;
-}
