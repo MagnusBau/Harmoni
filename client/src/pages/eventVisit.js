@@ -7,6 +7,7 @@ import {Event, eventService} from "../services/eventService";
 import {Artist, artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 import {Ticket, ticketService} from "../services/ticketService";
+import {PageHeader} from "../components/Header/headers";
 
 
 export class eventVisit extends Component <{match: {params: {eventId: number}}}> {
@@ -51,58 +52,61 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
     render() {
         if (!this.event) return null;
         return (
-            <div>
-                <h3>{this.event[0].title}</h3>
-                <table className="table w-50">
-                    <thead><tr><th>Beskrivelse</th></tr></thead>
-                    <tbody>
-                    <tr className="d-flex">
-                        <td className="col-5">{this.event[0].description}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table className="table w-50">
-                    <thead><tr><th>Artister</th></tr></thead>
-                    <tbody>
-                        {this.artists.map((artist =>
-                            <tr className="d-flex">
-                                <td className="col-5">{artist.artist_name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <table className="table w-50">
-                    <thead><tr><th>Tid og sted</th></tr></thead>
-                    <tbody>
-                        <tr className="d-flex">
-                            <td className="col-5">{this.event[0].location}</td>
-                            <td className="col-5">{this.event[0].start_time} - {this.event[0].end_time}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table className="table w-50">
-                    <thead><tr><th>Billetter</th></tr></thead>
-                    <tbody>
-                        <tr className="d-flex">
-                            <td className="col-4">Type</td>
-                            <td className="col-4">Antall</td>
-                            <td className="col-4">Pris</td>
-                        </tr>
-                        {this.tickets.map((ticket =>
-                            <tr className="d-flex">
-                                <td className="col-4">{ticket.title}</td>
-                                <td className="col-4">{ticket.count}stk</td>
-                                <td className="col-4">{ticket.price}kr</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <table className="table w-50">
-                    <thead><tr><th>Arrangør</th></tr></thead>
-                    <tr className="d-flex">
-                        <td>{this.organizer}</td>
-                    </tr>
-                </table>
+            <div className="container mt-4" id="eventView">
+                <div className="row">
+                    <div className="col-lg-12" id="eventCol">
+                        <img id="eventImg" src="./img/several-people-at-a-party-1540338.jpg" alt=""/>
+                    </div>
+                </div>
+                <div className="row"><h1 id="eventTitle">{this.event[0].title}</h1></div>
+                <div className="row">
+                    <div className="col-lg-6" id="eventContent">
+                        <div>
+                            <PageHeader label="Beskrivelse"/>
+                            <p>{this.event[0].description}</p>
+                        </div>
+                        <div>
+                            <PageHeader label="Arrangør"/>
+                            <p>{this.organizer}</p>
+                        </div>
+                        <div>
+                            <PageHeader label="Tid"/>
+                            <div>
+                                <p>Start: {this.event[0].start_time}</p>
+                                <p>Slutt: {this.event[0].end_time}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-6" id="eventContent">
+                        <div>
+                            <PageHeader label="Artister"/>
+                            <p>{this.artists.map((artist =>
+                                {artist.artist_name}
+                            ))}
+                            </p>
+                        </div>
+
+                        <div>
+                            <PageHeader label="Billetter"/>
+                            <table className="table table-borderless">
+                                <tbody>
+                                <tr className="d-flex">
+                                    <th className="col-2">Type</th>
+                                    <th className="col-2">Antall</th>
+                                    <th className="col-2">Pris</th>
+                                </tr>
+                                {this.tickets.map((ticket =>
+                                        <tr className="d-flex">
+                                            <td className="col-2">{ticket.title}</td>
+                                            <td className="col-2">{ticket.count}stk</td>
+                                            <td className="col-2">{ticket.price}kr</td>
+                                        </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
