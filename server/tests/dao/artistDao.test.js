@@ -161,7 +161,7 @@ test("Insert new artist with a new document and contract", done => {
             `Test callback: status=${status}, data=${data}`
         );
 
-        expect(data.affectedRows).toBe(3);
+        expect(data.affectedRows).toBe(1);
         done();
     }
     artistDao.addArtistWithNewContract({
