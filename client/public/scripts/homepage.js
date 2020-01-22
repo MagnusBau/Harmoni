@@ -20,7 +20,7 @@ $(document).ready(function() {
     $(window).scroll(function() {
 
         if(path === "http://localhost:4000/#/") {
-            // checks if window is scrolled more than 500px, adds/removes solid class
+            //Check if window is scrolled more than the image height, adds/removes solid class
             if ($(this).scrollTop() > scrollHeight) {
                 $('.navbar').addClass('solid');
             } else {
