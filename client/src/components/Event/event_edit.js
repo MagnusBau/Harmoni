@@ -20,8 +20,8 @@ export class EventEdit extends Component {
     categories: string[] = [];
 
     state = {
-        start_time: moment(),
-        end_time: moment()
+        start_time: new moment(),
+        end_time: new moment()
     };
 
     constructor(props, context) {
@@ -196,7 +196,9 @@ export class EventEdit extends Component {
             .then(event =>  {
                 this.event = event[0][0];
                 this.event.start_time = moment(this.event.start_time).format('YYYY-MM-DD HH:mm');
+                this.state.start_time = this.event.start_time;
                 this.event.end_time = moment(this.event.end_time).format('YYYY-MM-DD HH:mm');
+                this.state.end_time = this.event.end_time;
                 console.log(this.event.start_time);
                 console.log(this.event.end_time)
             })
