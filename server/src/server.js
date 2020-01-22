@@ -214,7 +214,7 @@ app.use("/auth/id/:id/ticket", ticketRoutes);
 app.use("/api/role", roleRoutes);
 app.use("/api/rider", riderRoutes);
 app.use("/api/file", fileRoutes);
-app.use("/api/contact", contactRoutes);
+app.use("/api/contactUs", contactRoutes);
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){
