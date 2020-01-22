@@ -275,10 +275,16 @@ class UserService {
         localStorage.setItem("artist_name", null);
     }
 
+    setArtist(artist_id: number, artist_name: string) {
+        localStorage.setItem("artist_id", artist_id);
+        localStorage.setItem("artist_name", artist_name);
+    }
+
     checkToken() {
         if(localStorage.getItem("token_time") != null) {
-            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 6000) {
+            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 60000) {
                 localStorage.setItem("token_time", (new Date()).toString());
+                console.log("update token");
                 this.updateToken();
             }
         } else {
@@ -288,7 +294,7 @@ class UserService {
     }
 
     error(res: Response, token: boolean) {
-        if(!token) {
+        if(!token && this.getUserId() !== "null") {
             this.checkToken();
         }
         if(res.data) {
@@ -305,6 +311,8 @@ class UserService {
                     return res.data;
                 }
             }
+        } else if(res.error) {
+            return res;
         }
         return false;
     }

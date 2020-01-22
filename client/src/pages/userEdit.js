@@ -29,7 +29,7 @@ export default class UserEdit extends Component {
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
-    artistName: string = userService.getArtistName();
+    artistName: string = "";
     userForm: any = null;
     passwordForm: any = null;
     artistForm: any = null;
@@ -42,11 +42,9 @@ export default class UserEdit extends Component {
 
     mounted() {
 //TODO get events by user
-        if(this.artistName == null || this.artistName === "null") {
-            this.artistName = "";
-        }
+
         userService.getUser().then(respons => {
-            if(userService.getArtistId() != null) {
+            if(this.artistName !== null && this.artistName !== "null") {
                 this.artistName = userService.getArtistName();
             }
             this.firstName = userService.getFirstName();
@@ -301,8 +299,18 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.createArtistOnContact(this.artistName, this.contactId);
-        this.mounted();
+        artistService.createArtistOnUser(this.artistName, this.contactId).then(response => {
+            artistService.getArtistByUser(userService.getUserId()).then(response => {
+                console.log(response);
+                console.log("yo");
+                if(response[0][0]) {
+                    if(response[0][0].artist_id) {
+                        userService.setArtist(response[0][0].artist_id, response[0][0].artist_name);
+                    }
+                }
+                this.mounted();
+            })
+        })
     }
 
     saveImageChanges() {

@@ -19,6 +19,7 @@ const history = createHashHistory();
     //TODO vise hvem som er logget inn i popup -> trenger nok noe state greier fra noe user greier når det er up and running
     //TODO rette opp navbar
 class NavBar extends Component {
+
     form: any = null;
     firstName: string = "";
     lastName: string = "";
