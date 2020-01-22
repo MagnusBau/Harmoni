@@ -86,10 +86,10 @@ export class UserDAO extends Dao {
 
     //<DO NOT TOUCH>
     postContact(data, callback: ()=>void) {
-        let first_name = JSON.stringify(data.first_name);
-        let last_name = JSON.stringify(data.last_name);
-        let email = JSON.stringify(data.email);
-        let phone = JSON.stringify(data.phone);
+        let first_name = data.first_name;
+        let last_name = data.last_name;
+        let email = data.email;
+        let phone = data.phone;
         super.query(
             "INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default,?,?,?,?)",
             [first_name, last_name, email, phone],
@@ -125,5 +125,8 @@ export class UserDAO extends Dao {
             values,
             callback);
     }
-
+    getOrganizerUsername(contactId: number, callback: (status: string, data: string) => void){
+        let value = [contactId];
+        super.query("CALL get_organizer_username(?)", value, callback);
+    }
 }

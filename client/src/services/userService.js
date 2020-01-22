@@ -16,13 +16,13 @@ class UserService {
                 return this.error(response);
             }
             if(response != null) {
-                localStorage.setItem("user_id", response.userRegister.user_id);
-                localStorage.setItem("username", response.userRegister.username);
-                localStorage.setItem("image", response.userRegister.image);
-                localStorage.setItem("first_name", response.userRegister.first_name);
-                localStorage.setItem("last_name", response.userRegister.last_name);
-                localStorage.setItem("email", response.userRegister.email);
-                localStorage.setItem("phone", response.userRegister.phone);
+                localStorage.setItem("user_id", response.user.user_id);
+                localStorage.setItem("username", response.user.username);
+                localStorage.setItem("image", response.user.image);
+                localStorage.setItem("first_name", response.user.first_name);
+                localStorage.setItem("last_name", response.user.last_name);
+                localStorage.setItem("email", response.user.email);
+                localStorage.setItem("phone", response.user.phone);
                 localStorage.setItem("contact_id", response.contact_id);
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("artist_id", response.artist.artist_id);
@@ -275,10 +275,16 @@ class UserService {
         localStorage.setItem("artist_name", null);
     }
 
+    setArtist(artist_id: number, artist_name: string) {
+        localStorage.setItem("artist_id", artist_id);
+        localStorage.setItem("artist_name", artist_name);
+    }
+
     checkToken() {
         if(localStorage.getItem("token_time") != null) {
-            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 6000) {
+            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 60000) {
                 localStorage.setItem("token_time", (new Date()).toString());
+                console.log("update token");
                 this.updateToken();
             }
         } else {
@@ -288,7 +294,7 @@ class UserService {
     }
 
     error(res: Response, token: boolean) {
-        if(!token) {
+        if(!token && this.getUserId() !== "null") {
             this.checkToken();
         }
         if(res.data) {
@@ -305,6 +311,8 @@ class UserService {
                     return res.data;
                 }
             }
+        } else if(res.error) {
+            return res;
         }
         return false;
     }
@@ -315,6 +323,13 @@ class UserService {
 
     mountDropdown() {
         this.mountDropdown();
+    }
+    getOrganizerUsername(contactId: number) {
+        return axios.get('http://localhost:4000/api/event/' + contactId)
+            .then(response => {
+                console.log("Hello!");
+                return response.data})
+            .catch(error => console.log(error.message));
     }
 }
 

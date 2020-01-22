@@ -58,7 +58,7 @@ class ArtistService {
     }
 
     getArtistByEvent(eventId: number): Artist[] {
-        return axios.get<Artist[]>(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/artist`, {
+        return axios.get<Artist[]>(`http://localhost:4000/api/event/${eventId}/artist`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -108,11 +108,13 @@ class ArtistService {
             .catch(error => console.log("error" + error));
     }
 
-    createArtistOnContact(artistName: string, contactId: number): void {
-        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`, {artistName: artistName,
-                                                                         contactId: contactId}, {
-            'headers': {
-                'x-access-token': userService.getToken()
+    createArtistOnUser(artistName: string, userId: number): void {
+        return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`,
+            {artistName: artistName,
+                userId: userId},
+            {
+                'headers': {
+                    'x-access-token': userService.getToken()
             }}).then(response => {
             if(userService.error(response)){
                 return userService.error(response);

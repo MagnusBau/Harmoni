@@ -71,7 +71,7 @@ app.use("/auth/id/:id", (req, res, next) => {
                 }
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
-                        if(req.body.username === decoded.username) {
+                        if(req.body.username.toUpperCase() === decoded.username.toUpperCase()) {
                             console.log("Token ok: " + decoded.username);
                             if(req.body.user_id) {
                                 if(req.body.user_id === paramsId) {

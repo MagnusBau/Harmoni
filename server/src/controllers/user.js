@@ -51,11 +51,9 @@ function login(bool: boolean, username: string, res: Response) {
         let token = jwt.sign({ username: username}, privateKey, signOptions);
 
         userDao.getUser(username, (err, user) => {
-            console.log(username + user[0][0].user_id + user[0][0].username);
             artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
                 if(artist[0][0] != null) {
                     if(artist[0][0].artist_id != null) {
-                        console.log(artist[0][0].artist_name);
                         res.json({
                             user: {
                                 "user_id": user[0][0].user_id,
@@ -148,7 +146,7 @@ function validateUsername(data: Object, username: string, password: string, emai
 }
 
 function validatePassword(data: Object, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
-    let regex =/^[A-Za-z0-9-æøåÆØÅ]{8,256}$/;
+    let regex =/^[A-Za-z0-9-æøåÆØÅ]{5,256}$/;
     if(password.match(regex)){
         return validateEmail(data, email, first_name, last_name, phone, res);
     } else {
@@ -173,7 +171,7 @@ function validateEmail(data: Object, email: string, first_name: string, last_nam
 
 function validateFirstName(data: Object, first_name: string, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
-    if(first_name.match(regex) && 2 < first_name.length < 50) {
+    if(first_name.match(regex)) {
         return validateLastName(data, last_name, phone, res);
     } else {
         console.log("Invalid first name, cannot contain non english-norwegian letters");
@@ -184,7 +182,7 @@ function validateFirstName(data: Object, first_name: string, last_name: string, 
 
 function validateLastName(data: Object, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
-    if(last_name.match(regex) && 2 < last_name.length < 50) {
+    if(last_name.match(regex)) {
         return validatePhone(data, phone, res);
     } else {
         console.log("Invalid last name");
@@ -405,7 +403,7 @@ exports.getUser = (req, res, next) => {
             }
         });
     });
-}
+};
 
 exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;
@@ -447,4 +445,10 @@ exports.updateUserPassword = (req, res, next) => {
         res.json({ error: "Password not accepted" });
     }
 };
+exports.getOrganizerUsername = (req, res, next) => {
+    console.log("Got get request from client: organizerUsername")
+    userDao.getOrganizerUsername(req.params.contactId, (err, rows) => {
+        res.json(rows);
+    })
+}
 //lag tester for dao, mangler noen metoder (minst 1)

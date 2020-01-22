@@ -13,6 +13,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
     errorMessage:string="";
     currentEvent: number = 0;
     event: Event = null;
+    organizer: string="";
     artists: Artist[] = [];
     tickets: Ticket[] = [];
 
@@ -22,23 +23,30 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
             .getEventById(this.currentEvent)
             .then(event =>{
                 this.event = event;
-                if(event.body.error) this.errorMessage = event.body.error;
+                /*if(event.body.error)
+                    this.errorMessage = event.body.error;
+                    */
+                userService
+                    .getOrganizerUsername(event[0].organizer)
+                    .then(organizer => {
+                        console.log("Username: " + organizer[0][0].username);
+                        this.organizer = organizer[0][0].username})
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
         artistService
             .getArtistByEvent(this.currentEvent)
             .then(artists =>{
                 this.artists = artists[0];
                 if(artists.body.error) this.errorMessage = artists.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
         ticketService
             .getAllTicket(this.currentEvent)
             .then(tickets =>{
                 this.tickets = tickets[0];
                 if(tickets.body.error) this.errorMessage = tickets.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
     render() {
         if (!this.event) return null;
@@ -92,7 +100,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                 <table className="table w-50">
                     <thead><tr><th>Arrangør</th></tr></thead>
                     <tr className="d-flex">
-                        <td>{this.event[0].organizer}</td>
+                        <td>{this.organizer}</td>
                     </tr>
                 </table>
             </div>
