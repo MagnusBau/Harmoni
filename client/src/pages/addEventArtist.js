@@ -25,6 +25,7 @@ export class AddEventArtist extends Component {
     name: string = "";
     path: string = "./files/";
     nameAddOn: string = "------";
+    errorMessage = "";
 
     state = {
         showModal: false,
@@ -110,6 +111,7 @@ export class AddEventArtist extends Component {
             phone: ""
         };
         this.setState({setRemoveArtistShow: false});
+        this.errorMessage = "";
         this.mounted();
     }
 
@@ -117,6 +119,7 @@ export class AddEventArtist extends Component {
         userService.generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
                                         this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id);
         this.setState({setAddArtistUserShow: false});
+        this.errorMessage = "";
         this.mounted();
     }
 
@@ -151,6 +154,9 @@ export class AddEventArtist extends Component {
                             let path = this.path + myNewFile.name;
 
                             artistService.addArtistWithNewContract(this.newArtist, this.name, this.props.eventId, path).then(response => {
+                                if(response.data === "error"){
+                                    this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                                }
                                 fileInfoService.updateFile(formData).then(res =>{
                                     console.log("should have posted to server");
                                 });
@@ -330,6 +336,7 @@ export class AddEventArtist extends Component {
                                     )}
                                 </select>
                                 {uploadBox}
+                                {this.errorMessage}
                             </div>
                             <div className="col"/>
                         </div>
