@@ -156,7 +156,7 @@ test("get new event details by id", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
         data = data[0];
-        expect(data.length).toBe(5);
+        expect(data.length).toBe(4);
         expect(data[3].title).toBe("Test00");
         expect(data[3].description).toBe("Test00description");
         done();
