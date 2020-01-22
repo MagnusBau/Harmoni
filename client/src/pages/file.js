@@ -116,13 +116,18 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     handleUpload(e) {
         let file = this.state.file;
         let formData = new FormData();
+        if(this.name !== file.name){
+            if(this.name.slice((Math.max(0, this.name.lastIndexOf(".")) || Infinity) + 1) !== file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)){
+                this.name = this.name + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1)
+            }
+        }
         if(this.state.file !== null){
             fileInfoService.checkFileName(this.props.match.params.eventId, this.name)
                 .then(response => {
                     console.log("DUP?: "+ response[0][0].duplicate);
                     if(response[0][0].duplicate === 0){
 
-                        const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + file.name, {type: file.type});
+                        const myNewFile = new File([file], this.props.match.params.eventId + this.nameAddOn + this.name, {type: file.type});
 
                         formData.append('file', myNewFile);
                         formData.append('name', this.name);
