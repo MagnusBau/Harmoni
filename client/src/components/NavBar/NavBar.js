@@ -69,7 +69,6 @@ class NavBar extends Component {
     render() {
         let userIcon;
         if (userService.getUserId() > 0) {
-            console.log(userService.getUserId());
             userIcon = (
                 <div className="form-inline">
                     <div className="dropdown m-1">

@@ -219,10 +219,9 @@ export class FileMain extends Component {
     fetch() {
         fileInfoService.getFileInfo(this.props.eventId).then(response => {
             this.fileList = response[0];
-            if(response.body.error) {
-                this.errorMessage = response.body.error;
+            if(response.error) {
+                this.errorMessage = response.error;
             }
-            console.log(response[0]);
         })
     }
 
@@ -238,7 +237,6 @@ export class FileMain extends Component {
         if(this.state.file !== null){
             fileInfoService.checkFileName(this.props.eventId, this.name)
                 .then(response => {
-                    console.log("DUP?: "+ response[0][0].duplicate);
                     if(response[0][0].duplicate === 0){
 
                         const myNewFile = new File([file], this.props.eventId + this.nameAddOn + file.name, {type: file.type});
@@ -248,7 +246,6 @@ export class FileMain extends Component {
                         formData.append('path', this.path + myNewFile.name);
 
                         fileInfoService.postFileInfo(this.name, this.props.eventId,  formData).then(response => {
-                            console.log("should have posted fileInfo to database");
                             this.setState({file: null});
                             this.name = "";
                             this.mounted();
@@ -269,9 +266,9 @@ export class FileMain extends Component {
             let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
             let encodedFilePath = btoa(filePath);
             window.open("http://localhost:4000/api/file/download/" + encodedFilePath, "_blank");
-            console.log(encodedFilePath);
-            fileInfoService.downloadFile(encodedFilePath).then(response =>
-                console.log("laster ned " + this.state.selected));
+            fileInfoService.downloadFile(encodedFilePath).then(response => {
+
+            });
         }
     }
     handleOverwrite(){
@@ -367,7 +364,6 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
             formData.append('file', myNewFile);
 
             fileInfoService.updateFile(formData).then(response => {
-                console.log("should have updated file");
                 history.push("/event/" + this.props.eventId + "/edit/file");
             });
         }

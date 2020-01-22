@@ -177,7 +177,6 @@ export class UserRegister extends Component {
             this.errorMessage = "Fyll ut de røde feltene";
             return;
         }
-        console.log("click2");
         userService.attemptRegister(this.username, this.password, this.email, this.firstName, this.lastName, this.phone, history);
     }
 }

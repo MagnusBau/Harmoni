@@ -64,7 +64,8 @@ export class EventService {
     }
 
     getEventById(eventId: number): Event[] {
-        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId, {
+        console.log(eventId);
+        return axios.get<Event[]>('http://localhost:4000/api/event/' + eventId, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -78,7 +79,7 @@ export class EventService {
     }
 
     getEventIDUpdate(eventID: number): Event[] {
-        return axios.get('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/edit/' + eventID, {
+        return axios.get('http://localhost:4000/api/event/' + eventID + '/edit', {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
@@ -104,7 +105,7 @@ export class EventService {
     }
 
     getEventByUser(userId: number): Event[] {
-        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId, {
+        return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + '/event', {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
@@ -117,7 +118,7 @@ export class EventService {
     }
 
     getEndedEventsByUser(userId: number): Event[] {
-        return axios.get<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId + "/ended", {
+        return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + "/event/ended", {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
@@ -143,7 +144,7 @@ export class EventService {
     }
 
     updateEvent(eventID: number, updateEvent: CreateEvent): Promise<void> {
-        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/edit/' + eventID, updateEvent, {
+        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventID + '/edit', updateEvent, {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
@@ -182,7 +183,7 @@ export class EventService {
     }
 
     deleteEndedEvents(userId: number) {
-        return axios.delete<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/user/' + userId + '/ended', {
+        return axios.delete<Event[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/user/event/' + userId + '/ended', {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {

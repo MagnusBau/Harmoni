@@ -40,7 +40,6 @@ export class AddEvent extends Component {
     }
 
     render() {
-        console.log(this.categories);
         return(
             <div className={"m-2"}>
                 <form className="form-group">
@@ -177,7 +176,7 @@ export class AddEvent extends Component {
         eventService
             .getCategories()
             .then(categories => this.categories = categories[0])
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
 }

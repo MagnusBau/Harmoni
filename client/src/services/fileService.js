@@ -11,8 +11,7 @@ export class FileInfo {
 
 class FileInfoService {
     getFileInfo(eventId: number) {
-        console.log(eventId);
-        return axios.get(`http://localhost:4000/auth/id/${userService.getUserId()}/file/info/${eventId}`, {
+        return axios.get(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/getFileInfo`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -26,7 +25,7 @@ class FileInfoService {
     }
 
     postFileInfo(name: string, eventId: number, data: FormData) {
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/single/${eventId}`,
+        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/event/${eventId}/single`,
             data, {
                 'headers': {
                     'x-access-token': userService.getToken()
@@ -69,7 +68,7 @@ class FileInfoService {
     }
 
     checkFileName(eventId: number, name: string){
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/file/check/${eventId}`, {"name": name}, {
+        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/event/${eventId}/checkFileName`, {"name": name}, {
             'headers': {
                 'x-access-token': userService.getToken()
             }})
@@ -79,7 +78,7 @@ class FileInfoService {
                 }
                 return response.data;
             })
-            .catch(error => console.log("error" + error));
+            .catch((error: Error) => error.message);
     }
 
     downloadFile(encodedFile: string){
@@ -122,7 +121,7 @@ class FileInfoService {
                 }
                 return response.data;
             })
-            .catch(error => console.log("error" + error));
+            .catch((error: Error) => error.message);
     }
 }
 

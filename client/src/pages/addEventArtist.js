@@ -80,7 +80,7 @@ export class AddEventArtist extends Component {
                 this.event = event[0];
                 if(event.body.error) this.errorMessage = event.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
 
         artistService
             .getArtistByEvent(this.props.eventId)
@@ -88,7 +88,7 @@ export class AddEventArtist extends Component {
                 this.eventArtists = artists[0];
                 if(artists.body.error) this.errorMessage = artists.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
 
         this.setState({eventArtists: []}, () => {
             artistService
@@ -97,7 +97,7 @@ export class AddEventArtist extends Component {
                     this.setState({eventArtists: artists[0]});
                     if(artists.body.error) this.errorMessage = artists.body.error;
                 })
-                .catch((error: Error) => console.log(error.message));
+                .catch((error: Error) => error.message);
         });
 
         this.setState({storedArtists: []}, () => {
@@ -107,7 +107,7 @@ export class AddEventArtist extends Component {
                     this.setState({storedArtists: artists[0]});
                     if(artists.body.error) this.errorMessage = artists.body.error;
                 })
-                .catch((error: Error) => console.log(error.message));
+                .catch((error: Error) => error.message);
         });
 
         eventService
@@ -116,7 +116,7 @@ export class AddEventArtist extends Component {
                 this.eventDocuments = documents[0];
                 if(documents.body.error) this.errorMessage = documents.body.error;
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
     /**

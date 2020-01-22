@@ -15,7 +15,7 @@ exports.insertTicket = (req, res, next) => {
 
 exports.getAllTickets = (req, res, next) => {
     console.log(`Got request from client: /ticket`);
-    ticketDao.getAll(req.params.event,(err, rows) => {
+    ticketDao.getAll(req.params.eventId,(err, rows) => {
         res.json(rows);
     })
 };

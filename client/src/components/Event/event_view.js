@@ -81,7 +81,7 @@ export default class EventView extends Component {
                     this.errorMessage = eventOverview.body.error;
                 }
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => {error.message});
     }
 
     cancelEvent() {
