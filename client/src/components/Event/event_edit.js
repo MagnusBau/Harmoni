@@ -88,6 +88,7 @@ export class EventEdit extends Component {
                                 timeFormat={"HH:mm"}
                                 defaultValue={this.event.start_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleStartTime}
                             />
                         </div>
@@ -102,6 +103,7 @@ export class EventEdit extends Component {
                                 timeFormat={"HH:mm"}
                                 defaultValue={this.event.end_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleEndTime}
                             />
                         </div>

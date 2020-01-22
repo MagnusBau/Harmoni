@@ -82,11 +82,12 @@ export class AddEvent extends Component {
                         <br></br>
                         <div>
                             <DateTime
+                                type={'text'}
                                 id={"start_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                value={this.state.start_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleStartTime}
                             />
                         </div>
@@ -99,8 +100,8 @@ export class AddEvent extends Component {
                                 id={"end_time"}
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
-                                value={this.state.end_time}
                                 locale={"no"}
+                                inputProps={{readOnly: true}}
                                 onChange={this.handleEndTime}
                             />
                         </div>
