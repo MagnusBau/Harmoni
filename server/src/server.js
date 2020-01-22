@@ -241,8 +241,9 @@ var storage = multer.diskStorage({
 const upload = multer({
     fileFilter: function (req, file, callback) {
         var ext = path.extname(file.originalname);
-        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx') {
-            return callback(new Error('Only text files are allowed'))
+        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx'&& ext !== '.odt') {
+            req.fileValidationError = 'error';
+            return callback(null, false, new Error('goes wrong on the mimetype'));
         }
         callback(null, true)
     },
@@ -252,6 +253,9 @@ const upload = multer({
 
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/' + req.params.eventId);
+    if(req.fileValidationError) {
+        return res.end(req.fileValidationError);
+    }
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,

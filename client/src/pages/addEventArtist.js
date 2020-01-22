@@ -221,6 +221,7 @@ export class AddEventArtist extends Component {
                         onChange={(e) => this.handleFile(e)}
                         required
                         style={{paddingBottom: "50px", paddingTop: "20px"}}
+                        accept=".txt,.pdf,.doc,.docx,.odt"
                     />
                 </div>
             )

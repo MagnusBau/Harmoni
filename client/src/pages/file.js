@@ -41,6 +41,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                                 onChange={(e) => this.handleFile(e)}
                                 required
                                 style={{paddingBottom: "50px", paddingTop: "20px"}}
+                                accept=".txt,.pdf,.doc,.docx,.odt"
                             />
                             <button
                                 type="button"
@@ -133,8 +134,10 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                         formData.append('name', this.name);
                         formData.append('path', this.path + myNewFile.name);
 
-
                         fileInfoService.postFileInfo(this.name, this.props.match.params.eventId,  formData).then(response => {
+                            if(response.data === "error"){
+                                this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                            }
                             console.log("should have posted fileInfo to database");
                             this.mounted();
                         });
