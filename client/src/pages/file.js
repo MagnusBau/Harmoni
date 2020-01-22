@@ -138,7 +138,8 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
                             if(response.data === "error"){
                                 this.errorMessage = "Denne filtypen kan ikke lastes opp"
                             }
-                            console.log("should have posted fileInfo to database");
+                            console.log("should have posted fileInfo to database")
+                            this.errorMessage = "";
                             this.mounted();
                         });
                     }else{
@@ -160,6 +161,8 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
             console.log("Dette er i pages: " + encodedFilePath);
             fileInfoService.downloadFile(encodedFilePath).then(response =>
                 console.log("laster ned " + this.state.selected));
+            this.errorMessage = "";
+            this.mounted();
         }
     }
     handleOverwrite(){
@@ -179,6 +182,7 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
         if(this.state.selected !== undefined){
             let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
             fileInfoService.deleteFile(encodedFilePath).then(response => {
+                this.errorMessage = "";
                 this.mounted();
             });
         }
