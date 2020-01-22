@@ -50,10 +50,11 @@ CREATE PROCEDURE get_all_events()
 BEGIN
   SELECT event_id,
          title,
+         description,
          location,
          DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
          category
-  FROM event WHERE cancelled = 0 ORDER BY start_time LIMIT 9;
+  FROM event ORDER BY start_time LIMIT 9;
 END;
 
 
