@@ -61,7 +61,6 @@ const verifyOptions = {
 app.use("/auth/id/:id", (req, res, next) => {
     let paramsId = req.params.id;
     let token = req.headers["x-access-token"];
-    console.log(token);
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
             console.log("Token IKKE ok 1");
@@ -69,7 +68,6 @@ app.use("/auth/id/:id", (req, res, next) => {
         } else {
             userDao.getUsername(paramsId, (err, rows) => {
                 if(rows[0][0].username) {
-                    console.log("username2:" + rows[0][0].username);
                 }
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
@@ -127,7 +125,7 @@ import {TicketDAO} from './dao/ticketDao.js';
 const ticketDao = new TicketDAO(pool);
 
 /*
-app.use("/auth/id/:id/ticket/ticket/:ticket", (req, res, next) => {
+app.use("/ticket/:ticket", (req, res, next) => {
     console.log("auth ticket 1");
     userDao.getContact(req.params.id, (err, rows) => {
         if(rows[0][0].contact_id) {
@@ -166,29 +164,41 @@ app.use("/auth/id/:id/ticket/ticket/:ticket", (req, res, next) => {
         }
     });
 });
+*/
 
 //TODO: Is this a test?
-app.use("/auth/id/:id/ticket", (req, res, next) => {
-    console.log("auth event data");
+app.use("/auth/id/:id/event/:eventId", (req, res, next) => {
     userDao.getContact(req.params.id, (err, rows) => {
         if (rows[0][0].contact_id) {
             let id = rows[0][0].contact_id;
-            if(req.body.event) {
-                eventDao.getEventById(req.body.event, (err, rows) => {
-                    if(rows[0][0].organizer) {
-                        if(rows[0][0].organizer === id) {
+            if (req.params.eventId) {
+                eventDao.getEventById(req.params.eventId, (err, rows) => {
+                    if (rows[0][0].organizer) {
+                        if (rows[0][0].organizer === id) {
                             next();
                         } else {
-                            console.log("not authorized event id3");
-                            res.json({ error: "Not authorized" });
+                            artistDao.getArtistByEvent(req.params.eventId, (err, rows) => {
+                                if (rows[0]) {
+                                    if (rows[0].map(artist => artist.user_id).includes(id)) {
+                                        next();
+                                    } else {
+                                        console.log("not authorized event id1");
+                                        res.json({error: "Not authorized"});
+                                    }
+                                } else {
+                                    console.log("not authorized event id2");
+                                    res.json({error: "Not authorized"});
+                                }
+                            });
                         }
                     } else {
-                        console.log("not authorized event id4");
-                        res.json({ error: "Not authorized" });
+                        console.log("not authorized event id3");
+                        res.json({error: "Not authorized"});
                     }
                 });
             } else {
-                next();
+                console.log("not authorized event id4");
+                res.json({error: "Not authorized"});
             }
         } else {
             res.json({error: "Not authorized"});
@@ -196,52 +206,50 @@ app.use("/auth/id/:id/ticket", (req, res, next) => {
     });
 });
 
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function (req, file, cb) {
+        cb(null , file.originalname);
+    }
+});
 
-//TODO: Is this a test?
-import {EventDAO} from './dao/eventDao.js';
-import {ArtistDAO} from "./dao/artistDao";
+const upload = multer({
+    storage,
+    limits: 1024 * 1024 * 5
+});
 
-const artistDao = new ArtistDAO(pool);
-const eventDao = new EventDAO(pool);
+app.post('/api/single/update', upload.single('file'), (req, res) => {
+    try {
+        result.send(req.file);
+    }catch(err) {
+        result.send(400);
+    }
+});
 
-app.use("/auth/id/:id/ticket/event/:event", (req, res, next) => {
-    console.log("auth event param");
-    userDao.getContact(req.params.id, (err, rows) => {
-        if (rows[0][0].contact_id) {
-            let id = rows[0][0].contact_id;
-            if (req.params.event) {
-                eventDao.getEventById(req.params.event, (err, rows) => {
-                    if (rows[0][0].organizer) {
-                        if (rows[0][0].organizer === id) {
-                            next();
-                        } else {
-                            artistDao.getArtistByEvent(req.params.event, (err, rows) => {
-                                if (rows[0]) {
-                                    if (rows[0].map(artist => artist.user_id).includes(id)) {
-                                        next();
-                                    } else {
-                                        console.log("not authorized event id6");
-                                        res.json({error: "Not authorized"});
-                                    }
-                                } else {
-                                    console.log("not authorized event id1");
-                                    res.json({error: "Not authorized"});
-                                }
-                            });
-                        }
-                    } else {
-                        console.log("not authorized event id2");
-                        res.json({error: "Not authorized"});
-                    }
-                });
-            } else {
-                next();
-            }
-        } else {
-            res.json({error: "Not authorized"});
+app.post('/auth/id/:id/event/:eventId/single', upload.single('file'), (req, res) => {
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path
+    };
+    let result = res;
+    fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
         }
     });
-});*/
+});
+
+import {EventDAO} from './dao/eventDao.js';
+
+import {ArtistDAO} from "./dao/artistDao";
+const artistDao = new ArtistDAO(pool);
+
+const eventDao = new EventDAO(pool);
 
 // Setup routes
 const artistRoutes = require("./routes/artist");
@@ -275,47 +283,6 @@ app.use("/api", apiRoutes);
     res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
     next();
 });*/
-
-
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './files');
-    },
-    filename: function (req, file, cb) {
-        cb(null , file.originalname);
-    }
-});
-
-const upload = multer({
-    storage,
-    limits: 1024 * 1024 * 5
-});
-
-app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
-    let data = {
-        "name": req.body.name,
-        "eventId": req.params.eventId,
-        "path": req.body.path
-    };
-    let result = res;
-    console.log(req.body.name);
-    fileInfoDao.postFileInfo(data, (err, res) => {
-        try {
-            result.send(req.file);
-        }catch(err) {
-            result.send(400);
-        }
-    });
-});
-
-app.post('/api/single/update', upload.single('file'), (req, res) => {
-        try {
-            result.send(req.file);
-        }catch(err) {
-            result.send(400);
-        }
-});
 
 app.use((req, res, next) => {
     res.status(404).redirect('http://localhost:' + PORT + '/#/404');

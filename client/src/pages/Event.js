@@ -120,7 +120,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                     this.errorMessage = eventOverview.body.error;
                 }
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
     loadTicket() {
@@ -132,7 +132,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                     this.errorMessage = tickets.body.error;
                 }
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
     loadEquipment() {
@@ -144,7 +144,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                     this.errorMessage = eventEquipment.body.error;
                 }
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
     loadArtist() {
@@ -157,12 +157,11 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                 }
 
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => error.message);
     }
 
     mounted(){
         this.currentEvent = this.props.match.params.eventId;
-        console.log("current event:" + this.currentEvent);
         this.loadEvent();
         this.loadTicket();
         this.loadEquipment();
@@ -206,7 +205,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                             onClick={this.handleTicketEdit}/>
             }else {
                 ticketContent = <TicketView triggerParentUpdate={this.editThisTicket} eventId={this.currentEvent}
-                                            loadTicket={this.loadTicket}
                                             handleEditTicketClick={this.handleTicketView}
                                             handleAddTicketClick={this.handleTicketAdd} isArtist={this.state.isArtist}/>
             }
@@ -218,7 +216,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         }else{
             if (!this.state.isArtist) {
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
-                //loadRider={this.loadRider}
             }
         }
         return (
@@ -275,7 +272,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
                                     <AddEquipment eventId={this.currentEvent}
-                                                  loadEquipment={this.loadEquipment}
                                                   isArtist={this.state.isArtist}/>
                                 </div>
                                 <div className="tab-pane" id="documents" role="tabpanel">

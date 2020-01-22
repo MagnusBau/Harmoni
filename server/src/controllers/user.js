@@ -268,6 +268,7 @@ exports.getUserByArtist = (req, res, next) => {
     console.log(`Got request from client: GET /auth/user/artist/${req.params.artistId}`);
 
     userDao.getUserByArtist(req.params.artistId, (err, rows) => {
+
         res.send(rows);
     });
 };
@@ -410,8 +411,8 @@ exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;
     let newPassword = req.body.newPassword;
     let id = req.params.userId;
-    let regex =/^[A-Za-z0-9-æøåÆØÅ]{8,256}$/;
-    if(password.match(regex)){
+    let regex =/^[A-Za-z0-9-æøåÆØÅ]{5,256}$/;
+    if(newPassword.match(regex)){
         userDao.getPassword(req.body.username, (err, rows) => {
             if(rows[0][0]) {
                 if(rows[0][0].password) {

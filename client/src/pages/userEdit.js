@@ -42,12 +42,10 @@ export default class UserEdit extends Component {
 
     mounted() {
 //TODO get events by user
-        console.log("ya");
         if(this.artistName == null || this.artistName === "null") {
             this.artistName = "";
         }
         userService.getUser().then(respons => {
-            console.log(respons);
             if(userService.getArtistId() != null) {
                 this.artistName = userService.getArtistName();
             }
@@ -55,7 +53,6 @@ export default class UserEdit extends Component {
             this.lastName  = userService.getLastName();
             this.email = userService.getEmail();
             this.phone = userService.getPhone();
-            console.log("this:" + userService.getArtistName());
         });
         userService.mountDropdown();
     }
@@ -268,16 +265,11 @@ export default class UserEdit extends Component {
             this.errorMessage = "Brukerinformasjon error";
             return;
         }
-        console.log("try");
-        console.log(this.email + this.firstName + this.lastName + this.phone);
         userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
             if(response.error) {
-                console.log("fail");
                 this.errorMessage = response.error;
                 return;
             } else {
-                console.log(response);
-                console.log("success");
                 userService.getUser().then(response => {
                     this.errorMessage = "Brukerinformasjon oppdatert";
                     this.mounted();
@@ -296,7 +288,6 @@ export default class UserEdit extends Component {
                     if(response.error) {
                         this.errorMessage = "Feil passord";
                     } else {
-                        console.log(response);
                         this.oldPassword = "";
                         this.newPassword = "";
                         this.confirmNewPassword = "";
@@ -315,7 +306,6 @@ export default class UserEdit extends Component {
     }
 
     saveImageChanges() {
-        console.log("saveImageChanges not implemented");
         this.errorMessage = "saveImageChanges ikke implementert";
     }
 }

@@ -45,7 +45,7 @@ export class Ticket {
 
 class TicketService{
     getAllTicket(event : number) {
-        return axios.get<Ticket[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/ticket/event/' + event, {
+        return axios.get<Ticket[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + event + '/ticket', {
             'headers': {
                 'x-access-token': userService.getToken()
             }

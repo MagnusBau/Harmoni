@@ -136,7 +136,7 @@ export default class UserOverview extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="list-group" className="">
-                                    <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                    <li key="eventNEW" className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
                                         history.push("/event/new");
                                     }}>
                                         Legg til nytt arrangement

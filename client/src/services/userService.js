@@ -13,8 +13,6 @@ class UserService {
             if(this.error(response)){
                 return this.error(response);
             }
-            console.log("this:");
-            console.log(response);
             if(response != null) {
                 localStorage.setItem("user_id", response.user.user_id);
                 localStorage.setItem("username", response.user.username);
@@ -27,13 +25,8 @@ class UserService {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("artist_id", response.artist.artist_id);
                 localStorage.setItem("artist_name", response.artist.artist_name);
-                console.log("success:" + username + response.user.user_id + response.user.username);
-                console.log(response.token);
                 this.mountDropdown();
                 next();
-            } else {
-                console.log("fail");
-                return false;
             }
         });
     }
@@ -77,11 +70,6 @@ class UserService {
             .then(response => {
                 if(this.error(response)){
                     return this.error(response);
-                }
-                if (response.error != null) {
-                    console.log(response.error);
-                    console.log("failed");
-                    return false;
                 } else {
                     return true;
                 }
@@ -103,14 +91,7 @@ class UserService {
                 if(this.error(response)){
                     return this.error(response);
                 }
-                if(response.error != null) {
-                    console.log(response.error);
-                    console.log("failed");
-                    return false;
-                }
-                console.log(response);
                 if(response.user != null) {
-                    console.log("click3");
                     localStorage.setItem("user_id", response.user.user_id);
                     localStorage.setItem("username", response.user.username);
                     localStorage.setItem("image", response.user.image);
@@ -226,7 +207,6 @@ class UserService {
             if(this.error(response)){
                 return this.error(response);
             }
-            console.log(response.data);
             if (response.data.user != null) {
                 localStorage.setItem("user_id", response.data.user.user_id);
                 localStorage.setItem("username", response.data.user.username);
@@ -236,7 +216,6 @@ class UserService {
                 localStorage.setItem("email", response.data.user.email);
                 localStorage.setItem("phone", response.data.user.phone);
                 localStorage.setItem("contact_id", response.data.user.contact_id);
-                console.log("this:" + localStorage.getItem("last_name"));
             }
         });
     }
@@ -275,9 +254,7 @@ class UserService {
                 if(this.error(response)){
                     return this.error(response);
                 }
-                console.log("token-----------");
-                console.log(response.data);
-                localStorage.setItem("token", response.data.data.token);
+                localStorage.setItem("token", response.data.token);
                 return response.data;
             });
     }
@@ -298,15 +275,13 @@ class UserService {
 
     checkToken() {
         if(localStorage.getItem("token_time") != null) {
-            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 60000) {
+            if(new Date().getTime() - new Date(localStorage.getItem("token_time")).getTime() > 6000) {
                 localStorage.setItem("token_time", (new Date()).toString());
                 this.updateToken();
-                console.log("updated token");
             }
         } else {
             localStorage.setItem("token_time", (new Date()).toString());
             this.updateToken();
-            console.log("updated token2");
         }
     }
 
