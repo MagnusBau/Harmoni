@@ -252,7 +252,7 @@ export class FileMain extends Component {
                             this.mounted();
                         });
                     }else{
-                        Alert.danger('En fil med dette navnet eksisterer allerede!');
+                        Alert.danger("fileAlert", 'En fil med dette navnet eksisterer allerede!');
                         //this.errorMessage = "En fil med dette navnet finnes allerede";
                         this.mounted();
                     }
@@ -353,7 +353,7 @@ export class FileEdit extends Component <{match: {params: {filepath: string, eve
         let formData = new FormData();
 
         if (!this.form || !this.form.checkValidity()) {
-            Alert.danger("Filnavn kan ikke stå tomt!");
+            Alert.danger("fileAlert", "Filnavn kan ikke stå tomt!");
             //this.errorMessage = "Filen kan ikke være tom";
             this.mounted();
         } else {

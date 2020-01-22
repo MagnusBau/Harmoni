@@ -7,8 +7,8 @@ import {roleService, Role, EventRole} from "../../services/roleService";
 import {artistService} from "../../services/artistService";
 import {userService} from "../../services/userService";
 import {Modal} from "react-bootstrap";
-import {Button} from "../widgets";
-import {Alert} from "../widgets";
+import {Button} from "../Buttons/buttons";
+import {Alert} from "../Alert/alert";
 
 const history = createHashHistory();
 
@@ -84,9 +84,9 @@ export default class AddRole extends Component {
             if (response.error) {
                 // Duplicate entry key error from database
                 if (response.error.errno === 1062) {
-                    Alert.danger("Personell er allerede tilknyttet dette arrangementet!");
+                    Alert.danger("roleAlert", "Personell er allerede tilknyttet dette arrangementet!");
                 } else {
-                    Alert.danger(`En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                    Alert.danger("roleAlert", `En feil har oppstått! (Feilkode: ${response.error.errno})`);
                 }
             } else {
                 this.load();
@@ -129,7 +129,7 @@ export default class AddRole extends Component {
     render() {
         return (
             <div className="m-2">
-                <Alert/>
+                <Alert name="roleAlert"/>
                 {!this.props.isArtist ?
                     <form className={"form-inline"} onSubmit={this.onSubmit}>
                         <div className="form-group m-2">
