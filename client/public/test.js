@@ -1,6 +1,8 @@
 let width = $(window).width();
 let scrollHeight = width*0.44;
 let frontpageTableHeight = width*0.46;
+let path = window.location.href;
+console.log(path);
 
 $(document).ready(function() {
 
@@ -16,12 +18,16 @@ $(document).ready(function() {
     });
 
     $(window).scroll(function() {
-        // checks if window is scrolled more than 500px, adds/removes solid class
-        if($(this).scrollTop() > scrollHeight) {
-            $('.navbar').addClass('solid');
+
+        if(path === "http://localhost:4000/#/") {
+            // checks if window is scrolled more than 500px, adds/removes solid class
+            if ($(this).scrollTop() > scrollHeight) {
+                $('.navbar').addClass('solid');
+            } else {
+                $('.navbar').removeClass('solid');
+            }
         } else {
-            $('.navbar').removeClass('solid');
+            $('.navbar').addClass('solid');
         }
     });
-
 });

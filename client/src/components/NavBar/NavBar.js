@@ -160,7 +160,7 @@ class NavBar extends Component {
 
         //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light ">
+           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
                <a className="navbar-brand"  href="#">
                    <img src="./img/harmoni-logo-black-brown.png" height="50px" width="50px"/>
                    Harmoni</a>

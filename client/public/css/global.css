@@ -35,17 +35,12 @@ html, body {
     margin: 10rem auto 10rem auto;
 }
 
-/*navbar*/
-.navbar {
-    background-color: transparent;
-}
-
 .navbar > a {
     color: var(--color-brown-black)
 }
 
 .navbar {
-    background-color: rgba(104, 103, 104, 0.1);
+    background-color: transparent;
     transition: background-color 0.5s ease 0s;
 }
 
@@ -91,7 +86,6 @@ a:hover{
 .btn-outline-primary {
     color: var(--color-dark-blue);
     border-color: var(--color-dark-blue);
->>>>>>> ecded22a6b0415480bc793e8e58ba03923ef54c7
 }
 
 .btn-outline-primary:hover {
