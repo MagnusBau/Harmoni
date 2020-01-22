@@ -164,8 +164,13 @@ export class FileMain extends Component <{match: {params: {eventId: number}}}> {
     }
     handleOverwrite(){
         if(this.state.selected !== undefined){
-            let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
-            history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
+            if(this.state.selected.split('.').pop() === "txt"){
+                let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+                history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
+            }else{
+                this.errorMessage = "Kun .txt-filer kan redigeres";
+                this.mounted();
+            }
         }
 
     }
