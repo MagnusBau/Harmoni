@@ -1,3 +1,5 @@
+//@flow
+
 import axios from 'axios';
 import { createHashHistory } from 'history';
 
@@ -160,15 +162,15 @@ class UserService {
             });
     }
 
-    getUserId() {
+    getUserId(): number {
         return localStorage.getItem("user_id");
     }
 
-    getContactId() {
+    getContactId(): number {
         return localStorage.getItem("user_id");
     }
 
-    getUsername() {
+    getUsername(): string {
         return localStorage.getItem("username");
     }
 
@@ -176,19 +178,19 @@ class UserService {
         return localStorage.getItem("image");
     }
 
-    getFirstName() {
+    getFirstName(): string {
         return localStorage.getItem("first_name");
     }
 
-    getLastName() {
+    getLastName(): string {
         return localStorage.getItem("last_name");
     }
 
-    getEmail() {
+    getEmail(): string {
         return localStorage.getItem("email");
     }
 
-    getPhone() {
+    getPhone(): string {
         return localStorage.getItem("phone");
     }
 
@@ -196,11 +198,11 @@ class UserService {
         return localStorage.getItem("token");
     }
 
-    getArtistId() {
+    getArtistId(): number {
         return localStorage.getItem("artist_id");
     }
 
-    getArtistName() {
+    getArtistName(): string {
         return localStorage.getItem("artist_name");
     }
 
