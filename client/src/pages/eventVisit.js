@@ -7,7 +7,7 @@ import {Event, eventService} from "../services/eventService";
 import {Artist, artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 import {Ticket, ticketService} from "../services/ticketService";
-import {PageHeader} from "../components/Header/headers";
+import {EventViewHeader, PageHeader} from "../components/Header/headers";
 
 
 export class eventVisit extends Component <{match: {params: {eventId: number}}}> {
@@ -62,15 +62,15 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                 <div className="row">
                     <div className="col-lg-6" id="eventContent">
                         <div>
-                            <PageHeader label="Beskrivelse"/>
+                            <EventViewHeader label="Beskrivelse"/>
                             <p>{this.event[0].description}</p>
                         </div>
                         <div>
-                            <PageHeader label="Arrangør"/>
+                            <EventViewHeader label="Arrangør"/>
                             <p>{this.organizer}</p>
                         </div>
                         <div>
-                            <PageHeader label="Tid"/>
+                            <EventViewHeader label="Tid"/>
                             <div>
                                 <p>Start: {this.event[0].start_time}</p>
                                 <p>Slutt: {this.event[0].end_time}</p>
@@ -79,7 +79,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                     </div>
                     <div className="col-lg-6" id="eventContent">
                         <div>
-                            <PageHeader label="Artister"/>
+                            <EventViewHeader label="Artister"/>
                             <p>{this.artists.map((artist =>
                                 {artist.artist_name}
                             ))}
@@ -87,19 +87,19 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                         </div>
 
                         <div>
-                            <PageHeader label="Billetter"/>
+                            <EventViewHeader label="Billetter"/>
                             <table className="table table-borderless">
                                 <tbody>
                                 <tr className="d-flex">
-                                    <th className="col-2">Type</th>
-                                    <th className="col-2">Antall</th>
-                                    <th className="col-2">Pris</th>
+                                    <th className="col-4">Type</th>
+                                    <th className="col-4">Antall</th>
+                                    <th className="col-4">Pris</th>
                                 </tr>
                                 {this.tickets.map((ticket =>
                                         <tr className="d-flex">
-                                            <td className="col-2">{ticket.title}</td>
-                                            <td className="col-2">{ticket.count}stk</td>
-                                            <td className="col-2">{ticket.price}kr</td>
+                                            <td className="col-4">{ticket.title}</td>
+                                            <td className="col-4">{ticket.count}stk</td>
+                                            <td className="col-4">{ticket.price}kr</td>
                                         </tr>
                                 ))}
                                 </tbody>
