@@ -8,9 +8,7 @@ import {Alert} from "../components/Alert/alert.js";
 import DateTime from 'react-datetime';
 import moment from "moment";
 import { userService } from "../services/userService";
-import {SimpleMap} from "../components/simplemap";
 import Map from "../components/map";
-import set from "@babel/runtime/helpers/esm/set";
 
 const history = createHashHistory();
 
@@ -45,7 +43,7 @@ export class AddEvent extends Component {
             start_date: new Date(),
             end_date: new Date()
         };
-        this.handleChange = this.handleChange.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
     }
 
     _onClick = ({x, y, lat, lng, event}) => console.log(x, y, lat, lng, event);
@@ -85,18 +83,6 @@ export class AddEvent extends Component {
                                   required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.createEvent.description = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Lokasjon:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"event-location"}
-                               placeholder={"Lokasjon"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.location = event.target.value)}
                         />
                     </div>
                     <div className={"form-group m-2"}>
@@ -178,11 +164,16 @@ export class AddEvent extends Component {
                         height='300px'
                         zoom={15}
                         getAddress={this.getAddress}
+                        onChange={this.onChangeAddress}
                     />
                 </div>
             </div>
 
         )
+    }
+
+    onChangeAddress(address: string) {
+        this.createEvent.location = address;
     }
 
     register() {

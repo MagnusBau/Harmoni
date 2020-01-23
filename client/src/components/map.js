@@ -196,7 +196,9 @@ export class Map extends React.Component{
                         lat: latValue,
                         lng: lngValue
                     },
-                } )
+                }, (res) => {
+                    this.onChangeAddress();
+                });
             },
             error => {
                 console.error(error);
@@ -205,6 +207,11 @@ export class Map extends React.Component{
     };
 
     getAddress() {
+        this.props.onChange(this.state.address);
+    }
+
+    onChangeAddress(e) {
+        console.log("Address changed");
         this.props.onChange(this.state.address);
     }
 
@@ -286,7 +293,7 @@ export class Map extends React.Component{
                     </div>*/}
                     <div className="form-group">
                         <label htmlFor="">Adresse</label>
-                        <input type="text" name="address" className="form-control" onChange={ this.testFunction } readOnly="readOnly" value={ this.state.address }/>
+                        <input type="text" name="address" className="form-control" readOnly value={ this.state.address }/>
                     </div>
                 </div>
 
