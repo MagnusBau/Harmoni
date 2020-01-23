@@ -15,7 +15,6 @@ import {TicketEdit} from "./components/Ticket/ticket_edit";
 import UserOverview from "./pages/userOverview";
 import UserEdit from "./pages/userEdit";
 import {eventVisit} from "./pages/eventVisit";
-import {SimpleMap} from "./components/simplemap";
 import {Map} from "./components/map";
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';

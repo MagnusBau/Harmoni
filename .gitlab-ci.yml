@@ -22,3 +22,20 @@ test_server:
     - npm install
     - npm run test
     - cd ..
+
+# Publish coverage report on gitlab-pages
+server_pages:
+  stage: deploy
+  dependencies:
+    - test_server
+  script:
+    - cd server
+    - mkdir .public
+    - cp -r coverage/* .public
+    - mv .public ../public
+    - cd ..
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
