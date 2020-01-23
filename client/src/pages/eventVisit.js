@@ -72,8 +72,8 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                         <div>
                             <EventViewHeader label="Tid"/>
                             <div>
-                                <p>Start: {this.event[0].start_time}</p>
-                                <p>Slutt: {this.event[0].end_time}</p>
+                                <p><b>Start:</b> {this.event[0].start_time}</p>
+                                <p><b>Slutt:</b> {this.event[0].end_time}</p>
                             </div>
                         </div>
                     </div>

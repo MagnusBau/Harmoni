@@ -3,7 +3,6 @@ let scrollHeight = width*0.44;
 let frontpageTableHeight = width*0.46;
 let path = window.location.href;
 console.log(path);
-
 $(document).ready(function() {
 
     if(path === "http://localhost:4000/#/" || path === "http://localhost:4000/?#/") {
@@ -27,10 +26,7 @@ $(document).ready(function() {
                 $('.navbar').removeClass('solid');
             }
         });
-
     } else {
-
         $('.navbar').addClass('solid');
     }
-
 });
