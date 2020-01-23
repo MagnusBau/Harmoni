@@ -32,6 +32,7 @@ server_pages:
   dependencies:
     - test_server
   script:
+    - cd server/
     - mkdir .public
     - cp -r coverage/* .public
     - mv .public ../public
