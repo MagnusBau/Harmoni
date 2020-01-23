@@ -75,7 +75,7 @@ BEGIN
            title,
            description,
            location,
-           DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+           DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as time,
             category, organizer FROM event
     WHERE cancelled = 0 ORDER BY start_time LIMIT 9;
 END;
