@@ -10,7 +10,7 @@ import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {AddEventArtist} from "./addEventArtist";
-
+import {Alert} from '../components/Alert/alert';
 import {Rider, riderService} from "../services/riderService";
 import {AddRiderType, RiderEdit, RiderList} from "../components/Rider/rider";
 const history = createHashHistory();
@@ -70,6 +70,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             isEditingEvent: false,
         });
         this.loadEvent();
+        Alert.success("eventEditAlert", "Event edited")
     }
 
     handleTicketView(){

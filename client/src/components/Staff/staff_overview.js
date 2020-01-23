@@ -99,8 +99,9 @@ export default class AddRole extends Component {
     removeFromEvent() {
         let selected = {...this.state.selected};
         selected.event = this.currentEvent;
+        console.log(`${this.state.selected.role_id} ${this.currentEvent}`);
         this.setState({selected});
-        roleService.removeRoleFromEvent(this.state.selected).then(response => {
+        roleService.removeRoleFromEvent(this.state.selected.role_id, this.currentEvent).then(response => {
             this.setState({selected: null, showConfirmRemove: false});
             this.load();
         });

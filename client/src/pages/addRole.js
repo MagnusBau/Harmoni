@@ -6,6 +6,7 @@ import {createHashHistory} from 'history';
 import {roleService, Role, EventRole} from "../services/roleService";
 import {artistService} from "../services/artistService";
 import {userService} from "../services/userService";
+import {Alert} from "../components/Alert/alert";
 
 const history = createHashHistory();
 
@@ -61,8 +62,21 @@ export class AddRole extends Component <{match: {params: {eventId: number}}}> {
     }
 
     remove(role){
-        roleService.removeRole(role.role_id);
-        window.location.reload();
+
+        roleService.removeRole(role.role_id).then(response => {
+            console.log('Response: ${response}');
+            if (response.error) {
+                // Foreign key update fail from database
+                if (response.error.errno === 1451) {
+                    Alert.danger("roleAlert", "rollen er i bruk i et event");
+                } else {
+                    Alert.danger("roleAlert", `En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                }
+            } else {
+                window.location.reload();
+            }
+        });
+
     }
     addToEvent(eventRole) {
         eventRole.count = 1;

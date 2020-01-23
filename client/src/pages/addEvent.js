@@ -95,7 +95,7 @@ export class AddEvent extends Component {
                                 dateFormat={"YYYY-MM-DD"}
                                 timeFormat={"HH:mm"}
                                 locale={"no"}
-                                inputProps={{readOnly: true}}
+                                inputProps={{readOnly: true, required: true}}
                                 onChange={this.handleStartTime}
                             />
                         </div>
@@ -171,7 +171,7 @@ export class AddEvent extends Component {
         eventService
             .createEvent(this.createEvent)
             .then(() => {
-                Alert.success('You have created a new event!!!!');
+                Alert.success("addEventAlert",'You have created a new event!!!!');
                 history.push('/user/' + userService.getUserId() + '/overview');
             })
             .catch((error: Error) => Alert.danger(error.message));
