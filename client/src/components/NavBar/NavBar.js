@@ -164,7 +164,7 @@ class NavBar extends Component {
         return(
            <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
                <a className="navbar-brand"  href="#">
-                   <img src="./img/harmoni-logo-black-brown.png" height="50px" width="50px"/>
+                   <img src="./img/logo/harmoni-logo-black-brown.png" height="50px" width="50px"/>
                    Harmoni</a>
                <button className="navbar-toggler" type="button" data-toggle="collapse"
                        data-target="#navbarContent" aria-controls="navbarContent"
