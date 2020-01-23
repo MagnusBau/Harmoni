@@ -211,3 +211,34 @@ test("search for event by title with string", done => {
     eventDao.getEventByInput('KON', callback);
 });
 */
+test("get all categories in database", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(5);
+        expect(data[0].name).toBe('Festival');
+        expect(data[1].name).toBe('Høytids-sammenkomst');
+        expect(data[2].name).toBe('Karneval');
+        expect(data[3].name).toBe('Konsert');
+        expect(data[4].name).toBe('Party');
+        done();
+    }
+    eventDao.getCategories(callback);
+});
+
+test('get events made by user', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(3);
+        expect(data[0].title).toBe('EM Håndball');
+        expect(data[1].title).toBe('Konsert');
+        expect(data[2].title).toBe('Loppemarked');
+        done();
+    }
+    eventDao.getEventsByUsername('Mario', callback);
+});
