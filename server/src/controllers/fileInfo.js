@@ -67,7 +67,7 @@ exports.deleteFileInfo = (req, res, next) => {
     console.log('Got request from client: DELETE /file/delete');
     let path: string = Buffer.from(req.params.file, 'base64').toString();
     fileInfoDao.deleteFileInfo(path, (error, rows) => {
-        if (error) {
+        if (error != 200) {
             console.log(error.message + " " + error);
             res.json(rows);
         } else {

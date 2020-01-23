@@ -224,11 +224,9 @@ const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
 const loginRoutes = require("./routes/login");
 import {FileInfoDAO} from './dao/fileInfoDao.js';
-import {ArtistDAO} from "./dao/artistDao";
 const apiRoutes = require("./routes/api");
 
 const fileInfoDao = new FileInfoDAO(pool);
-const artistDao = new ArtistDAO(pool);
 
 app.use("/auth/id/:id/artist", artistRoutes);
 app.use("/auth/id/:id/event", eventRoutes);

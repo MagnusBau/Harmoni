@@ -21,7 +21,7 @@ module.exports = class Dao {
                         callback(500, {error: err});
                     } else {
                         console.log('dao: returning rows');
-                        callback(null, rows);
+                        callback(200, rows);
                     }
                 });
             }
