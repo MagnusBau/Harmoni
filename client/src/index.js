@@ -16,12 +16,11 @@ import {TicketEdit} from "./components/Ticket/ticket_edit";
 import UserOverview from "./pages/userOverview";
 import UserEdit from "./pages/userEdit";
 import {eventVisit} from "./pages/eventVisit";
-import { FileMain} from './pages/file'
 import {SimpleMap} from "./components/simplemap";
 import {Map} from "./components/map";
 import { CancelEventButton } from './components/Buttons/CancelEventButton';
 import { DeleteEventButton } from './components/Buttons/DeleteEventButton';
-import { FileMain, FileEdit} from './pages/file'
+import { FileMain, FileEdit} from './pages/file';
 import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {AddEventArtist} from "./pages/addEventArtist";

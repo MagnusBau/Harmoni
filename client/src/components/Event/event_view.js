@@ -70,15 +70,9 @@ export default class EventView extends Component {
                     <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
                 </ModalWidget>
 
-                                    </SimpleMap>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
-
-            </div>
         )
 
     }
