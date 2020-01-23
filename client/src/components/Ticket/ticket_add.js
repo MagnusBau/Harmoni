@@ -179,14 +179,10 @@ export class TicketAdd extends Component{
         }
         ticketService.postTicket(this.ticket)
             .then((response) => {
-                    if(response.body.error) {
-                        this.errorMessage = response.body.error;
-                    }
-                if(this.ticket) {
-                    this.props.postedTicket();
-                }
+                this.props.handleCancel();
+                console.log("yo");
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => console.log(error));
     }
 
 
