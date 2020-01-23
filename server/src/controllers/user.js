@@ -1,10 +1,16 @@
 //@flow
 
-const pool = require("../server");
-const fs = require('fs');
 import {UserDAO} from "../dao/userDao";
 import {ArtistDAO} from "../dao/artistDao";
 import {Email} from "../email";
+
+/**
+ * Controller for receiving HTTP requests through the user endpoint
+ * @type {{listen?: *}}
+ */
+
+const pool = require("../server");
+const fs = require('fs');
 
 const email = new Email();
 

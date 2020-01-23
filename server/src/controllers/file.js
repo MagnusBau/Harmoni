@@ -1,13 +1,17 @@
 //@flow
 
+import {FileInfoDAO} from '../dao/fileInfoDao.js';
+
+/**
+ * Controller for receiving HTTP requests through the file endpoint
+ * @type {{listen?: *}}
+ */
+
 const fileInfoController = require("./fileInfo");
 const fs = require('fs');
 const multer = require('multer');
 
-import {FileInfoDAO} from '../dao/fileInfoDao.js';
 const pool = require('../server.js');
-
-
 const fileInfoDao = new FileInfoDAO(pool);
 
 var storage = multer.diskStorage({
