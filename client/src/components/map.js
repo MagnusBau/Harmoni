@@ -22,7 +22,7 @@ export class Map extends React.Component{
                 lng: this.props.center.lng
             },
             readonly: (props.readonly ? props.readonly : false)
-        }
+        };
 
         console.log("Read only:" + this.props.readonly);
     }
@@ -256,7 +256,6 @@ export class Map extends React.Component{
     }
 
     onChangeAddress(e) {
-        console.log("Address changed");
         this.props.onChange(this.state.address);
     }
 

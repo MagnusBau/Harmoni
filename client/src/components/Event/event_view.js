@@ -2,14 +2,12 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import {createHashHistory} from 'history';
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
 import {ModalWidget} from "../Modal/modal";
 import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
-import {SimpleMap} from "../simplemap"
 import Map from "../map";
 
 export default class EventView extends Component {
@@ -21,7 +19,8 @@ export default class EventView extends Component {
 
     state = {
         showModal: false,
-        setShowModal: false
+        setShowModal: false,
+        location: ''
     };
 
     show = () => {
@@ -77,14 +76,18 @@ export default class EventView extends Component {
                             center={{lat: 63.4154, lng: 10.4055}}
                             height='300px'
                             zoom={15}
-                            currentAddress={this.eventOverview.location}
-                            onChange={() => null}
+                            currentAddress={this.state.location}
+                            onChange={() => this.empty()}
                             readonly={true}
                         />
                     </div>
                 </div>
             </div>
         )
+    }
+
+    empty() {
+
     }
 
     mounted(){
@@ -96,6 +99,7 @@ export default class EventView extends Component {
                 if(eventOverview.body.error) {
                     this.errorMessage = eventOverview.body.error;
                 }
+                this.setState({location: this.eventOverview[0].location})
             })
             .catch((error: Error) => {error.message});
     }
