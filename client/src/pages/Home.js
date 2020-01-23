@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import {Event, eventService} from "../services/eventService";
+import {Event, eventService, FrontpageEvent} from "../services/eventService";
 import {createHashHistory} from "history";
 import "../../public/css/home.css";
 
@@ -15,7 +15,7 @@ import "../../public/css/home.css";
 const history = createHashHistory();
 
 class Home extends Component {
-    events: Event[] = [];
+    events: FrontpageEvent[] = [];
 
     viewEvent(e) {
         history.push("/event/" + e + "/view")
@@ -41,7 +41,7 @@ class Home extends Component {
                                             {event.title}
                                         </h5>
                                         <h6 className="card-subtitle mb-2 text-muted">
-                                            {event.start_time}
+                                            {event.time}
                                         </h6>
                                     </div>
                                 </div>

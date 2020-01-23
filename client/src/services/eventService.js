@@ -21,6 +21,16 @@ export class Event {
 
 }
 
+export class FrontpageEvent {
+    event_id: number;
+    title: string;
+    description: string;
+    location: string;
+    time: string;
+    category: string;
+    organizer: number;
+}
+
 export class EventSearch {
     event_id: number;
     title: string;
@@ -210,7 +220,7 @@ export class EventService {
 
     //Temp add
     getFrontpageEvents() {
-        return axios.get<Event[]>('http://localhost:4000/api/event', {
+        return axios.get<FrontpageEvent[]>('http://localhost:4000/api/event', {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
