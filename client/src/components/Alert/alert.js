@@ -31,10 +31,10 @@ export class Alert extends Component {
         );
     }
 
-    static success(text: React.Node) {
+    static success(name: string, text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'success' });
+            Alert.instances().filter(instance => instance.props.name === name)[0].alerts.push({ id: Alert.nextId++, text: text, type: 'success' });;
         });
     }
 

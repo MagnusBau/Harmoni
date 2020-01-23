@@ -290,6 +290,7 @@ export class AddEventArtist extends Component {
                                     this.name="";
                                     this.file=null;
                                     this.setState({file: null});
+                                    Alert.success("artistAlert", "Artist lagt til event");
                                 }
                             });
                         }else{
