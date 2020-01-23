@@ -5,7 +5,7 @@ import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCipSbIa2FOeWTPsocYrBZ0_Lq3wwhjK6Y");
 Geocode.enableDebug();
 Geocode.setRegion("no");
-export class Map extends React.Component{
+export class  Map extends React.Component{
     constructor( props ){
         super( props );
         this.state = {
@@ -205,6 +205,8 @@ export class Map extends React.Component{
                 lat: latValue,
                 lng: lngValue
             },
+        }, res => {
+            this.onChangeAddress(null);
         })
     };
     /**
