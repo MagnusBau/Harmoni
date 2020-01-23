@@ -60,7 +60,7 @@ export default class EventView extends Component {
                                 </button>
                             : null}
                             {!this.props.isArtist ?
-                                <button type="button" className="btn btn-outline-dark my-2 ml-2" data-toggle="modal" data-target="#showModal">Avlys arrangement
+                                <button type="button" className="btn btn-outline-dark my-2 ml-2" data-toggle="modal" onClick={this.show} id="#showWarning">Avlys arrangement
                                 </button>
                             : null}
                         </div>
