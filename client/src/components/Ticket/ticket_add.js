@@ -179,8 +179,8 @@ export class TicketAdd extends Component{
         }
         ticketService.postTicket(this.ticket)
             .then((response) => {
-                this.props.handleCancel();
                 console.log("yo");
+                this.props.handleCancel();
             })
             .catch((error: Error) => console.log(error));
     }

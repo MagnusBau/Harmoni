@@ -108,17 +108,6 @@ export class AddEvent extends Component {
                         </div>
                     </div>
                     <div className={"form-group m-2"}>
-                        <label>Antall billettyper:</label>
-                        <br></br>
-                        <select name={"ticket-types"} size={"1"}>
-                            <option value={"1"}>1</option>
-                            <option value={"2"}>2</option>
-                            <option value={"3"}>3</option>
-                            <option value={"4"}>4</option>
-                            <option value={"5"}>5</option>
-                        </select>
-                    </div>
-                    <div className={"form-group m-2"}>
                         <label>Type arrangement:</label>
                         <br></br>
                         <select name={"category"} className="custom-select w-25"
