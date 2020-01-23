@@ -1,3 +1,4 @@
+/*
 let width = $(window).width();
 let scrollHeight = width*0.44;
 let frontpageTableHeight = width*0.46;
@@ -30,3 +31,4 @@ $(document).ready(function() {
         $('.navbar').addClass('solid');
     }
 });
+ */

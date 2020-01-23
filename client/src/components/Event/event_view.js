@@ -5,9 +5,10 @@ import {Component} from "react-simplified";
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
-import {ModalWidget} from "../Modal/modal";
+import {ModalWidget} from "../widgets";
 import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
+import {Modal} from "react-bootstrap";
 import Map from "../map";
 
 export default class EventView extends Component {
@@ -17,19 +18,22 @@ export default class EventView extends Component {
     tickets: Ticket[] = [];
     eventEquipment: EventEquipment[] =[];
 
-    state = {
-        showModal: false,
-        setShowModal: false,
-        location: ''
-    };
+    constructor(props) {
+        super(props);
 
-    show = () => {
-        this.setState({ setShowModal: true });
-    };
+        this.state = {
+            setShowModal: false,
+            location: ''
+        }
+    }
 
-    close = () => {
-        this.setState({ setShowModal: false });
-    };
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({setShowModal: true});
+        } else if (e.target.id === 'closeWarning') {
+            this.setState({setShowModal: false});
+        }
+    }
 
     render(){
         //TODO legge til error melding hvis eventen ikke kommer opp/finnes
@@ -60,10 +64,6 @@ export default class EventView extends Component {
                                 </button>
                             : null}
                         </div>
-                        <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                            <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
-                            <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
-                        </ModalWidget>
                     </div>
                     <div className={"col"}>
                         <Map
@@ -77,6 +77,15 @@ export default class EventView extends Component {
                         />
                     </div>
                 </div>
+                <ModalWidget
+                    show={this.state.setShowModal}
+                    onHide={() => this.setState({setShowModal: false})}
+                    title='Advarsel'
+                    body="Er du sikker på at du vil avlyse dette arrangementet?"
+                >
+                    <button id="closeWarning" type="button" className="btn btn-outline-light" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
+                    <button className="btn btn-outline-danger" type="button" onClick={this.cancelEvent}>Avlys</button>
+                </ModalWidget>
             </div>
         )
     }
@@ -105,10 +114,8 @@ export default class EventView extends Component {
         if (this.eventOverview[0].cancelled === 0) {
 
             this.currentEvent = this.props.eventId;
-
             eventService
                 .cancelEvent(this.currentEvent)
-                .then(window.location.reload())
                 .then(console.log("Arrangementet er avlyst!"))
                 //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
                 .catch((error: Error) => Alert.danger(error));
