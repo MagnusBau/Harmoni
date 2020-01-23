@@ -275,5 +275,5 @@ CREATE PROCEDURE get_events_by_username(IN username_in VARCHAR(50))
 BEGIN
     SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
     FROM event e JOIN contact c ON e.organizer = c.contact_id JOIN user u ON c.contact_id = u.contact
-    WHERE UPPER(u.username) LIKE CONCAT('%', username_in, '%');
+    WHERE u.username = username_in;
 END;
