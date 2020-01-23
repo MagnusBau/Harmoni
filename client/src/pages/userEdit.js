@@ -299,7 +299,7 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.createArtistOnUser(this.artistName, this.contactId).then(response => {
+        artistService.createArtistOnContact(this.artistName, this.contactId).then(response => {
             artistService.getArtistByUser(userService.getUserId()).then(response => {
                 console.log(response);
                 console.log("yo");

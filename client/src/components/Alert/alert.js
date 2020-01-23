@@ -52,10 +52,11 @@ export class Alert extends Component {
         });
     }
 
-    static danger(text: React.Node) {
+    static danger(name: string, text: React.Node) {
         // To avoid 'Cannot update during an existing state transition' errors, run after current event through setTimeout
         setTimeout(() => {
-            for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'danger' });
+            Alert.instances().filter(instance => instance.props.name === name)[0].alerts.push({ id: Alert.nextId++, text: text, type: 'danger' });
+            //for (let instance of Alert.instances()) instance.alerts.push({ id: Alert.nextId++, text: text, type: 'danger' });
         });
     }
 }

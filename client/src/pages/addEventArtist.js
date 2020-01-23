@@ -9,7 +9,7 @@ import {Modal} from 'react-bootstrap';
 import {Button} from "../components/Buttons/buttons";
 import {userService} from "../services/userService";
 import Autosuggest from 'react-autosuggest';
-import {Alert} from '../components/widgets';
+import {Alert} from '../components/Alert/alert';
 import {fileInfoService} from "../services/fileService";
 
 const getSuggestionValue = suggestion => suggestion.artist_name;
@@ -268,9 +268,9 @@ export class AddEventArtist extends Component {
                             artistService.addArtistWithNewContract(this.newArtist, this.name, this.props.eventId, path).then(response => {
                                 if (response.error) {
                                     if (response.error.errno === 2001) {
-                                        Alert.danger("Artist er allerede tilknyttet arrangement");
+                                        Alert.danger("artistAlert", "Artist er allerede tilknyttet arrangement");
                                     } else {
-                                        Alert.danger("En feil har oppstått");
+                                        Alert.danger("artistAlert", "En feil har oppstått");
                                     }
                                 } else {
                                     fileInfoService.updateFile(formData).then(res =>{
@@ -303,9 +303,9 @@ export class AddEventArtist extends Component {
             artistService.addArtistToEvent(this.newArtist, this.documentId).then(response => {
                 if (response.error) {
                     if (response.error.errno === 2001) {
-                        Alert.danger("Artist er allerede tilknyttet arrangement");
+                        Alert.danger("artistAlert", "Artist er allerede tilknyttet arrangement");
                     } else {
-                        Alert.danger("En feil har oppstått");
+                        Alert.danger("artistAlert", "En feil har oppstått");
                     }
                 } else {
                     this.fetchData();
@@ -507,7 +507,7 @@ export class AddEventArtist extends Component {
                                         </button>
                                     </div>
                                 </div>
-                                <Alert/>
+                                <Alert name="artistAlert"/>
                             </form>
                         </div>
                         : null}
