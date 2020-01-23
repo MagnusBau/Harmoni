@@ -71,10 +71,7 @@ export default class TicketView extends Component {
     delete(currentTicketID){
         ticketService.removeTicket(currentTicketID).then((response) => {
             if (this.ticket) this.props.handleDelete();
-            if(response.body.error) {
-                this.errorMessage = response.body.error;
-            }
-            window.location.reload()
+            this.mounted();
         }).catch(error => error.message);
 
     }

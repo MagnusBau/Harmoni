@@ -74,19 +74,6 @@ export class TicketEdit extends Component {
                         }}
                     />
                 </div>
-
-                <div>event</div>
-                <div>
-                    <input
-                        className="form-control"
-                        type="number"
-                        value={this.ticket.event}
-                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                            if (this.ticket) this.ticket.event = event.target.value;
-                        }}
-                    />
-                </div>
-
                 <button
                     className="btn btn-outline-success"
                     onClick={() => {this.save(); }}
@@ -115,9 +102,6 @@ export class TicketEdit extends Component {
             .getTicketId(this.currentTicketID)
             .then((response) => {
                 this.ticket = response[0][0];
-                    if(response.body.error) {
-                        this.errorMessage = response.body.error;
-                    }
             })
             .catch((error: Error) => console.log(error.message));
     }
@@ -127,9 +111,6 @@ export class TicketEdit extends Component {
 
         ticketService.removeTicket(this.currentTicketID).then((response) => {
             if (this.ticket) this.props.handleDelete();
-                if(response.body.error) {
-                    this.errorMessage = response.body.error;
-                }
         }).catch(error => error.message);
     }
 
@@ -141,9 +122,6 @@ export class TicketEdit extends Component {
         }
         ticketService.updateTicket(this.ticket, this.currentTicketID).then((response) => {
             if (this.ticket) this.props.handleSaveEdit();
-            if(response.body.error) {
-                this.errorMessage = response.body.error;
-            }
         }).catch(error => error.message);
     }
 }
