@@ -118,6 +118,19 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
+    getLastEventByUser(userId: number): Event[] {
+        return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + '/event/last', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
+    }
+
     getEndedEventsByUser(userId: number): Event[] {
         return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + "/event/ended", {
             'headers': {

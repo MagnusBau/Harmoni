@@ -168,14 +168,38 @@ export class AddEvent extends Component {
     }
 
     register() {
+        let file = this.state.file;
+        let formData = new FormData();
         this.createEvent.start_time = this.state.start_time;
         this.createEvent.end_time = this.state.end_time;
+
+        const myNewFile = new File([file], this.props.eventId + this.nameAddOn + this.name, {type: file.type});
+
+        formData.append('file', myNewFile);
+
         eventService
             .createEvent(this.createEvent)
             .then(() => {
-                fileInfoService.postImage()
-                Alert.success('You have created a new event!!!!');
-                history.push('/user/' + userService.getUserId() + '/overview');
+                console.log(userService.getUserId());
+                eventService
+                    .getLastEventByUser(userService.getUserId())
+                    .then((response) => {
+
+                        console.log(response[0].event_id);
+                        const myNewFile = new File([file], "./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+
+                        formData.append('file', myNewFile);
+                        formData.append('image', "./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                        fileInfoService.postImage(response[0].event_id, formData).then(response => {
+                            if (response.data === "error") {
+                                this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                            }
+
+                            Alert.success('You have created a new event!!!!');
+                            history.push('/user/' + userService.getUserId() + '/overview');
+                        })
+                    })
+                    .catch((error: Error) => Alert.danger(error.message));
             })
             .catch((error: Error) => Alert.danger(error.message));
     }

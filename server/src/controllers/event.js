@@ -49,6 +49,7 @@ exports.getDocumentByEvent = (req, res, next) => {
 exports.insertEvent = (req, res, next) => {
     console.log("Post request from client");
     eventDao.createEvent(req.body,(status, data) => {
+
         res.status(status);
         res.json(data);
     });
@@ -71,6 +72,21 @@ exports.getEventByUser = (req, res, next) => {
             if(rows[0].contact_id) {
                 console.log("tralala:" + rows[0].contact_id);
                 eventDao.getEventByUser(rows[0].contact_id, (err, [rows2]) => {
+                    res.json(rows2)
+                })
+            }
+        }
+    })
+};
+
+exports.getLastEventByUser = (req, res, next) => {
+    console.log('GET-request from client getLastEventByUser');
+    userDao.getContact(req.params.userId, (err, [rows]) => {
+        console.log(rows);
+        if(rows[0]) {
+            if(rows[0].contact_id) {
+                console.log("tralala:" + rows[0].contact_id);
+                eventDao.getLastEventByUser(rows[0].contact_id, (err, [rows2]) => {
                     res.json(rows2)
                 })
             }

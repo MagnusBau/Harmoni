@@ -17,6 +17,7 @@ router.get("/event/search/:input", eventController.getEventByInput);
 router.post("/contactUs", contactController.contactUs);
 router.get("/categories", eventController.getCategories);
 router.get("/user/:userId/event", eventController.getEventByUser);
+router.get("/user/:userId/event/last", eventController.getLastEventByUser);
 router.get("/user/:userId/event/ended", eventController.getEndedEventsByUser);
 router.get("/event/:eventId/ticket", ticketController.getAllTickets);
 router.get("/event/:contactId", userController.getOrganizerUsername);
