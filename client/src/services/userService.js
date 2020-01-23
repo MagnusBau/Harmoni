@@ -325,7 +325,7 @@ class UserService {
         this.mountDropdown();
     }
     getOrganizerUsername(contactId: number) {
-        return axios.get('http://localhost:4000/api/event/' + contactId)
+        return axios.get('http://localhost:4000/api/event/organizer/' + contactId)
             .then(response => {
                 console.log("Hello!");
                 return response.data})
