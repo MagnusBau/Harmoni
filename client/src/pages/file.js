@@ -291,13 +291,19 @@ export class FileMain extends Component {
             console.log(encodedFilePath);
             fileInfoService.downloadFile(encodedFilePath).then(response =>
                 console.log("laster ned " + this.state.selected));
+            this.errorMessage = "";
+            this.mounted();
         }
     }
-
-    handleOverwrite() {
-        if (this.state.selected !== undefined) {
-            let encodedFilePath = btoa(this.path + this.props.eventId + this.nameAddOn + this.state.selected);
-            history.push("/event/" + this.props.eventId + "/edit/file/" + encodedFilePath);
+    handleOverwrite(){
+        if(this.state.selected !== undefined){
+            if(this.state.selected.split('.').pop() === "txt"){
+                let encodedFilePath = btoa(this.path + this.props.match.params.eventId + this.nameAddOn + this.state.selected);
+                history.push("/event/" + this.props.match.params.eventId + "/edit/file/" + encodedFilePath);
+            }else{
+                this.errorMessage = "Kun .txt-filer kan redigeres";
+                this.mounted();
+            }
         }
     }
 

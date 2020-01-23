@@ -70,7 +70,7 @@ END;
   IN event_id_in: event id of document
   IN path_in: path of the file
 
-  Issued by: deleteFileInfo(path: string)
+  Issued by: add_artist_with_new_contract
  */
 CREATE PROCEDURE add_document(OUT document_id_in INT(11), IN document_name_in VARCHAR(100), IN path_in VARCHAR(500), IN event_id_in INT(11))
 BEGIN

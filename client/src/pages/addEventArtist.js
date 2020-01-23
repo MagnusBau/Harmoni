@@ -32,6 +32,7 @@ export class AddEventArtist extends Component {
     name: string = "";
     path: string = "./files/";
     nameAddOn: string = "------";
+    errorMessage = "";
 
     /**
      * Constructor
