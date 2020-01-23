@@ -20,8 +20,11 @@ export class Map extends React.Component{
             markerPosition: {
                 lat: this.props.center.lat,
                 lng: this.props.center.lng
-            }
+            },
+            readonly: (props.readonly ? props.readonly : false)
         }
+
+        console.log("Read only:" + this.props.readonly);
     }
     /**
      * Get the current address from the default map position and set those values in the state
@@ -270,35 +273,40 @@ export class Map extends React.Component{
                                defaultZoom={this.props.zoom}
                                defaultCenter={{ lat: this.state.mapPosition.lat, lng: this.state.mapPosition.lng }}
                     >
-                        {/* For Auto complete Search Box */}
-                        <Autocomplete
-                            style={{
-                                width: '100%',
-                                height: '40px',
-                                paddingLeft: '16px',
-                                marginTop: '2px',
-                                marginBottom: '100px'
-                            }}
-                            onPlaceSelected={ this.onPlaceSelected }
-                            types={['(regions)']}
-                        />
                         {/*Marker*/}
+
                         <Marker google={this.props.google}
                                 name={'Dolores park'}
-                                draggable={true}
+                                draggable={!this.state.readonly}
                                 onDragEnd={ this.onMarkerDragEnd }
                                 position={{ lat: this.state.markerPosition.lat, lng: this.state.markerPosition.lng }}
                         />
-                        <Marker />
-                        {/* InfoWindow on top of marker */}
                         <InfoWindow
                             onClose={this.onInfoWindowClose}
-                            position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}
-                        >
+                            position={{ lat: ( this.state.markerPosition.lat + 0.0018 ), lng: this.state.markerPosition.lng }}>
                             <div>
                                 <span style={{ padding: 0, margin: 0 }}>{ this.state.address }</span>
                             </div>
                         </InfoWindow>
+
+                        {!this.state.readonly ?
+                            <div>
+                                {/* For Auto complete Search Box */}
+                                <Autocomplete
+                                    style={{
+                                        width: '100%',
+                                        height: '40px',
+                                        paddingLeft: '16px',
+                                        marginTop: '2px',
+                                        marginBottom: '100px'
+                                    }}
+                                    onPlaceSelected={ this.onPlaceSelected }
+                                    types={['(regions)']}
+                                />
+                            </div>
+                        : null}
+                        {/* InfoWindow on top of marker */}
+
                     </GoogleMap>
                 )
             )
