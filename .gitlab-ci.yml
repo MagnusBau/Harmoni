@@ -22,7 +22,7 @@ test_server:
     - npm install
     - npm run test
     - cd ..
-  coverage: /All files\s*\|\s*([\d\.]+)/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
 
 # Publish coverage report on gitlab-pages
 server_pages:
