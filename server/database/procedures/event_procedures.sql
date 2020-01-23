@@ -59,7 +59,8 @@ BEGIN
          DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time,
          capacity,
          organizer,
-         category
+         category,
+         image
   FROM event;
 END;
 

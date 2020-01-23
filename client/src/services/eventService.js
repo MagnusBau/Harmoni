@@ -18,6 +18,7 @@ export class Event {
     organizer: number;
     organizer_name: string;
     cancelled: number;
+    image: string;
 
 }
 
