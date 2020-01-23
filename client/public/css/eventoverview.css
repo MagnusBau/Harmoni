@@ -28,3 +28,11 @@
     background-color: var(--color-dark-blue) !important;
     color: var(--color-light-beige)!important;
 }
+
+.card-body {
+    background-color: white;
+}
+
+.card-header {
+    padding: 12px 10px 12px 10px;
+}

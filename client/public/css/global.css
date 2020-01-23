@@ -122,6 +122,8 @@ input{
     border-bottom: 10px var(--color-brown-black) !important;
 }
 
+/*table*/
+
 th {
     border: none !important;
     padding-left: 0 !important;
