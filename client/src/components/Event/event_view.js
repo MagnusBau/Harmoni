@@ -9,6 +9,7 @@ import {EventEquipment} from "../../services/equipmentService";
 import {ModalWidget} from "../Modal/modal";
 import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
+import {EventViewHeader} from "../Header/headers";
 
 export default class EventView extends Component {
     errorMessage:string="";
@@ -36,26 +37,26 @@ export default class EventView extends Component {
 
         return (
             <div>
-                <h5>Beskrivelse:</h5>
+                <EventViewHeader label="Beskrivelse:"/>
                 <p>{this.eventOverview[0].description}</p>
-                <h5>Kategori</h5>
+                <EventViewHeader label="Kategori:"/>
                 <p>{this.eventOverview[0].category}</p>
-                <h5>Sted</h5>
+                <EventViewHeader label="Sted:"/>
                 <p>{this.eventOverview[0].location}</p>
-                <h5>Tidspunkt</h5>
+                <EventViewHeader label="Tidspunkt:"/>
                 <p><b>Fra:</b> {this.eventOverview[0].start_time}
                     <br/><b>Til:</b> {this.eventOverview[0].end_time}</p>
-                <h5>Kapasitet</h5>
+                <EventViewHeader label="Kapasitet:"/>
                 <p>{this.eventOverview[0].capacity}</p>
 
                 <div className="btn-toolbar">
                     {!this.props.isArtist ?
-                        <button type="button" className="btn btn-outline-dark my-2 mr-2" onClick={this.props.handleClick}>Rediger arrangement
+                        <button type="button" className="btn btn-outline-dark my-2 mr-4" onClick={this.props.handleClick}>Rediger arrangement
                         </button>
                     : null}
 
                     {!this.props.isArtist ?
-                        <button type="button" className="btn btn-outline-dark my-2 ml-2" data-toggle="modal" data-target="#showModal">Avlyst arrangement
+                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlyst arrangement
                         </button>
                     : null}
                 </div>

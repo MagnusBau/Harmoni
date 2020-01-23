@@ -72,11 +72,11 @@ export class UserRegister extends Component {
                 </form>
                 <br/>
                 <div className="btn-toolbar">
-                    <button type="button" className="btn btn-outline-primary my-2 mr-2"
+                    <button type="button" className="btn btn-outline-primary my-2 mr-4"
                             onClick={this.attemptRegister}>Registrer deg
                     </button>
                     <p>{this.errorMessage}</p>                         <a type="button"
-                                                                          className="btn btn-outline-primary my-2 ml-2"
+                                                                          className="btn btn-outline-primary my-2"
                                                                           href="/#">Avbryt</a></div>
                 <br/>                     <p style={{color: "red"}}>{this.errorMessage}</p></div>
         </div>)

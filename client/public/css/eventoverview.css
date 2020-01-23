@@ -20,11 +20,11 @@
     color: var(--color-meduim-blue)
 }
 
-.nav-item-event-overview > a:active{
+.nav-item-event-overview > a:active {
     color: var(--color-meduim-blue)
 }
 
 .nav-link.active {
     background-color: var(--color-dark-blue) !important;
-    color: var(--color-light-beige) !important;
+    color: var(--color-light-beige)!important;
 }

@@ -223,7 +223,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                     <div>
                         <h3 id="overview-title">{this.eventOverview.title}</h3>
                         <div className="card-header" id="overview-header">
-                            <ul className="nav nav-tabs card-header-tabs" role="tablist" id="eventOverview">
+                            <ul className="nav nav-tabs nav-fill card-header-tabs" role="tablist" id="eventOverview">
                                 <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link active" href="#overview" data-toggle="tab">Oversikt</a>
                                 </li>

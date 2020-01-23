@@ -141,31 +141,35 @@ export default class AddRole extends Component {
                                    onChange={this.onChange}
                                    required/>
                         </div>
-                        <button type="submit" className="btn-primary m-2">Legg til</button>
+                        <button type="submit" className=" btn btn-outline-primary m-2">Legg til</button>
                     </form>
                     : null}
-                <table className="table w-50">
+                    <div className="table-responsive">
+                <table className="table">
                     <thead>
-                    <tr>
+                    <tr className="d-flex">
                         <th>Personell</th>
+                        <th/>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
                     {this.roles.map((role =>
                             <tr key={role.role_id} className="d-flex">
-                                <td className="col-7">{role.type}</td>
+                                <td className="col-4">{role.type}</td>
                                 {!this.props.isArtist ?
                                     <div>
                                         <td>
-                                            <button className="btn-primary" onClick={() => this.addToEvent(role)}>Legg
+                                            <button type="button" className="btn btn-outline-primary my-2 mr-4" onClick={() => this.addToEvent(role)}>Legg
                                                 til
                                             </button>
                                         </td>
                                         <td>
-                                            <button className="btn-danger" onClick={() => this.setState({
-                                                selected: role,
-                                                showConfirmDelete: true
-                                            })}>Fjern
+                                            <button type="button" className="btn btn-outline-primary my-2"
+                                                    onClick={() => this.setState({
+                                                        selected: role,
+                                                        showConfirmDelete: true
+                                                    })}>Fjern
                                             </button>
                                         </td>
                                     </div>
@@ -174,6 +178,7 @@ export default class AddRole extends Component {
                     ))}
                     </tbody>
                 </table>
+                    </div>
                 <table className="table w-50">
                     <thead>
                     <tr>
@@ -183,14 +188,14 @@ export default class AddRole extends Component {
                     <tbody>
                     {this.eventRoles.map((eventRole =>
                             <tr key={eventRole.role_id} className="d-flex">
-                                <td className="col-7">{eventRole.type}</td>
-                                <td className="col-7">{eventRole.count}
+                                <td className="col-5">{eventRole.type}</td>
+                                <td className="col-4">{eventRole.count}
                                     {!this.props.isArtist ?
-                                        <div className="btn-group-vertical" role="group">
-                                            <button type="button" className="btn-link"
+                                        <div className="btn-group-vertical m-1" role="group">
+                                            <button type="button" className="btn btn-link"
                                                     onClick={() => this.incrementRole(eventRole)}>
                                                 <img src="../img/icons/chevron-up.svg"/></button>
-                                            <button type="button" className="btn-link"
+                                            <button type="button" className=" btn btn-link"
                                                     onClick={() => this.decrementRole(eventRole)}>
                                                 <img src="../img/icons/chevron-down.svg"/></button>
                                         </div>
@@ -198,7 +203,7 @@ export default class AddRole extends Component {
                                 </td>
                                 <td>
                                     {!this.props.isArtist ?
-                                        <button type="button" className="btn-danger" onClick={() => {
+                                        <button type="button" className="btn btn-outline-primary" onClick={() => {
                                             this.setState({selected: eventRole, showConfirmRemove: true})
                                         }}>Fjern
                                         </button>
