@@ -198,14 +198,14 @@ export class AddEvent extends Component {
         e.preventDefault();
         if(this.createEvent.start_time + 100 >= this.createEvent.end_time){
         return alert("start må være før slutt!");
-    }else{
-        e.preventDefault();
-        return alert("Du må fylle ut event start og slutt!");
-    }
+        }else{
+            e.preventDefault();
+            return alert("Du må fylle ut event start og slutt!");
+        }
 
     }
 
-    }
+}
 
 
     mounted() {

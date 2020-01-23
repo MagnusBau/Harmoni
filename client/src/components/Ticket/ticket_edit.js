@@ -11,6 +11,7 @@ const history = createHashHistory();
 export class TicketEdit extends Component {
     currentTicketID = 0;
     ticketTypeList: Ticket[] = [];
+    userForm: any = null;
     ticket = new Ticket(
         '',
         '',
@@ -24,10 +25,11 @@ export class TicketEdit extends Component {
         if (!this.ticket) return null;
         return (
 
-            <form>
+            <form ref={e => (this.userForm = e)}>
                 <div>title</div>
                 <div>
                     <input
+                        required
                         className="form-control"
                         type="text"
                         value={this.ticket.title}
@@ -41,6 +43,7 @@ export class TicketEdit extends Component {
                 <div>info</div>
                 <div>
                     <input
+                        required
                         className="form-control"
                         type="text"
                         value={this.ticket.info}
@@ -54,6 +57,7 @@ export class TicketEdit extends Component {
                 <div>price</div>
                 <div>
                     <input
+                        required
                         className="form-control"
                         type="number"
                         value={this.ticket.price}
@@ -66,6 +70,7 @@ export class TicketEdit extends Component {
                 <div>count</div>
                 <div>
                     <input
+                        required
                         className="form-control"
                         type="number"
                         value={this.ticket.count}
@@ -115,7 +120,7 @@ export class TicketEdit extends Component {
     }
 
     save() {
-        if (!this.ticket) return null;
+        if (!this.ticket|| !this.userForm.checkValidity()) return null;
         if(this.ticket.count < 0 || this.ticket.price < 0 ) {
             alert('pris eller antall kan ikke være under 0!');
             return;
