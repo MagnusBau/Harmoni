@@ -5,7 +5,7 @@ import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
 import {Button} from '../components/Buttons/buttons';
-import {ModalWidget} from '../components/Modal/modal'
+import { ModalWidget } from "../components/widgets";
 const history = createHashHistory();
 import {Ticket, ticketService} from "../services/ticketService";
 import {EventEquipment, equipmentService} from "../services/equipmentService";
@@ -25,22 +25,21 @@ export default class UserOverview extends Component {
     events: Event[] = [];
     endedEvents: Event[] = [];
 
-    state = {
-        showModal: false,
-        setShowModal: false
-    };
-
-    show = () => {
-        this.setState({ setShowModal: true });
-    };
-
-    close = () => {
-        this.setState({ setShowModal: false });
-    };
-
     constructor(props){
         super(props);
-        this.state = {isEditingEvent: false}
+
+        this.state = {
+            setShowModal: false,
+            isEditingEvent: false
+        }
+    }
+
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({setShowModal: true});
+        } else if (e.target.id === 'closeWarning') {
+            this.setState({setShowModal: false});
+        }
     }
 
     mounted() {
@@ -164,16 +163,16 @@ export default class UserOverview extends Component {
                             </div>
                         </div>
 
-                        <Button.Red onClick={this.show}>Slett arkiverte arrangementer</Button.Red>
+                        <button id="showWarning" type="button" className="btn btn-outline-danger" onClick={this.show}>Slett arrangement</button>
 
                         <ModalWidget
                             show={this.state.setShowModal}
-                            onHide={this.close}
-                            title="Advarsel"
-                            body="Er du sikker på at du vil slette arkiverte arrangementer?"
+                            onHide={() => this.setState({setShowModal: false})}
+                            title='Advarsel'
+                            body="Er du sikker på at du vil slette de arkiverte arrangementene?"
                         >
-                            <Button.Light onClick={this.close}>Lukk</Button.Light>
-                            <Button.Red onClick={this.deleteEndedEvents}>Slett</Button.Red>
+                            <button id="closeWarning" type="button" className="btn btn-outline-light" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
+                            <button className="btn btn-outline-danger" type="button" onClick={this.deleteEndedEvents}>Slett</button>
                         </ModalWidget>
 
                     </div>
