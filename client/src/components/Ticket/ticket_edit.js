@@ -121,7 +121,7 @@ export class TicketEdit extends Component {
             return;
         }
         ticketService.updateTicket(this.ticket, this.currentTicketID).then((response) => {
-            if (this.ticket) this.props.handleSaveEdit();
+            if (this.ticket) this.props.handleCancel();
         }).catch(error => error.message);
     }
 }

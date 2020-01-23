@@ -111,17 +111,6 @@ export class EventEdit extends Component {
                         </div>
                     </div>
                     <div className={"form-group m-2"}>
-                        <label>Antall billettyper:</label>
-                        <br></br>
-                        <select name={"ticket-types"} size={"1"}>
-                            <option value={"1"}>1</option>
-                            <option value={"2"}>2</option>
-                            <option value={"3"}>3</option>
-                            <option value={"4"}>4</option>
-                            <option value={"5"}>5</option>
-                        </select>
-                    </div>
-                    <div className={"form-group m-2"}>
                         <label>Type arrangement:</label>
                         <br></br>
                         <select name={"category"} className="custom-select w-25"
@@ -143,18 +132,6 @@ export class EventEdit extends Component {
                                required={true}
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.capacity = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Organizer:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"organizer"}
-                               defaultValue={this.event.organizer}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.event.organizer = event.target.value)}
                         />
                     </div>
 
@@ -183,8 +160,8 @@ export class EventEdit extends Component {
         eventService
             .updateEvent(this.currentEvent, this.event)
             .then(() => {
-                Alert.success('You have updated your event');
                 this.props.reload();
+                Alert.success('You have updated your event');
             })
             .catch((error: Error) => Alert.danger(error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/

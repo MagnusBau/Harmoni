@@ -232,9 +232,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     <a className="nav-link" href="#ticket" data-toggle="tab">Billettyper</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="#riders" data-toggle="tab">Riders</a>
-                                </li>
-                                <li className="nav-item">
                                     <a className="nav-link" href="#equipment" data-toggle="tab">Utstyr</a>
                                 </li>
                                 <li className="nav-item">
