@@ -5,6 +5,7 @@ const eventController = require("../controllers/event");
 const artistController = require("../controllers/artist");
 const ticketController = require("../controllers/ticket");
 const userController = require("../controllers/user");
+const fileInfoController = require("../controllers/fileInfo");
 
 const router = express.Router();
 
@@ -20,5 +21,7 @@ router.get("/user/:userId/event/ended", eventController.getEndedEventsByUser);
 router.get("/event/:eventId/ticket", ticketController.getAllTickets);
 router.get("/event/organizer/:contactId", userController.getOrganizerUsername);
 router.get("/event/search/user/:username", eventController.getEventsByUsername);
+router.get("/file/download/:file", fileInfoController.downloadFile);
+router.get("/file/download/contract/:artistId", fileInfoController.downloadContract);
 
 module.exports = router;

@@ -417,10 +417,6 @@ export class AddEventArtist extends Component {
                                         <a onClick={this.download} href="javascript:;"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
                                     </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
-                                        <p className="card-text">
-                                            <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
-                                        </p> : null}
-                                    {this.seeArtist.artist_name !== "" ?
                                         <div className="align-bottom form-inline">
                                             {!this.seeArtist.user_id && !this.props.isArtist ?
                                                 <button

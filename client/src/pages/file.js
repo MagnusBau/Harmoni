@@ -11,6 +11,7 @@ import {Button} from "../components/Buttons/buttons";
 import {Modal} from "react-bootstrap";
 import {AddRiderType} from "../components/Rider/rider";
 import {Rider} from "../services/riderService";
+import {userService} from "../services/userService";
 
 export class FileMain extends Component {
     errorMessage: string = "";
@@ -143,6 +144,7 @@ export class FileMain extends Component {
                                 placeholder="Fil"
                                 onChange={(e) => this.handleFile(e)}
                                 required
+                                accept=".txt,.pdf,.doc,.docx,.odt"
                             />
                         </div>
                         <div className="form-group m-2">
@@ -286,7 +288,7 @@ export class FileMain extends Component {
             let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
             console.log(filePath);
             let encodedFilePath = btoa(filePath);
-            window.open("http://localhost:4000/api/file/download/" + encodedFilePath, "_blank");
+            //window.open("http://localhost:4000/auth/id/" + userService.getUserId() + "/file/download/" + encodedFilePath, "_blank");
             console.log(encodedFilePath);
             fileInfoService.downloadFile(encodedFilePath).then(response =>
                 console.log("laster ned " + this.state.selected));

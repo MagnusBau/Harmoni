@@ -35,12 +35,13 @@ html, body {
     margin: 10rem auto 10rem auto;
 }
 
+/*bootstrap nav components*/
 .navbar > a {
     color: var(--color-brown-black)
 }
 
 .navbar {
-    background-color: transparent;
+    background-color: var(--color-light-beige);
     transition: background-color 0.5s ease 0s;
 }
 
@@ -48,6 +49,12 @@ html, body {
     background-color: var(--color-light-beige);
 }
 
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+}
 /*text*/
 .text-light{
     color: var(--color-white);

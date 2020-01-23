@@ -7,9 +7,28 @@ const ticketDao = new TicketDAO(pool);
 
 exports.insertTicket = (req, res, next) => {
     console.log("Fikk POST-request fra klienten");
-    ticketDao.createOne(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
+    ticketDao.getAll(req.body.event, (status, tickets) => {
+        console.log(tickets[0]);
+        let unique = true;
+        if(tickets[0]) {
+            tickets[0].map(t => {
+                console.log(req.body.title);
+                if(t.title === req.body.title) {
+                    unique = false;
+                }
+            });
+            if(unique) {
+                ticketDao.createOne(req.body, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                });
+            } else {
+                console.log("duplicate ticket");
+                res.json({error: "Duplicate ticket"});
+            }
+        } else {
+            res.json({error: "Server error"});
+        }
     });
 };
 

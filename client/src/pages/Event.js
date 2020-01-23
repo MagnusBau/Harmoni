@@ -21,6 +21,7 @@ import {TicketEdit} from "../components/Ticket/ticket_edit"
 import {artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 import {FileMain} from "./file";
+import {PageHeader} from "../components/Header/headers";
 /**
  * Class for the view of one event
  *
@@ -115,7 +116,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         eventService
             .getEventById(this.currentEvent)
             .then(eventOverview => {
-                this.eventOverview = eventOverview;
+                this.eventOverview = eventOverview[0];
                 if(eventOverview.body.error) {
                     this.errorMessage = eventOverview.body.error;
                 }
@@ -217,29 +218,33 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
             }
         }
+        //TODO fikse så eventtitel vises
         return (
             <div className="container">
                 <div className="card">
                     <div>
-                        <h5> {this.eventOverview.title}  </h5>
-                        <div className="card-header">
+                        <h3 id="overview-title">{this.eventOverview.title}</h3>
+                        <div className="card-header" id="overview-header">
                             <ul className="nav nav-tabs card-header-tabs" role="tablist" id="eventOverview">
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link active" href="#overview" data-toggle="tab">Oversikt</a>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link" href="#staff" data-toggle="tab">Personell</a>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link" href="#ticket" data-toggle="tab">Billettyper</a>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
+                                    <a className="nav-link" href="#riders" data-toggle="tab">Riders</a>
+                                </li>
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link" href="#equipment" data-toggle="tab">Utstyr</a>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link" href="#documents" data-toggle="tab">Dokumenter</a>
                                 </li>
-                                <li className="nav-item">
+                                <li className="nav-item nav-item-event-overview">
                                     <a className="nav-link" href="#artist" data-toggle="tab">Artister</a>
                                 </li>
                             </ul>
@@ -258,8 +263,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
                                     <h5>Riders</h5>
-
-
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">role.type</li>
 
