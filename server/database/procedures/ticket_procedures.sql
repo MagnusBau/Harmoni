@@ -12,6 +12,8 @@ DROP PROCEDURE IF EXISTS delete_one_ticket;
   IN price_in: Price of the ticket type
   IN count_in: Amount of available tickets
   IN event_in: Event for the ticket
+
+  Issued by: createOne(json: Object)
  */
 CREATE PROCEDURE create_one_ticket(IN title_in VARCHAR(50), IN info_in longtext, IN price_in INT, IN count_in INT,
                                    IN event_in INT)
@@ -28,6 +30,8 @@ END;
   IN price_in New price of ticket
   IN count_in: New count of ticket
   IN ticket_id_in: Id of the ticket to update
+
+  Issued by: updateOneTicket(json: object)
  */
 CREATE PROCEDURE update_one_ticket(IN title_in VARCHAR(50), IN info_in longtext, IN price_in integer,
                                    IN count_in integer, IN ticket_id_in integer)
@@ -44,6 +48,8 @@ END;
   Get one ticket by id
 
   IN ticket_id_in: Id of the ticket
+
+  Issued by: getOne(ticket_id: number)
  */
 CREATE PROCEDURE select_one_ticket_byId(IN ticket_id_in INT)
 BEGIN
@@ -54,6 +60,8 @@ END;
   Get all tickets on an event
 
   IN event_id_in: Id of event
+
+  Issued by: getAll(event: number)
  */
 CREATE PROCEDURE get_all_ticket(IN event_id_in INT)
 BEGIN
@@ -72,6 +80,8 @@ END;
   Deletes one ticket by id
 
   IN ticket_id_in: Id of ticket
+
+  Issued by: removeOneTicket(id: number)
  */
 CREATE PROCEDURE delete_one_ticket(IN ticket_id_in INT)
 BEGIN
