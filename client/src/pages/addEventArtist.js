@@ -105,16 +105,6 @@ export class AddEventArtist extends Component {
                 .catch((error: Error) => error.message);
         });
 
-        this.setState({storedArtists: []}, () => {
-            artistService
-                .getArtistByEvent(this.props.eventId)
-                .then(artists =>{
-                    this.setState({storedArtists: artists[0]});
-                    if(artists.body.error) this.errorMessage = artists.body.error;
-                })
-                .catch((error: Error) => error.message);
-        });
-
         eventService
             .getDocumentByEvent(this.props.eventId)
             .then(documents =>{
@@ -412,10 +402,6 @@ export class AddEventArtist extends Component {
                                     {this.seeArtist.artist_name !== "" ? <p className="card-text">
                                         <a onClick={this.download} href="javascript:;"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
                                     </p> : null}
-                                    {this.seeArtist.artist_name !== "" ?
-                                        <p className="card-text">
-                                            <a href="#"><img src="./img/icons/download.svg"/> Last ned kontrakt</a>
-                                        </p> : null}
                                     {this.seeArtist.artist_name !== "" ?
                                         <div className="align-bottom form-inline">
                                             {!this.seeArtist.user_id && !this.props.isArtist ?

@@ -91,8 +91,9 @@ class FileInfoService {
 
     downloadFile(encodedFile: string) {
         console.log("Nå er vi i service: " + encodedFile);
-        console.log("hei");
-        return axios.get(`http://` + ip + `:4000/auth/id/${userService.getUserId()}/file/download/${encodedFile}`, {
+        console.log(userService.getToken());
+        window.open("http://localhost:4000/api/file/download/" + encodedFile, "_blank", );
+        return axios.get(`http://` + ip + `:4000/api/file/download/${encodedFile}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }
@@ -101,6 +102,8 @@ class FileInfoService {
                 if (userService.error(response)) {
                     return userService.error(response);
                 }
+                console.log("here");
+                console.log(response.data);
                 return response.data;
             })
             .catch(error => console.log("error" + error));

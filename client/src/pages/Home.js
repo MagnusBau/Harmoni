@@ -35,7 +35,7 @@ class Home extends Component {
                         <div className="card-columns">
                             {this.events.map(event => (
                                 <div className="card" id="frontpageCard">
-                                    <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                                    <img className="card-img-top img-fluid" src={this.downloadImage} alt="happy faces"/>
                                     <div className="card-body">
                                         <h5 className="card-title">
                                             {event.title}
@@ -52,6 +52,10 @@ class Home extends Component {
                 </div>
             </div>
         )
+    }
+
+    downloadImage(){
+        
     }
 
     mounted(){
