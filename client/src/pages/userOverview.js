@@ -13,6 +13,7 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
+import {EventViewHeader} from "../components/Header/headers";
 /**
  * Class for the view of one event
  *
@@ -101,55 +102,56 @@ export default class UserOverview extends Component {
 
         return (
             //TODO en eller annen header for hvilken user som er logget inn
-            <div className="container">
+            <div className="container mt-4" id="userOverview">
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Profil</h5>
-                                <div className="list-group" className="">
-                                    <li className="list-group-item">
-                                        <h5>Username:</h5>{userService.getUsername()}
-                                    </li>
-                                    <li className="list-group-item">
-                                        <h5>Name:</h5> {userService.getFirstName() + " " + userService.getLastName()}
-                                    </li>
-                                    <li className="list-group-item">
-                                        <h5>Email:</h5> {userService.getEmail()}
-                                    </li>
-                                    <li className="list-group-item">
-                                        <h5>Phone:</h5> {userService.getPhone()}
-                                    </li>
-                                    <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                        history.push("/user/" + userService.getUserId() + "/edit");
-                                    }}>
-                                        Endre Profil
-                                    </li>
-                                </div>
-                            </div>
+                    <div className="col-lg-12">
+                        <EventViewHeader label="Profil"/>
+                        <div className="list-group" className="">
+                            <li className="list-group-item">
+                                <h6>Brukernavn:</h6>{userService.getUsername()}
+                            </li>
+                            <li className="list-group-item">
+                                <h6>Navn:</h6> {userService.getFirstName() + " " + userService.getLastName()}
+                            </li>
+                            <li className="list-group-item">
+                                <h6>Epost:</h6> {userService.getEmail()}
+                            </li>
+                            <li className="list-group-item">
+                                <h6>Telefon:</h6> {userService.getPhone()}
+                            </li>
+                            <br></br>
+                            <button type="button" className="btn btn-outline-primary" onClick={(e) => {
+                                history.push("/user/" + userService.getUserId() + "/edit");
+                            }}>Endre profil</button>
                         </div>
                         {artistBox}
                     </div>
-                    <div className="col-md-6">
-                        <h5>Dine aktive arrangementer</h5>
+                </div>
+                <div className="row" id="userOverviewEvents">
+                    <div className="col-lg-6">
+                        <EventViewHeader label="Dine arrangementer"/>
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="list-group" className="">
-                                    <li key="eventNEW" className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                    <button type="button" className="btn btn-outline-primary" onClick={(e) => {
                                         history.push("/event/new");
                                     }}>
                                         Legg til nytt arrangement
-                                    </li>
+                                    </button>
+                                    <p></p>
                                     {this.events.map(e => (
                                         //TODO hente inn en <a> og sender valgt event til eventoverview
                                         <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
                                             {e.title} {e.start_time}
                                         </li>
                                     ))}
+                                    <p></p>
                                 </div>
                             </div>
                         </div>
-                        <h5>Dine arkiverte arrangementer</h5>
+                    </div>
+                    <div className="col-lg-6">
+                        <EventViewHeader label="Dine arkiverte arrangementer"/>
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="list-group" className="">
@@ -164,6 +166,7 @@ export default class UserOverview extends Component {
                         </div>
 
                         <button id="showWarning" type="button" className="btn btn-outline-danger" onClick={this.show}>Slett arrangement</button>
+                        <p></p>
 
                         <ModalWidget
                             show={this.state.setShowModal}
@@ -174,7 +177,6 @@ export default class UserOverview extends Component {
                             <button id="closeWarning" type="button" className="btn btn-outline-light" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
                             <button className="btn btn-outline-danger" type="button" onClick={this.deleteEndedEvents}>Slett</button>
                         </ModalWidget>
-
                     </div>
                 </div>
             </div>
