@@ -6,28 +6,31 @@ console.log(path);
 
 $(document).ready(function() {
 
-    //Reload the page when using the browser back and forward button
-    $(window).on('popstate', function () {
-        location.reload(true);
-    });
+    if(path === "http://localhost:4000/#/" || path === "http://localhost:4000/?#/") {
 
-    $("#frontpage").css({top: frontpageTableHeight + 'px'});
+        //Reload the page when using the browser back and forward button
+        $(window).on('popstate', function () {
+            location.reload(true);
+        });
 
-    $(window).resize(function () {
-        location.reload();
-    });
+        $("#frontpage").css({top: frontpageTableHeight + 'px'});
 
-    $(window).scroll(function() {
+        $(window).resize(function () {
+            location.reload();
+        });
 
-        if(path === "http://localhost:4000/#/" || path === "http://localhost:4000/?#/") {
+        $(window).scroll(function() {
             // checks if window is scrolled more than 500px, adds/removes solid class
             if ($(this).scrollTop() > scrollHeight) {
                 $('.navbar').addClass('solid');
             } else {
                 $('.navbar').removeClass('solid');
             }
-        } else {
-            $('.navbar').addClass('solid');
-        }
-    });
+        });
+
+    } else {
+
+        $('.navbar').removeClass('solid');
+    }
+
 });
