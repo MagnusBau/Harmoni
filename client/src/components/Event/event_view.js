@@ -96,9 +96,6 @@ export default class EventView extends Component {
             .getEventById(this.currentEvent)
             .then(eventOverview => {
                 this.eventOverview = eventOverview;
-                if(eventOverview.body.error) {
-                    this.errorMessage = eventOverview.body.error;
-                }
                 this.setState({location: this.eventOverview[0].location})
             })
             .catch((error: Error) => {error.message});
