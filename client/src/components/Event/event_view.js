@@ -2,14 +2,15 @@
 
 import * as React from 'react';
 import {Component} from "react-simplified";
-import {createHashHistory} from 'history';
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
 import {ModalWidget} from "../Modal/modal";
 import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
+import Map from "../map";
 import {EventViewHeader} from "../Header/headers";
+
 
 export default class EventView extends Component {
     errorMessage:string="";
@@ -20,7 +21,8 @@ export default class EventView extends Component {
 
     state = {
         showModal: false,
-        setShowModal: false
+        setShowModal: false,
+        location: ''
     };
 
     show = () => {
@@ -60,14 +62,51 @@ export default class EventView extends Component {
                         </button>
                     : null}
                 </div>
-
-                <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
-                    <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
-                </ModalWidget>
-
+                <div className="row">
+                    <div className="col">
+                        <h5>Beskrivelse:</h5>
+                        <p>{this.eventOverview[0].description}</p>
+                        <h5>Kategori</h5>
+                        <p>{this.eventOverview[0].category}</p>
+                        <h5>Sted</h5>
+                        <p>{this.eventOverview[0].location}</p>
+                        <h5>Tidspunkt</h5>
+                        <p><b>Fra:</b> {this.eventOverview[0].start_time}
+                        <br/><b>Til:</b> {this.eventOverview[0].end_time}</p>
+                        <h5>Kapasitet</h5>
+                        <p>{this.eventOverview[0].capacity}</p>
+                        <div className="btn-toolbar">
+                            {!this.props.isArtist ?
+                                <button type="button" className="btn btn-outline-dark my-2 mr-2" onClick={this.props.handleClick}>Rediger arrangement
+                                </button>
+                            : null}
+                            {!this.props.isArtist ?
+                                <button type="button" className="btn btn-outline-dark my-2 ml-2" data-toggle="modal" data-target="#showModal">Avlys arrangement
+                                </button>
+                            : null}
+                        </div>
+                        <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
+                            <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
+                            <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
+                        </ModalWidget>
+                    </div>
+                    <div className={"col"}>
+                        <Map
+                            google={this.props.google}
+                            center={{lat: 63.4154, lng: 10.4055}}
+                            height='300px'
+                            zoom={15}
+                            currentAddress={this.state.location}
+                            onChange={() => this.empty()}
+                            readonly={true}
+                        />
+                    </div>
+                </div>
             </div>
         )
+    }
+
+    empty() {
 
     }
 
@@ -77,16 +116,14 @@ export default class EventView extends Component {
             .getEventById(this.currentEvent)
             .then(eventOverview => {
                 this.eventOverview = eventOverview;
-                if(eventOverview.body.error) {
-                    this.errorMessage = eventOverview.body.error;
-                }
+                this.setState({location: this.eventOverview[0].location})
             })
             .catch((error: Error) => {error.message});
     }
 
     cancelEvent() {
 
-        console.log(this.eventOverview[0].event_id);
+        //console.log(this.eventOverview[0].event_id);
 
         if(!this.eventOverview) return Alert.danger("Finner ikke arrangementet");
 

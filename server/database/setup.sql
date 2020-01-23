@@ -60,6 +60,7 @@ CREATE TABLE event
   capacity    INT          NOT NULL,
   organizer   INT          NOT NULL,
   cancelled   BOOLEAN      NOT NULL DEFAULT FALSE,
+  image VARCHAR(100) NOT NULL DEFAULT './files/default.png',
   CONSTRAINT event_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
 

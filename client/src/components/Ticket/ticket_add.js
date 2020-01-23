@@ -102,6 +102,7 @@ export class TicketAdd extends Component{
                     <div>Title</div>
                     <div>
                         <input
+                            required
                             className="form-control"
                             type="text"
                             value={this.ticket.title}
@@ -115,6 +116,7 @@ export class TicketAdd extends Component{
                     <div>info</div>
                     <div>
                         <input
+                            required
                             className="form-control"
                             type="text"
                             value={this.ticket.info}
@@ -127,6 +129,7 @@ export class TicketAdd extends Component{
                     <div>price</div>
                     <div>
                         <input
+                            required
                             className="form-control"
                             type="number"
                             value={this.ticket.price}
@@ -139,6 +142,7 @@ export class TicketAdd extends Component{
                     <div>count</div>
                     <div>
                         <input
+                            required
                             className="form-control"
                             type="number"
                             value={this.ticket.count}
@@ -152,6 +156,7 @@ export class TicketAdd extends Component{
                     <button type="submit" className="btn btn-outline-success" onClick={this.send} >Legg til billett type</button>
 
                     <button
+                        required
                         type="button"
                         size="sm"
                         className="btn btn-outline-danger"
@@ -179,14 +184,14 @@ export class TicketAdd extends Component{
         }
         ticketService.postTicket(this.ticket)
             .then((response) => {
-                    if(response.body.error) {
-                        this.errorMessage = response.body.error;
-                    }
-                if(this.ticket) {
-                    this.props.postedTicket();
+                if(response.error) {
+                    alert(response.error);
+                }else {
+                    this.props.handleCancel();
                 }
+
             })
-            .catch((error: Error) => console.log(error.message));
+            .catch((error: Error) => console.log(error));
     }
 
 

@@ -18,6 +18,7 @@ export class Event {
     organizer: number;
     organizer_name: string;
     cancelled: number;
+    image: string;
 
 }
 
@@ -249,6 +250,12 @@ export class EventService {
         return axios.get('http://localhost:4000/api/categories')
             .then(response => response.data)
             .catch(error => console.log("error" + error));
+    }
+
+    getEventsByUsername(userName: string) {
+        return axios.get('http://localhost:4000/api/event/search/user/' + userName)
+            .then(response => response.data)
+            .catch(error => console.log(error.message));
     }
 
     //DENNE ER I FEIL SERVICE

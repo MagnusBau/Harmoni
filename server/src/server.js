@@ -315,6 +315,7 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/single/update', upload.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/single/update');
     try {
         result.send(req.file);
     }catch(err) {

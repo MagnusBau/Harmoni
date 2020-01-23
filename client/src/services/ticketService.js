@@ -67,8 +67,9 @@ class TicketService{
         return axios.post('http://localhost:4000/auth/id/' + userService.getUserId() + '/ticket/ticket', ticket, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }}).then(response => response.data, {
-        });
+            }}).then(response => {
+                return response.data;
+            });
     }
 
     updateTicket(ticket: Ticket, id : number){

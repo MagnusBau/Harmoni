@@ -65,8 +65,8 @@ class RoleService {
         })
             .catch(error => console.log("error" + error));
     }
-    removeRoleFromEvent(role: EventRole): void {
-        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${role.event}/role/${role.role_id}`, {
+    removeRoleFromEvent(roleId: number, eventId: number): void {
+        return axios.delete(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/role/${roleId}`, {
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {

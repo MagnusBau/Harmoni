@@ -159,4 +159,9 @@ export class EventDAO extends Dao {
     getCategories(callback: (status: string, data: string) => void) {
         super.query("CALL get_categories()", [], callback);
     }
+
+    getEventsByUsername(username: string, callback: (status: string, data:string) => void) {
+        let user = [username];
+        super.query("CALL get_events_by_username(?)", user, callback);
+    }
 }

@@ -31,7 +31,7 @@ exports.getEvents = (req, res, next) => {
             res.json(rows);
         })
     } else {
-        console.log("that");
+        console.log("eventDao.getFrontpageEvents");
         eventDao.getFrontpageEvents((err, [rows]) => {
             res.json(rows);
         })
@@ -43,7 +43,7 @@ exports.getDocumentByEvent = (req, res, next) => {
     eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
        res.json(rows);
     });
-}
+};
 
 //Insert new event
 exports.insertEvent = (req, res, next) => {
@@ -289,3 +289,10 @@ exports.getCategories = (req, res, next) => {
         res.json(rows);
     })
 };
+
+exports.getEventsByUsername = (req, res, next) => {
+    console.log('GET request from client: event/search/username')
+    eventDao.getEventsByUsername(req.params.username, (err, rows) => {
+        res.json(rows);
+    })
+}

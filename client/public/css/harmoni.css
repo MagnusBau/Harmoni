@@ -61,3 +61,10 @@ textarea:invalid {
 select:invalid {
     border: 2px solid red;
 }
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+    height: 200px;
+}
+
+#mapid { height: 180px; }

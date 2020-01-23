@@ -21,4 +21,20 @@ test_server:
     - cd server/
     - npm install
     - npm run test
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+
+# Publish coverage report on gitlab-pages
+server_pages:
+  stage: deploy
+  dependencies:
+    - test_server
+  script:
+    - mkdir .public
+    - cp -r coverage/* .public
+    - mv .public ../public
     - cd ..
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
