@@ -28,3 +28,8 @@ td.col-4 {
     width: 100%;
 }
 
+.col-lg-12 {
+    margin-top: 50px;
+    padding: 0;
+}
+

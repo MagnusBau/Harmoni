@@ -8,6 +8,7 @@ import {Artist, artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 import {Ticket, ticketService} from "../services/ticketService";
 import {EventViewHeader, PageHeader} from "../components/Header/headers";
+import Map from "../components/map";
 
 
 export class eventVisit extends Component <{match: {params: {eventId: number}}}> {
@@ -17,6 +18,10 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
     organizer: string="";
     artists: Artist[] = [];
     tickets: Ticket[] = [];
+
+    state = {
+        location: ''
+    };
 
     mounted() {
         this.currentEvent = this.props.match.params.eventId;
@@ -70,22 +75,12 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                             <p>{this.organizer}</p>
                         </div>
                         <div>
-                            <EventViewHeader label="Tid"/>
-                            <div>
-                                <p><b>Start:</b> {this.event[0].start_time}</p>
-                                <p><b>Slutt:</b> {this.event[0].end_time}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-6" id="eventContent">
-                        <div>
                             <EventViewHeader label="Artister"/>
                             <p>{this.artists.map((artist =>
                                 {artist.artist_name}
                             ))}
                             </p>
                         </div>
-
                         <div>
                             <EventViewHeader label="Billetter"/>
                             <table className="table table-borderless">
@@ -105,6 +100,34 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div className="col-lg-6" id="eventContent">
+                        <div>
+                            <EventViewHeader label="Tid"/>
+                            <div>
+                                <p><b>Start:</b> {this.event[0].start_time}</p>
+                                <p><b>Slutt:</b> {this.event[0].end_time}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <EventViewHeader label="Sted"/>
+                            <div>
+                                <p><b>Sted:</b> {this.event[0].location}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-12">
+                        <Map
+                            google={this.props.google}
+                            center={{lat: 63.4154, lng: 10.4055}}
+                            height='400px'
+                            zoom={15}
+                            currentAddress={this.event[0].location}
+                            onChange={() => this.empty()}
+                            readonly={true}
+                        />
                     </div>
                 </div>
             </div>
