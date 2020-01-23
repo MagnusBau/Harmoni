@@ -31,7 +31,7 @@ export class EventEdit extends Component {
     handleStartTime(moment){
         this.setState({
             start_time: moment.format("YYYY-MM-DDTHH:mm:ss"),
-        })
+        });
     };
 
     handleEndTime(moment) {

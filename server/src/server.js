@@ -167,7 +167,7 @@ app.use("/ticket/:ticket", (req, res, next) => {
 */
 
 //TODO: Is this a test?
-app.use("/auth/id/:id/event/:eventId", (req, res, next) => {
+/*app.use("/auth/id/:id/event/:eventId", (req, res, next) => {
     userDao.getContact(req.params.id, (err, rows) => {
         if (rows[0][0].contact_id) {
             let id = rows[0][0].contact_id;
@@ -204,7 +204,7 @@ app.use("/auth/id/:id/event/:eventId", (req, res, next) => {
             res.json({error: "Not authorized"});
         }
     });
-});
+});*/
 
 import {EventDAO} from './dao/eventDao.js';
 
