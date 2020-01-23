@@ -45,6 +45,13 @@ exports.downloadFile = (req, res, next) => {
     res.download(path);
 };
 
+exports.downloadContract = (req, res, next) => {
+    console.log('Got request from client: GET /file/download/contract');
+    fileInfoDao.getContractByArtistId(req.params.artistId, (err, rows) => {
+        res.download(rows[0][0].path);
+    })
+};
+
 exports.getFileContent = (req, res, next) => {
     console.log('Got request from client: GET /file/edit');
     let path: string = Buffer.from(req.params.file, 'base64').toString();
@@ -60,7 +67,10 @@ exports.deleteFileInfo = (req, res, next) => {
     console.log('Got request from client: DELETE /file/delete');
     let path: string = Buffer.from(req.params.file, 'base64').toString();
     fileInfoDao.deleteFileInfo(path, (error, rows) => {
-        if (!error) {
+        if (error != 200) {
+            console.log(error.message + " " + error);
+            res.json(rows);
+        } else {
             fs.unlink(path, (err) => {
                 if (err) {
                     console.error(err);
@@ -69,9 +79,6 @@ exports.deleteFileInfo = (req, res, next) => {
                     res.json(rows);
                 }
             });
-
-        } else {
-            res.json(rows);
         }
     });
 };

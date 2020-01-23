@@ -39,6 +39,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
     render() {
         return(
             <div className={"m-2"}>
+
                 <form className="form-group">
                     <div className={"form-group m-2"}>
                         <label>Navn på arrangement:</label>
@@ -170,10 +171,10 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
         eventService
             .updateEvent(this.props.match.params.event_id, this.event)
             .then((response) => {
-                Alert.success('You have updated your event');
+                //Alert.success('You have updated your event');
                 if(response.body.error) this.errorMessage = response.body.error;
             })
-            .catch((error: Error) => Alert.danger(error.message));
+            //.catch((error: Error) => Alert.danger(error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
     }
 
@@ -185,6 +186,6 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                 this.event = event[0][0];
                 if(event.body.error) this.errorMessage = event.body.error;
             })
-            .catch((error: Error) => Alert.danger(error.message));
+            //.catch((error: Error) => Alert.danger(error.message));
     }
 }

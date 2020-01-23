@@ -14,9 +14,10 @@ class FileInfoService {
         return axios.get(`http://localhost:4000/auth/id/${userService.getUserId()}/event/${eventId}/getFileInfo`, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
@@ -25,27 +26,32 @@ class FileInfoService {
     }
 
     postFileInfo(name: string, eventId: number, data: FormData) {
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/event/${eventId}/single`,
+        console.log("uploading file");
+        return axios.post(`http://` + ip + `:4000/api/single/${eventId}`,
             data, {
                 'headers': {
                     'x-access-token': userService.getToken()
-                }})
+                }
+            })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
             })
             .catch(error => console.log("error" + error));
     }
+
     updateFile(data: FormData) {
-        return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/single/update`,
+        return axios.post(`http://` + ip + `:4000/api/single/update`,
             data, {
                 'headers': {
                     'x-access-token': userService.getToken()
-                }})
+                }
+            })
             .then(response => {
-                if(userService.error(response)){
+                console.log("please");
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
@@ -54,12 +60,13 @@ class FileInfoService {
     }
 
     updatePath(id: number) {
-        return axios.put('http://' + ip +':4000/auth/id/${userService.getUserId()}/file/path', id, {
+        return axios.put('http://' + ip + ':4000/auth/id/${userService.getUserId()}/file/path', id, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
@@ -71,9 +78,10 @@ class FileInfoService {
         return axios.post(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/event/${eventId}/checkFileName`, {"name": name}, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
@@ -81,15 +89,16 @@ class FileInfoService {
             .catch((error: Error) => error.message);
     }
 
-    downloadFile(encodedFile: string){
-        console.log(encodedFile);
+    downloadFile(encodedFile: string) {
+        console.log("Nå er vi i service: " + encodedFile);
         console.log("hei");
-        return axios.get(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/file/download/${encodedFile}`, {
+        return axios.get(`http://` + ip + `:4000/auth/id/${userService.getUserId()}/file/download/${encodedFile}`, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
@@ -97,26 +106,33 @@ class FileInfoService {
             .catch(error => console.log("error" + error));
     }
 
-    getFileContent(encodedFile: string){
-        return axios.get(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/file/edit/${encodedFile}`, {
+    downloadContract(artistId: number) {
+        return axios.get(`http://` + ip + `:4000/api/file/download/contract/${artistId}`);
+    }
+
+    getFileContent(encodedFile: string) {
+        return axios.get(`http://` + ip + `:4000/auth/id/${userService.getUserId()}/file/edit/${encodedFile}`, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;
             })
             .catch(error => console.log("error" + error));
     }
-    deleteFile(encodedFile: string){
-        return axios.delete(`http://` + ip +`:4000/auth/id/${userService.getUserId()}/file/delete/${encodedFile}`, {
+
+    deleteFile(encodedFile: string) {
+        return axios.delete(`http://` + ip + `:4000/auth/id/${userService.getUserId()}/file/delete/${encodedFile}`, {
             'headers': {
                 'x-access-token': userService.getToken()
-            }})
+            }
+        })
             .then(response => {
-                if(userService.error(response)){
+                if (userService.error(response)) {
                     return userService.error(response);
                 }
                 return response.data;

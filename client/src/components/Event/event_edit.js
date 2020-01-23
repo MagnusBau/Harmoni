@@ -6,7 +6,7 @@ import {createHashHistory} from 'history';
 import {Event, eventService, CreateEvent} from "../../services/eventService";
 import DateTime from "react-datetime";
 import moment from "moment";
-
+import {Alert} from "../Alert/alert";
 
 const history = createHashHistory();
 
@@ -43,6 +43,7 @@ export class EventEdit extends Component {
     render() {
         return(
             <div className={"m-2"}>
+                <Alert/>
                 <form className="form-group">
                     <div className={"form-group m-2"}>
                         <label>Navn på arrangement:</label>
@@ -128,7 +129,7 @@ export class EventEdit extends Component {
                                 value={this.event.category}>
                             <option selected value="">Velg kategori...</option>
                             {this.categories.map(category =>
-                                <option value={category.name}>{category.name}</option>
+                                <option key={category.name} value={category.name}>{category.name}</option>
                             )}
                         </select>
                     </div>

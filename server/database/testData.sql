@@ -6,6 +6,7 @@ DELETE FROM user;
 DELETE FROM contact;
 DELETE FROM document;
 DELETE FROM category;
+DELETE FROM artist;
 SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(default, 'Mario', 'Bros', 'its@me', '01001010');
@@ -17,10 +18,10 @@ INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'pass
 
 INSERT INTO contact(first_name, last_name, email, phone)
 VALUES ('Geir', 'Lippestad', 'geir@lips.no', '12345678');
-INSERT INTO artist(artist_name, contact)
-VALUES ('Geir Lippestad', 4);
-INSERT INTO artist(artist_name, contact)
-VALUES ('Svein Blipp', 3);
+INSERT INTO artist(artist_id, artist_name, contact)
+VALUES (DEFAULT, 'Geir Lippestad', 4);
+INSERT INTO artist(artist_id, artist_name, contact)
+VALUES (DEFAULT, 'Svein Blipp', 3);
 
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-09 12:06:00', '2020-01-09 12:06:00', 'Sport', 7000, 1, 0);
@@ -66,6 +67,9 @@ INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'thrud', 'thrud', 1);
 INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
+
+INSERT INTO contract (artist, document)
+VALUES (1, 1);
 
 INSERT INTO rider (description, document)
 VALUES ('Mathias må ha tre kameler og syv geiter', 2);

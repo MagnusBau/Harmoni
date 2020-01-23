@@ -45,6 +45,13 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    getContractByArtistId(artistId: number, callback: (status: string, data: string) => void){
+        let values = [artistId];
+        super.query("CALL get_contract_by_artist_id(?)",
+            values,
+            callback);
+    }
+
     /**
      * Posts a document to the db
      * @param data
@@ -69,7 +76,6 @@ export class FileInfoDAO extends Dao {
     //</DO NOT TOUCH
     deleteFileInfo(path: string, callback: (status: string, data: string) => void){
         let values = [path];
-        console.log(path);
         super.query("CALL delete_document(?)",
             values,
             callback);
