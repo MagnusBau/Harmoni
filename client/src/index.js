@@ -5,7 +5,6 @@ import {HashRouter} from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import Home from "./pages/Home";
 import EventOverview from "./pages/Event.js";
-import {AddEquipment} from "./pages/addEquipment";
 import {UserRegister, TokenBoi} from "./pages/userRegister";
 import {UserLogin} from "./pages/userLogin";
 import {AddEvent} from "./pages/addEvent";
@@ -37,11 +36,8 @@ if (root)
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/event/:eventId/overview" component={EventOverview}/>
-                        <Route path="/event/:eventId/edit/equipment" component={AddEquipment} />
                         <Route path="/event/new" component={AddEvent}/>
-                        <Route exact path="/event/edit/:event_id" component={EditEvent}/>
                         <Route exact path="/event/:eventId/edit/ticket" component={listTicketType}/>
-                        <Route exact path="/event/:eventId/edit/artist" component={AddEventArtist}/>
                         <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
                         <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
                         <Route exact path="/event/:eventId/edit/file" component={FileMain} />

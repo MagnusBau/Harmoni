@@ -25,8 +25,8 @@ DROP PROCEDURE IF EXISTS add_artist_with_new_contract;
   IN first_name_in: First name of newArtist contact
   IN last_name_in: Last name of newArtist contact
   IN email_in: Email of newArtist contact
-  IN phone: Phone number of newArtist contact
-  OUT result_out: 0 if successful, -1 if newArtist already exists
+  IN phone_in: Phone number of newArtist contact
+  OUT artist_id: New id if new artist, existing id if artist with this information already exists
 
   Issued by: insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string)
  */
@@ -78,14 +78,14 @@ BEGIN
 END;
 
 /**
-  Updates an existing newArtist
+  Updates an existing artist
 
-  IN artist_id_in: Id of the newArtist
-  IN artist_name_in: Name of the newArtist
-  IN first_name_in: First name of newArtist contact
-  IN last_name_in: Last name of newArtist contact
-  IN email_in: Email of newArtist contact
-  IN phone: Phone number of newArtist contact
+  IN artist_id_in: Id of the artist
+  IN artist_name_in: Name of the artist
+  IN first_name_in: First name of artist contact
+  IN last_name_in: Last name of artist contact
+  IN email_in: Email of artist contact
+  IN phone_in: Phone number of artist contact
 
   Issued by: insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string)
  */
@@ -117,22 +117,26 @@ BEGIN
   WHERE artist_id = artist_id_in;
 END;
 
+/**
+  Finds all artists that have previously been bound to a contact through an event and contract
+
+  IN contact_id_in: Id of the contact to look at
+ */
 CREATE PROCEDURE get_artist_by_previous_contract(IN contact_id_in INT)
 BEGIN
   SELECT a.artist_id, a.artist_name, c.contact_id, c.first_name, c.last_name, c.email, c.phone
   FROM artist a
-  LEFT JOIN contact c ON a.contact = c.contact_id
-  LEFT JOIN contract cr ON a.artist_id = cr.artist
-  LEFT JOIN document d ON cr.document = d.document_id
-  LEFT JOIN event e ON d.event = e.event_id
-  WHERE e.organizer=contact_id_in;
+         LEFT JOIN contact c ON a.contact = c.contact_id
+         LEFT JOIN contract cr ON a.artist_id = cr.artist
+         LEFT JOIN document d ON cr.document = d.document_id
+         LEFT JOIN event e ON d.event = e.event_id
+  WHERE e.organizer = contact_id_in;
 END;
 
 /**
-  Deletes an existing newArtist
+  Deletes an existing artist
 
-  IN artist_id_in: Id of the newArtist
-  OUT result_out: 0 if successful, -1 if newArtist can't be deleted
+  IN artist_id_in: Id of the artist
 
   Issued by: deleteArtist(artistId: number)
  */
@@ -158,7 +162,9 @@ BEGIN
 END;
 
 /**
-  Get one newArtist from an id
+  Get one artist from an id
+
+  IN artist_id_in: Id of the artist
 
   Issued by: getAllArtists()
  */
@@ -172,6 +178,8 @@ END;
 
 /**
   Get artist from contact_id
+
+  IN contact_id_in: Contact id
 
   Issued by: getArtistByContact(contactId: number)
  */
@@ -256,16 +264,18 @@ END;
   IN event_id_in: the id of the event the document belongs to
  */
 CREATE PROCEDURE add_artist_with_new_contract(IN artist_name_in VARCHAR(50), IN first_name_in VARCHAR(50),
-                                     IN last_name_in VARCHAR(50), IN email_in VARCHAR(50), IN phone_in VARCHAR(12),
-                                     IN document_name_in VARCHAR(100), IN event_id_in INT(11), IN path_in VARCHAR(500))
+                                              IN last_name_in VARCHAR(50), IN email_in VARCHAR(50),
+                                              IN phone_in VARCHAR(12),
+                                              IN document_name_in VARCHAR(100), IN event_id_in INT(11),
+                                              IN path_in VARCHAR(500))
 BEGIN
-    DECLARE artist_id_in INT;
-    DECLARE document_id_in INt;
-    CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
-    CALL add_document(document_id_in, document_name_in, path_in, event_id_in);
+  DECLARE artist_id_in INT;
+  DECLARE document_id_in INt;
+  CALL insert_artist(artist_name_in, first_name_in, last_name_in, email_in, phone_in, artist_id_in);
+  CALL add_document(document_id_in, document_name_in, path_in, event_id_in);
 
-    INSERT INTO contract (artist, document)
-    VALUES (artist_id_in, document_id_in);
+  INSERT INTO contract (artist, document)
+  VALUES (artist_id_in, document_id_in);
 END;
 
 /**
@@ -311,8 +321,8 @@ BEGIN
          c.phone,
          u.user_id
   FROM artist a
-  LEFT JOIN contact c ON a.contact = c.contact_id
-  LEFT JOIN user u on c.contact_id = u.contact
+         LEFT JOIN contact c ON a.contact = c.contact_id
+         LEFT JOIN user u on c.contact_id = u.contact
   WHERE u.user_id = user_id_in;
 END;
 
