@@ -23,7 +23,10 @@ beforeAll(done => {
     runSqlFile("database/setup.sql",
         pool, () => {
             runSqlFile("database/procedures/artist_procedures.sql", pool, () => {
-                runSqlFile("database/testData.sql", pool, done);
+                runSqlFile("database/procedures/document_procedures.sql", pool, () => {
+                    runSqlFile("database/testData.sql", pool, done);
+                });
+
             })
         });
 });
@@ -90,6 +93,20 @@ test("Get artists from database by search #2", done => {
     artistDao.getArtistBySearch("Ge", callback);
 });
 
+test("Get artists from database by eventId", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].artist_name).toBe("Geir Lippestad");
+        done();
+    }
+    artistDao.getArtistByEvent(1, callback);
+});
+
 test("Insert new newArtist", done => {
     function callback(status, data) {
         console.log(
@@ -136,4 +153,25 @@ test("Remove artist from an event", done => {
         done();
     }
     artistDao.removeArtistFromEvent(1, 5, callback);
+});
+
+test("Insert new artist with a new document and contract", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.addArtistWithNewContract({
+        "artist_name": "Bobern",
+        "first_name": "Bob",
+        "last_name": "Ross",
+        "email": "b@b.com",
+        "phone": "12345678",
+        "name": "yaas.txt",
+        "eventId": 1,
+        "path": "./files/1------yaas.txt"
+    }, callback);
 });

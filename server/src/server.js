@@ -206,44 +206,6 @@ app.use("/auth/id/:id/event/:eventId", (req, res, next) => {
     });
 });
 
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './files');
-    },
-    filename: function (req, file, cb) {
-        cb(null , file.originalname);
-    }
-});
-
-const upload = multer({
-    storage,
-    limits: 1024 * 1024 * 5
-});
-
-app.post('/api/single/update', upload.single('file'), (req, res) => {
-    try {
-        result.send(req.file);
-    }catch(err) {
-        result.send(400);
-    }
-});
-
-app.post('/auth/id/:id/event/:eventId/single', upload.single('file'), (req, res) => {
-    let data = {
-        "name": req.body.name,
-        "eventId": req.params.eventId,
-        "path": req.body.path
-    };
-    let result = res;
-    fileInfoDao.postFileInfo(data, (err, res) => {
-        try {
-            result.send(req.file);
-        }catch(err) {
-            result.send(400);
-        }
-    });
-});
-
 import {EventDAO} from './dao/eventDao.js';
 
 import {ArtistDAO} from "./dao/artistDao";
@@ -262,9 +224,11 @@ const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
 const loginRoutes = require("./routes/login");
 import {FileInfoDAO} from './dao/fileInfoDao.js';
+import {ArtistDAO} from "./dao/artistDao";
 const apiRoutes = require("./routes/api");
 
 const fileInfoDao = new FileInfoDAO(pool);
+const artistDao = new ArtistDAO(pool);
 
 app.use("/auth/id/:id/artist", artistRoutes);
 app.use("/auth/id/:id/event", eventRoutes);
@@ -277,6 +241,88 @@ app.use("/auth/id/:id/file", fileRoutes);
 app.use("/auth", loginRoutes);
 app.use("/api", apiRoutes);
 
+
+// Add an application header for allowing HTTPS-requests from same host
+/*app.get('/*',function(req,res,next){
+    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
+    next();
+});*/
+
+
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function (req, file, cb) {
+        cb(null , file.originalname);
+    }
+});
+
+const upload = multer({
+    fileFilter: function (req, file, callback) {
+        var ext = path.extname(file.originalname);
+        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx'&& ext !== '.odt') {
+            req.fileValidationError = 'error';
+            return callback(null, false, new Error('goes wrong on the mimetype'));
+        }
+        callback(null, true)
+    },
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/single/' + req.params.eventId);
+    if(req.fileValidationError) {
+        return res.end(req.fileValidationError);
+    }
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path
+    };
+    let result = res;
+    console.log(req.file);
+    fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/single/artist/' + req.params.eventId);
+    let data = {
+        "name": req.body.name,
+        "eventId": req.params.eventId,
+        "path": req.body.path,
+        "artist_name": req.body.artist_name,
+        "first_name": req.body.first_name,
+        "last_name": req.body.last_name,
+        "email": req.body.email,
+        "phone": req.body.phone
+    };
+    let result = res;
+    console.log(req.file);
+    artistDao.addArtistWithNewContract(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/single/update', upload.single('file'), (req, res) => {
+    try {
+        result.send(req.file);
+    }catch(err) {
+        result.send(400);
+    }
+});
 
 // Add an application header for allowing HTTPS-requests from same host
 /*app.get('/*',function(req,res,next){
