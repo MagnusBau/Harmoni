@@ -46,9 +46,9 @@ export class EventEdit extends Component {
         return(
             <div className={"m-2"}>
                 <Alert/>
-                <form className="form-group">
-                    <div className="row">
-                        <div className="col">
+                <div className={"row"}>
+                    <div className={"col"}>
+                        <form className="form-group">
                             <div className={"form-group m-2"}>
                                 <label>Navn på arrangement:</label>
                                 <br></br>
@@ -103,17 +103,6 @@ export class EventEdit extends Component {
                                 </div>
                             </div>
                             <div className={"form-group m-2"}>
-                                <label>Antall billettyper:</label>
-                                <br></br>
-                                <select name={"ticket-types"} size={"1"}>
-                                    <option value={"1"}>1</option>
-                                    <option value={"2"}>2</option>
-                                    <option value={"3"}>3</option>
-                                    <option value={"4"}>4</option>
-                                    <option value={"5"}>5</option>
-                                </select>
-                            </div>
-                            <div className={"form-group m-2"}>
                                 <label>Type arrangement:</label>
                                 <br></br>
                                 <select name={"category"} className="custom-select w-25"
@@ -151,19 +140,23 @@ export class EventEdit extends Component {
                                     Avbryt
                                 </button>
                             </div>
-                        </div>
-                        <div className={"col"}>
-                            <Map
-                                google={this.props.google}
-                                center={{lat: 63.4154, lng: 10.4055}}
-                                height='300px'
-                                zoom={15}
-                                onChange={this.onChangeAddress}
-                                currentAddress={this.state.location}
-                            />
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <div className={"col"}>
+                        <form className="form-group">
+                            <div className={"form-group m-2"}>
+                                <Map
+                                    google={this.props.google}
+                                    center={{lat: 63.4154, lng: 10.4055}}
+                                    height='300px'
+                                    zoom={15}
+                                    onChange={this.onChangeAddress}
+                                    currentAddress={this.state.location}
+                                />
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         )
     }

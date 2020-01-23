@@ -205,6 +205,8 @@ export class Map extends React.Component{
                 lat: latValue,
                 lng: lngValue
             },
+        }, res => {
+            this.onChangeAddress(null);
         })
     };
     /**
