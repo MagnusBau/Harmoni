@@ -197,10 +197,12 @@ test("delete_ ended event from db", done => {
         done();
     }
     eventDao.deleteEventsByEndTime(1, callback);
+
+*/
 test("search for event by title with string", done => {
     function callback(status, data) {
         console.log(
-            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+            `Test callback: status=${status}, data=${data}`
         );
         data = data[0];
         expect(data.length).toBe(2);
@@ -208,9 +210,9 @@ test("search for event by title with string", done => {
         expect(data[1].title).toBe('Konsert m/ ballonger');
         done();
     }
-    eventDao.getEventByInput('KON', callback);
+    eventDao.getEventByInput('kon', callback);
 });
-*/
+
 test("get all categories in database", done => {
     function callback(status, data) {
         console.log(
@@ -234,10 +236,11 @@ test('get events made by user', done => {
             `Test callback: status=${status}, data=${data}`
         );
         data = data[0];
-        expect(data.length).toBe(3);
+        expect(data.length).toBe(4);
         expect(data[0].title).toBe('EM Håndball');
         expect(data[1].title).toBe('Konsert');
-        expect(data[2].title).toBe('Loppemarked');
+        expect(data[2].title).toBe('Test00');
+        expect(data[3].title).toBe('test.js');
         done();
     }
     eventDao.getEventsByUsername('Mario', callback);
