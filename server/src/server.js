@@ -1,9 +1,7 @@
 // @flow
 
 import {ArtistDAO} from "./dao/artistDao.js";
-import {EventDAO} from './dao/eventDao.js';
 import {FileInfoDAO} from './dao/fileInfoDao.js';
-import {TicketDAO} from './dao/ticketDao.js';
 import {UserDAO} from "./dao/userDao.js";
 
 /**
@@ -46,9 +44,7 @@ const pool = mysql.createPool({
 
 // Instantiate DAOs to be used directly in this class
 const artistDao = new ArtistDAO(pool);
-const eventDao = new EventDAO(pool);
 const fileInfoDao = new FileInfoDAO(pool);
-const ticketDao = new TicketDAO(pool);
 const userDao = new UserDAO(pool);
 
 

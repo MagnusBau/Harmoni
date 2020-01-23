@@ -78,6 +78,13 @@ export class EquipmentDAO extends Dao {
             callback);
     }
 
+    /**
+     * Adds a new equipment to an event
+     * @param event
+     * @param item
+     * @param amount
+     * @param callback
+     */
     addEquipmentToEvent(event: number, item: string, amount: number, callback: (status: string, data: string) => void) {
         let values = [event, item, amount];
         super.query("CALL add_equipment_to_event(?, ?, ?)",
@@ -85,6 +92,12 @@ export class EquipmentDAO extends Dao {
             callback);
     }
 
+    /**
+     * Removes an equipment from an event
+     * @param event
+     * @param equipment
+     * @param callback
+     */
     removeEquipmentFromEvent(event: number, equipment: number, callback: (status: string, data: string) => void) {
         let values = [event, equipment];
         super.query("CALL remove_equipment_from_event(?, ?)",
@@ -92,6 +105,13 @@ export class EquipmentDAO extends Dao {
             callback);
     }
 
+    /**
+     * Updates the amount of an equipment to an event
+     * @param event
+     * @param equipment
+     * @param amount
+     * @param callback
+     */
     updateEquipmentOnEvent(event: number, equipment: number, amount: number, callback: (status: string, data: string) => void) {
         let values = [event, equipment, amount];
         super.query("CALL update_equipment_on_event(?, ?, ?)",

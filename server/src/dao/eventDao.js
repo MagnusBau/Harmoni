@@ -7,32 +7,60 @@ export class EventDAO extends Dao {
         super(pool);
     }
 
+    /**
+     * Inserts a new event into the database
+     * @param json
+     * @param callback
+     */
     createEvent(json: Object, callback: (status: string, data: string) => void) {
         let newEvent = [json.title, json.description, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer];
         console.log('event', newEvent);
         super.query("CALL create_event(?,?,?,?,?,?,?,?)", newEvent, callback)
     }
 
+    /**
+     * Retrieves all events from the database
+     * @param callback
+     */
     getAllEvents(callback: (status: string, data: string) => void) {
         super.query("CALL get_all_events", [], callback);
     }
 
+    /**
+     * Gets all events meant to be displayed on the front page
+     * @param callback
+     */
     getFrontpageEvents(callback: (status: string, data: string) => void) {
         super.query("CALL get_frontpage_events", [], callback);
     }
 
     //TODO lage query i db
     //TODO lage test
+    /**
+     * Get events by a search
+     * @param input
+     * @param callback
+     */
     getEventByInput(input: string, callback: (status: string, data: string) => void) {
         let values = [input];
         super.query("CALL get_all_events_by_input(?)", values, callback);
     }
 
+    /**
+     * Gets one event by id
+     * @param eventId
+     * @param callback
+     */
     getEventById(eventId: number, callback: (status: string, data:string) => void) {
         let values = [eventId];
         super.query("CALL get_event_by_id(?)", values, callback);
     }
 
+    /**
+     * Gets one event by id UPDATE
+     * @param event_id
+     * @param callback
+     */
     getEventByIdUpdate(event_id: number, callback: (status: string, data:string) => void) {
         let values = [event_id];
         super.query("CALL get_event_by_id_update(?)", values, callback);
