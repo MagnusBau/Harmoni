@@ -18,6 +18,7 @@ router.get("/categories", eventController.getCategories);
 router.get("/user/:userId/event", eventController.getEventByUser);
 router.get("/user/:userId/event/ended", eventController.getEndedEventsByUser);
 router.get("/event/:eventId/ticket", ticketController.getAllTickets);
-router.get("/event/:contactId", userController.getOrganizerUsername);
+router.get("/event/organizer/:contactId", userController.getOrganizerUsername);
+router.get("/event/search/user/:username", eventController.getEventsByUsername);
 
 module.exports = router;

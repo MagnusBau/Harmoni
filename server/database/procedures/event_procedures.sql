@@ -18,6 +18,7 @@ DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 DROP PROCEDURE IF EXISTS get_all_events_by_input;
 DROP PROCEDURE IF EXISTS get_categories;
 DROP PROCEDURE IF EXISTS get_frontpage_events;
+DROP PROCEDURE IF EXISTS get_events_by_username;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -269,4 +270,13 @@ END;
 CREATE PROCEDURE get_categories()
 BEGIN
     SELECT name FROM category;
+END;
+/**
+  Get all events made by user
+ */
+CREATE PROCEDURE get_events_by_username(IN username_in VARCHAR(50))
+BEGIN
+    SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
+    FROM event e JOIN contact c ON e.organizer = c.contact_id JOIN user u ON c.contact_id = u.contact
+    WHERE u.username = username_in;
 END;

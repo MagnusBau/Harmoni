@@ -54,7 +54,7 @@ if (root)
                         <Route exact path="/event/search/:input" component={EventSearch}/>
                         <Route exact path="/event/:eventId/view" component={eventVisit}/>
                         <Route exact path="/404" component={NotFoundPage}/>
-                        <Route exact="/contactUs" component={ContactForm}/>
+                        <Route exact path="/contactUs" component={ContactForm}/>
                         <Redirect to="/404"/>
                     </Switch>
                 <Footer/>

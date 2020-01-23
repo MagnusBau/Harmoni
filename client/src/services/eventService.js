@@ -241,6 +241,12 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
+    getEventsByUsername(userName: string) {
+        return axios.get('http://localhost:4000/api/event/search/user/' + userName)
+            .then(response => response.data)
+            .catch(error => console.log(error.message));
+    }
+
     //DENNE ER I FEIL SERVICE
     getDocumentByEvent(eventId: number): Document[] {
         return axios.get<Document[]>('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/document', {
