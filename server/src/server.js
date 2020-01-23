@@ -1,21 +1,33 @@
 // @flow
 
+import {ArtistDAO} from "./dao/artistDao.js";
+import {EventDAO} from './dao/eventDao.js';
+import {FileInfoDAO} from './dao/fileInfoDao.js';
+import {TicketDAO} from './dao/ticketDao.js';
+import {UserDAO} from "./dao/userDao.js";
+
+/**
+ * Overhead server class. Here, server properties are declared, along with a few app uses
+ * @type {createApplication}
+ */
+
 // Server properties
 
-const express = require('express');
-const path = require('path');
-const mysql = require("mysql");
-const reload = require('reload');
-const fs = require('fs');
-const PORT = process.env.port || 4000;
-const bodyParser = require("body-parser");
-const public_path = path.join(__dirname, '/../../client/public');
-const config = require("./controllers/configuration.js");
-const multer = require('multer');
+const express = require('express');                                     // Express server
+const path = require('path');                                           // Path API
+const mysql = require("mysql");                                         // Mysql API
+const reload = require('reload');                                       // Reload API for automatically restart
+const fs = require('fs');                                               // File service API
+const PORT = process.env.port || 4000;                                  // Port to be used
+const bodyParser = require("body-parser");                              // Body parsing for reading json
+const public_path = path.join(__dirname, '/../../client/public');       // Public path to React application
+const config = require("./controllers/configuration.js");               // Configuration handler
+const multer = require('multer');                                       // Multer for I/O operations in fs
 
 let jwt = require("jsonwebtoken");
-
 let app = express();
+
+// Let server use APIs
 app.use(express.static(public_path));
 app.use(bodyParser.json());
 app.use('/public', express.static('public'));
@@ -32,8 +44,13 @@ const pool = mysql.createPool({
     multipleStatements: true
 });
 
-import {UserDAO} from "./dao/userDao";
+// Instantiate DAOs to be used directly in this class
+const artistDao = new ArtistDAO(pool);
+const eventDao = new EventDAO(pool);
+const fileInfoDao = new FileInfoDAO(pool);
+const ticketDao = new TicketDAO(pool);
 const userDao = new UserDAO(pool);
+
 
 module.exports = pool;
 
@@ -120,10 +137,6 @@ app.use("/auth/id/:id", (req, res, next) => {
 
 });
 
-import {TicketDAO} from './dao/ticketDao.js';
-
-const ticketDao = new TicketDAO(pool);
-
 /*
 app.use("/ticket/:ticket", (req, res, next) => {
     console.log("auth ticket 1");
@@ -206,12 +219,6 @@ app.use("/ticket/:ticket", (req, res, next) => {
     });
 });*/
 
-import {EventDAO} from './dao/eventDao.js';
-
-import {ArtistDAO} from "./dao/artistDao";
-const artistDao = new ArtistDAO(pool);
-
-const eventDao = new EventDAO(pool);
 
 // Setup routes
 const artistRoutes = require("./routes/artist");
@@ -223,10 +230,7 @@ const fileRoutes = require("./routes/file");
 const roleRoutes = require("./routes/role");
 const riderRoutes = require("./routes/riders");
 const loginRoutes = require("./routes/login");
-import {FileInfoDAO} from './dao/fileInfoDao.js';
 const apiRoutes = require("./routes/api");
-
-const fileInfoDao = new FileInfoDAO(pool);
 
 app.use("/auth/id/:id/artist", artistRoutes);
 app.use("/auth/id/:id/event", eventRoutes);
@@ -246,8 +250,7 @@ app.use("/api", apiRoutes);
     next();
 });*/
 
-
-
+// Set file storage directory
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './files');
@@ -257,6 +260,7 @@ var storage = multer.diskStorage({
     }
 });
 
+// File upload
 const upload = multer({
     fileFilter: function (req, file, callback) {
         var ext = path.extname(file.originalname);
@@ -270,6 +274,7 @@ const upload = multer({
     limits: 1024 * 1024 * 5
 });
 
+// File upload
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/' + req.params.eventId);
     if(req.fileValidationError) {
@@ -291,6 +296,7 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     });
 });
 
+// Upload contract
 app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/artist/' + req.params.eventId);
     let data = {
@@ -314,6 +320,7 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
     });
 });
 
+// Update file
 app.post('/api/single/update', upload.single('file'), (req, res) => {
     try {
         result.send(req.file);
@@ -322,12 +329,7 @@ app.post('/api/single/update', upload.single('file'), (req, res) => {
     }
 });
 
-// Add an application header for allowing HTTPS-requests from same host
-/*app.get('/*',function(req,res,next){
-    res.header('Access-Control-Allow-Origin' , 'http://localhost:4000' );
-    next();
-});*/
-
+// Redirect to 404 when unavailable page
 app.use((req, res, next) => {
     res.status(404).redirect('http://localhost:' + PORT + '/#/404');
 });

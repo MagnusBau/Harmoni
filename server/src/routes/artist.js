@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const artistController = require('../controllers/artist');
 
+// ROUTE: auth/id/:userId/artist
 router.post("/", artistController.insertArtist);
 router.put("/:artistId", artistController.updateArtist);
 router.delete("/:artistId", artistController.deleteArtist);
