@@ -8,6 +8,7 @@ import {Alert} from "../components/Alert/alert.js";
 import DateTime from 'react-datetime';
 import moment from "moment";
 import { userService } from "../services/userService";
+import Map from "../components/map";
 
 const history = createHashHistory();
 
@@ -37,9 +38,27 @@ export class AddEvent extends Component {
 
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            address: props.currentAddress,
+            start_date: new Date(),
+            end_date: new Date()
+        };
+        //this.handleChange = this.handleChange.bind(this);
     }
 
+    _onClick = ({x, y, lat, lng, event}) => console.log(x, y, lat, lng, event);
+
+    getAddress = (dataFromChild) => {
+        this.createEvent.location = dataFromChild;
+        this.setState([{address: dataFromChild}]);
+        console.log(dataFromChild);
+    };
+
+
+
     render() {
+
+
         return(
             <div className={"m-2"}>
                 <form className="form-group">
@@ -64,18 +83,6 @@ export class AddEvent extends Component {
                                   required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.createEvent.description = event.target.value)}
-                        />
-                    </div>
-                    <div className={"form-group m-2"}>
-                        <label>Lokasjon:</label>
-                        <br></br>
-                        <input type={"text"}
-                               className={"form-control"}
-                               id={"event-location"}
-                               placeholder={"Lokasjon"}
-                               required={true}
-                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                   (this.createEvent.location = event.target.value)}
                         />
                     </div>
                     <div className={"form-group m-2"}>
@@ -139,8 +146,23 @@ export class AddEvent extends Component {
                         {' '}Registrer{' '}
                     </button>
                 </div>
+                <div className={"col"}>
+                    <Map
+                        google={this.props.google}
+                        center={{lat: 63.4154, lng: 10.4055}}
+                        height='300px'
+                        zoom={15}
+                        getAddress={this.getAddress}
+                        onChange={this.onChangeAddress}
+                    />
+                </div>
             </div>
+
         )
+    }
+
+    onChangeAddress(address: string) {
+        this.createEvent.location = address;
     }
 
     register() {
@@ -166,6 +188,8 @@ export class AddEvent extends Component {
             .getCategories()
             .then(categories => this.categories = categories[0])
             .catch((error: Error) => error.message);
+
+        this.setState({address: this.props.currentAddress});
     }
 
 }

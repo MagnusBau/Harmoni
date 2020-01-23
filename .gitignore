@@ -5,3 +5,4 @@ client/public/bundle.js
 server/coverage/
 server/files
 !server/files/.gitkeep
+.env
