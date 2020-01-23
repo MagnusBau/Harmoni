@@ -93,20 +93,6 @@ class FileInfoService {
         console.log("Nå er vi i service: " + encodedFile);
         console.log(userService.getToken());
         window.open("http://localhost:4000/api/file/download/" + encodedFile, "_blank", );
-        return axios.get(`http://` + ip + `:4000/api/file/download/${encodedFile}`, {
-            'headers': {
-                'x-access-token': userService.getToken()
-            }
-        })
-            .then(response => {
-                if (userService.error(response)) {
-                    return userService.error(response);
-                }
-                console.log("here");
-                console.log(response.data);
-                return response.data;
-            })
-            .catch(error => console.log("error" + error));
     }
 
     downloadContract(artistId: number) {
@@ -141,6 +127,22 @@ class FileInfoService {
                 return response.data;
             })
             .catch((error: Error) => error.message);
+    }
+
+    postImage(eventId: number, data: FormData) {
+        return axios.post(`http://` + ip + `:4000/api/image/${eventId}`,
+            data, {
+                'headers': {
+                    'x-access-token': userService.getToken()
+                }
+            })
+            .then(response => {
+                if (userService.error(response)) {
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
     }
 }
 

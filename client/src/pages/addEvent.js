@@ -4,6 +4,7 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {eventService, Event} from "../services/eventService";
+import {fileInfoService} from "../services/fileService"
 import {Alert} from "../components/Alert/alert.js";
 import DateTime from 'react-datetime';
 import moment from "moment";
@@ -64,6 +65,18 @@ export class AddEvent extends Component {
                                   required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.createEvent.description = event.target.value)}
+                        />
+                    </div>
+                    <div className="form-group m-2">
+                        <label>Bilde: </label>
+                        <input
+                            type="file"
+                            className="form-control"
+                            value={this.file}
+                            placeholder="Fil"
+                            onChange={(e) => this.handleFile(e)}
+                            required
+                            accept=".png,.jpg,.jpeg,.gif"
                         />
                     </div>
                     <div className={"form-group m-2"}>
@@ -160,10 +173,17 @@ export class AddEvent extends Component {
         eventService
             .createEvent(this.createEvent)
             .then(() => {
+                fileInfoService.postImage()
                 Alert.success('You have created a new event!!!!');
                 history.push('/user/' + userService.getUserId() + '/overview');
             })
             .catch((error: Error) => Alert.danger(error.message));
+    }
+
+    handleFile(e) {
+        let file = e.target.files[0];
+        this.setState({file: file});
+        this.createEvent.image = file.name;
     }
 
 

@@ -270,6 +270,19 @@ const upload = multer({
     limits: 1024 * 1024 * 5
 });
 
+const uploadImg = multer({
+    fileFilter: function (req, file, callback) {
+        var ext = path.extname(file.originalname);
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
+            req.fileValidationError = 'error';
+            return callback(null, false, new Error('goes wrong on the mimetype'));
+        }
+        callback(null, true)
+    },
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/' + req.params.eventId);
     if(req.fileValidationError) {
@@ -289,6 +302,19 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
             result.send(400);
         }
     });
+});
+
+app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/image/' + req.params.eventId);
+    if(req.fileValidationError) {
+        return res.end(req.fileValidationError);
+    }
+    console.log(req.file);
+    try {
+        res.send(req.file);
+    }catch(err) {
+        res.send(400);
+    }
 });
 
 app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
