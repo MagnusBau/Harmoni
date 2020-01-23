@@ -39,7 +39,7 @@ export class AddEvent extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            address: '',
+            address: props.currentAddress,
             start_date: new Date(),
             end_date: new Date()
         };
@@ -199,6 +199,8 @@ export class AddEvent extends Component {
             .getCategories()
             .then(categories => this.categories = categories[0])
             .catch((error: Error) => error.message);
+
+        this.setState({address: this.props.currentAddress});
     }
 
 }

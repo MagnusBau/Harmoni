@@ -27,28 +27,69 @@ export class Map extends React.Component{
      * Get the current address from the default map position and set those values in the state
      */
     componentDidMount() {
-        Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
-            response => {
-                const address = response.results[0].formatted_address,
-                    addressArray =  response.results[0].address_components,
-                    city = this.getCity( addressArray ),
-                    area = this.getArea( addressArray ),
-                    state = this.getState( addressArray );
+        if (this.props.currentAddress) {
+            console.log(this.props.currentAddress);
+            // Get latidude & longitude from address.
+            Geocode.fromAddress(this.props.currentAddress).then(
+                response => {
+                    const { lat, lng } = response.results[0].geometry.location;
+                    this.setState({markerPosition: {lat: lat, lng: lng}});
+                    Geocode.fromLatLng( lat , lng ).then(
+                        response => {
+                            const address = response.results[0].formatted_address,
+                                addressArray =  response.results[0].address_components,
+                                city = this.getCity( addressArray ),
+                                area = this.getArea( addressArray ),
+                                state = this.getState( addressArray );
 
-                console.log( 'city', city, area, state );
+                            console.log( 'city', city, area, state );
 
-                this.setState( {
-                    address: ( address ) ? address : '',
-                    area: ( area ) ? area : '',
-                    city: ( city ) ? city : '',
-                    state: ( state ) ? state : '',
-                } )
-            },
-            error => {
-                console.error(error);
-            }
-        );
+                            this.setState( {
+                                address: ( address ) ? address : '',
+                                area: ( area ) ? area : '',
+                                city: ( city ) ? city : '',
+                                state: ( state ) ? state : '',
+                            } )
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    );
+                },
+                error => {
+                    console.error(error);
+                }
+            );
+        } else {
+            Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
+                response => {
+                    const address = response.results[0].formatted_address,
+                        addressArray =  response.results[0].address_components,
+                        city = this.getCity( addressArray ),
+                        area = this.getArea( addressArray ),
+                        state = this.getState( addressArray );
+
+                    console.log( 'city', city, area, state );
+
+                    this.setState( {
+                        address: ( address ) ? address : '',
+                        area: ( area ) ? area : '',
+                        city: ( city ) ? city : '',
+                        state: ( state ) ? state : '',
+                    } )
+                },
+                error => {
+                    console.error(error);
+                }
+            );
+        }
     };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.currentAddress !== this.props.currentAddress)
+            this.componentDidMount();
+    }
+
     /**
      * Component should only update ( meaning re-render ), when the user selects the address, or drags the pin
      *
@@ -62,7 +103,8 @@ export class Map extends React.Component{
             this.state.address !== nextState.address ||
             this.state.city !== nextState.city ||
             this.state.area !== nextState.area ||
-            this.state.state !== nextState.state
+            this.state.state !== nextState.state ||
+            this.props.currentAddress !== nextProps.currentAddress
         ) {
             return true
         } else if ( this.props.center.lat === nextProps.center.lat ){

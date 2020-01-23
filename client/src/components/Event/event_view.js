@@ -11,8 +11,6 @@ import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
 import {SimpleMap} from "../simplemap"
 
-
-
 export default class EventView extends Component {
     errorMessage:string="";
     currentEvent: number = 0;
