@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     } else {
 
-        $('.navbar').removeClass('solid');
+        $('.navbar').addClass('solid');
     }
 
 });
