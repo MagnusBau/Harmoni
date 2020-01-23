@@ -10,21 +10,22 @@ DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS artist;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS contact;
+DROP TABLE IF EXISTS category;
 
+DROP PROCEDURE IF EXISTS raise;
 
 CREATE TABLE contact
 (
   contact_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
-  last_name  VARCHAR(50) NULL,
-  email      VARCHAR(50) NOT NULL,
-  phone      VARCHAR(12)
+  last_name VARCHAR(50) NULL,
+  email VARCHAR(50) NOT NULL,
+  phone VARCHAR(12)
 );
 
-CREATE TABLE user
-(
-  user_id  INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50)  NOT NULL,
+CREATE TABLE user (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   password VARCHAR(256) NOT NULL,
   image    LONGBLOB,
   contact  INT          NOT NULL,
@@ -42,7 +43,9 @@ CREATE TABLE artist
 CREATE TABLE equipment
 (
   equipment_id INT AUTO_INCREMENT PRIMARY KEY,
-  item         VARCHAR(50) NOT NULL
+  item         VARCHAR(50) NOT NULL,
+  organizer    INT         NOT NULL,
+  CONSTRAINT equipment_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
 
 CREATE TABLE event
@@ -57,7 +60,8 @@ CREATE TABLE event
   capacity    INT          NOT NULL,
   organizer   INT          NOT NULL,
   cancelled   BOOLEAN      NOT NULL DEFAULT FALSE,
-  CONSTRAINT event_fk1 FOREIGN KEY (organizer) REFERENCES user (user_id)
+  image VARCHAR(100) NOT NULL DEFAULT './files/default.png',
+  CONSTRAINT event_fk1 FOREIGN KEY (organizer) REFERENCES contact (contact_id)
 );
 
 CREATE TABLE ticket
@@ -66,7 +70,8 @@ CREATE TABLE ticket
   title     VARCHAR(50)        NOT NULL,
   info      LONGTEXT           NOT NULL,
   price     INT                NOT NULL,
-  count     INT                NOT NULL
+  count     INT                NOT NULL,
+  event     INT                NOT NULL
 );
 
 CREATE TABLE event_equipment
@@ -81,26 +86,27 @@ CREATE TABLE event_equipment
 
 CREATE TABLE role
 (
-  role_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  type    VARCHAR(50)        NOT NULL,
-  event   INT                NOT NULL,
-  CONSTRAINT role_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
+    role_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    type    VARCHAR(50)        NOT NULL,
+    event   INT                NOT NULL,
+    CONSTRAINT role_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
 
-CREATE TABLE event_role
-(
-  role  INT,
-  event INT NOT NULL,
-  CONSTRAINT event_role_pk PRIMARY KEY (role, event),
-  CONSTRAINT event_role_fk1 FOREIGN KEY (role) REFERENCES role (role_id),
-  CONSTRAINT event_role_fk2 FOREIGN KEY (event) REFERENCES event (event_id)
+CREATE TABLE event_role (
+    role INT,
+    event INT NOT NULL,
+    count INT NOT NULL,
+    CONSTRAINT event_role_pk PRIMARY KEY(role, event),
+    CONSTRAINT event_role_fk1 FOREIGN KEY(role) REFERENCES role(role_id),
+    CONSTRAINT event_role_fk2 FOREIGN KEY(event) REFERENCES event(event_id)
 );
 
-CREATE TABLE document
-(
+CREATE TABLE document (
   document_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  file        LONGBLOB           NOT NULL,
+  path        VARCHAR(500)           NOT NULL DEFAULT './files/error.txt',
   event       INT                NOT NULL,
+  alt VARCHAR(50) NOT NULL DEFAULT 'it''sa me, Mario',
+  name        VARCHAR(100)       NOT NULL,
   CONSTRAINT document_fk1 FOREIGN KEY (event) REFERENCES event (event_id)
 );
 
@@ -120,3 +126,17 @@ CREATE TABLE rider
   document    INT                NOT NULL,
   CONSTRAINT rider_fk1 FOREIGN KEY (document) REFERENCES document (document_id)
 );
+
+CREATE TABLE category
+(
+  name VARCHAR(50) PRIMARY KEY
+);
+
+CREATE PROCEDURE `raise`(`errno` BIGINT UNSIGNED, `message` VARCHAR(256))
+BEGIN
+  SIGNAL SQLSTATE
+    'ERR0R'
+    SET
+      MESSAGE_TEXT = `message`,
+      MYSQL_ERRNO = `errno`;
+END

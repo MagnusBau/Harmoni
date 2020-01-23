@@ -2,7 +2,7 @@
 
 const mysql = require("mysql");
 import {EquipmentDAO} from "../../src/dao/equipmentDao";
-const runSqlFile = require("../../database/runSqlFile.js");
+const runSqlFile = require("../../src/dao/runSqlFile.js");
 const config = require("../../src/controllers/configuration.js");
 
 // Create pool for test database
@@ -82,7 +82,7 @@ test("Add new equipment", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.insertEquipment("Mikrofonstativ", callback);
+    equipmentDao.insertEquipment("Mikrofonstativ", 1, callback);
 });
 
 test("Delete equipment", done => {
@@ -138,7 +138,7 @@ test("Add new equipment to event", done =>  {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    equipmentDao.addEquipmentToEvent(3, "3/4 Jack", 3, callback);
+    equipmentDao.addEquipmentToEvent(2, "3/4 Jack", 3, callback);
 });
 
 test("Remove equipment from event", done =>  {

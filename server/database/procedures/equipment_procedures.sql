@@ -7,6 +7,7 @@ DROP PROCEDURE IF EXISTS get_all_equipment;
 DROP PROCEDURE IF EXISTS get_equipment_by_id;
 DROP PROCEDURE IF EXISTS get_equipment_by_name;
 DROP PROCEDURE IF EXISTS get_equipment_by_event;
+DROP PROCEDURE IF EXISTS get_equipment_by_organizer;
 DROP PROCEDURE IF EXISTS add_equipment_to_event;
 DROP PROCEDURE IF EXISTS remove_equipment_from_event;
 DROP PROCEDURE IF EXISTS update_equipment_on_event;
@@ -18,10 +19,10 @@ DROP PROCEDURE IF EXISTS update_equipment_on_event;
 
   Issued by: insertEquipment(name: string)
  */
-CREATE PROCEDURE insert_equipment(IN item_in VARCHAR(50))
+CREATE PROCEDURE insert_equipment(IN item_in VARCHAR(50), IN user_id_in INT)
 BEGIN
-  INSERT INTO equipment (item)
-  VALUES (item_in);
+  INSERT INTO equipment (item, organizer)
+  VALUES (item_in, user_id_in);
 END;
 
 /**
@@ -44,6 +45,12 @@ END;
 CREATE PROCEDURE get_all_equipment()
 BEGIN
   SELECT equipment_id, item FROM equipment;
+END;
+
+CREATE PROCEDURE get_equipment_by_organizer(IN user_id_in INT)
+BEGIN
+  SELECT equipment_id, item FROM equipment
+  WHERE organizer=user_id_in;
 END;
 
 /**
@@ -99,9 +106,11 @@ END;
 CREATE PROCEDURE add_equipment_to_event(IN event_id_in INT, IN item_in VARCHAR(50), IN amount_in INT)
 BEGIN
   DECLARE equipment_id_in INT;
-  SET equipment_id_in = IFNULL((SELECT equipment_id FROM equipment WHERE item=item_in LIMIT 1), 0);
+  DECLARE user_id_in INT;
+  SET user_id_in = (SELECT organizer FROM event WHERE event_id=event_id_in LIMIT 1);
+  SET equipment_id_in = IFNULL((SELECT equipment_id FROM equipment WHERE item=item_in AND organizer=user_id_in LIMIT 1), 0);
   IF (equipment_id_in = 0) THEN
-    INSERT INTO equipment (item) VALUES(item_in);
+    CALL insert_equipment(item_in, user_id_in);
     SET equipment_id_in = LAST_INSERT_ID();
   END IF;
   IF ((SELECT COUNT(*) FROM event_equipment WHERE equipment=equipment_id_in AND event=event_id_in) = 0) THEN
