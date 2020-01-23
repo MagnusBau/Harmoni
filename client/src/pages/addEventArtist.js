@@ -209,6 +209,7 @@ export class AddEventArtist extends Component {
             phone: ""
         };
         this.setState({showRemoveWarning: false});
+        Alert.success("artistAlert", "Artist ble fjernet");
     }
 
     /**
@@ -267,12 +268,13 @@ export class AddEventArtist extends Component {
 
                             artistService.addArtistWithNewContract(this.newArtist, this.name, this.props.eventId, path).then(response => {
                                 if (response.error) {
-                                    if (response.error.errno === 2001) {
+                                    if (response.error.errno === 1062) {
                                         Alert.danger("artistAlert", "Artist er allerede tilknyttet arrangement");
                                     } else {
-                                        Alert.danger("artistAlert", "En feil har oppstått");
+                                        Alert.danger("artistAlert", "En feil har oppstått (testkode: " + response.error.errno + ")" );
                                     }
                                 } else {
+                                    Alert.success("artistAlert", "Artist lagt til event");
                                     fileInfoService.updateFile(formData).then(res =>{
                                         console.log("should have posted to server");
                                     });
@@ -290,7 +292,7 @@ export class AddEventArtist extends Component {
                                     this.name="";
                                     this.file=null;
                                     this.setState({file: null});
-                                    Alert.success("artistAlert", "Artist lagt til event");
+
                                 }
                             });
                         }else{
@@ -303,7 +305,7 @@ export class AddEventArtist extends Component {
             console.log("I am here");
             artistService.addArtistToEvent(this.newArtist, this.documentId).then(response => {
                 if (response.error) {
-                    if (response.error.errno === 2001) {
+                    if (response.error.errno === 1062) {
                         Alert.danger("artistAlert", "Artist er allerede tilknyttet arrangement");
                     } else {
                         Alert.danger("artistAlert", "En feil har oppstått");
@@ -322,6 +324,7 @@ export class AddEventArtist extends Component {
                     this.name="";
                     this.file=null;
                     this.setState({file: null});
+                    Alert.success("artistAlert", "Artist lagt til event");
                 }
             });
         }
