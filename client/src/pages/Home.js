@@ -33,7 +33,7 @@ class Home extends Component {
                         <div className="card-body" id="frontpage-card-container">
                         <div className="card-columns">
                             {this.events.map(event => (
-                                <div className="card" id="frontpageCard" onClick={() => this.viewEvent(event.event_id)}>
+                                <a href={'#/event/' + event.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard">
                                     <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
                                     <div className="card-body">
                                         <h5 className="card-title">
@@ -44,6 +44,7 @@ class Home extends Component {
                                         </h6>
                                     </div>
                                 </div>
+                                </a>
                             ))}
                         </div>
                         </div>
