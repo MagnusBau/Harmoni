@@ -29,6 +29,7 @@ class UserService {
                 localStorage.setItem("artist_name", response.artist.artist_name);
                 this.mountDropdown();
                 next();
+                return response;
             }
         });
     }

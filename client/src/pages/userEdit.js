@@ -25,7 +25,6 @@ export default class UserEdit extends Component {
     lastName: string = userService.getLastName();
     email: string = userService.getEmail();
     phone: string = userService.getPhone();
-    contactId: number = userService.getContactId();
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
@@ -299,7 +298,7 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.createArtistOnContact(this.artistName, this.contactId).then(response => {
+        artistService.createArtistOnContact(this.artistName, userService.getUserId()).then(response => {
             artistService.getArtistByUser(userService.getUserId()).then(response => {
                 console.log(response);
                 console.log("yo");
