@@ -105,7 +105,7 @@ test("get ended events by a user from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
         data = data[0];
-        expect(data.length).toBe(1);
+        expect(data.length).toBe(3);
         done();
     }
     eventDao.getEndedEventsByUser(1, callback);
@@ -125,7 +125,9 @@ test("create event", done => {
             "end_time": "2020-01-01",
             "category": "homepage.js",
             "capacity": "100",
-            "organizer": "1"
+            "organizer": "1",
+            "cancelled": "0",
+            "image": "hey"
         },
         callback);
 });
