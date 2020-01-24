@@ -158,3 +158,9 @@ th {
 textarea:invalid{
     border-color: var(--color-brown-black) !important;
 }
+
+select:invalid{
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+}
