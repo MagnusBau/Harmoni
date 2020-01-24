@@ -9,8 +9,8 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Inserts a new piece of equipment
-     * @param name
-     * @param userId
+     * @param name              name of equipment
+     * @param userId            id of user the equipment will be bound to
      * @param callback
      */
     insertEquipment(name: string, userId: number, callback: (status: string, data: string) => void) {
@@ -22,7 +22,7 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Deletes a specified piece of equipment
-     * @param equipmentId
+     * @param equipmentId       id of equipment to be deleted
      * @param callback
      */
     deleteEquipment(equipmentId: number, callback: (status: string, data: string) => void) {
@@ -44,7 +44,7 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Get one piece of equipment by id
-     * @param equipment_id
+     * @param equipment_id      id of equipment
      * @param callback
      */
     getEquipmentById(equipment_id: number, callback: (status: string, data: string) => void) {
@@ -56,7 +56,7 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Get equipment by a name search
-     * @param name
+     * @param name              name to search for
      * @param callback
      */
     getEquipmentByName(name: string, callback: (status: string, data: string) => void) {
@@ -68,7 +68,7 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Get equipment by an event
-     * @param event
+     * @param event             event to get equipment from
      * @param callback
      */
     getEquipmentByEvent(event: number, callback: (status: string, data: string) => void) {
@@ -80,9 +80,9 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Adds a new equipment to an event
-     * @param event
-     * @param item
-     * @param amount
+     * @param event             event to add equipment to
+     * @param item              name of equipment
+     * @param amount            amount of this equipment to add
      * @param callback
      */
     addEquipmentToEvent(event: number, item: string, amount: number, callback: (status: string, data: string) => void) {
@@ -94,8 +94,8 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Removes an equipment from an event
-     * @param event
-     * @param equipment
+     * @param event             event to remove equipment from
+     * @param equipment         id of equipment to remove
      * @param callback
      */
     removeEquipmentFromEvent(event: number, equipment: number, callback: (status: string, data: string) => void) {
@@ -107,9 +107,9 @@ export class EquipmentDAO extends Dao {
 
     /**
      * Updates the amount of an equipment to an event
-     * @param event
-     * @param equipment
-     * @param amount
+     * @param event             event to update
+     * @param equipment         id of equipment to update
+     * @param amount            amount of this equipment to add
      * @param callback
      */
     updateEquipmentOnEvent(event: number, equipment: number, amount: number, callback: (status: string, data: string) => void) {

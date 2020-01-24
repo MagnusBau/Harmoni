@@ -9,8 +9,8 @@ export class TicketDAO extends Dao {
     }
 
     /**
-     * Inserts one ticket
-     * @param json
+     * Inserts one ticket to the database
+     * @param json              contains title, info, price, count and id of event
      * @param callback
      */
     createOne( json : Object,
@@ -22,8 +22,8 @@ export class TicketDAO extends Dao {
     }
 
     /**
-     * Fetches all tickets
-     * @param event
+     * Gets all tickets made for an event
+     * @param event             id of event
      * @param callback
      */
     getAll(event : number, callback: (status: string, data: string) => void){
@@ -34,8 +34,8 @@ export class TicketDAO extends Dao {
     }
 
     /**
-     * Gets one ticket by Id
-     * @param ticket_id
+     * Gets one ticket by Id by ticket id
+     * @param ticket_id         id of event
      * @param callback
      */
     getOne(ticket_id: number, callback: (status: string, data: string) => void) {
@@ -46,8 +46,8 @@ export class TicketDAO extends Dao {
     }
 
     /**
-     * Update one ticket on id
-     * @param json
+     * Updates an ticket by ticket id
+     * @param json              contains all new info about the ticket
      * @param callback
      */
     updateOneTicket(json: Object, callback : () => void){
@@ -57,8 +57,8 @@ export class TicketDAO extends Dao {
     }
 
     /**
-     * Removes one ticket
-     * @param id
+     * Removes one ticket by ticket id
+     * @param id                id of ticket
      * @param callback
      */
     removeOneTicket(id: number, callback:()=> void){
