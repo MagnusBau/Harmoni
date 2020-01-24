@@ -117,6 +117,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .getEventById(this.currentEvent)
             .then(eventOverview => {
                 this.eventOverview = eventOverview[0];
+                this.loadArtist();
                 if(eventOverview.body.error) {
                     this.errorMessage = eventOverview.body.error;
                 }
@@ -162,7 +163,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.loadEvent();
         this.loadTicket();
         this.loadEquipment();
-        this.loadArtist();
+        //this.loadArtist();
     }
 
     render() {
