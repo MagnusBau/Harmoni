@@ -142,7 +142,7 @@ export default class UserOverview extends Component {
                                     {this.events.map(e => (
                                         //TODO hente inn en <a> og sender valgt event til eventoverview
                                         <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action">
-                                            {e.title} {e.start_time}
+                                            {<strong>{e.title}</strong>} {', '} {e.start_time}
                                         </li>
                                     ))}
                                     <p></p>
@@ -154,19 +154,19 @@ export default class UserOverview extends Component {
                         <EventViewHeader label="Dine arkiverte arrangementer"/>
                         <div className="row">
                             <div className="col-md-12">
+                                <button id="showWarning" type="button" className="btn btn-outline-danger" onClick={this.show}>Slett arrangementene</button>
+                                <p></p>
                                 <div className="list-group" className="">
                                     {this.endedEvents.map(e => (
                                         //TODO hente inn en <a> og sender valgt event til eventoverview
                                         <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action list-group-item-secondary">
-                                            {e.title} {e.end_time}
+                                            {<strong>{e.title}</strong>} {', '} {e.start_time}
                                         </li>
                                     ))}
                                 </div>
+                                <br></br>
                             </div>
                         </div>
-
-                        <button id="showWarning" type="button" className="btn btn-outline-danger" onClick={this.show}>Slett arrangement</button>
-                        <p></p>
 
                         <ModalWidget
                             show={this.state.setShowModal}
@@ -174,7 +174,7 @@ export default class UserOverview extends Component {
                             title='Advarsel'
                             body="Er du sikker på at du vil slette de arkiverte arrangementene?"
                         >
-                            <button id="closeWarning" type="button" className="btn btn-outline-light" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
+                            <button id="closeWarning" type="button" className="btn btn-outline-primary" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
                             <button className="btn btn-outline-danger" type="button" onClick={this.deleteEndedEvents}>Slett</button>
                         </ModalWidget>
                     </div>
