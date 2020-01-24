@@ -25,7 +25,7 @@ export class Email {
             subject: "Arrangementet " + title + " er avlyst",
             html: '<h3 style="font-size: 21px">Hei, ' + name + '</h3>' +
                 '  <div style="font-size: 17px">' +
-                '   <br>Dette er et varsel om at følgende arrangement har blitt avlyst: <a href="http://localhost:4000/#/event/' + eventId + '">Link til ditt arrangement</a>' +
+                '   <br>Dette er et varsel om at følgende arrangement har blitt avlyst: <a href="http://localhost:4000/#/event/' + eventId + '/view">Link til ditt arrangement</a>' +
                 '   <div><b><br>Tittel: ' + title + '<br>Sted: ' + location + '<br>Tid: ' + startTime + '</b></div>' +
                 '   <div><br>Med vennlig hilsen,' +
                 '   <br>Harmoni Team 3</div>' +

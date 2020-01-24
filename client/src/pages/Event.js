@@ -181,7 +181,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         if(this.eventOverview) {
             if(this.eventOverview.cancelled ) {
                 console.log(this.eventOverview.cancelled);
-                cancelled = <div style={{backgroundColor: "red", height: "25vh"}}><p style={{color: "white", fontSize: "15vh"}} className="justify-content-center row">Avlyst</p></div>
+                cancelled = <div style={{backgroundColor: "#ff4a3d", height: "9vh"}}><p style={{color: "white", fontSize: "5vh"}} className="justify-content-center row">Avlyst</p></div>
             } else {
                 cancelled = <div></div>;
             }
