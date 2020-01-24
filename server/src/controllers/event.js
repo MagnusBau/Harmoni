@@ -4,6 +4,11 @@ import {EventDAO} from "../dao/eventDao";
 import {UserDAO} from "../dao/userDao";
 import {Email} from "../email";
 
+/**
+ * Controller for receiving HTTP requests through the event endpoint
+ * @type {{listen?: *}}
+ */
+
 const pool = require("../server");
 
 const eventDao = new EventDAO(pool);

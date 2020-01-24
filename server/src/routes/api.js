@@ -1,3 +1,5 @@
+//@flow
+
 const express = require("express");
 
 const contactController = require("../controllers/contact");
@@ -9,6 +11,7 @@ const fileInfoController = require("../controllers/fileInfo");
 
 const router = express.Router();
 
+// ROUTE: api
 router.get("/event", eventController.getEvents);
 router.get("/event/:eventId/artist", artistController.getArtistByEvent);
 router.get("/event/:eventId", eventController.getEventById);

@@ -10,6 +10,7 @@ const fileInfoController = require("../controllers/fileInfo");
 
 const router = express.Router();
 
+// ROUTE: auth/id/:userId/event
 router.get("/:eventId/email", eventController.getEventEmail);
 router.get("/:eventId/document", eventController.getDocumentByEvent);
 router.get("/:eventId/role", roleController.getRoleByEvent);

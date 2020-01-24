@@ -1,9 +1,14 @@
 //@flow
 
-const fileInfoController = require("./fileInfo");
+import {FileInfoDAO} from '../dao/fileInfoDao.js';
+
+/**
+ * Controller for receiving HTTP requests through the fileinfo endpoint
+ * @type {{listen?: *}}
+ */
+
 const fs = require('fs');
 
-import {FileInfoDAO} from '../dao/fileInfoDao.js';
 const pool = require('../server.js');
 
 const fileInfoDao = new FileInfoDAO(pool);

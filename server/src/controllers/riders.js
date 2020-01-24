@@ -1,6 +1,12 @@
 //@flow
 
 import { RiderDAO } from "../dao/riderDao.js";
+
+/**
+ * Controller for receiving HTTP requests through the riders endpoint
+ * @type {{listen?: *}}
+ */
+
 const pool = require("../server.js");
 
 const riderDao = new RiderDAO(pool);

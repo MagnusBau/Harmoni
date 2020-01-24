@@ -2,6 +2,12 @@
 
 import {ArtistDAO} from "../dao/artistDao";
 import {UserDAO} from "../dao/userDao";
+
+/**
+ * Controller for business logic before retrieving data through artistDao
+ * @type {{listen?: *}}
+ */
+
 const pool = require("../server");
 const artistDao = new ArtistDAO(pool);
 const userDao = new UserDAO(pool);

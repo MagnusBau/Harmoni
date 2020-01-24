@@ -1,5 +1,9 @@
 // @flow
 
+/**
+ * Class for handling the configuration file
+ */
+
 let config;
 
 try {

@@ -2,6 +2,11 @@
 
 import {Email} from "../email";
 
+/**
+ * Controller for receiving HTTP requests through the email endpoint
+ * @type {{listen?: *}}
+ */
+
 const pool = require("../server.js");
 const emailService = new Email();
 
