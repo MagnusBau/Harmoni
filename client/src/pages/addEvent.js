@@ -170,7 +170,7 @@ export class AddEvent extends Component {
                 </form>
             </div>
 
-    )
+        )
     }
 
     onChangeAddress(address: string) {
@@ -182,44 +182,41 @@ export class AddEvent extends Component {
 
         this.createEvent.start_time = this.state.start_time;
         this.createEvent.end_time = this.state.end_time;
-        console.log(typeof this.createEvent.start_time  === typeof this.createEvent.end_time);
+        console.log(typeof this.createEvent.start_time === typeof this.createEvent.end_time);
         console.log(this.createEvent.start_time + 100 < this.createEvent.end_time);
 
-        if (typeof this.createEvent.start_time  === typeof this.createEvent.end_time && this.createEvent.start_time + 100 < this.createEvent.end_time) {
-        e.preventDefault();
-        eventService
-        .createEvent(this.createEvent)
-        .then((response) => {
-        Alert.success("addEventAlert",'You have created a new event!!!!');
-        history.push('/user/' + userService.getUserId() + '/overview');
-    })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else {
-        e.preventDefault();
-        if(this.createEvent.start_time + 100 >= this.createEvent.end_time){
-        return alert("start må være før slutt!");
-    }else{
-        e.preventDefault();
-        return alert("Du må fylle ut event start og slutt!");
+        if (typeof this.createEvent.start_time === typeof this.createEvent.end_time && this.createEvent.start_time + 100 < this.createEvent.end_time) {
+            e.preventDefault();
+            eventService
+                .createEvent(this.createEvent)
+                .then((response) => {
+                    Alert.success("addEventAlert", 'You have created a new event!!!!');
+                    history.push('/user/' + userService.getUserId() + '/overview');
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+        } else {
+            e.preventDefault();
+            if (this.createEvent.start_time + 100 >= this.createEvent.end_time) {
+                return alert("start må være før slutt!");
+            } else {
+                e.preventDefault();
+                return alert("Du må fylle ut event start og slutt!");
+            }
+        }
     }
-
-    }
-
-    }
-
 
     mounted() {
         this.createEvent.organizer = userService.getUserId();
         eventService
-        .getEventByName()
-        .then(event => (this.allEvents  = event))
-        .catch((error: Error) => Alert.danger(error.message));
+            .getEventByName()
+            .then(event => (this.allEvents = event))
+            .catch((error: Error) => Alert.danger(error.message));
         eventService
-        .getCategories()
-        .then(categories => this.categories = categories[0])
-        .catch((error: Error) => error.message);
+            .getCategories()
+            .then(categories => this.categories = categories[0])
+            .catch((error: Error) => error.message);
 
         this.setState({address: this.props.currentAddress});
     }
 
-    }
+}
