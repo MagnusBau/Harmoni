@@ -3,7 +3,7 @@
 import {ArtistDAO} from "./dao/artistDao.js";
 import {FileInfoDAO} from './dao/fileInfoDao.js';
 import {UserDAO} from "./dao/userDao.js";
-import {EventDAO} from "./dao/eventDao";
+import {EventDAO} from "./dao/eventDao.js";
 
 /**
  * Overhead server class. Here, server properties are declared, along with a few app uses
