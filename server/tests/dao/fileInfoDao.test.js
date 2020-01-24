@@ -58,7 +58,7 @@ test("Get one document from db by document id", done => {
         done();
 
     }
-    fileInfoDao.getFileInfoById(4, callback);
+    fileInfoDao.getFileInfoById(5, callback);
 });
 
 test("Get one document from db by event id", done => {
@@ -99,4 +99,18 @@ test("Remove document from db", done =>  {
         done();
     }
     fileInfoDao.deleteFileInfo("Ross", callback);
+});
+
+test("Get one document from db by document id", done => {
+    function callback(status, data) {
+        console.log(
+            'Test callback: status=${status}, data=${data}'
+        );
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].path).toBe("Barks");
+        done();
+
+    }
+    fileInfoDao.getContractByArtistId(1, callback);
 });

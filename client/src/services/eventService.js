@@ -128,6 +128,19 @@ export class EventService {
             .catch(error => console.log("error" + error));
     }
 
+    getLastEventByUser(userId: number): Event[] {
+        return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + '/event/last', {
+            'headers': {
+                'x-access-token': userService.getToken()
+            }}).then(response => {
+            if(userService.error(response)){
+                return userService.error(response);
+            }
+            return response.data;
+        })
+            .catch(error => console.log("error" + error));
+    }
+
     getEndedEventsByUser(userId: number): Event[] {
         return axios.get<Event[]>('http://localhost:4000/api/user/' + userId + "/event/ended", {
             'headers': {
@@ -207,15 +220,15 @@ export class EventService {
     }
 
     cancelEvent(eventId: number) {
-        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/cancel', {
+        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/cancel', "",{
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
-            if(userService.error(response)){
-                return userService.error(response);
-            }
-            return response.data;
-        })
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
             .catch(error => console.log("error" + error));
     }
 
@@ -254,6 +267,12 @@ export class EventService {
 
     getEventsByUsername(userName: string) {
         return axios.get('http://localhost:4000/api/event/search/user/' + userName)
+            .then(response => response.data)
+            .catch(error => console.log(error.message));
+    }
+
+    getEventsByArtist(artistId: number): Event[] {
+        return axios.get<Event[]>(`http://localhost:4000/api/event?artistId=${artistId}`)
             .then(response => response.data)
             .catch(error => console.log(error.message));
     }

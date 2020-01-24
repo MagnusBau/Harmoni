@@ -1,15 +1,23 @@
 //@flow
 
-const pool = require("../server");
-const fs = require('fs');
 import {UserDAO} from "../dao/userDao";
 import {ArtistDAO} from "../dao/artistDao";
 import {Email} from "../email";
+
+/**
+ * Controller for receiving HTTP requests through the user endpoint
+ * @type {{listen?: *}}
+ */
+
+const pool = require("../server");
+const fs = require('fs');
 
 const email = new Email();
 
 const userDao = new UserDAO(pool);
 const artistDao = new ArtistDAO(pool);
+
+const TAG = '[UserController]';
 
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
@@ -45,9 +53,18 @@ const signOptions = {
     algorithm:  "RS256"
 };
 
+/**
+ *Is the function for login. Check if the different user input is valid. If valid user gets logged in if not it
+ * return an error
+ * @param bool return the information regarding the login.
+ * @param username is te username of the user
+ * @param res response to service
+ */
+
+
 function login(bool: boolean, username: string, res: Response) {
     if (bool) {
-        console.log("Brukernavn & passord ok");
+        console.log(TAG, "Brukernavn & passord ok");
         let token = jwt.sign({ username: username}, privateKey, signOptions);
 
         userDao.getUser(username, (err, user) => {
@@ -111,50 +128,89 @@ function login(bool: boolean, username: string, res: Response) {
 
 
     } else {
-        console.log("Passord IKKE ok");
+        console.log(TAG, "Passord IKKE ok");
         res.json({ error: "Not authorized" });
     }
 }
+
+
+/**
+ * This methode takes in all user information check if user name is valid.(canot be equal to another allready in the database) and if it is it sends
+ * you to the validation methode for passwords
+ * norwegian letters is allowed
+ * @param data
+ * @param username
+ * @param password
+ * @param email
+ * @param first_name
+ * @param last_name
+ * @param phone
+ * @param res sends result to service
+ * @returns {boolean}
+ */
 
 function validateUsername(data: Object, username: string, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z0-9-æøåÆØÅ]{4,30}$/;
     if(username.match(regex)) {
         if (data.artist_name) {
             userDao.checkAndVerifyArtistUsername(username, (err, rows) => {
-                console.log(rows);
-                console.log(rows[0][0].username_in);
+                console.log(TAG, rows);
+                console.log(TAG, rows[0][0].username_in);
                 data.username = rows[0][0].username_in;
                 return validatePassword(data, password, email, first_name, last_name, phone, res);
             });
         } else {
             userDao.checkUsername(username, (err, rows) => {
-                console.log(rows[0][0].count);
+                console.log(TAG, rows[0][0].count);
                 if (rows[0][0].count === 0) {
                     return validatePassword(data, password, email, first_name, last_name, phone, res);
                 } else {
-                    console.log("Invalid username");
+                    console.log(TAG, "Invalid username");
                     res.json({error: "Invalid username"});
                     return false;
                 }
             });
         }
     } else {
-        console.log("Invalid username");
+        console.log(TAG, "Invalid username");
         res.json({ error: "Invalid username" });
         return false;
     }
 }
+
+/**
+ * Validate the user password, if it is, it sends you to emailvalidation
+ * @param data
+ * @param password
+ * @param email
+ * @param first_name
+ * @param last_name
+ * @param phone
+ * @param res
+ * @returns {void|boolean|undefined}
+ */
 
 function validatePassword(data: Object, password: string, email: string, first_name: string, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z0-9-æøåÆØÅ]{5,256}$/;
     if(password.match(regex)){
         return validateEmail(data, email, first_name, last_name, phone, res);
     } else {
-        console.log("Invalid");
+        console.log(TAG, "Invalid");
         res.json({ error: "Invalid password. Has to contain at least 8 to 256 characters" });
         return false;
     }
 }
+
+/**
+ * Validate the users email, with different requirements. Sends you to validate first name if suqsess.
+ * @param data
+ * @param email
+ * @param first_name
+ * @param last_name
+ * @param phone
+ * @param res
+ * @returns {void|boolean}
+ */
 
 function validateEmail(data: Object, email: string, first_name: string, last_name: string, phone: string, res: Response) {
     if(email.length < 50) {
@@ -163,33 +219,66 @@ function validateEmail(data: Object, email: string, first_name: string, last_nam
             return validateFirstName(data, first_name, last_name, phone, res);
         }
     } else {
-        console.log("Invalid");
+        console.log(TAG, "Invalid");
         res.json({ error: "Invalid email" });
         return false;
     }
 }
+
+/**
+ * Validate first name.  can be between 3 to 40 characters.
+ * norwegian characters are allowed
+ * if true send to validate last
+ * @param data reacive all the user information
+ * @param first_name
+ * @param last_name
+ * @param phone
+ * @param res
+ * @returns {void|boolean}
+ */
 
 function validateFirstName(data: Object, first_name: string, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
     if(first_name.match(regex)) {
         return validateLastName(data, last_name, phone, res);
     } else {
-        console.log("Invalid first name, cannot contain non english-norwegian letters");
+        console.log(TAG, "Invalid first name, cannot contain non english-norwegian letters");
         res.json({ error: "Invalid first name, cannot contain non english-norwegian letters" });
         return false;
     }
 }
+
+/**validate last name. Cant be between 3 to 40 characters
+ * Norwegian chars are allowed
+ * if succsessd returns validate phone
+ *
+ * @param data all user data
+ * @param last_name
+ * @param phone
+ * @param res response to server
+ * @returns {void|boolean}
+ */
 
 function validateLastName(data: Object, last_name: string, phone: string, res: Response) {
     let regex =/^[A-Za-z-æøåÆØÅ]{3,40}$/;
     if(last_name.match(regex)) {
         return validatePhone(data, phone, res);
     } else {
-        console.log("Invalid last name");
+        console.log(TAG, "Invalid last name");
         res.json({ error: "Invalid last name" });
         return false;
     }
 }
+
+/**
+ * validate phone.
+ * must be digeds and have a sertain lenght 8 or 12
+ * if true return all data to register methode
+ * @param data
+ * @param phone
+ * @param res response to server
+ * @returns {boolean|void}
+ */
 
 function validatePhone(data: Object, phone: string, res: Response) {
     if(!phone.match(/\D/)) {
@@ -198,16 +287,22 @@ function validatePhone(data: Object, phone: string, res: Response) {
         } else if(phone.length === 12 && phone.substring(0, 3) === "0047") {
             return register(data, res);
         } else {
-            console.log("Invalid count phone");
+            console.log(TAG, "Invalid count phone");
             res.json({ error: "Invalid phone" });
             return false;
         }
     } else {
-        console.log("Invalid input phone");
+        console.log(TAG, "Invalid input phone");
         res.json({ error: "Invalid phone" });
         return false;
     }
 }
+
+/**
+ * register user check. incrupte user password and registrer user if valid.
+ * @param data all user data
+ * @param res
+ */
 
 function register(data: Object, res: Response) {
     // Store original password to send by mail
@@ -232,7 +327,7 @@ function register(data: Object, res: Response) {
                             }
                         })
                     } else {
-                        console.log("Invalid7");
+                        console.log(TAG, "Invalid7");
                         res.json({error: "Invalid something"});
                     }
                 })
@@ -241,9 +336,14 @@ function register(data: Object, res: Response) {
     });
 }
 
-// Håndterer login og sender JWT-token tilbake som JSON
+/**
+ * Håndterer login og sender JWT-token tilbake som JSON
+ * om bruker har et savedhash methode return to user log in.
+ */
+
+
 exports.loginUser = (req, res, next) => {
-    console.log("yo");
+
     userDao.getPassword(req.body.username, (err, rows) => {
         let savedHash = null;
         if(rows[0]) {
@@ -256,20 +356,28 @@ exports.loginUser = (req, res, next) => {
                 login(response, req.body.username, res);
             })
         } else {
-            console.log("Brukernavn IKKE ok");
+            console.log(TAG, "Brukernavn IKKE ok");
             res.json({ error: "Not authorized" });
         }
     });
 };
 
+/**
+ * returnes artist that is linked to an user(host)
+ */
+
 exports.getUserByArtist = (req, res, next) => {
-    console.log(`Got request from client: GET /auth/user/artist/${req.params.artistId}`);
+
 
     userDao.getUserByArtist(req.params.artistId, (err, rows) => {
 
         res.send(rows);
     });
 };
+
+/**
+ * this calls the chain of validation and if all passes it successfully registres the user. if not it returnes an error of what went bad
+ */
 
 exports.registerUser = (req, res, next) => {
     let data = {
@@ -284,12 +392,16 @@ exports.registerUser = (req, res, next) => {
         "organizer": req.body.organizer
     };
     if(validateUsername(data, req.body.username, req.body.password, req.body.email, req.body.first_name, req.body.last_name, req.body.phone, res)) {
-        console.log("yo (bad)");
+
     }
 };
 
+/**
+ * gets an user token
+ */
+
 exports.getToken = (req, res, next) => {
-    console.log("Skal returnere en ny token");
+    console.log(TAG, "Skal returnere en ny token");
     userDao.getUsername(Number.parseInt(req.body.user_id), (err, rows) => {
         let token = jwt.sign({username: req.body.username}, privateKey, signOptions);
         res.json({token: token});
@@ -297,10 +409,16 @@ exports.getToken = (req, res, next) => {
 };
 
 
-
+/**
+ * Updates an user.
+ * gets in user data, and makes it possible to change.
+ * @param req
+ * @param res
+ * @param next func to run
+ */
 exports.updateUser = (req, res, next) => {
-    console.log("Skal oppdatere bruker");
-    console.log(req.body);
+    console.log(TAG, "Skal oppdatere bruker");
+    console.log(TAG, req.body);
     let id: number = Number.parseInt(req.params.userId);
     let data: Object = req.body;
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -313,40 +431,47 @@ exports.updateUser = (req, res, next) => {
                         if(rows[0][0].contact_id) {
                             let contactId = rows[0][0].contact_id;
                             userDao.updateContact(contactId, data, (err, rows) => {
-                                console.log("Bruker oppdatert");
+                                console.log(TAG, "Bruker oppdatert");
                                 res.json(rows);
                             });
                         } else {
-                            console.log("Finner ikke kontakt");
+                            console.log(TAG, "Finner ikke kontakt");
                             res.json({ error: "Not authorized" });
                         }
                     });
                 } else {
-                    console.log("phone IKKE ok");
+                    console.log(TAG, "phone IKKE ok");
                     res.json({ error: "Not accepted phone" });
                 }
             } else {
-                console.log("last_name IKKE ok");
+                console.log(TAG, "last_name IKKE ok");
                 res.json({ error: "Not accepted last_name" });
             }
         } else {
-            console.log("first_name IKKE ok");
+            console.log(TAG, "first_name IKKE ok");
             res.json({ error: "Not accepted first_name" });
         }
     } else {
-        console.log("email IKKE ok");
+        console.log(TAG, "email IKKE ok");
         res.json({ error: "Not accepted email" });
     }
 
 };
 
+
+/**
+ * returne an user with its data on user id
+ * @param req requst to service
+ * @param res responce to service
+ * @param next nexct func
+ */
 exports.getUser = (req, res, next) => {
-    console.log("id:" + req.params.userId);
+    console.log(TAG, "id:" + req.params.userId);
     userDao.getUserById(req.params.userId, (err, user) => {
-        console.log(user);
-        console.log(req.params.userId + user[0][0].user_id + user[0][0].username);
+        console.log(TAG, user);
+        console.log(TAG, req.params.userId + user[0][0].user_id + user[0][0].username);
         artistDao.getArtistByContact(user[0][0].contact_id, (err, artist) => {
-            console.log(artist);
+            console.log(TAG, artist);
             if(artist[0][0]) {
                 if(artist[0][0].artist_id) {
                     res.json({
@@ -405,6 +530,10 @@ exports.getUser = (req, res, next) => {
     });
 };
 
+/**
+ * updates the users password.
+ */
+
 exports.updateUserPassword = (req, res, next) => {
     let password = req.body.password;
     let newPassword = req.body.newPassword;
@@ -419,36 +548,36 @@ exports.updateUserPassword = (req, res, next) => {
                         if(response) {
                             bcrypt.genSalt(10, function(err, salt) {
                                 bcrypt.hash(newPassword, salt, function(err, hash) {
-                                    console.log("Passord OK");
+                                    console.log(TAG, "Passord OK");
                                     userDao.updatePassword(id, hash, (err, rows) => {
-                                        console.log("Passord oppdatert");
+                                        console.log(TAG, "Passord oppdatert");
                                         res.json(rows);
                                     })
                                 })
                             });
                         } else {
-                            console.log("Passord IKKE ok1");
+                            console.log(TAG, "Passord IKKE ok1");
                             res.json({ error: "Wrong password" });
                         }
                     });
                 } else {
-                    console.log("Passord IKKE ok2");
+                    console.log(TAG, "Passord IKKE ok2");
                     res.json({ error: "Not authorized" });
                 }
             } else {
-                console.log("Passord IKKE ok3");
+                console.log(TAG, "Passord IKKE ok3");
                 res.json({ error: "Not authorized" });
             }
         });
     } else {
-        console.log("Passord IKKE ok4");
+        console.log(TAG, "Passord IKKE ok4");
         res.json({ error: "Password not accepted" });
     }
 };
 exports.getOrganizerUsername = (req, res, next) => {
-    console.log("Got get request from client: organizerUsername")
+    console.log(TAG, "GET-request: ");
     userDao.getOrganizerUsername(req.params.contactId, (err, rows) => {
         res.json(rows);
     })
-}
+};
 //lag tester for dao, mangler noen metoder (minst 1)

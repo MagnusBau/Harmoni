@@ -5,7 +5,9 @@ import {Component} from "react-simplified";
 import {createHashHistory} from "history";
 import { contactUsService, ContactUs } from '../services/contactService';
 import { BigHeader } from "../components/Header/headers";
-
+/**
+ * Renders the contact form page where the operators of the website get feedback
+ */
 const history = createHashHistory();
 
 export class ContactForm extends Component {

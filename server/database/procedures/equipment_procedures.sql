@@ -1,4 +1,9 @@
 /**
+  Procedures related to the equipment table
+ */
+
+
+/**
   Delete all procedures for recreation
  */
 DROP PROCEDURE IF EXISTS insert_equipment;
@@ -127,7 +132,7 @@ END;
   IN event_id_in: Id of the event
   IN equipment_id_in: Id of the equipment
 
-  Issued by: addEquipmentToEvent(event: number, equipment: number)
+  Issued by: removeEquipmentFromEvent(event: number, equipment: number)
  */
 CREATE PROCEDURE remove_equipment_from_event(IN event_id_in INT, IN equipment_id_in INT)
 BEGIN

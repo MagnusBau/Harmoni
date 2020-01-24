@@ -121,7 +121,7 @@ class ArtistService {
     createArtistOnContact(artistName: string, contactId: number): void {
         return axios.post(`http://localhost:4000/auth/id/${userService.getUserId()}/artist`, {
             artistName: artistName,
-            contactId: contactId
+            userId: contactId
         }, {
             'headers': {
                 'x-access-token': userService.getToken()

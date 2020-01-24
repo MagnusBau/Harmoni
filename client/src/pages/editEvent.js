@@ -1,5 +1,8 @@
 // @flow
 
+/**
+ * Renders the page for editing an event
+ */
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from "history";
@@ -40,15 +43,16 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
         return(
             <div className={"m-2"}>
 
-                <form className="form-group">
+                <form className="form-group" onSubmit={this.onSubmit}>
                     <div className={"form-group m-2"}>
                         <label>Navn på arrangement:</label>
                         <br></br>
-                        <input type={"text"}
+                        <input
+                            type={"text"}
                                className={"form-control"}
                                id={"event-title"}
                                defaultValue={this.event.title}
-                               required={true}
+                               required
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.title = event.target.value)}/>
                     </div>
@@ -59,7 +63,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                   className={"form-control"}
                                   id={"event-description"}
                                   defaultValue={this.event.description}
-                                  required={true}
+                                  required
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.event.description = event.target.value)}
                         />
@@ -71,7 +75,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                className={"form-control"}
                                id={"event-location"}
                                defaultValue={this.event.location}
-                               required={true}
+                               required
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.location = event.target.value)}
                         />
@@ -109,7 +113,9 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                     <div className={"form-group m-2"}>
                         <label>Antall billettyper:</label>
                         <br></br>
-                        <select name={"ticket-types"} size={"1"}>
+                        <select
+                            required
+                            name={"ticket-types"} size={"1"}>
                             <option value={"1"}>1</option>
                             <option value={"2"}>2</option>
                             <option value={"3"}>3</option>
@@ -124,7 +130,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                className={"form-control"}
                                id={"category"}
                                defaultValue={this.event.category}
-                               required={true}
+                               required
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.category = event.target.value)}
                         />
@@ -136,7 +142,7 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                className={"form-control"}
                                id={"ticket-amount"}
                                defaultValue={this.event.capacity}
-                               required={true}
+                               required
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.capacity = event.target.value)}
                         />
@@ -148,34 +154,47 @@ export class EditEvent extends Component<{match: { params: {event_id: number}}}>
                                className={"form-control"}
                                id={"organizer"}
                                defaultValue={this.event.organizer}
-                               required={true}
+                               required
                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                    (this.event.organizer = event.target.value)}
                         />
                     </div>
+                    <div className="text-center">
+                        <button type="submit"
+                                className="btn btn-ghost btn-ghost-bordered center-block"
+                               >
+                            {' '}Lagre{' '}
+                        </button>
+                    </div>
+
                 </form>
-                <div className="text-center">
-                    <button type="button"
-                            className="btn btn-ghost btn-ghost-bordered center-block"
-                            onClick={this.update}>
-                        {' '}Lagre{' '}
-                    </button>
-                </div>
+
             </div>
         )
     }
 
-    update() {
+    onSubmit(e) {
+        e.preventDefault();
         this.createEvent.start_time = this.state.start_time;
         this.createEvent.end_time = this.state.end_time;
-        eventService
-            .updateEvent(this.props.match.params.event_id, this.event)
-            .then((response) => {
-                //Alert.success('You have updated your event');
-                if(response.body.error) this.errorMessage = response.body.error;
-            })
-            //.catch((error: Error) => Alert.danger(error.message));
-        /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        if (typeof this.createEvent.start_time  === typeof this.createEvent.end_time && this.createEvent.start_time + 100 < this.createEvent.end_time) {
+            eventService
+                .updateEvent(this.props.match.params.event_id, this.event)
+                .then((response) => {
+                    //Alert.success('You have updated your event');
+                    if (response.body.error) this.errorMessage = response.body.error;
+
+                })
+        }else{
+                e.preventDefault();
+                if(this.createEvent.start_time + 100 >= this.createEvent.end_time){
+                return alert("start må være før slutt!");
+            }else{
+                e.preventDefault();
+                return alert("Du må fylle ut event start og slutt!");
+                }
+        }
+
     }
 
     mounted() {

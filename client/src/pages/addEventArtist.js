@@ -11,6 +11,11 @@ import {userService} from "../services/userService";
 import Autosuggest from 'react-autosuggest';
 import {Alert} from '../components/Alert/alert';
 import {fileInfoService} from "../services/fileService";
+import {EventViewHeader} from "../components/Header/headers";
+
+/**
+ * Renders the page for adding an artist to an event, and deleting an artist from an event
+ */
 
 const getSuggestionValue = suggestion => suggestion.artist_name;
 
@@ -389,9 +394,9 @@ export class AddEventArtist extends Component {
         return (
             <div>
                 <div>
-                    <h3 className="m-2">Artistliste for {this.event.title}</h3>
+                    <h5 className="m-2">Artistliste for {this.event.title}</h5>
                     <div className="row">
-                        <div className="col">
+                        <div className="col-lg-6">
                             <select size="10" className="form-control m-2" id="exampleFormControlSelect1">
                                 {this.state.eventArtists.filter(artist => artist.artist_name.toLowerCase().includes(this.artistFilter.toLowerCase())).map(artist =>
                                     <option value={artist} key={artist.artist_id}
@@ -402,7 +407,7 @@ export class AddEventArtist extends Component {
                                    value={this.artistFilter}
                                    onChange={this.onChange}/>
                         </div>
-                        <div className="col">
+                        <div className="col-lg-6">
                             <div className="card m-2">
                                 <div className="card-header">
                                     Artist
@@ -442,7 +447,7 @@ export class AddEventArtist extends Component {
                         <div>
                             <hr/>
                             <form className="w-75 m-4" onSubmit={this.onSubmit}>
-                                <h4 className="m-2">Legg til ny artist:</h4>
+                                <EventViewHeader label="Legg til ny artist:"/>
                                 <div className="row">
                                     <div className="col">
                                         <Autosuggest suggestions={suggestions}
@@ -483,27 +488,36 @@ export class AddEventArtist extends Component {
                                                value={this.newArtist.phone} onChange={this.onChange} required/>
                                     </div>
                                 </div>
-                                <h5 className="m-2">Legg til kontrakt</h5>
+                                <EventViewHeader label="Legg til kontrakt"/>
                                 <div className="row">
-                                    <div className="col">
-                                        <select id="documentSelect" className="custom-select m-2"
-                                                value={this.documentId}
-                                                onChange={this.onChange}>
-                                            <option selected value="">Velg dokument...</option>
-                                            {this.eventDocuments.map(document =>
-                                                <option value={document.document_id}>{document.name}</option>
-                                            )}
-                                        </select>
+                                    <div className="col-12">
+                                        <div className="row">
+                                            <div className="col-8">
+                                                <select id="documentSelect" className="custom-select m-2"
+                                                        value={this.documentId}
+                                                        onChange={this.onChange}>
+                                                    <option selected value="">Velg dokument...</option>
+                                                    {this.eventDocuments.map(document =>
+                                                        <option value={document.document_id}>{document.name}</option>
+                                                    )}
+                                                </select>
+                                            </div>
+                                            <div className="col-4">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-success m-2"
+                                                    style={{}}
+                                                    onClick={this.mounted}
+                                                >Oppdater</button>
+                                            </div>
+                                        </div>
                                         {uploadBox}
                                     </div>
                                     <div className="col"/>
                                 </div>
                                 <div className="row">
                                     <div className="col">
-                                        <div className="m-2"/>
-                                    </div>
-                                    <div className="col">
-                                        <button className="btn btn-success m-2 float-right" type="submit">Legg til
+                                        <button className="btn btn-outline-primary m-2" type="submit">Legg til
                                         </button>
                                     </div>
                                 </div>

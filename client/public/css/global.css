@@ -3,11 +3,13 @@
 :root{
     --color-white: #FAFAFA;
     --color-light-blue: #ABC3C9;
+    --color-light-light-blue: #d8e7eb;
     --color-meduim-blue: #63ACBE;
     --color-dark-blue: #21393F;
     --color-x-light-beige: #f5f1e8;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
+    --color-medium-dark-beige: #736654;
     --color-brown-black: #331920;
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
@@ -26,13 +28,11 @@ html, body {
     background-color: var(--color-light-beige);
 }
 
-
-
 .container{
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
-    margin: 10rem auto 10rem auto;
+    margin: 3rem auto 10rem auto;
 }
 
 /*bootstrap nav components*/
@@ -101,6 +101,18 @@ a:hover{
     background-color: var(--color-light-blue);
 }
 
+.btn-outline-primary:active {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
+.btn-outline-dark:hover{
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
 /*borders*/
 .border-dark{
     color: var(--color-dark-blue);
@@ -108,16 +120,47 @@ a:hover{
 }
 
 /*input field*/
-
-input{
-
+.form-control{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid var(--color-medium-dark-beige) !important;
+    border-radius: 0;
 }
 
-.form-control{
+.form-control :focus{
+    border-color: var(--color-brown-black) !important;
+}
+
+.form-control-event-overview{
+    background-color: var(--color-light-beige);
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: 2px solid var(--color-medium-dark-beige) !important;
+    border-radius: 0;
+}
+
+input:invalid{
+    border: none;
+}
+
+
+/*table*/
+
+th {
     border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    background-color: var(--color-x-light-beige);
-    color: var(--color-medium-beige);
-    border-bottom: 10px var(--color-brown-black) !important;
+    padding-left: 0 !important;
+}
+
+/*textarea*/
+
+textarea:invalid{
+    border-color: var(--color-brown-black) !important;
+}
+
+select:invalid{
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
 }

@@ -1,11 +1,18 @@
 //@flow
 
+import {FileInfoDAO} from '../dao/fileInfoDao.js';
+
+/**
+ * Controller for receiving HTTP requests through the file endpoint
+ */
+
 const fileInfoController = require("./fileInfo");
 const fs = require('fs');
 const multer = require('multer');
 
-import {FileInfoDAO} from '../dao/fileInfoDao.js';
 const pool = require('../server.js');
+
+const TAG = '[FileController]';
 
 
 const fileInfoDao = new FileInfoDAO(pool);
@@ -36,14 +43,14 @@ exports.download = async (req, res, next) => {
 };
 
 exports.upload = (req, res, next) => {
-    console.log(`Got request from client: POST /file/upload/${req.params.eventId}`);
+    console.log(TAG, `POST-request: /file/upload/${req.params.eventId}`);
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
         "path": req.body.path
     };
     let result = res;
-    console.log(req.body.name);
+    console.log(TAG, req.body.name);
     fileInfoDao.postFileInfo(data, (err, res) => {
         try {
             result.send(req.file);

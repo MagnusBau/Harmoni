@@ -52,7 +52,7 @@ test("Get all artists from database", done => {
    artistDao.getAllArtists(callback);
 });
 
-test("Get one newArtist from database by id", done => {
+test("Get one new Artist from database by id", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
@@ -164,6 +164,7 @@ test("Insert new artist with a new document and contract", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
+
     artistDao.addArtistWithNewContract({
         "artist_name": "Bobern",
         "first_name": "Bob",
@@ -175,3 +176,89 @@ test("Insert new artist with a new document and contract", done => {
         "path": "./files/1------yaas.txt"
     }, callback);
 });
+
+
+test("Create artist on Contact", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.createArtistOnContact('Mario', 1, callback);
+});
+
+
+test("getArtistByPreviousContract", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
+        );
+
+        data = data[0];
+        expect(data.length).toBeGreaterThanOrEqual(1);
+        done();
+    }
+    artistDao.getArtistByPreviousContract(1, callback);
+});
+
+
+
+
+
+
+test("get artist by contact", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
+        );
+
+        data = data[0];
+        expect(data.length).toBeGreaterThanOrEqual(0);
+        done();
+    }
+    artistDao.getArtistByContact(1, callback);
+});
+
+
+
+
+
+test("get artist by user", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
+        );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].first_name).toBe('Mario');
+
+        done();
+    }
+    artistDao.getArtistByUser(1, callback);
+});
+
+
+test("remove one artist from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data=" + JSON.stringify(data)
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+
+    artistDao.deleteArtist(2, callback);
+});
+
+
+
+
+
+
+
+
+
+

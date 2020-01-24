@@ -9,9 +9,15 @@ DROP PROCEDURE IF EXISTS update_event_end_time;
 DROP PROCEDURE IF EXISTS update_event_category;
 DROP PROCEDURE IF EXISTS update_event_capacity;
 DROP PROCEDURE IF EXISTS update_event;
- /*
+
+/**
   Update event title
-  */
+
+  IN event_title_in: the new event title
+  IN event_id_in: the id of the event
+
+  Issued by: UpdateEventTitle(json: Object, event_id: number)
+ */
 CREATE PROCEDURE update_event_title(IN event_title_in varchar(50), event_id_in int)
 BEGIN
     UPDATE event SET title = event_title_in WHERE event_id = event_id_in;

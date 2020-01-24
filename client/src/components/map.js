@@ -316,7 +316,7 @@ export class Map extends React.Component{
         if( this.props.center.lat !== undefined ) {
             map = <div>
                 <AsyncMap
-                    googleMapURL={"https://maps.googleapis.com/maps/api/js?key=&libraries=places"}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=&libraries=places"
                     loadingElement={
                         <div style={{ height: `100%` }} />
                     }

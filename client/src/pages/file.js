@@ -1,9 +1,12 @@
 //@flow
 
+/**
+ * Renders the page for adding, downloading and deleting the files to an event
+ */
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
 import {Alert} from "../components/Alert/alert";
@@ -158,7 +161,16 @@ export class FileMain extends Component {
                                 maxLength={50}
                             />
                         </div>
-                        <button type="submit" className="btn btn-success m-2">Last opp</button>
+
+                        <div className="form-group m-2">
+                            <button type="submit" className="btn btn-outline-primary" style={{marginRight: '1vh'}}>Last opp</button>
+                            <button
+                                type="button"
+                                className="btn btn-outline-primary"
+                                style={{}}
+                                onClick={this.mounted}
+                            >Oppdater</button>
+                        </div>
                     </form>
                     : null}
                 <table className="table">
@@ -171,26 +183,25 @@ export class FileMain extends Component {
                     <tbody>
                     {this.fileList.map(f => (
                         <tr className="d-flex">
-                            <td className="col-10">{f.name}</td>
+                            <td className="col-lg-8">{f.name}</td>
                             {!this.props.isArtist ?
-                                <div>
-                                    <td className="col-1">
+                                <div className="row justify-content-center">
+                                    <div className="col-lg-2">
                                         <button type="button" className="btn btn-link"
                                                 onClick={(event) => {
                                                     this.setState({selected: f.name});
-                                                    this.handleDownload(event)
+                                                    this.handleDownload(event, f.name);
                                                 }}>
                                             <img src="./img/icons/download.svg" width="24" height="24"/>
                                         </button>
-
-                                    </td>
-                                    <td className="col-1">
-                                        <button type="button" className="btn btn-danger"
+                                    </div>
+                                    <div className="col-lg-2" style={{marginLeft: '1vw'}}>
+                                        <button type="button" className="btn btn-outline-danger"
                                                 onClick={() => {
                                                     this.setState({selected: f.name, showConfirmDelete: true})
                                                 }}>Fjern
                                         </button>
-                                    </td>
+                                    </div>
                                 </div>
                                 : null}
                         </tr>
@@ -210,18 +221,15 @@ export class FileMain extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light
+                        <button type="button" className="btn btn-outline-primary"
                             id="closeConfirmDelete"
-                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
-                        <Button.Red onClick={() => {
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => {
                             this.handleDelete();
                             this.setState({showConfirmDelete: false})
-                        }}>Bekreft</Button.Red>
+                        }}>Bekreft</button>
                     </Modal.Footer>
                 </Modal>
-                <div>
-                    <AddRiderType documentId={this.rider.document}/>
-                </div>
             </div>
         )
     }
@@ -283,15 +291,15 @@ export class FileMain extends Component {
 
     }
 
-    handleDownload(e) {
-        if (this.state.selected !== undefined) {
-            let filePath: string = this.path + this.props.eventId + this.nameAddOn + this.state.selected;
+    handleDownload(e, f) {
+        if (f !== undefined) {
+            let filePath: string = this.path + this.props.eventId + this.nameAddOn + f;
             console.log(filePath);
             let encodedFilePath = btoa(filePath);
             //window.open("http://localhost:4000/auth/id/" + userService.getUserId() + "/file/download/" + encodedFilePath, "_blank");
             console.log(encodedFilePath);
             fileInfoService.downloadFile(encodedFilePath).then(response =>
-                console.log("laster ned " + this.state.selected));
+                console.log("laster ned " + f));
             this.errorMessage = "";
             this.mounted();
         }

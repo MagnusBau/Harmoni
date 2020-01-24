@@ -1,4 +1,8 @@
 //@flow
+
+/**
+ * Renders the login page
+ */
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {userService} from "../services/userService";
@@ -36,11 +40,11 @@ export class UserLogin extends Component {
                 </form>
                 <br/>
                 <div className="btn-toolbar">
-                    <button type="button" className="btn btn-outline-primary my-2 mr-2" onClick={this.attemptLogin}>Logg
+                    <button type="button" className="btn btn-outline-primary my-2 mr-4" onClick={this.attemptLogin}>Logg
                         inn
                     </button>
                     <p>{this.errorMessage}</p>
-                    <button type="button" className="btn btn-outline-primary my-2 ml-2"
+                    <button type="button" className="btn btn-outline-primary my-2"
                             onClick={this.register}>Registrer
                     </button>
                 </div>
