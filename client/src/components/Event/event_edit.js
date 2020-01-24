@@ -30,9 +30,6 @@ export class EventEdit extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            fileValid: true
-        }
     }
 
     handleStartTime(moment){
@@ -141,7 +138,6 @@ export class EventEdit extends Component {
                                     value={this.file}
                                     placeholder="Fil"
                                     onChange={(e) => this.handleFile(e)}
-                                    required={false}
                                     accept=".png,.jpg,.jpeg,.gif"
                                 />
                             </div>
@@ -183,7 +179,7 @@ export class EventEdit extends Component {
                 if(this.state.file !== null){
                     const myNewFile = new File([file], this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
                     formData.append('file', myNewFile);
-                    formData.append('image', ".\/files\/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                    formData.append('image', "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
                     fileInfoService.deleteFile(btoa(this.event.image)).then(res => {
                         fileInfoService.postImage(this.currentEvent, formData).then(res => {
                             Alert.success('You have updated your event');
