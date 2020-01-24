@@ -19,26 +19,6 @@
       <a href="..\..\index.html">All files</a> / <a href="index.html">src/controllers</a> equipment.js
     </h1>
     <div class='clearfix'>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Statements</span>
-        <span class='fraction'>0/36</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Functions</span>
-        <span class='fraction'>0/16</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Lines</span>
-        <span class='fraction'>0/36</span>
-      </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -118,8 +98,24 @@
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -193,13 +189,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//@flow
 &nbsp;
 import { EquipmentDAO } from "../dao/equipmentDao.js";
+&nbsp;
+/**
+ * Controller for receiving HTTP requests through the equipment endpoint
+ * @type {{listen?: *}}
+ */
+&nbsp;
 const pool = <span class="cstat-no" title="statement not covered" >require("../server.js");</span>
 &nbsp;
 const equipmentDao = <span class="cstat-no" title="statement not covered" >new EquipmentDAO(pool);</span>
 &nbsp;
+const TAG = <span class="cstat-no" title="statement not covered" >'[EquipmentController]';</span>
+&nbsp;
 // Insert equipment
 <span class="cstat-no" title="statement not covered" >exports.insertEquipment = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /api/equipment`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /api/equipment`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    equipmentDao.insertEquipment(req.body.name,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -207,7 +211,7 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.deleteEquipment = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/equipment/${req.params.equipmentId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DELETE-request: /api/equipment/${req.params.equipmentId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    equipmentDao.deleteEquipment(req.params.equipmentId,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -216,7 +220,7 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 &nbsp;
 // Get all equipment or all equipment by name
 <span class="cstat-no" title="statement not covered" >exports.getEquipmentByQuery = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /equipment`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /equipment`);</span>
 <span class="cstat-no" title="statement not covered" >    if (req.query.name) {</span>
 <span class="cstat-no" title="statement not covered" >        equipmentDao.getEquipmentByName(req.query.name, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            res.json(rows);</span>
@@ -234,14 +238,14 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 &nbsp;
 // Get equipment by id
 <span class="cstat-no" title="statement not covered" >exports.getEquipmentById = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: /equipment/${req.params.equipmentId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `Got request from client: /equipment/${req.params.equipmentId}`);</span>
 <span class="cstat-no" title="statement not covered" >    equipmentDao.getEquipmentById(req.params.equipmentId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.addEquipmentToEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /api/event/${req.params.eventId}equipment`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /api/event/${req.params.eventId}equipment`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    equipmentDao.addEquipmentToEvent(req.params.eventId, req.body.item, req.body.amount,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -249,7 +253,7 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.removeEquipmentFromEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/event/equipment`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DEETE-request: /api/event/equipment`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    equipmentDao.removeEquipmentFromEvent(req.params.eventId, req.params.equipmentId,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -257,7 +261,7 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.updateEquipmentOnEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: PUT /api/event/equipment`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `PUT-request: /api/event/equipment`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    equipmentDao.updateEquipmentOnEvent(req.params.eventId, req.params.equipmentId, req.body.amount,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -268,7 +272,7 @@ const equipmentDao = <span class="cstat-no" title="statement not covered" >new E
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:13:37 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 17:18:54 GMT+0100 (Central European Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

@@ -19,26 +19,6 @@
       <a href="..\..\index.html">All files</a> / <a href="index.html">src/controllers</a> role.js
     </h1>
     <div class='clearfix'>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Statements</span>
-        <span class='fraction'>0/30</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Functions</span>
-        <span class='fraction'>0/14</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Lines</span>
-        <span class='fraction'>0/30</span>
-      </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -107,8 +87,24 @@
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,13 +167,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// @flow
 &nbsp;
 import { RoleDAO } from "../dao/roleDao";
+&nbsp;
+/**
+ * Controller for receiving HTTP requests through the role endpoint
+ * @type {{listen?: *}}
+ */
+&nbsp;
 const pool = <span class="cstat-no" title="statement not covered" >require("../server");</span>
 &nbsp;
 const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDAO(pool);</span>
 &nbsp;
+const TAG = <span class="cstat-no" title="statement not covered" >'[RoleController]';</span>
+&nbsp;
 //Returns all roles
 <span class="cstat-no" title="statement not covered" >exports.getAllRoles = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got get request from client: /role");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "GET-request: /role");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.getRoles(<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
@@ -185,7 +189,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 &nbsp;
 //Returns roles assigned to event
 <span class="cstat-no" title="statement not covered" >exports.getRoleByEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got get request from client: /role/:eventId");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "GET-request: /role/:eventId");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.getRolesInEvent(req.params.eventId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
@@ -193,7 +197,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 &nbsp;
 //Creates new role
 <span class="cstat-no" title="statement not covered" >exports.insertRole = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got post request from client: /role");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "POST-request: /role");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.createRole(req.body.type, req.body.event, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
@@ -201,7 +205,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 &nbsp;
 //Assigns role to an event
 <span class="cstat-no" title="statement not covered" >exports.addRoleToEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got post request from client: /role/:eventId");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "POST-request: /role/:eventId");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.assignToEvent(req.body.role, req.body.event, req.body.count, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
@@ -209,7 +213,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 &nbsp;
 //Updates count of role
 <span class="cstat-no" title="statement not covered" >exports.updateRoleCount = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got put request from client: /role/:eventId");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "PUT-request: /role/:eventId");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.updateRoleCount(req.body.role_id, req.body.event, req.body.count, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
@@ -217,7 +221,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 ;
 //Removes role from event
 <span class="cstat-no" title="statement not covered" >exports.removeRoleFromEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got delete request from clint: /role/:roleId");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "Got delete request from clint: /role/:roleId");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.removeFromEvent(req.params.roleId, req.params.eventId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
@@ -225,7 +229,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 &nbsp;
 //Removes role completely
 <span class="cstat-no" title="statement not covered" >exports.deleteRole = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Got delete request from client: /role");</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "DELETE-request: /role");</span>
 <span class="cstat-no" title="statement not covered" >    roleDao.removeRole(req.params.roleId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
@@ -235,7 +239,7 @@ const roleDao = <span class="cstat-no" title="statement not covered" >new RoleDA
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:13:37 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 17:18:54 GMT+0100 (Central European Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

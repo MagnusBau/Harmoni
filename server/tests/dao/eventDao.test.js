@@ -340,3 +340,14 @@ test('update event capacity', done => {
     }
     eventDao.updateEventCapacity({capacity: 69}, 5, callback);
 });
+
+test('post image to event', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.postImageToEvent({image: '123.png', eventId: 5}, callback)
+});

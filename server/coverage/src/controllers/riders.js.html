@@ -19,26 +19,6 @@
       <a href="..\..\index.html">All files</a> / <a href="index.html">src/controllers</a> riders.js
     </h1>
     <div class='clearfix'>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Statements</span>
-        <span class='fraction'>0/28</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Functions</span>
-        <span class='fraction'>0/12</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Lines</span>
-        <span class='fraction'>0/28</span>
-      </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -98,8 +78,24 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -153,13 +149,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//@flow
 &nbsp;
 import { RiderDAO } from "../dao/riderDao.js";
+&nbsp;
+/**
+ * Controller for receiving HTTP requests through the riders endpoint
+ * @type {{listen?: *}}
+ */
+&nbsp;
 const pool = <span class="cstat-no" title="statement not covered" >require("../server.js");</span>
 &nbsp;
 const riderDao = <span class="cstat-no" title="statement not covered" >new RiderDAO(pool);</span>
 &nbsp;
+const TAG = <span class="cstat-no" title="statement not covered" >'[RiderController]';</span>
+&nbsp;
 // post rider
 <span class="cstat-no" title="statement not covered" >exports.postRider = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /api/rider`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /api/rider`);</span>
 <span class="cstat-no" title="statement not covered" >    riderDao.postRider(req.body, <span class="fstat-no" title="function not covered" >(s</span>tatus, data) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.status(status);</span>
 <span class="cstat-no" title="statement not covered" >        res.json(data);</span>
@@ -167,29 +171,29 @@ const riderDao = <span class="cstat-no" title="statement not covered" >new Rider
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getRider = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: /rider/one/${req.params.rider_id}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /rider/one/${req.params.rider_id}`);</span>
 <span class="cstat-no" title="statement not covered" >    riderDao.getRider(req.params.rider_id, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getAllRiders = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: /rider/all/${req.params.document}`);</span>
-<span class="cstat-no" title="statement not covered" >    console.log("DETTE ER DOCUMENT ID!!!!!!!: " + req.params.document);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /rider/all/${req.params.document}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, "DETTE ER DOCUMENT ID!!!!!!!: " + req.params.document);</span>
 <span class="cstat-no" title="statement not covered" >    riderDao.getAllRiders(Number.parseInt(req.params.document), <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.updateRider = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: PUT /api/rider/${req.params.rider_id}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `PUT-request: /api/rider/${req.params.rider_id}`);</span>
 <span class="cstat-no" title="statement not covered" >    riderDao.updateRider(req.body,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     });
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.deleteRider = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/rider/one/${req.params.rider_id}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DELETE-request: /api/rider/one/${req.params.rider_id}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    riderDao.deleteRider(req.params.rider_id,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -197,7 +201,7 @@ const riderDao = <span class="cstat-no" title="statement not covered" >new Rider
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.deleteAllRiders = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/rider/all/${req.params.document}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DELETE-request: /api/rider/all/${req.params.document}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    riderDao.deleteAllRiders(req.params.document,<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -208,7 +212,7 @@ const riderDao = <span class="cstat-no" title="statement not covered" >new Rider
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:13:37 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 17:18:54 GMT+0100 (Central European Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
