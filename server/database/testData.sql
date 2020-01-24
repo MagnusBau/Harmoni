@@ -31,6 +31,8 @@ INSERT INTO event (title, description, location, start_time, end_time, category,
 VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 3, 1);
 INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
 VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
+VALUES ('Party', 'beskrivelse yo', 'Trondheim', '2020-05-10 02:12:54', '2020-05-21 20:43:19', 'Party', 50, 1,0);
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
@@ -67,6 +69,8 @@ INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'thrud', 'thrud', 1);
 INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
+INSERT INTO document (document_id, name, path, event)
+VALUES (DEFAULT, 'lmao', 'lmao', 5);
 
 INSERT INTO contract (artist, document)
 VALUES (1, 1);

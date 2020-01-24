@@ -106,14 +106,6 @@ export class EventDAO extends Dao {
 
     }
 
-    getDocumentByEvent(event_id: number, callback: (status: string, data: string) => void) {
-        let values = [event_id];
-        super.query("CALL get_document_by_event(?)",
-            values,
-            callback);
-    }
-
-
     updateEventTitle(json: Object, event_id: number, callback: (status: string, data: string) => void ) {
         let newTitle = [json.title, event_id];
         console.log("new title: ", newTitle);
@@ -130,18 +122,6 @@ export class EventDAO extends Dao {
         let newLocation = [json.location, event_id];
         console.log("New location: ", newLocation);
         super.query("CALL update_event_location(?, ?)", newLocation, callback);
-    }
-
-    updateEventStartTime(json: Object, event_id: number, callback: (status: string, data:string) => void) {
-        let newStartTime = [json.start_time, event_id];
-        console.log("New Start time: ", newStartTime);
-        super.query("CALL update_event_start_time(?, ?)", newStartTime, callback);
-    }
-
-    updateEventEndTime(json: Object, event_id: number, callback: (status: string, data: string) => void) {
-        let newEndTime = [json.end_time, event_id];
-        console.log("New end time: ", newEndTime);
-        super.query("CALL update_event_end_time(?, ?)", newEndTime, callback);
     }
 
     updateEventCategory(json: Object, event_id: number, callback: (status: string, data: string) => void) {
