@@ -129,11 +129,25 @@
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,60 +228,67 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//@flow
 &nbsp;
-const fileInfoController = <span class="cstat-no" title="statement not covered" >require("./fileInfo");</span>
+import {FileInfoDAO} from '../dao/fileInfoDao.js';
+&nbsp;
+/**
+ * Controller for receiving HTTP requests through the fileinfo endpoint
+ * @type {{listen?: *}}
+ */
+&nbsp;
 const fs = <span class="cstat-no" title="statement not covered" >require('fs');</span>
 &nbsp;
-import {FileInfoDAO} from '../dao/fileInfoDao.js';
 const pool = <span class="cstat-no" title="statement not covered" >require('../server.js');</span>
 &nbsp;
 const fileInfoDao = <span class="cstat-no" title="statement not covered" >new FileInfoDAO(pool);</span>
 &nbsp;
+const TAG = <span class="cstat-no" title="statement not covered" >'[FileInfoController]';</span>
+&nbsp;
 // Håndterer login og sender JWT-token tilbake som JSON
 <span class="cstat-no" title="statement not covered" >exports.getFileInfoById = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /file/info`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /file/info`);</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.getFileInfoById(<span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getFileInfoByEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /file/info/:eventId`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /file/info/:eventId`);</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.getFileInfoByEvent(req.params.eventId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.insertFileInfo = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /file/info`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /file/info`);</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.insertFileInfo({"event": req.query.event, "name": req.body.name}, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.checkFileName = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Got request from client: POST /file/check/:eventId');</span>
-<span class="cstat-no" title="statement not covered" >    console.log(req.params.eventId);</span>
-<span class="cstat-no" title="statement not covered" >    console.log(req.body.name);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, 'POST-request: /file/check/:eventId');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, req.params.eventId);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, req.body.name);</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.checkFileName(req.params.eventId, req.body.name, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.downloadFile = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Got request from client: GET /file/download');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, 'GET-request: /file/download');</span>
     let path: string = <span class="cstat-no" title="statement not covered" >Buffer.from(req.params.file, 'base64').toString();</span>
 <span class="cstat-no" title="statement not covered" >    res.download(path);</span>
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.downloadContract = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Got request from client: GET /file/download/contract');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, 'GET-request: /file/download/contract');</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.getContractByArtistId(req.params.artistId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.download(rows[0][0].path);</span>
     })
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getFileContent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Got request from client: GET /file/edit');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, 'GET-request: /file/edit');</span>
     let path: string = <span class="cstat-no" title="statement not covered" >Buffer.from(req.params.file, 'base64').toString();</span>
 <span class="cstat-no" title="statement not covered" >    fs.readFile(path, 'utf8', <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.json(rows);</span>
@@ -278,11 +299,11 @@ const fileInfoDao = <span class="cstat-no" title="statement not covered" >new Fi
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.deleteFileInfo = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Got request from client: DELETE /file/delete');</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, 'DELETE-request: /file/delete');</span>
     let path: string = <span class="cstat-no" title="statement not covered" >Buffer.from(req.params.file, 'base64').toString();</span>
 <span class="cstat-no" title="statement not covered" >    fileInfoDao.deleteFileInfo(path, <span class="fstat-no" title="function not covered" >(e</span>rror, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        if (error != 200) {</span>
-<span class="cstat-no" title="statement not covered" >            console.log(error.message + " " + error);</span>
+<span class="cstat-no" title="statement not covered" >            console.log(TAG, error.message + " " + error);</span>
 <span class="cstat-no" title="statement not covered" >            res.json(rows);</span>
         } else {
 <span class="cstat-no" title="statement not covered" >            fs.unlink(path, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
@@ -301,7 +322,7 @@ const fileInfoDao = <span class="cstat-no" title="statement not covered" >new Fi
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:13:37 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:24:17 GMT+0100 (GMT+01:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

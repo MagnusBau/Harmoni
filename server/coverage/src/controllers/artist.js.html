@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/58</span>
+        <span class='fraction'>0/59</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/58</span>
+        <span class='fraction'>0/59</span>
       </div>
     </div>
     <p class="quiet">
@@ -166,12 +166,28 @@
 <a name='L118'></a><a href='#L118'>118</a>
 <a name='L119'></a><a href='#L119'>119</a>
 <a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -290,12 +306,20 @@
 &nbsp;
 import {ArtistDAO} from "../dao/artistDao";
 import {UserDAO} from "../dao/userDao";
+&nbsp;
+/**
+ * Controller for business logic before retrieving data through artistDao
+ * @type {{listen?: *}}
+ */
+&nbsp;
 const pool = <span class="cstat-no" title="statement not covered" >require("../server");</span>
 const artistDao = <span class="cstat-no" title="statement not covered" >new ArtistDAO(pool);</span>
 const userDao = <span class="cstat-no" title="statement not covered" >new UserDAO(pool);</span>
 &nbsp;
+const TAG = <span class="cstat-no" title="statement not covered" >'[ArtistController]';</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >exports.insertArtist = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /api/artist`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /api/artist`);</span>
 <span class="cstat-no" title="statement not covered" >    if (req.body.userId) {</span>
 <span class="cstat-no" title="statement not covered" >        userDao.getContact(req.body.userId, <span class="fstat-no" title="function not covered" >(e</span>rr, contact) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            artistDao.createArtistOnContact(req.body.artistName,contact[0][0].contact_id, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
@@ -310,7 +334,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.updateArtist = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: PUT /api/artist/${req.params.artistId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `Got request from client: PUT /api/artist/${req.params.artistId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.updateArtist(req.params.artistId, req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -318,7 +342,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.deleteArtist = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/artist/${req.params.artistId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DELETE-request: /api/artist/${req.params.artistId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.deleteArtist(req.params.artistId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -326,7 +350,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getAllArtists = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/artist`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/artist`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (req.query.contact) {</span>
 <span class="cstat-no" title="statement not covered" >        artistDao.getArtistByPreviousContract(req.query.contact, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
@@ -344,14 +368,14 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getArtistById = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/artist/${req.params.artistId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/artist/${req.params.artistId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.getArtistById(req.params.artistId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
     })
 };
 <span class="cstat-no" title="statement not covered" >exports.getArtistByContact = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/artist/${req.params.contactId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/artist/${req.params.contactId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.getArtistByContact(req.params.contactId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -359,7 +383,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getArtistByUser = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/artist/user/${req.params.userId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/artist/user/${req.params.userId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.getArtistByUser(req.params.userId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -367,7 +391,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.getArtistByEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/event/${req.params.eventId}/artist`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.getArtistByEvent(req.params.eventId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -375,7 +399,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.addArtistToEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `GET-request: /api/event/${req.params.eventId}/artist`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.addArtistToEvent(req.body.artist_name, req.body.first_name, req.body.last_name, req.body.email,</span>
                                 req.body.phone, req.body.document_id, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {
@@ -384,7 +408,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.removeArtistFromEvent = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: DELETE /api/event/${req.params.eventId}/artist/${req.params.artistId}`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `DELETE-request: /api/event/${req.params.eventId}/artist/${req.params.artistId}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    artistDao.removeArtistFromEvent(req.params.eventId, req.params.artistId, <span class="fstat-no" title="function not covered" >(e</span>rr, rows) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        res.send(rows);</span>
@@ -392,7 +416,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >exports.addArtistWithNewContract = <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log(`Got request from client: POST /api/event/${req.params.eventId}/artist/contract`);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(TAG, `POST-request: /api/event/${req.params.eventId}/artist/contract`);</span>
     let data = <span class="cstat-no" title="statement not covered" >{</span>
         "name": req.body.name,
         "eventId": req.params.eventId,
@@ -412,7 +436,7 @@ const userDao = <span class="cstat-no" title="statement not covered" >new UserDA
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:13:37 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 24 2020 16:24:17 GMT+0100 (GMT+01:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
