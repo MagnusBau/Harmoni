@@ -6,4 +6,3 @@ server/files/**
 !server/files/default.png
 .env
 server/coverage/
-client/src/components/map.js
