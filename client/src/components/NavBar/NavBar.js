@@ -43,6 +43,7 @@ class NavBar extends Component {
     }
 
     login() {
+        console.log("this: " + this.username);
         userService.attemptLogin(this.username, this.password, this.mounted);
     }
 
@@ -125,7 +126,6 @@ class NavBar extends Component {
                                         value={this.username}
                                         placeholder="Brukernavn"
                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
-                                        required
                                         maxLength={50}
                                     />
                                     <br/>
@@ -135,12 +135,11 @@ class NavBar extends Component {
                                         value={this.password}
                                         placeholder="Passord"
                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
-                                        required
                                         maxLength={256}
                                     />
 
                                     <button
-                                        type="submit"
+                                        type="button"
                                         className="btn btn-dark"
                                         style={{}}
                                         onClick={this.login}>
