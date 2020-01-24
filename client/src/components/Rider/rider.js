@@ -10,6 +10,7 @@ import { Row, Column} from "../Grid/grid";
 import Autosuggest from 'react-autosuggest';
 import {fileInfoService} from "../../services/fileService";
 import {eventService} from "../../services/eventService";
+import {EventViewHeader} from "../Header/headers";
 
 
 export class RiderCard extends Component <{rider_id: React.Node, description: React.Node}> {
@@ -171,32 +172,21 @@ export class RiderEdit extends Component<{match: {params: {eventId: number}}}>{
         return(
             <div>
                 <div className="row">
-                </div>
-                <div className="row">
-                    <div className="col-6">
+                    <div className="col-lg-12">
                         <div className="row">
-                            <div className="col-9">
-                                <h5 className="m-12">Kontrakter</h5>
+                            <div className="col-12">
+                                <EventViewHeader label="Kontrakter"/>
                             </div>
-                            <div className="col-3">
-                                <button
-                                    type="button"
-                                    className="btn btn-success m-2"
-                                    style={{}}
-                                    onClick={this.mounted}
-                                >Oppdater</button>
-                            </div>
-                        </div>
-                        <table className="table">
-                            <tbody>
+                            <table className="table">
+                                <tbody>
                                 {this.fileList.map(f => (
                                     <tr className="d-flex">
-                                        <td className="col-10">{f.name}</td>
+                                        <td className="col-9">{f.name}</td>
                                         {!this.props.isArtist ?
                                             <div>
-                                                <td className="col-2">
-                                                    <button type="button" className="btn btn-success"
-                                                            style={{width: "100%"}}
+                                                <td className="col-3">
+                                                    <button type="button" className="btn btn-outline-primary"
+                                                            style={{}}
                                                             onClick={(e) => {
                                                                 this.select(f);
                                                             }}>Velg
@@ -206,13 +196,22 @@ export class RiderEdit extends Component<{match: {params: {eventId: number}}}>{
                                             : null}
                                     </tr>
                                 ))}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-primary m-2"
+                                    style={{}}
+                                    onClick={this.mounted}
+                                >Oppdater</button>
+                        </div>
                     </div>
-                    <div className="col-6">
+                    <div className="col-lg-12">
                         <div className="row">
                             <div className="col-12">
-                                <h5 className="m-12">Riders</h5>
+                                <EventViewHeader label="Riders"/>
+                            </div>
+                            <div className="col-12">
                                 <textarea
                                     required
                                     rows={4} cols={50}
@@ -227,28 +226,29 @@ export class RiderEdit extends Component<{match: {params: {eventId: number}}}>{
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-8">
-                                <h4>{this.selectedFile.name}</h4>
-                            </div>
-                            <div className="col-4">
+                            <div className="col-12">
                                 <button
                                     type="button"
-                                    className="btn btn-success m-2"
+                                    className="btn btn-outline-primary ml-0 my-2"
                                     style={{}}
                                     onClick={this.addRider}
                                 >Legg til</button>
                             </div>
-                            <div className="col-12">
+                            <div className="col-12 my-2">
+                                <hr/>
+                                <h6>Valgt fil:  {this.selectedFile.name}</h6>
+                            </div>
+                            <div className="col-lg-12">
                                 <table className="table">
                                     <tbody>
                                     {this.riderList.map(r => (
-                                        <tr className="d-flex">
-                                            <td className="col-10">{r.description}</td>
+                                        <tr className="d-flex p-lg-2 p-sm-0">
+                                            <td className="col-10 p-sm-0">{r.description}</td>
                                             {!this.props.isArtist ?
                                                 <div>
                                                     <td className="col-2">
-                                                        <button type="button" className="btn btn-danger"
-                                                                style={{width: "100%"}}
+                                                        <button type="button" className="btn btn-outline-danger"
+                                                                style={{}}
                                                                 onClick={(e) => {
                                                                     this.deleteRider(r);
                                                                 }}>Fjern

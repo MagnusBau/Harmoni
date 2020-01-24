@@ -119,9 +119,6 @@ a:hover{
     border-color: var(--color-dark-blue) !important;
 }
 
-.border-dark:hover {
-    background-color: var(--color-light-blue) !important;
-}
 /*input field*/
 .form-control{
     border-top: none;
@@ -154,4 +151,10 @@ input:invalid{
 th {
     border: none !important;
     padding-left: 0 !important;
+}
+
+/*textarea*/
+
+textarea:invalid{
+    border-color: var(--color-brown-black) !important;
 }
