@@ -80,28 +80,14 @@ class NavBar extends Component {
             userIcon = (
                 <div className="form-inline">
                     <div className="dropdown">
-                        <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
+                        <button type="button" data-target="#navbarDropdown" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
                             <img  className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
-                        <div className="dropdown-menu dropdown-menu-right">
+                        <div id="navbarDropdown" className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
                                 <h5>{this.firstName + " " + this.lastName}</h5>
                                 <p className="form-text text-muted">{`@${this.username}`}</p>
-                                <div className="dropdown-divider"/>
-                                <button
-                                    type="button"
-                                    className="btn btn-dark"
-                                    style={{}}
-                                    onClick={this.viewNewEvent}
-                                >Ny event</button>
-                                <div className="dropdown-divider"/>
-                                <button
-                                    type="button"
-                                    className="btn btn-dark"
-                                    style={{}}
-                                    onClick={this.viewMyPage}
-                                >Min side</button>
                                 <div className="dropdown-divider"/>
                                 <button
                                     type="button"
@@ -118,11 +104,11 @@ class NavBar extends Component {
             userIcon = (
                 <div>
                     <div className="dropdown">
-                        <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
+                        <button type="button" data-target="#navbarDropdown" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
                             <img className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
-                        <div className="dropdown-menu dropdown-menu-right">
+                        <div id="navbarDropdown" className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
                                 <form className="form-inline" ref={e => (this.form = e)}>
                                     <label for="username">Brukernavn:</label>
@@ -186,16 +172,16 @@ class NavBar extends Component {
                         <SearchBar>
                         </SearchBar>
                     </div>
-                    <div className="nav-item p-lg-1 p-md-1 p-lg-0">
-                        {userIcon}
-                    </div>
                     {this.state.isLoggedIn ?
-                        <div className="nav-item">
+                        <div className="nav-item p-lg-1 p-md-1 p-lg-0">
                                 <button type="button" className="btn btn-outline-primary" onClick={this.viewMyPage}>
                                     Min Side
                                 </button>
                         </div> : null
                     }
+                    <div>
+                        {userIcon}
+                    </div>
                 </div>
             </nav>
         )
