@@ -6,7 +6,6 @@ import {Email} from "../email";
 
 /**
  * Controller for receiving HTTP requests through the event endpoint
- * @type {{listen?: *}}
  */
 
 const pool = require("../server");

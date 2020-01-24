@@ -5,7 +5,6 @@ import {UserDAO} from "../dao/userDao";
 
 /**
  * Controller for business logic before retrieving data through artistDao
- * @type {{listen?: *}}
  */
 
 const pool = require("../server");

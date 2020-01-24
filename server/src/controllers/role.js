@@ -4,7 +4,6 @@ import { RoleDAO } from "../dao/roleDao";
 
 /**
  * Controller for receiving HTTP requests through the role endpoint
- * @type {{listen?: *}}
  */
 
 const pool = require("../server");

@@ -4,7 +4,6 @@ import {FileInfoDAO} from '../dao/fileInfoDao.js';
 
 /**
  * Controller for receiving HTTP requests through the fileinfo endpoint
- * @type {{listen?: *}}
  */
 
 const fs = require('fs');

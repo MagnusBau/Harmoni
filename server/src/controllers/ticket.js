@@ -4,7 +4,6 @@ import {TicketDAO} from '../dao/ticketDao.js';
 
 /**
  * Controller for receiving HTTP requests through the ticket endpoint
- * @type {{listen?: *}}
  */
 
 const pool = require('../server.js');
