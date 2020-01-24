@@ -146,7 +146,7 @@ BEGIN
          capacity,
          organizer
   FROM event
-  WHERE organizer = user_id_in;
+  WHERE organizer = user_id_in AND cancelled = 0;
 END;
 
 CREATE PROCEDURE get_last_events_by_user(IN user_id_in INT)
