@@ -144,6 +144,24 @@ class FileInfoService {
             })
             .catch(error => console.log("error" + error));
     }
+
+    updateImage(data: FormData) {
+        return axios.post(`http://` + ip + `:4000/api/image/edit/update`,
+            data, {
+                'headers': {
+                    'x-access-token': userService.getToken()
+                }
+            })
+            .then(response => {
+                if (userService.error(response)) {
+                    return userService.error(response);
+                }
+                return response.data;
+            })
+            .catch(error => console.log("error" + error));
+    }
+
+
 }
 
 class FileService {

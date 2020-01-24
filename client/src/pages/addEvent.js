@@ -75,7 +75,6 @@ export class AddEvent extends Component {
                             value={this.file}
                             placeholder="Fil"
                             onChange={(e) => this.handleFile(e)}
-                            required
                             accept=".png,.jpg,.jpeg,.gif"
                         />
                     </div>

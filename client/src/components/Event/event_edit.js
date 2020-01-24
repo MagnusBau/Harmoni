@@ -7,6 +7,7 @@ import {Event, eventService, CreateEvent} from "../../services/eventService";
 import DateTime from "react-datetime";
 import moment from "moment";
 import {Alert} from "../Alert/alert";
+import {fileInfoService} from "../../services/fileService";
 
 const history = createHashHistory();
 
@@ -66,6 +67,18 @@ export class EventEdit extends Component {
                                   required={true}
                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                       (this.event.description = event.target.value)}
+                        />
+                    </div>
+                    <div className="form-group m-2">
+                        <label>Bilde: </label>
+                        <input
+                            type="file"
+                            className="form-control"
+                            value={this.file}
+                            placeholder="Fil"
+                            onChange={(e) => this.handleFile(e)}
+                            required
+                            accept=".png,.jpg,.jpeg,.gif"
                         />
                     </div>
                     <div className={"form-group m-2"}>
@@ -178,16 +191,32 @@ export class EventEdit extends Component {
     }
 
     update() {
+        let file = this.state.file;
+        let formData = new FormData();
         this.event.start_time = this.state.start_time;
         this.event.end_time = this.state.end_time;
+
         eventService
             .updateEvent(this.currentEvent, this.event)
             .then(() => {
-                Alert.success('You have updated your event');
-                this.props.reload();
+                if(this.state.file !== null){
+                    const myNewFile = new File([file], "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+                    formData.append('file', myNewFile);
+                    fileInfoService.deleteFile(btoa(this.event.image)).then(res => {
+                        fileInfoService.updateImage(formData).then(res => {
+                            Alert.success('You have updated your event');
+                            window.location.reload();
+                        })
+                    })
+                }
             })
             .catch((error: Error) => Alert.danger(error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+    }
+
+    handleFile(e) {
+        let file = e.target.files[0];
+        this.setState({file: file});
     }
 
     mounted() {

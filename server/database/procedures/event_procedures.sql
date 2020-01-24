@@ -184,7 +184,8 @@ BEGIN
          category,
          capacity,
          organizer,
-         cancelled
+         cancelled,
+         image
   FROM event
   where event_id = event_id_in;
 end;
