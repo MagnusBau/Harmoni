@@ -49,15 +49,10 @@ export class ArtistDAO extends Dao {
     }
 
 
-    /**
-     * Deletes an existing artist on artist Id
-     * @param artistId
-     * @param result
-     * @param callback
-     */
-    deleteArtist(artistId: string, result: number, callback: (status: string, data: string) => void) {
-        let values= [artistId, result];
-        super.query("CALL delete_artist(?, ?)",
+
+    deleteArtist(artistId: string, callback: (status: string, data: string) => void) {
+        let values= [artistId];
+        super.query("CALL delete_artist(?)",
             values,
             callback);
     }
