@@ -270,6 +270,21 @@ const upload = multer({
     limits: 1024 * 1024 * 5
 });
 
+const uploadImg = multer({
+    fileFilter: function (req, file, callback) {
+        let ext = path.extname(file.originalname);
+        console.log(ext);
+        console.log(ext === '.jpg');
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
+            req.fileValidationError = 'error';
+            return callback(null, false, new Error('goes wrong on the mimetype'));
+        }
+        callback(null, true)
+    },
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/' + req.params.eventId);
     if(req.fileValidationError) {
@@ -283,6 +298,28 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     let result = res;
     console.log(req.file);
     fileInfoDao.postFileInfo(data, (err, res) => {
+        try {
+            result.send(req.file);
+        }catch(err) {
+            result.send(400);
+        }
+    });
+});
+
+app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/image/' + req.params.eventId);
+    if(req.fileValidationError) {
+        console.log("FRICKK");
+        return res.end(req.fileValidationError);
+    }
+    let data = {
+        "eventId": req.params.eventId,
+        "image": req.body.image
+    };
+    let result = res;
+    console.log(req.file);
+    console.log(data.image);
+    eventDao.postImageToEvent(data, (err, res) => {
         try {
             result.send(req.file);
         }catch(err) {
@@ -316,6 +353,15 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
 
 app.post('/api/single/update', upload.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/single/update');
+    try {
+        result.send(req.file);
+    }catch(err) {
+        result.send(400);
+    }
+});
+
+app.post('/api/image/edit/update', uploadImg.single('file'), (req, res) => {
+    console.log('Got request from client: GET /api/image/update');
     try {
         result.send(req.file);
     }catch(err) {

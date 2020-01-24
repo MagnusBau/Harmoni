@@ -8,9 +8,9 @@ export class EventDAO extends Dao {
     }
 
     createEvent(json: Object, callback: (status: string, data: string) => void) {
-        let newEvent = [json.title, json.description, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer];
+        let newEvent = [json.title, json.description, json.location, json.start_time, json.end_time, json.category, json.capacity, json.organizer, json.image];
         console.log('event', newEvent);
-        super.query("CALL create_event(?,?,?,?,?,?,?,?)", newEvent, callback)
+        super.query("CALL create_event(?,?,?,?,?,?,?,?,?)", newEvent, callback)
     }
 
     getAllEvents(callback: (status: string, data: string) => void) {
@@ -46,6 +46,13 @@ export class EventDAO extends Dao {
     getEventByUser(organizer: number, callback: (status: string, data: string) => void) {
         let values = [organizer];
         super.query("CALL get_events_by_user(?)",
+            values,
+            callback);
+    }
+
+    getLastEventByUser(organizer: number, callback: (status: string, data: string) => void) {
+        let values = [organizer];
+        super.query("CALL get_last_events_by_user(?)",
             values,
             callback);
     }
@@ -163,5 +170,12 @@ export class EventDAO extends Dao {
     getEventsByUsername(username: string, callback: (status: string, data:string) => void) {
         let user = [username];
         super.query("CALL get_events_by_username(?)", user, callback);
+    }
+
+    postImageToEvent(data, callback: (status: string, data: string) => void) {
+        let values = [data.image, data.eventId];
+        super.query("CALL post_image_to_event(?,?)",
+            values,
+            callback);
     }
 }

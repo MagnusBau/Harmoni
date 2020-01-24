@@ -4,6 +4,7 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
 import {eventService, Event} from "../services/eventService";
+import {fileInfoService} from "../services/fileService"
 import {Alert} from "../components/Alert/alert.js";
 import DateTime from 'react-datetime';
 import moment from "moment";
@@ -153,6 +154,17 @@ export class AddEvent extends Component {
                                             (this.createEvent.capacity = event.target.value)}
                                     />
                                 </div>
+                                <div className="form-group m-2">
+                                    <label>Bilde: </label>
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        value={this.file}
+                                        placeholder="Fil"
+                                        onChange={(e) => this.handleFile(e)}
+                                        accept=".png,.jpg,.jpeg,.gif"
+                                    />
+                                </div>
                                 <button type="submit" className="btn btn-primary">Registrer</button>
                             </div>
                         </div>
@@ -180,30 +192,47 @@ export class AddEvent extends Component {
     onSubmit(e) {
         e.preventDefault();
 
+        let file = this.state.file;
+        let formData = new FormData();
         this.createEvent.start_time = this.state.start_time;
         this.createEvent.end_time = this.state.end_time;
-        console.log(typeof this.createEvent.start_time === typeof this.createEvent.end_time);
-        console.log(this.createEvent.start_time + 100 < this.createEvent.end_time);
 
-        if (typeof this.createEvent.start_time === typeof this.createEvent.end_time && this.createEvent.start_time + 100 < this.createEvent.end_time) {
-            e.preventDefault();
-            eventService
-                .createEvent(this.createEvent)
-                .then((response) => {
-                    Alert.success("addEventAlert", 'You have created a new event!!!!');
-                    history.push('/user/' + userService.getUserId() + '/overview');
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-        } else {
-            e.preventDefault();
-            if (this.createEvent.start_time + 100 >= this.createEvent.end_time) {
-                return alert("start må være før slutt!");
-            } else {
-                e.preventDefault();
-                return alert("Du må fylle ut event start og slutt!");
-            }
-        }
+        const myNewFile = new File([file], this.props.eventId + this.nameAddOn + this.name, {type: file.type});
+
+        eventService
+            .createEvent(this.createEvent)
+            .then(() => {
+                console.log(userService.getUserId());
+                eventService
+                    .getLastEventByUser(userService.getUserId())
+                    .then((response) => {
+
+                        console.log("DETTE ER EN VIKTIG EVENT ID!!!" + response[0].event_id);
+                        const myNewFile = new File([file], response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+
+                        formData.append('file', myNewFile);
+                        formData.append('image', ".\/files\/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                        console.log("./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                        fileInfoService.postImage(response[0].event_id, formData).then(response => {
+                            if (response.data === "error") {
+                                this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                            }
+
+                            Alert.success('You have created a new event!!!!');
+                            history.push('/user/' + userService.getUserId() + '/overview');
+                        })
+                    })
+                    .catch((error: Error) => Alert.danger(error.message));
+            })
+            .catch((error: Error) => Alert.danger(error.message));
     }
+
+    handleFile(e) {
+        let file = e.target.files[0];
+        this.setState({file: file});
+        this.createEvent.image = file.name;
+    }
+
 
     mounted() {
         this.createEvent.organizer = userService.getUserId();

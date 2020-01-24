@@ -125,7 +125,9 @@ test("create event", done => {
             "end_time": "2020-01-01",
             "category": "homepage.js",
             "capacity": "100",
-            "organizer": "1"
+            "organizer": "1",
+            "cancelled": "0",
+            "image": "hey"
         },
         callback);
 });

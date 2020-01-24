@@ -14,11 +14,13 @@ DROP PROCEDURE IF EXISTS delete_events_by_end_time;
 DROP PROCEDURE IF EXISTS get_event_by_id_update;
 DROP PROCEDURE IF EXISTS get_document_by_event;
 DROP PROCEDURE IF EXISTS get_events_by_user;
+DROP PROCEDURE IF EXISTS get_last_events_by_user;
 DROP PROCEDURE IF EXISTS get_events_by_end_time_user;
 DROP PROCEDURE IF EXISTS get_all_events_by_input;
 DROP PROCEDURE IF EXISTS get_categories;
 DROP PROCEDURE IF EXISTS get_frontpage_events;
 DROP PROCEDURE IF EXISTS get_events_by_username;
+DROP PROCEDURE IF EXISTS post_image_to_event;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -76,8 +78,8 @@ BEGIN
            title,
            description,
            location,
-           DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as time,
-            category, organizer FROM event
+           DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+            category, organizer, image FROM event
     WHERE cancelled = 0 ORDER BY start_time LIMIT 9;
 END;
 
@@ -107,14 +109,14 @@ end;
  */
 CREATE PROCEDURE create_event(IN event_title_in VARCHAR(50), event_description_in VARCHAR(500),
                               event_location_in VARCHAR(100), event_start_time_in DATETIME, event_end_time_in DATETIME,
-                              event_category_in VARCHAR(50), event_capacity_in int, event_organizer_in int)
+                              event_category_in VARCHAR(50), event_capacity_in int, event_organizer_in int, event_image_in VARCHAR(100))
 BEGIN
   DECLARE contact_id_in INT;
   SET contact_id_in = (SELECT contact_id FROM contact LEFT JOIN user u on contact.contact_id = u.contact
                        WHERE u.user_id=event_organizer_in LIMIT 1);
   INSERT INTO event (event_id, title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
   VALUES (DEFAULT, event_title_in, event_description_in, event_location_in, event_start_time_in, event_end_time_in,
-          event_category_in, event_capacity_in, contact_id_in, DEFAULT);
+          event_category_in, event_capacity_in, contact_id_in, DEFAULT, event_image_in);
 end;
 
 /**
@@ -137,6 +139,10 @@ END;
      SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event WHERE organizer = user_id_in;
  END;
 
+CREATE PROCEDURE get_last_events_by_user(IN user_id_in INT)
+BEGIN
+    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event WHERE organizer = user_id_in ORDER BY event_id DESC LIMIT 1;
+END;
 /**
   Cancel event based on an id
 
@@ -179,7 +185,8 @@ BEGIN
          category,
          capacity,
          organizer,
-         cancelled
+         cancelled,
+         image
   FROM event
   where event_id = event_id_in;
 end;
@@ -280,4 +287,9 @@ BEGIN
     SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
     FROM event e JOIN contact c ON e.organizer = c.contact_id JOIN user u ON c.contact_id = u.contact
     WHERE u.username = username_in;
+END;
+
+CREATE PROCEDURE post_image_to_event(IN image_in VARCHAR(100), IN event_id_in INT(11))
+BEGIN
+    UPDATE event SET image = image_in WHERE event_id = event_id_in;
 END;
