@@ -204,20 +204,9 @@ test("getArtistByPreviousContract", done => {
 });
 
 
-test("update artist from db", done => {
-    function callback(status, data) {
-        console.log(
-            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
-        );
-        expect(data.affectedRows).toBe(1);
-        done();
-    }
-
-    artistDao.updateArtist({artistId: 2, artistName: 'Svein', firstName:'Blipp' , lastName: 'Mia', email:  'mia@test.com', phone: '12345678'}, callback);
-});
 
 
-/*
+
 
 test("get artist by contact", done => {
     function callback(status, data) {
@@ -251,7 +240,7 @@ test("get artist by user", done => {
     artistDao.getArtistByUser(1, callback);
 });
 
- */
+
 
 
 
