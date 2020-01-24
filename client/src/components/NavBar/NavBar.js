@@ -43,8 +43,9 @@ class NavBar extends Component {
     }
 
     login() {
-        console.log("this: " + this.username);
-        userService.attemptLogin(this.username, this.password, this.mounted);
+        if(this.form && this.form.checkValidity()) {
+            userService.attemptLogin(this.username, this.password, this.mounted);
+        }
     }
 
     viewMyPage() {
@@ -125,6 +126,7 @@ class NavBar extends Component {
                                         className="form-control"
                                         value={this.username}
                                         placeholder="Brukernavn"
+                                        required
                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
                                         maxLength={50}
                                     />
@@ -133,6 +135,7 @@ class NavBar extends Component {
                                         type="password"
                                         className="form-control"
                                         value={this.password}
+                                        required
                                         placeholder="Passord"
                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
                                         maxLength={256}
