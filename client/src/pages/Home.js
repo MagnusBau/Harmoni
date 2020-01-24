@@ -33,7 +33,7 @@ class Home extends Component {
                         <div className="card-columns">
                             {this.events.map(event => (
                                 <a href={'#/event/' + event.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard">
-                                    <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                                    <img className="card-img-top img-fluid" src={"http://localhost:4000/api/file/download/" + btoa(event.image)} alt="happy faces"/>
                                     <div className="card-body">
                                         <h5 className="card-title">
                                             {event.title}
