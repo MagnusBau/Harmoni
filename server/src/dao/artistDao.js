@@ -9,11 +9,11 @@ export class ArtistDAO extends Dao {
 
     /**
      * Inserts a new artist
-     * @param artistName
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param phone
+     * @param artistName        name of the artist
+     * @param firstName         first name of the artist
+     * @param lastName          last name of the artist
+     * @param email             email of the artist
+     * @param phone             phone-number of the artist
      * @param callback
      */
     insertArtist(artistName: string, firstName: string, lastName: string, email: string, phone: string, callback: (status: string, data: string) => void) {
@@ -25,8 +25,8 @@ export class ArtistDAO extends Dao {
 
     /**
      * Creates and binds a new artist on an existing contact
-     * @param artistName
-     * @param contactId
+     * @param artistName        name of the artist
+     * @param contactId         if of contact that artist will bind to
      * @param callback
      */
     createArtistOnContact(artistName: string, contactId: number, callback: (status: string, data: string) => void) {
@@ -38,7 +38,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Get all artists that have previously had a contract with the specified contact id
-     * @param contactId
+     * @param contactId         id of contact
      * @param callback
      */
     getArtistByPreviousContract(contactId: number, callback: (status: string, data: string) => void) {
@@ -49,7 +49,12 @@ export class ArtistDAO extends Dao {
     }
 
 
-
+    /**
+     * Deletes an existing artist on artist Id
+     * @param artistId          id of artist to be deleted
+     * @param result
+     * @param callback
+     */
     deleteArtist(artistId: string, callback: (status: string, data: string) => void) {
         let values= [artistId];
         super.query("CALL delete_artist(?)",
@@ -69,7 +74,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Gets one artist by id
-     * @param artistId
+     * @param artistId          id to return
      * @param callback
      */
     getArtistById(artistId: string, callback: (status: string, data: string) => void) {
@@ -81,7 +86,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Gets artist bound to contact
-     * @param contactId
+     * @param contactId         id that artist is bound to
      * @param callback
      */
     getArtistByContact(contactId: string, callback: (status: string, data: string) => void) {
@@ -93,7 +98,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Gets artists by a search string
-     * @param searchString
+     * @param searchString      string that gets compared to artist name
      * @param callback
      */
     getArtistBySearch(searchString: string, callback: (status: string, data: string) => void) {
@@ -105,7 +110,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Get artist by a user Id
-     * @param userId
+     * @param userId            id of user that is also an artist
      * @param callback
      */
     getArtistByUser(userId: number, callback: (status: string, data: string) => void) {
@@ -117,7 +122,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Get all artists attached to an event
-     * @param eventId
+     * @param eventId           id of event
      * @param callback
      */
     getArtistByEvent(eventId: number, callback: (status: string, data: string) => void) {
@@ -129,12 +134,12 @@ export class ArtistDAO extends Dao {
 
     /**
      * Adds an artist to an event with an existing contract
-     * @param artistName
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param phone
-     * @param documentId
+     * @param artistName        name of artist
+     * @param firstName         first name of artist
+     * @param lastName          last name of artist
+     * @param email             email of artist
+     * @param phone             phone-number of artist
+     * @param documentId        id of contract
      * @param callback
      */
     addArtistToEvent(artistName: string, firstName: string, lastName: string, email: string, phone: string,
@@ -147,7 +152,7 @@ export class ArtistDAO extends Dao {
 
     /**
      * Adds an artist to an event with a new contract
-     * @param data
+     * @param data              contains all information on artist and contract to be added
      * @param callback
      */
     addArtistWithNewContract(data, callback: (status: string, data: string) => void) {
@@ -159,8 +164,8 @@ export class ArtistDAO extends Dao {
 
     /**
      * Removes the contract an artist has with an event
-     * @param eventId
-     * @param artistId
+     * @param eventId           id of event
+     * @param artistId          id of artist
      * @param callback
      */
     removeArtistFromEvent(eventId: number, artistId: number, callback: (status: string, data: string) => void) {

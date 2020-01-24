@@ -1,4 +1,10 @@
 // @flow
+
+/**
+ *
+ * @type {Dao}
+ * Base Dao class that all dao's use
+ */
 module.exports = class Dao {
     pool: Object;
     constructor(pool: Object) {

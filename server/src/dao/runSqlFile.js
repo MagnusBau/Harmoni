@@ -6,7 +6,12 @@
 
 const mysql = require("mysql");
 const fs = require("fs");
-
+/**
+ * Method that runs setup files for testing
+ * @param filename              name of files
+ * @param pool                  connection pool
+ * @param done
+ */
 module.exports = function run(filename, pool, done) {
     console.log("runsqlfile: reading file " + filename);
     let sql = fs.readFileSync(filename, "utf8");

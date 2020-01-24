@@ -8,9 +8,9 @@ export class RoleDAO extends DAO {
         super(pool);
     }
     /**
-     * Inserts a new role
-     * @param type
-     * @param event
+     * Inserts a new role to the database
+     * @param type              name of the role
+     * @param event             id of event
      * @param callback
      */
     createRole(type: string, event: number, callback: (status: string, data: string) => void) {
@@ -28,7 +28,7 @@ export class RoleDAO extends DAO {
 
     /**
      * Returns roles assigned to event
-     * @param event
+     * @param event             id of event
      * @param callback
      */
     getRolesInEvent(event: number, callback: (status: string, data: string) => void){
@@ -37,9 +37,9 @@ export class RoleDAO extends DAO {
 
     /**
      * Assigns role to event
-     * @param role
-     * @param event
-     * @param count
+     * @param role              id of role
+     * @param event             id of event
+     * @param count             amount of specified role to be added
      * @param callback
      */
     assignToEvent(role: number, event: number, count: number, callback: (status: string, data: string) => void){
@@ -49,8 +49,8 @@ export class RoleDAO extends DAO {
 
     /**
      * Removes role from event
-     * @param role
-     * @param event
+     * @param role              id of role
+     * @param event             id of role
      * @param callback
      */
     removeFromEvent(role: number, event: number, callback: (status: string, data: string) => void){
@@ -60,7 +60,7 @@ export class RoleDAO extends DAO {
 
     /**
      * Removes role completely
-     * @param role_id
+     * @param role_id           id of role
      * @param callback
      */
     removeRole(role_id: number, callback: (status: string, data: string) => void){
@@ -69,9 +69,9 @@ export class RoleDAO extends DAO {
 
     /**
      * Updates count of specified role
-     * @param role_id
-     * @param event
-     * @param count
+     * @param role_id           id of role
+     * @param event             id of event
+     * @param count             amount to be updated
      * @param callback
      */
     updateRoleCount(role_id: number, event: number, count: number, callback: (status: string, data: string) => void){

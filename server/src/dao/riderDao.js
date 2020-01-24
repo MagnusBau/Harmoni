@@ -8,8 +8,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * Inserts a new rider
-     * @param json
+     * Inserts a new rider to the database
+     * @param json              contains description and the document to be added
      * @param callback
      */
     postRider(json: Object, callback: (status: string, data: string) => void){
@@ -20,8 +20,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * fetch a rider by id
-     * @param id
+     * Gets a rider by id
+     * @param id                id of rider
      * @param callback
      */
     getRider(id: number, callback: (status: string, data: string) => void){
@@ -32,8 +32,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * fetch riders by document id
-     * @param document
+     * Gets riders by document id
+     * @param document          id of document
      * @param callback
      */
     getAllRiders(document: number, callback: (status: string, data: string) => void){
@@ -44,8 +44,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * update a rider by id
-     * @param json
+     * Updates a rider by id
+     * @param json              contains new description and id of rider
      * @param callback
      */
     updateRider(json: Object, callback: (status: string, data: string) => void){
@@ -55,8 +55,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * deletes a rider by id
-     * @param id
+     * Deletes a rider by id
+     * @param id                id of rider
      * @param callback
      */
     deleteRider(id: number, callback: (status: string, data: string) => void){
@@ -67,8 +67,8 @@ export class RiderDAO extends Dao{
     }
 
     /**
-     * delete riders by document id
-     * @param document
+     * Deletes all riders by document id
+     * @param document          id of document
      * @param callback
      */
     deleteAllRiders(document: number, callback: (status: string, data: string) => void){

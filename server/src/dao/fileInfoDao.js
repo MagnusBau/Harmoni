@@ -8,8 +8,8 @@ export class FileInfoDAO extends Dao {
     }
 
     /**
-     * Get one fileInfo
-     * @param document_id
+     * Gets one document by document id
+     * @param document_id       id of document
      * @param callback
      */
     getFileInfoById(document_id: number, callback: (status: string, data: string) => void) {
@@ -20,8 +20,8 @@ export class FileInfoDAO extends Dao {
     }
 
     /**
-     * Get all fileInfo by event
-     * @param event
+     * Gets all documents by event id
+     * @param event             id of event
      * @param callback
      */
     getFileInfoByEvent(event: number, callback: (status: string, data: string) => void) {
@@ -32,9 +32,9 @@ export class FileInfoDAO extends Dao {
     }
 
     /**
-     * check if a document name exist in db
-     * @param eventId
-     * @param fileName
+     * Checks if a document name exist in db
+     * @param eventId           id of event
+     * @param fileName          name of file
      * @param callback
      */
     checkFileName(eventId: number, fileName: string, callback: (status: string, data: string) => void) {
@@ -47,7 +47,7 @@ export class FileInfoDAO extends Dao {
 
     /**
      * Fetches all contracts by an artist id
-     * @param artistId
+     * @param artistId          id of artist
      * @param callback
      */
     getContractByArtistId(artistId: number, callback: (status: string, data: string) => void){
@@ -58,8 +58,8 @@ export class FileInfoDAO extends Dao {
     }
 
     /**
-     * Posts a document to the db
-     * @param data
+     * Posts a document to the database
+     * @param data              contains name, path and id of event
      * @param callback
      */
     //<DO NOT TOUCH>
@@ -75,7 +75,7 @@ export class FileInfoDAO extends Dao {
 
     /**
      * Deletes a document from the db
-     * @param path
+     * @param path              path of the document
      * @param callback
      */
     //</DO NOT TOUCH
