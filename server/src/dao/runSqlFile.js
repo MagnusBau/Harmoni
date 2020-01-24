@@ -15,14 +15,12 @@ module.exports = function run(filename, pool, done) {
             console.log("runsqlfile: error connecting");
             done();
         } else {
-            console.log("runsqlfile: connected");
             connection.query(sql, (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
                     done();
                 } else {
-                    console.log("runsqlfile: run ok");
                     done();
                 }
             });
