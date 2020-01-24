@@ -55,7 +55,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
             <div className="container mt-4" id="eventView">
                 <div className="row">
                     <div className="col-lg-12" id="eventCol">
-                        <img id="eventImg" src="./img/several-people-at-a-party-1540338.jpg" alt=""/>
+                        <img id="eventImg" src={"http://localhost:4000/api/file/download/" + btoa(this.event[0].image)} alt=""/>
                     </div>
                 </div>
                 <div className="row"><h1 id="eventTitle">{this.event[0].title}</h1></div>
