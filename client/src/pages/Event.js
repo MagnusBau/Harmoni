@@ -262,12 +262,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {ticketContent}
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
-                                    <h5>Riders</h5>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">role.type</li>
-
-                                    </ul>
-                                    {riderContent}
+                                    <RiderEdit eventId={this.currentEvent}></RiderEdit>
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
                                     <AddEquipment eventId={this.currentEvent}

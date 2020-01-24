@@ -486,14 +486,26 @@ export class AddEventArtist extends Component {
                                 <h5 className="m-2">Legg til kontrakt</h5>
                                 <div className="row">
                                     <div className="col">
-                                        <select id="documentSelect" className="custom-select m-2"
-                                                value={this.documentId}
-                                                onChange={this.onChange}>
-                                            <option selected value="">Velg dokument...</option>
-                                            {this.eventDocuments.map(document =>
-                                                <option value={document.document_id}>{document.name}</option>
-                                            )}
-                                        </select>
+                                        <div className="row">
+                                            <div className="col-8">
+                                                <select id="documentSelect" className="custom-select m-2"
+                                                        value={this.documentId}
+                                                        onChange={this.onChange}>
+                                                    <option selected value="">Velg dokument...</option>
+                                                    {this.eventDocuments.map(document =>
+                                                        <option value={document.document_id}>{document.name}</option>
+                                                    )}
+                                                </select>
+                                            </div>
+                                            <div className="col-4">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-success m-2"
+                                                    style={{}}
+                                                    onClick={this.mounted}
+                                                >Oppdater</button>
+                                            </div>
+                                        </div>
                                         {uploadBox}
                                     </div>
                                     <div className="col"/>
