@@ -32,7 +32,8 @@ class NavBar extends Component {
         this.state = {
             userId: 0,
             username: '',
-            fullName: ''
+            fullName: '',
+            isLoggedIn: false
         };
     }
 
@@ -157,35 +158,34 @@ class NavBar extends Component {
                         </div>
                     </div>
                 </div>
-            );
+            )
         }
 
         //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
-               <a className="navbar-brand"  href="#">
-                   <img src="./img/logo/harmoni-logo-black-brown.png" height="50px" width="50px"/>
-                   Harmoni</a>
-               <button className="navbar-toggler" type="button" data-toggle="collapse"
-                       data-target="#navbarContent" aria-controls="navbarContent"
-                       aria-expanded="false" aria-label="Toggle navigation">
-                   <span className="navbar-toggler-icon"/>
-               </button>
+            <nav className="navbar navbar-light navbar-default navbar-expand-lg sticky-top border-bottom border-light" >
+                <a className="navbar-brand"  href="#">
+                    <img src="./img/logo/harmoni-logo-black-brown.png" height="50px" width="50px"/>
+                    Harmoni
+                </a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarContent" aria-controls="navbarContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"/>
+                </button>
 
-               <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
-                   <div className="nav form-group form-inline mr-auto">
-                       <SearchBar>
-
-                       </SearchBar>
-                   </div>
-                   <div className="nav-item">
+                <div className="collapse navbar-collapse justify-content-lg-end mr-auto form-inline" id="navbarContent">
+                    <div className="nav-item form-group">
+                        <SearchBar>
+                        </SearchBar>
+                    </div>
+                    <div className="nav-item">
                         {userIcon}
-                   </div>
-               </div>
-           </nav>
+                    </div>
+                </div>
+            </nav>
         )
     }
-
 }
 
 

@@ -3,6 +3,7 @@
 :root{
     --color-white: #FAFAFA;
     --color-light-blue: #ABC3C9;
+    --color-light-light-blue: #d8e7eb;
     --color-meduim-blue: #63ACBE;
     --color-dark-blue: #21393F;
     --color-x-light-beige: #f5f1e8;
@@ -102,6 +103,12 @@ a:hover{
     background-color: var(--color-light-blue);
 }
 
+.btn-outline-primary:active {
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
 /*borders*/
 .border-dark{
     color: var(--color-dark-blue);
@@ -119,6 +126,15 @@ a:hover{
 
 .form-control :focus{
     border-color: var(--color-brown-black) !important;
+}
+
+.form-control-event-overview{
+    background-color: var(--color-light-beige);
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: 2px solid var(--color-medium-dark-beige) !important;
+    border-radius: 0;
 }
 
 input:invalid{

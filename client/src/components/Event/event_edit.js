@@ -47,13 +47,13 @@ export class EventEdit extends Component {
             <div className={"m-2"}>
                 <Alert/>
                 <div className={"row"}>
-                    <div className={"col"}>
+                    <div className="col pr-0">
                         <form className="form-group">
                             <div className={"form-group m-2"}>
                                 <label>Navn på arrangement:</label>
                                 <br></br>
                                 <input type={"text"}
-                                       className={"form-control"}
+                                       className="form-control form-control-event-overview"
                                        id={"event-title"}
                                        defaultValue={this.event.title}
                                        required={true}
@@ -64,7 +64,7 @@ export class EventEdit extends Component {
                                 <label>Beskrivelse:</label>
                                 <br></br>
                                 <textarea rows={4} cols={50}
-                                          className={"form-control"}
+                                          className="form-control form-control-event-overview"
                                           id={"event-description"}
                                           defaultValue={this.event.description}
                                           required={true}
@@ -118,7 +118,7 @@ export class EventEdit extends Component {
                                 <label>Total kapasitet:</label>
                                 <br></br>
                                 <input type={"text"}
-                                       className={"form-control"}
+                                       className="form-control form-control-event-overview"
                                        id={"ticket-amount"}
                                        defaultValue={this.event.capacity}
                                        required={true}
@@ -126,15 +126,15 @@ export class EventEdit extends Component {
                                            (this.event.capacity = event.target.value)}
                                 />
                             </div>
-                            <div className="text-center">
+                            <div className="btn-toolbar my-2 ml-2">
                                 <button type="submit"
-                                        className="btn btn-outline-dark center-block"
+                                        className="btn btn-outline-primary mr-4"
                                         onClick ={() => {this.props.onClick(); this.update()}}>
                                     {' '}Lagre{' '}
                                 </button>
                                 <button
                                     size="sm"
-                                    className="m btn btn-outline-dark center-block"
+                                    className="m btn btn-outline-primary"
                                     variant="outline-secondary"
                                     onClick={this.props.handleClickCancel}>
                                     Avbryt
@@ -145,14 +145,7 @@ export class EventEdit extends Component {
                     <div className={"col"}>
                         <form className="form-group">
                             <div className={"form-group m-2"}>
-                                <Map
-                                    google={this.props.google}
-                                    center={{lat: 63.4154, lng: 10.4055}}
-                                    height='300px'
-                                    zoom={15}
-                                    onChange={this.onChangeAddress}
-                                    currentAddress={this.state.location}
-                                />
+
                             </div>
                         </form>
                     </div>

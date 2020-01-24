@@ -135,7 +135,7 @@ export default class AddRole extends Component {
                     <form className={"form-inline"} onSubmit={this.onSubmit}>
                         <div className="form-group m-2">
                             <input type="text"
-                                   className="form-control"
+                                   className="form-control form-control-event-overview"
                                    id="role-type"
                                    defaultValue={this.newRole.type}
                                    placeholder="Rollenavn"
@@ -227,9 +227,9 @@ export default class AddRole extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light id="closeWarning"
-                                      onClick={() => this.setState({showConfirmRemove: false})}>Lukk</Button.Light>
-                        <Button.Red onClick={this.removeFromEvent}>Slett</Button.Red>
+                        <button type="button" className="btn btn-outline-primary" id="closeWarning"
+                                      onClick={() => this.setState({showConfirmRemove: false})}>Lukk</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={this.removeFromEvent}>Slett</button>
                     </Modal.Footer>
                 </Modal>
                 <Modal
@@ -245,9 +245,9 @@ export default class AddRole extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light id="closeWarning"
-                                      onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
-                        <Button.Red onClick={this.remove}>Slett</Button.Red>
+                        <button type="button" className="btn btn-outline-primary" id="closeWarning"
+                                      onClick={() => this.setState({showConfirmDelete: false})}>Lukk</button>
+                        <button type="button" className=" btn btn-outline-danger" onClick={this.remove}>Slett</button>
                     </Modal.Footer>
                 </Modal>
             </div>

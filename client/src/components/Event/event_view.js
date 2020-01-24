@@ -50,15 +50,6 @@ export default class EventView extends Component {
                 <p>{this.eventOverview[0].capacity}</p>
                 <EventViewHeader label="Sted:"/>
                 <p>{this.eventOverview[0].location}</p>
-                <Map
-                    google={this.props.google}
-                    center={{lat: 63.4154, lng: 10.4055}}
-                    height='300px'
-                    zoom={15}
-                    currentAddress={this.state.location}
-                    onChange={() => this.empty()}
-                    readonly={true}
-                />
 
                 <div className="btn-toolbar">
                     {!this.props.isArtist ?
