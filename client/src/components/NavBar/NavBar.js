@@ -110,6 +110,7 @@ class NavBar extends Component {
                         </button>
                         <div id="navbarDropdown" className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
+                                <Link to="/login" style={{fontSize: "20px"}} className="mb-2">Logg inn</Link>
                                 <form className="form-inline" ref={e => (this.form = e)}>
                                     <label for="username">Brukernavn:</label>
                                     <input
