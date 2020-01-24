@@ -37,18 +37,10 @@ if (root)
                         <Route exact path="/" component={Home} />
                         <Route path="/event/:eventId/overview" component={EventOverview}/>
                         <Route path="/event/new" component={AddEvent}/>
-                        <Route exact path="/event/:eventId/edit/ticket" component={listTicketType}/>
-                        <Route exact path="/event/:eventId/edit/cancel" component={CancelEventButton}/>
-                        <Route exact path="/event/:eventId/edit/delete" component={DeleteEventButton}/>
-                        <Route exact path="/event/:eventId/edit/file" component={FileMain} />
-                        <Route exact path="/event/:eventId/edit/file/:filepath" component={FileEdit} />
                         <Route exact path="/register" component={UserRegister} />
                         <Route exact path="/login" component={UserLogin} />
-                        <Route exact path="/" component={TokenBoi} />
                         <Route exact path="/user/:userId/overview" component={UserOverview} />
                         <Route exact path="/user/:userId/edit" component={UserEdit}/>
-                        <Route exact path="/event/:eventId/edit/ticket/:ticketId/edit" component={TicketEdit}/>
-                        <Route exact path="/event/ticket" component={TicketAdd}/>
                         <Route exact path="/event/search/:input" component={EventSearch}/>
                         <Route exact path="/event/:eventId/view" component={eventVisit}/>
                         <Route exact path="/404" component={NotFoundPage}/>
