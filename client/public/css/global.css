@@ -109,12 +109,21 @@ a:hover{
     background-color: var(--color-light-blue);
 }
 
+.btn-outline-dark:hover{
+    color: var(--color-dark-blue);
+    border-color: var(--color-dark-blue);
+    background-color: var(--color-light-blue);
+}
+
 /*borders*/
 .border-dark{
     color: var(--color-dark-blue);
     border-color: var(--color-dark-blue) !important;
 }
 
+.border-dark:hover {
+    background-color: var(--color-light-blue) !important;
+}
 /*input field*/
 .form-control{
     border-top: none;
