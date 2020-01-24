@@ -123,6 +123,7 @@ export default class UserOverview extends Component {
                             <button type="button" className="btn btn-outline-primary" onClick={(e) => {
                                 history.push("/user/" + userService.getUserId() + "/edit");
                             }}>Endre profil</button>
+                            <p></p>
                         </div>
                         {artistBox}
                     </div>

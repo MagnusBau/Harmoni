@@ -101,7 +101,7 @@ export default class UserEdit extends Component {
                     <div className="col-md-12">
                         <EventViewHeader label="Profil"/>
                         <div className="list-group" className="">
-                            <form ref={e => (this.userForm = e)}>
+                            <form ref={e => (this.userForm = e)} onSubmit={this.saveChanges}>
                                 <li className="list-group-item">
                                     <h6>Username:</h6>
                                     {userService.getUsername()}
@@ -154,9 +154,7 @@ export default class UserEdit extends Component {
                                     />
                                 </li>
                                 <br></br>
-                                <button type="button" className="btn btn-outline-primary" onClick={(e) => {
-                                    this.saveChanges();
-                                }}>
+                                <button type="submit" className="btn btn-outline-primary" >
                                     Lagre Endringer
                                 </button>
                             </form>
@@ -168,7 +166,7 @@ export default class UserEdit extends Component {
                         <br/>
                         <EventViewHeader label="Passord"/>
                         <div className="list-group">
-                            <form ref={e => (this.passwordForm = e)}>
+                            <form ref={e => (this.passwordForm = e)} onSubmit={this.changePassword}>
                                 <li className="list-group-item">
                                     <h6>Gammelt Passord:</h6>
                                     <input
@@ -202,14 +200,13 @@ export default class UserEdit extends Component {
                                         maxLength={256}
                                     />
                                 </li>
+                                <button type="submit" className="btn btn-outline-primary">
+                                    Oppdater Passord
+                                </button>
                             </form>
                         </div>
                         <br></br>
-                        <button type="button" className="btn btn-outline-primary" onClick={(e) => {
-                            this.changePassword();
-                        }}>
-                            Oppdater Passord
-                        </button>
+
                     </div>
                 </div>
                 <div className="row">
@@ -229,7 +226,7 @@ export default class UserEdit extends Component {
                                 }}>
                                 Tilbake
                             </button>
-                            <br></br>
+                           <br/>
                         </div>
                     </div>
                 </div>
@@ -237,12 +234,13 @@ export default class UserEdit extends Component {
         )
     }
 
-    saveChanges() {
+    saveChanges(e) {
         if(!this.userForm || !this.userForm.checkValidity()) {
             this.errorMessage = "Brukerinformasjon error";
             return;
         }
         userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
+            history.push("/user/" + userService.getUserId() + "/overview");
             if(response.error) {
                 this.errorMessage = response.error;
                 return;
@@ -255,7 +253,7 @@ export default class UserEdit extends Component {
         })
     }
 
-    changePassword() {
+    changePassword(e) {
         if(!this.passwordForm || !this.passwordForm.checkValidity()) {
             this.errorMessage = "Passord error";
             return;
