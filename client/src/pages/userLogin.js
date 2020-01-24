@@ -1,4 +1,8 @@
 //@flow
+
+/**
+ * Renders the login page
+ */
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {userService} from "../services/userService";

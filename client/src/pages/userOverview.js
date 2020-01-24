@@ -1,4 +1,8 @@
 // @flow
+
+/**
+ * Renders the page with the user information, and the events where the user is an organizer
+ */
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
@@ -40,6 +44,10 @@ export default class UserOverview extends Component {
         }
     }
 
+    /**
+     * Shows a modal dialog window
+     * @param e Component triggering the dialog
+     */
     show(e) {
         if (e.target.id === "showWarning") {
             this.setState({setShowModal: true});

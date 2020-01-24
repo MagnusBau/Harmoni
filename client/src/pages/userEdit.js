@@ -5,6 +5,9 @@ import {Event, eventService} from "../services/eventService";
 import { createHashHistory } from 'history';
 import {userService} from "../services/userService";
 
+/**
+ * Renders the page for editing a user
+ */
 const history = createHashHistory();
 import {Ticket, ticketService} from "../services/ticketService";
 import {EventEquipment, equipmentService} from "../services/equipmentService";

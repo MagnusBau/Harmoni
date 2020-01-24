@@ -12,6 +12,10 @@ import {userService} from "../services/userService";
 import Map from "../components/map";
 import {BigHeader} from "../components/Header/headers";
 
+/**
+ * Renders the page for adding new events
+ */
+
 const history = createHashHistory();
 
 moment.locale("no");

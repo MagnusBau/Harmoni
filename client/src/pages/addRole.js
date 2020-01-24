@@ -7,7 +7,9 @@ import {roleService, Role, EventRole} from "../services/roleService";
 import {artistService} from "../services/artistService";
 import {userService} from "../services/userService";
 import {Alert} from "../components/Alert/alert";
-
+/**
+ * Renders the page for adding roles to an event, and deleting roles from an event
+ */
 const history = createHashHistory();
 
 export class AddRole extends Component <{match: {params: {eventId: number}}}> {

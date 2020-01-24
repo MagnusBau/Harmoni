@@ -1,9 +1,12 @@
 //@flow
 
+/**
+ * Renders the page for adding, downloading and deleting the files to an event
+ */
+
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from 'history';
-
 const history = createHashHistory();
 import { FileInfo, fileInfoService, fileService } from "../services/fileService";
 import {Alert} from "../components/Alert/alert";
