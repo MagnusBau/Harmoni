@@ -18,6 +18,7 @@ INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'pass
 
 INSERT INTO contact(first_name, last_name, email, phone)
 VALUES ('Geir', 'Lippestad', 'geir@lips.no', '12345678');
+
 INSERT INTO artist(artist_id, artist_name, contact)
 VALUES (DEFAULT, 'Geir Lippestad', 4);
 INSERT INTO artist(artist_id, artist_name, contact)

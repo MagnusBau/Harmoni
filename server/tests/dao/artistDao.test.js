@@ -164,6 +164,7 @@ test("Insert new artist with a new document and contract", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
+
     artistDao.addArtistWithNewContract({
         "artist_name": "Bobern",
         "first_name": "Bob",
@@ -175,3 +176,77 @@ test("Insert new artist with a new document and contract", done => {
         "path": "./files/1------yaas.txt"
     }, callback);
 });
+
+
+test("Create artist on Contact", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    artistDao.createArtistOnContact("Mario", 1, callback);
+});
+
+
+test("getArtistByPreviousContract", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].artist_name).toBe("Geir Lippestad");
+        done();
+    }
+    artistDao.getArtistByPreviousContract(1, callback);
+});
+
+
+test("update artist from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+
+    artistDao.updateArtist({artistId: 3,artistName: 'Svein Blipp', firstName: 'Mia', email:  'mia@test.com', phone: 12345678}, callback);
+});
+
+
+test("get artist by contract", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].artist_name).toBe("Geir Lippestad");
+        done();
+    }
+    artistDao.getArtistByContact(1, callback);
+});
+
+
+
+test("get artist by user", done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].first_name).toBe("Mario");
+
+        done();
+    }
+    artistDao.getArtistByUser(1, callback);
+});
+
+

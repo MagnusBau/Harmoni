@@ -154,7 +154,7 @@ export default class UserEdit extends Component {
                                                 maxLength={50}
                                             />
                                         </li>
-                                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                                        <li  className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
                                             this.saveChanges();
                                         }}>
                                             Lagre Endringer

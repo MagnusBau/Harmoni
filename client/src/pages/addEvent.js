@@ -157,14 +157,7 @@ export class AddEvent extends Component {
                             </div>
                         </div>
                         <div className={"col"}>
-                            <Map
-                                center={{lat: 63.4154, lng: 10.4055}}
-                                google={this.props.google}
-                                height='300px'
-                                zoom={15}
-                                onChange={this.onChangeAddress}
-                                getAddress={this.getAddress}
-                            />
+
                         </div>
                     </div>
                 </form>

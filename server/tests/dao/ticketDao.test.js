@@ -94,7 +94,7 @@ test("update one ticket from db", done => {
 
 
 
-test("remove one article from db", done => {
+test("remove one ticket from db", done => {
     function callback(status, data) {
         console.log(
             "Test callback: status=" + status + ", data=" + JSON.stringify(data)
