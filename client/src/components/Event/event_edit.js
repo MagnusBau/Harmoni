@@ -200,8 +200,9 @@ export class EventEdit extends Component {
             .updateEvent(this.currentEvent, this.event)
             .then(() => {
                 if(this.state.file !== null){
-                    const myNewFile = new File([file], "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+                    const myNewFile = new File([file], this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
                     formData.append('file', myNewFile);
+                    formData.append('image', "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
                     console.log(this.event.image);
                     fileInfoService.deleteFile(btoa(this.event.image)).then(res => {
                         fileInfoService.postImage(this.currentEvent, formData).then(res => {

@@ -183,7 +183,7 @@ export class AddEvent extends Component {
                     .then((response) => {
 
                         console.log(response[0].event_id);
-                        const myNewFile = new File([file], "./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+                        const myNewFile = new File([file], response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
 
                         formData.append('file', myNewFile);
                         formData.append('image', "./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
