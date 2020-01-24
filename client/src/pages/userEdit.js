@@ -63,7 +63,7 @@ export default class UserEdit extends Component {
             artistBox = (
                 <div className="list-group" className="">
                     <li className="list-group-item">
-                        <h6>Artist Navn:</h6>
+                        <h6>Artist navn:</h6>
                         {this.artistName}
                     </li>
                 </div>
@@ -200,8 +200,9 @@ export default class UserEdit extends Component {
                                         maxLength={256}
                                     />
                                 </li>
+                                <br/>
                                 <button type="submit" className="btn btn-outline-primary">
-                                    Oppdater Passord
+                                    Oppdater passord
                                 </button>
                             </form>
                         </div>
