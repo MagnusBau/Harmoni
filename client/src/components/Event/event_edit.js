@@ -21,6 +21,7 @@ export class EventEdit extends Component {
     updateEvent = new CreateEvent();
     categories: string[] = [];
 
+
     state = {
         start_time: moment(),
         end_time: moment(),
@@ -29,6 +30,9 @@ export class EventEdit extends Component {
 
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            fileValid: true
+        }
     }
 
     handleStartTime(moment){
@@ -137,6 +141,7 @@ export class EventEdit extends Component {
                                     value={this.file}
                                     placeholder="Fil"
                                     onChange={(e) => this.handleFile(e)}
+                                    required={false}
                                     accept=".png,.jpg,.jpeg,.gif"
                                 />
                             </div>
