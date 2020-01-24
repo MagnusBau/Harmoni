@@ -340,3 +340,16 @@ test('update event capacity', done => {
     }
     eventDao.updateEventCapacity({capacity: 69}, 5, callback);
 });
+
+test('Get events bound to an artist', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].title).toBe('EM Håndball');
+        done();
+    }
+    eventDao.getEventsByArtist(1, callback);
+})

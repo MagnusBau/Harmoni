@@ -58,7 +58,7 @@ BEGIN
          description,
          location,
          DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
-         DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time,
+         DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i')   as end_time,
          capacity,
          organizer,
          category,
@@ -134,10 +134,20 @@ END;
 /**
 
  */
- CREATE PROCEDURE get_events_by_user(IN user_id_in INT)
- BEGIN
-     SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer FROM event WHERE organizer = user_id_in;
- END;
+CREATE PROCEDURE get_events_by_user(IN user_id_in INT)
+BEGIN
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time,
+         DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i')   as end_time,
+         category,
+         capacity,
+         organizer
+  FROM event
+  WHERE organizer = user_id_in;
+END;
 
 CREATE PROCEDURE get_last_events_by_user(IN user_id_in INT)
 BEGIN
@@ -165,9 +175,16 @@ END;
  */
 CREATE PROCEDURE get_cancelled_event_email_info(IN event_id_in INT)
 BEGIN
-    SELECT event.event_id, CONCAT(first_name, ' ', last_name) as name, email, title, location, DATE_FORMAT(start_time, '%a %e.%m.%Y, %H:%i') as start_time FROM contact
-        INNER JOIN event ON contact.contact_id = event.organizer
-    WHERE cancelled = 1 AND event_id = event_id_in;
+  SELECT event.event_id,
+         CONCAT(first_name, ' ', last_name)            as name,
+         email,
+         title,
+         location,
+         DATE_FORMAT(start_time, '%a %e.%m.%Y, %H:%i') as start_time
+  FROM contact
+         INNER JOIN event ON contact.contact_id = event.organizer
+  WHERE cancelled = 1
+    AND event_id = event_id_in;
 END;
 
 /**
@@ -208,7 +225,7 @@ END;
  */
 CREATE PROCEDURE delete_event(IN event_id_in INT)
 BEGIN
-    DELETE FROM event WHERE event_id = event_id_in;
+  DELETE FROM event WHERE event_id = event_id_in;
 END;
 
 /**
@@ -219,41 +236,48 @@ END;
 CREATE PROCEDURE delete_events_by_end_time(IN user_id_in INT)
 BEGIN
 
-    DELETE rider FROM rider
-        INNER JOIN document d on rider.document = d.document_id
-        INNER JOIN event e2 on d.event = e2.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE rider
+  FROM rider
+         INNER JOIN document d on rider.document = d.document_id
+         INNER JOIN event e2 on d.event = e2.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE contract FROM contract
-        INNER JOIN document ON contract.document = document.document_id
-        INNER JOIN event e3 on document.event = e3.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE contract
+  FROM contract
+         INNER JOIN document ON contract.document = document.document_id
+         INNER JOIN event e3 on document.event = e3.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE document FROM document
-        INNER JOIN event e4 on document.event = e4.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE document
+  FROM document
+         INNER JOIN event e4 on document.event = e4.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE event_role FROM event_role
-        INNER JOIN event e on event_role.event = e.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE event_role
+  FROM event_role
+         INNER JOIN event e on event_role.event = e.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE role FROM role
-        INNER JOIN event e5 on role.event = e5.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE role
+  FROM role
+         INNER JOIN event e5 on role.event = e5.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE event_equipment FROM event_equipment
-        INNER JOIN event e6 on event_equipment.event = e6.event_id
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE event_equipment
+  FROM event_equipment
+         INNER JOIN event e6 on event_equipment.event = e6.event_id
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 
-    DELETE FROM event
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  DELETE
+  FROM event
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 END;
 
 /**
@@ -261,35 +285,58 @@ END;
  */
 CREATE PROCEDURE get_events_by_end_time_user(IN user_id_in INT)
 BEGIN
-    SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
-    FROM event
-    WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
-      AND organizer = user_id_in;
+  SELECT event_id,
+         title,
+         description,
+         location,
+         DATE_FORMAT(start_time, '%e.%m.%Y %H:%i')  as start_time,
+         DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time,
+         category,
+         capacity,
+         organizer
+  FROM event
+  WHERE DATEDIFF(CURRENT_DATE, DATE_FORMAT(end_time, '%Y-%m-%e')) > 7
+    AND organizer = user_id_in;
 END;
 
 CREATE PROCEDURE get_all_events_by_input(IN input_in VARCHAR(40))
 BEGIN
-    SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time FROM event
-    WHERE UPPER(title) LIKE CONCAT('%', input_in,'%');
+  SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
+  FROM event
+  WHERE UPPER(title) LIKE CONCAT('%', input_in, '%');
 END;
 /**
   Get all categories
  */
 CREATE PROCEDURE get_categories()
 BEGIN
-    SELECT name FROM category;
+  SELECT name FROM category;
 END;
 /**
   Get all events made by user
  */
 CREATE PROCEDURE get_events_by_username(IN username_in VARCHAR(50))
 BEGIN
-    SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
-    FROM event e JOIN contact c ON e.organizer = c.contact_id JOIN user u ON c.contact_id = u.contact
-    WHERE u.username = username_in;
+  SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
+  FROM event e
+         JOIN contact c ON e.organizer = c.contact_id
+         JOIN user u ON c.contact_id = u.contact
+  WHERE u.username = username_in;
 END;
 
 CREATE PROCEDURE post_image_to_event(IN image_in VARCHAR(100), IN event_id_in INT(11))
 BEGIN
     UPDATE event SET image = image_in WHERE event_id = event_id_in;
+END;
+/**
+  Gets all events bound to an artist by a contract
+ */
+CREATE PROCEDURE get_events_by_artist(IN artist_id_in INT)
+BEGIN
+  SELECT event_id, title, description, location, DATE_FORMAT(start_time, '%a %e.%m.%Y %H:%i') as start_time, DATE_FORMAT(end_time, '%a %e.%m.%Y %H:%i') as end_time, category, capacity, organizer
+  FROM event e
+  LEFT JOIN document d ON e.event_id = d.event
+  LEFT JOIN contract c ON d.document_id = c.document
+  LEFT JOIN artist a ON c.artist = a.artist_id
+  WHERE a.artist_id=artist_id_in;
 END;
