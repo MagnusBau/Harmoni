@@ -188,19 +188,7 @@ test("get cancelled event information", done => {
     }
     eventDao.getCancelledEventInfo(3, callback);
 });
-/*
-test("delete_ ended event from db", done => {
-    function callback(status, data) {
-        console.log(
-            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
-        );
-        //TODO change end_time in setup.sql
-        expect(data.affectedRows).toBe(5);
-        done();
-    }
-    eventDao.deleteEventsByEndTime(1, callback);
 
-*/
 test("search for event by title with string", done => {
     function callback(status, data) {
         console.log(
@@ -352,7 +340,7 @@ test('Get events bound to an artist', done => {
         done();
     }
     eventDao.getEventsByArtist(1, callback);
-})
+});
 
 test('post image to event', done => {
     function callback(status, data) {
@@ -364,3 +352,51 @@ test('post image to event', done => {
     }
     eventDao.postImageToEvent({image: '123.png', eventId: 5}, callback)
 });
+
+test('get event by id update', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].title).toBe('Porty');
+        done();
+    }
+    eventDao.getEventByIdUpdate(5, callback);
+});
+
+test('get last event made by organizer', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].title).toBe('test.js');
+        done();
+    }
+    eventDao.getLastEventByUser(1, callback)
+});
+
+test("delete_ ended event from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status = " + status + ", data = " + JSON.stringify(data)
+        );
+        //TODO change end_time in setup.sql
+        expect(data.affectedRows).toBe(4);
+        done();
+    }
+    eventDao.deleteEventsByEndTime(1, callback);
+});
+
+/*
+test('deletes event from database', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(7);
+        done();
+    }
+    eventDao.deleteEvent(5, callback);
+});*/

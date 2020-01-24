@@ -21,6 +21,7 @@ DROP PROCEDURE IF EXISTS get_categories;
 DROP PROCEDURE IF EXISTS get_frontpage_events;
 DROP PROCEDURE IF EXISTS get_events_by_username;
 DROP PROCEDURE IF EXISTS post_image_to_event;
+DROP PROCEDURE IF EXISTS get_events_by_artist;
 
 CREATE PROCEDURE get_event_by_id(IN event_id_in int)
 BEGIN
@@ -43,7 +44,7 @@ BEGIN
          organizer,
          cancelled
   from event
-  where title like CONCAT('%', event_name_in, '%');
+  where title = event_name_in;
 end;
 
 
