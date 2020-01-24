@@ -446,9 +446,9 @@ exports.updateUserPassword = (req, res, next) => {
     }
 };
 exports.getOrganizerUsername = (req, res, next) => {
-    console.log("Got get request from client: organizerUsername")
+    console.log("Got get request from client: organizerUsername");
     userDao.getOrganizerUsername(req.params.contactId, (err, rows) => {
         res.json(rows);
     })
-}
+};
 //lag tester for dao, mangler noen metoder (minst 1)
