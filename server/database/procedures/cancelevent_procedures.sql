@@ -1,4 +1,8 @@
 /**
+  All procedures related to canceled events
+ */
+
+/**
   Delete all procedures for recreation
  */
 DROP PROCEDURE IF EXISTS get_cancelled_events;

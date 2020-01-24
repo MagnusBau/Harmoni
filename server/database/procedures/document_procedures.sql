@@ -1,4 +1,9 @@
 /**
+  Procedures related to the document table
+ */
+
+
+/**
   Delete all procedures for recreation
  */
 DROP PROCEDURE IF EXISTS get_document_by_id;

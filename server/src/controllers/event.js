@@ -17,10 +17,13 @@ const emailService = new Email();
 
 const TAG = '[EventController]';
 
-/**
- GET all events
- */
 
+/**
+ * Calls eventDao to get events by a search string, get cancelled events, get events by artistDao or get front page events from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEvents = (req, res, next) => {
     console.log(TAG, `GET-request: /event`);
     if (req.query.name) {
@@ -47,6 +50,12 @@ exports.getEvents = (req, res, next) => {
     }
 };
 
+/**
+ * Calls eventDao to get a document by event id from database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getDocumentByEvent = (req, res, next) => {
     console.log(TAG, `GET-request: /event/${req.param.s.eventId}/document`);
     eventDao.getDocumentByEvent(req.params.eventId, (err, rows) => {
@@ -54,7 +63,12 @@ exports.getDocumentByEvent = (req, res, next) => {
     });
 };
 
-//Insert new event
+/**
+ * Calls eventDao to insert a new event to the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.insertEvent = (req, res, next) => {
     console.log(TAG, `POST-request: /event`);
     eventDao.createEvent(req.body,(status, data) => {
@@ -64,7 +78,12 @@ exports.insertEvent = (req, res, next) => {
     });
 };
 
-//Get event by id
+/**
+ * Calls eventDao to get an event by an event id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventById = (req, res, next) => {
     console.log(TAG, `GET-request: /event/${req.params.eventId}` );
 
@@ -72,7 +91,12 @@ exports.getEventById = (req, res, next) => {
         res.json(rows)
     })
 };
-
+/**
+ * Calls eventDao to get an event by an user id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventByUser = (req, res, next) => {
     console.log(TAG, 'GET-request: (getEventByUser');
     userDao.getContact(req.params.userId, (err, [rows]) => {
@@ -88,6 +112,12 @@ exports.getEventByUser = (req, res, next) => {
     })
 };
 
+/**
+ * Calls eventDao to get the latest event by an user id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getLastEventByUser = (req, res, next) => {
     console.log(TAG, 'GET-request: getLastEventByUser');
     userDao.getContact(req.params.userId, (err, [rows]) => {
@@ -103,6 +133,12 @@ exports.getLastEventByUser = (req, res, next) => {
     })
 };
 
+/**
+ * Calls eventDao to get ended events by an user id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEndedEventsByUser = (req, res, next) => {
     console.log(TAG, 'GET-request:');
     userDao.getContact(req.params.userId, (err, [rows]) => {
@@ -117,6 +153,12 @@ exports.getEndedEventsByUser = (req, res, next) => {
     })
 };
 
+/**
+ * Calls eventDao to get the info of a cancelled event by event id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventEmail = (req, res, next) => {
     console.log(TAG, `GET-request: /event/${req.params.eventId}/email` );
 
@@ -125,6 +167,12 @@ exports.getEventEmail = (req, res, next) => {
     });
 };
 
+/**
+ * Calls eventDao to delete an event by an event id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.deleteEvent = (req, res, next) => {
 
     console.log(TAG, `DELETE-request:: /event/${req.params.eventId}/delete`);
@@ -135,6 +183,12 @@ exports.deleteEvent = (req, res, next) => {
 
 };
 
+/**
+ * Calls eventDao to delete all ended events more than one week old by an user id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.deleteEventByEndTime = (req, res, next) => {
 
     console.log(TAG, `DELETE-request:: /event/user/${req.params.contact_id}/ended`);
@@ -152,6 +206,12 @@ exports.deleteEventByEndTime = (req, res, next) => {
 
 };
 
+/**
+ * Calls eventDao to cancel an event by an event id in the database. Returns status from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.cancelEvent = (req, res, next) => {
 
     console.log(TAG, `PUT-request: /event/${req.params.eventId}/cancel`);
@@ -195,7 +255,12 @@ exports.cancelEvent = (req, res, next) => {
     }
 };
 
-//Get events by input
+/**
+ * Calls eventDao to get events by a search string from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventByInput = (req, res, next) => {
     console.log(TAG, "getEventByInput");
     console.log(TAG, `GET-request: event/search/${req.params.input}`);
@@ -206,7 +271,12 @@ exports.getEventByInput = (req, res, next) => {
     })
 };
 
-//Get event by id for update
+/**
+ * Calls eventDao to get an event for editing by an event id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventByIdUpdate = (req, res, next) => {
     console.log(TAG, `GET-request: /event/edit/${req.params.event_id}` );
 
@@ -215,7 +285,12 @@ exports.getEventByIdUpdate = (req, res, next) => {
     })
 };
 
-//Update event Title
+/**
+ * Calls eventDao to update the title of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateTitle = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventTitle(req.params.title, (status, data) => {
@@ -224,7 +299,12 @@ exports.updateTitle = (req, res, next) => {
     })
 };
 
-//Update event description
+/**
+ * Calls eventDao to update the description of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateDescription = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventDescription(req.params.description, (status, data) => {
@@ -233,7 +313,12 @@ exports.updateDescription = (req, res, next) => {
     })
 };
 
-//Update event location
+/**
+ * Calls eventDao to update the location of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateLocation = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventLocation(req.params.location, (status, data) => {
@@ -242,7 +327,12 @@ exports.updateLocation = (req, res, next) => {
     })
 };
 
-//Update event start time
+/**
+ * Calls eventDao to update the start time of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateStartTime = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventStartTime(req.params.start_time, (status, data) => {
@@ -251,7 +341,12 @@ exports.updateStartTime = (req, res, next) => {
     })
 };
 
-//Update event end time
+/**
+ * Calls eventDao to update the end time of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateEndTime = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventEndTime(req.params.end_time, (status, data) => {
@@ -260,7 +355,12 @@ exports.updateEndTime = (req, res, next) => {
     })
 };
 
-//Update event category
+/**
+ * Calls eventDao to update the category of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateCategory = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventCategory(req.params.category, (status, data) => {
@@ -269,7 +369,12 @@ exports.updateCategory = (req, res, next) => {
     })
 };
 
-//Update event capacity
+/**
+ * Calls eventDao to update the capacity of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateCapacity = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEventCapacity(req.params.capacity, (status, data) => {
@@ -278,7 +383,12 @@ exports.updateCapacity = (req, res, next) => {
     })
 };
 
-//Update entire event
+/**
+ * Calls eventDao to update an event of an event by an event id in the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.updateEvent = (req, res, next) => {
     console.log(TAG, "PUT-request:");
     eventDao.updateEvent(req.params.event_id, req.body, (status, data) => {
@@ -286,7 +396,12 @@ exports.updateEvent = (req, res, next) => {
         res.json(data);
     })
 };
-//Insert new event
+/**
+ * Calls eventDao to insert an event into the database. Returns status and data from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.createEvent = (req, res, next) => {
     console.log(TAG, "POST-request:");
     eventDao.createEvent(req.body,(status, data) => {
@@ -294,7 +409,12 @@ exports.createEvent = (req, res, next) => {
         res.json(data);
     })
 };
-
+/**
+ * Calls eventDao to get documents by event id from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getDocumentByEvent = (req, res, next) => {
     console.log(TAG, `GET-request:: /event/${req.params.eventId}/document`);
 
@@ -303,6 +423,12 @@ exports.getDocumentByEvent = (req, res, next) => {
     });
 };
 
+/**
+ * Calls eventDao to get all categories from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getCategories = (req, res, next) => {
     console.log(TAG, 'GET-request:: /categories');
     eventDao.getCategories((err, rows) => {
@@ -310,6 +436,12 @@ exports.getCategories = (req, res, next) => {
     })
 };
 
+/**
+ * Calls eventDao to get events by an username from the database. Returns rows from dao to service
+ * @param req       request from service
+ * @param res       response to service
+ * @param next      next function
+ */
 exports.getEventsByUsername = (req, res, next) => {
     console.log(TAG, 'GET-request:: event/search/username')
     eventDao.getEventsByUsername(req.params.username, (err, rows) => {
