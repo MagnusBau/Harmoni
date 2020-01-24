@@ -22,8 +22,13 @@ export class SearchBar extends Component {
             <div className="dropdown show">
                 <input className="form-control mr-sm-2 dropdown-toggle" type="text" value={this.input} placeholder="Søk" id="search"
                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                    this.input = event.target.value;
-                    this.mounted();
+                    if(event.target.value.trim() === '') {
+                        this.input = event.target.value.trim();
+                        this.mounted();
+                    }else{
+                        this.input = event.target.value;
+                        this.mounted();
+                    }
                 }} minLength={1} maxLength={40} data-toggle="dropdown" onKeyPress={this.ifEnter}/>
                 <div className="dropdown-menu">
                     <div className="list-group list-group-flush">
@@ -61,7 +66,8 @@ export class SearchBar extends Component {
         }
     };
     buttonSearch() {
-        if(this.input !== '') history.push("/event/search/" + this.input);
+        if(this.input !== '')
+            history.push("/event/search/" + this.input);
     }
     ifEnterInList = (event) => {
         if(event.key === 'Enter'){
