@@ -12,8 +12,10 @@ const pool = require("../server");
 const artistDao = new ArtistDAO(pool);
 const userDao = new UserDAO(pool);
 
+const TAG = '[ArtistController]';
+
 exports.insertArtist = (req, res, next) => {
-    console.log(`Got request from client: POST /api/artist`);
+    console.log(TAG, `POST-request: /api/artist`);
     if (req.body.userId) {
         userDao.getContact(req.body.userId, (err, contact) => {
             artistDao.createArtistOnContact(req.body.artistName,contact[0][0].contact_id, (err, rows) => {
@@ -28,7 +30,7 @@ exports.insertArtist = (req, res, next) => {
 };
 
 exports.updateArtist = (req, res, next) => {
-    console.log(`Got request from client: PUT /api/artist/${req.params.artistId}`);
+    console.log(TAG, `Got request from client: PUT /api/artist/${req.params.artistId}`);
 
     artistDao.updateArtist(req.params.artistId, req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
         res.send(rows);
@@ -36,7 +38,7 @@ exports.updateArtist = (req, res, next) => {
 };
 
 exports.deleteArtist = (req, res, next) => {
-    console.log(`Got request from client: DELETE /api/artist/${req.params.artistId}`);
+    console.log(TAG, `DELETE-request: /api/artist/${req.params.artistId}`);
 
     artistDao.deleteArtist(req.params.artistId, (err, rows) => {
         res.send(rows);
@@ -44,7 +46,7 @@ exports.deleteArtist = (req, res, next) => {
 };
 
 exports.getAllArtists = (req, res, next) => {
-    console.log(`Got request from client: GET /api/artist`);
+    console.log(TAG, `GET-request: /api/artist`);
 
     if (req.query.contact) {
         artistDao.getArtistByPreviousContract(req.query.contact, (err, rows) => {
@@ -62,14 +64,14 @@ exports.getAllArtists = (req, res, next) => {
 };
 
 exports.getArtistById = (req, res, next) => {
-    console.log(`Got request from client: GET /api/artist/${req.params.artistId}`);
+    console.log(TAG, `GET-request: /api/artist/${req.params.artistId}`);
 
     artistDao.getArtistById(req.params.artistId, (err, rows) => {
         res.send(rows);
     })
 };
 exports.getArtistByContact = (req, res, next) => {
-    console.log(`Got request from client: GET /api/artist/${req.params.contactId}`);
+    console.log(TAG, `GET-request: /api/artist/${req.params.contactId}`);
 
     artistDao.getArtistByContact(req.params.contactId, (err, rows) => {
         res.send(rows);
@@ -77,7 +79,7 @@ exports.getArtistByContact = (req, res, next) => {
 };
 
 exports.getArtistByUser = (req, res, next) => {
-    console.log(`Got request from client: GET /api/artist/user/${req.params.userId}`);
+    console.log(TAG, `GET-request: /api/artist/user/${req.params.userId}`);
 
     artistDao.getArtistByUser(req.params.userId, (err, rows) => {
         res.send(rows);
@@ -85,7 +87,7 @@ exports.getArtistByUser = (req, res, next) => {
 };
 
 exports.getArtistByEvent = (req, res, next) => {
-    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
+    console.log(TAG, `GET-request: /api/event/${req.params.eventId}/artist`);
 
     artistDao.getArtistByEvent(req.params.eventId, (err, rows) => {
         res.send(rows);
@@ -93,7 +95,7 @@ exports.getArtistByEvent = (req, res, next) => {
 };
 
 exports.addArtistToEvent = (req, res, next) => {
-    console.log(`Got request from client: GET /api/event/${req.params.eventId}/artist`);
+    console.log(TAG, `GET-request: /api/event/${req.params.eventId}/artist`);
 
     artistDao.addArtistToEvent(req.body.artist_name, req.body.first_name, req.body.last_name, req.body.email,
                                 req.body.phone, req.body.document_id, (err, rows) => {
@@ -102,7 +104,7 @@ exports.addArtistToEvent = (req, res, next) => {
 };
 
 exports.removeArtistFromEvent = (req, res, next) => {
-    console.log(`Got request from client: DELETE /api/event/${req.params.eventId}/artist/${req.params.artistId}`);
+    console.log(TAG, `DELETE-request: /api/event/${req.params.eventId}/artist/${req.params.artistId}`);
 
     artistDao.removeArtistFromEvent(req.params.eventId, req.params.artistId, (err, rows) => {
         res.send(rows);
@@ -110,7 +112,7 @@ exports.removeArtistFromEvent = (req, res, next) => {
 };
 
 exports.addArtistWithNewContract = (req, res, next) => {
-    console.log(`Got request from client: POST /api/event/${req.params.eventId}/artist/contract`);
+    console.log(TAG, `POST-request: /api/event/${req.params.eventId}/artist/contract`);
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
