@@ -240,6 +240,23 @@ test("get artist by user", done => {
     artistDao.getArtistByUser(1, callback);
 });
 
+/*
+test("remove one artist from db", done => {
+    function callback(status, data) {
+        console.log(
+            "Test callback: status=" + status + ", data=" + JSON.stringify(data)
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+
+    artistDao.deleteArtist(3,1, callback);
+});
+
+ */
+
+
+
 
 
 
