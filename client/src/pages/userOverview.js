@@ -13,6 +13,7 @@ import AddEquipment from "../components/Equipment/add_equipment";
 import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
+import {artistService} from "../services/artistService";
 /**
  * Class for the view of one event
  *
@@ -24,13 +25,15 @@ export default class UserOverview extends Component {
     currentUser: number = 0;
     events: Event[] = [];
     endedEvents: Event[] = [];
+    artistEvents: Event[] = [];
 
     constructor(props){
         super(props);
 
         this.state = {
             setShowModal: false,
-            isEditingEvent: false
+            isEditingEvent: false,
+            artistId: -1
         }
     }
 
@@ -64,6 +67,13 @@ export default class UserOverview extends Component {
             }
         });
 
+        artistService.getArtistByUser(userService.getUserId()).then(artists => {
+            if (artists) {
+                this.setState({artistId: (artists[0].length > 0) ? artists[0][0].artist_id : -1});
+                eventService.getEventsByArtist(this.state.artistId)
+                    .then(events => this.artistEvents = events[0] ? events[0] : []);
+            }
+        });
     }
 
     deleteEndedEvents() {
@@ -149,6 +159,22 @@ export default class UserOverview extends Component {
                                 </div>
                             </div>
                         </div>
+                        {this.state.artistId && this.artistEvents.length > 0 ?
+                            <div>
+                                <h5>Dine kontrakter</h5>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="list-group">
+                                            {this.artistEvents.map(e => (
+                                                <li key={"event" + e.event_id} onClick={this.viewEvent} eventId={e.event_id} className="list-group-item list-group-item-action list-group-item-secondary">
+                                                    {e.title} {e.end_time}
+                                                </li>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        : null}
                         <h5>Dine arkiverte arrangementer</h5>
                         <div className="row">
                             <div className="col-md-12">

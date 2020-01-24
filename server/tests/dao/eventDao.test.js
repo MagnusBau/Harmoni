@@ -105,7 +105,7 @@ test("get ended events by a user from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
         data = data[0];
-        expect(data.length).toBe(1);
+        expect(data.length).toBe(3);
         done();
     }
     eventDao.getEndedEventsByUser(1, callback);
@@ -245,3 +245,16 @@ test('get events made by user', done => {
     }
     eventDao.getEventsByUsername('Mario', callback);
 });
+
+test('Get events bound to an artist', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data.length).toBe(1);
+        expect(data[0].title).toBe('EM Håndball');
+        done();
+    }
+    eventDao.getEventsByArtist(1, callback);
+})

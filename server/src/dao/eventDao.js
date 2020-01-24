@@ -164,4 +164,11 @@ export class EventDAO extends Dao {
         let user = [username];
         super.query("CALL get_events_by_username(?)", user, callback);
     }
+
+    getEventsByArtist(artistId: string, callback: (status: string, data: string) => void) {
+        let values = [artistId];
+        super.query("CALL get_events_by_artist(?)",
+            values,
+            callback);
+    }
 }

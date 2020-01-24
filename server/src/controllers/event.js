@@ -30,6 +30,10 @@ exports.getEvents = (req, res, next) => {
         eventDao.getEventsByCancelled(cancelled, (err, rows) => {
             res.json(rows);
         })
+    } else if (req.query.artistId) {
+        eventDao.getEventsByArtist(req.query.artistId, (err, rows) => {
+            res.json(rows);
+        })
     } else {
         console.log("eventDao.getFrontpageEvents");
         eventDao.getFrontpageEvents((err, [rows]) => {
@@ -295,4 +299,4 @@ exports.getEventsByUsername = (req, res, next) => {
     eventDao.getEventsByUsername(req.params.username, (err, rows) => {
         res.json(rows);
     })
-}
+};
