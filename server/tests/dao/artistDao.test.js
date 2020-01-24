@@ -217,6 +217,8 @@ test("update artist from db", done => {
 });
 
 
+/*
+
 test("get artist by contact", done => {
     function callback(status, data) {
         console.log(
@@ -248,6 +250,8 @@ test("get artist by user", done => {
     }
     artistDao.getArtistByUser(1, callback);
 });
+
+ */
 
 
 
