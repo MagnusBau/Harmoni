@@ -128,11 +128,13 @@ export class RiderEdit extends Component<{match: {params: {eventId: number}}}>{
     }
 
     addRider() {
-        riderService.addRider(this.newRider).then(response => {
-            this.mounted();
-            this.select(this.selectedFile);
-            this.newRider.description = "";
-        });
+        if(this.newRider.description.length > 0 && this.newRider.document > 0) {
+            riderService.addRider(this.newRider).then(response => {
+                this.mounted();
+                this.select(this.selectedFile);
+                this.newRider.description = "";
+            });
+        }
     }
 
     select(f: File) {

@@ -176,6 +176,18 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         let eventContent;
         let ticketContent;
         let artistContent;
+        let cancelled;
+
+        if(this.eventOverview) {
+            if(this.eventOverview.cancelled ) {
+                console.log(this.eventOverview.cancelled);
+                cancelled = <div style={{backgroundColor: "red", height: "25vh"}}><p style={{color: "white", fontSize: "15vh"}} className="justify-content-center row">Avlyst</p></div>
+            } else {
+                cancelled = <div></div>;
+            }
+        } else {
+            cancelled = <div></div>;
+        }
 
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
@@ -209,9 +221,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
 
         }
 
-        if(isEditingRiders){
+        if(isEditingRiders) {
             riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
-        }else{
+        } else {
             if (!this.state.isArtist) {
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
             }
@@ -219,6 +231,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         //TODO fikse så eventtitel vises
         return (
             <div className="container">
+                {cancelled}
                 <div className="card">
                     <div>
                         <h3 id="overview-title">{this.eventOverview.title}</h3>
