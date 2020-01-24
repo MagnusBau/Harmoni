@@ -38,6 +38,7 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
             .getArtistByEvent(this.currentEvent)
             .then(artists =>{
                 this.artists = artists[0];
+                console.log(this.artists);
                 if(artists.body.error) this.errorMessage = artists.body.error;
             })
             .catch((error: Error) => error.message);
@@ -80,10 +81,9 @@ export class eventVisit extends Component <{match: {params: {eventId: number}}}>
                     <div className="col-lg-6" id="eventContent">
                         <div>
                             <EventViewHeader label="Artister"/>
-                            <p>{this.artists.map((artist =>
-                                {artist.artist_name}
-                            ))}
-                            </p>
+                            {this.artists.map(artist =>
+                                <p>{artist.artist_name}</p>
+                            )}
                         </div>
 
                         <div>
