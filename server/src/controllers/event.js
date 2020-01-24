@@ -174,7 +174,6 @@ exports.cancelEvent = (req, res, next) => {
                     } else {
                         console.log("Failed to send email");
                     }
-
                 });
 
             } else {
@@ -182,13 +181,9 @@ exports.cancelEvent = (req, res, next) => {
             }
 
         });
-
     } catch (e) {
         console.log(e);
     }
-
-
-
 };
 
 //Get events by input
@@ -233,24 +228,6 @@ exports.updateDescription = (req, res, next) => {
 exports.updateLocation = (req, res, next) => {
     console.log("PUT request from client");
     eventDao.updateEventLocation(req.params.location, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-};
-
-//Update event start time
-exports.updateStartTime = (req, res, next) => {
-    console.log("PUT request from client");
-    eventDao.updateEventStartTime(req.params.start_time, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-};
-
-//Update event end time
-exports.updateEndTime = (req, res, next) => {
-    console.log("PUT request from client");
-    eventDao.updateEventEndTime(req.params.end_time, (status, data) => {
         res.status(status);
         res.json(data);
     })
@@ -311,4 +288,4 @@ exports.getEventsByUsername = (req, res, next) => {
     eventDao.getEventsByUsername(req.params.username, (err, rows) => {
         res.json(rows);
     })
-}
+};
