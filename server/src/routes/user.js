@@ -1,3 +1,5 @@
+// @flow
+
 const express = require("express");
 
 const userController = require("../controllers/user");
@@ -6,6 +8,7 @@ const eventController = require("../controllers/event");
 
 const router = express.Router();
 
+// ROUTE: auth/id/:userId/user
 router.get("/user/:userId", userController.getUser);
 router.put("/user/:userId", userController.updateUser);
 router.put("/user/:userId/password", userController.updateUserPassword);
