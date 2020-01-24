@@ -74,7 +74,7 @@ export default class EventView extends Component {
                     : null}
 
                     {!this.props.isArtist ?
-                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlys arrangement
+                        <button type="button" className="btn btn-outline-dark my-2" id="showWarning" onClick={this.show}>Avlys arrangement
                         </button>
                     : null}
                 </div>
@@ -119,16 +119,16 @@ export default class EventView extends Component {
                 .cancelEvent(this.currentEvent)
                 .then(console.log("Arrangementet er avlyst!"))
                 .then(this.setState({setShowModal: false}))
-                //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
+                //.then(alert("Arrangementet er avlyst! Epost sendt"))
                 .catch((error: Error) => Alert.danger(error));
 
         } else if (this.eventOverview[0].cancelled === 1) {
             console.log("Dette arrangementet er allerede avlyst");
-            //return (Alert.info("Dette arrangementet er allerede avlyst"));
+            alert("Dette arrangementet er allerede avlyst!");
 
         } else {
             console.log("Noe gikk galt!");
-            //return Alert.danger("Noe gikk galt!");
+            alert("Noe gikk galt!");
         }
 
     }

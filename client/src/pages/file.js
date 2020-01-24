@@ -159,13 +159,15 @@ export class FileMain extends Component {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-success m-2">Last opp</button>
-                        <button
-                            type="button"
-                            className="btn btn-success m-2"
-                            style={{}}
-                            onClick={this.mounted}
-                        >Oppdater</button>
+                        <div className="form-group m-2">
+                            <button type="submit" className="btn btn-outline-primary" style={{marginRight: '1vh'}}>Last opp</button>
+                            <button
+                                type="button"
+                                className="btn btn-outline-primary"
+                                style={{}}
+                                onClick={this.mounted}
+                            >Oppdater</button>
+                        </div>
                     </form>
                     : null}
                 <table className="table">
@@ -178,10 +180,10 @@ export class FileMain extends Component {
                     <tbody>
                     {this.fileList.map(f => (
                         <tr className="d-flex">
-                            <td className="col-10">{f.name}</td>
+                            <td className="col-lg-8">{f.name}</td>
                             {!this.props.isArtist ?
-                                <div>
-                                    <td className="col-1">
+                                <div className="row justify-content-center">
+                                    <div className="col-lg-2">
                                         <button type="button" className="btn btn-link"
                                                 onClick={(event) => {
                                                     this.setState({selected: f.name});
@@ -189,15 +191,14 @@ export class FileMain extends Component {
                                                 }}>
                                             <img src="./img/icons/download.svg" width="24" height="24"/>
                                         </button>
-
-                                    </td>
-                                    <td className="col-1">
-                                        <button type="button" className="btn btn-danger"
+                                    </div>
+                                    <div className="col-lg-2" style={{marginLeft: '1vw'}}>
+                                        <button type="button" className="btn btn-outline-danger"
                                                 onClick={() => {
                                                     this.setState({selected: f.name, showConfirmDelete: true})
                                                 }}>Fjern
                                         </button>
-                                    </td>
+                                    </div>
                                 </div>
                                 : null}
                         </tr>
@@ -217,13 +218,13 @@ export class FileMain extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light
+                        <button type="button" className="btn btn-outline-primary"
                             id="closeConfirmDelete"
-                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</Button.Light>
-                        <Button.Red onClick={() => {
+                            onClick={() => this.setState({showConfirmDelete: false})}>Lukk</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => {
                             this.handleDelete();
                             this.setState({showConfirmDelete: false})
-                        }}>Bekreft</Button.Red>
+                        }}>Bekreft</button>
                     </Modal.Footer>
                 </Modal>
             </div>

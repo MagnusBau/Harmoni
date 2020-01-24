@@ -263,15 +263,15 @@ export default class AddEquipment extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button.Light
+                        <button type="button" className="btn btn-outline-primary"
                             id="closeConfirmDelete"
                             onClick={() => this.setState({showConfirmDelete: false})}>Lukk
-                        </Button.Light>
-                        <Button.Red onClick={() => {
+                        </button>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => {
                             this.deleteEquipment();
                             this.setState({showConfirmDelete: false})
                             }}>Bekreft
-                        </Button.Red>
+                        </button>
                     </Modal.Footer>
                 </Modal>
             </div>
