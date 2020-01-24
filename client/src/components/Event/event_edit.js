@@ -46,7 +46,7 @@ export class EventEdit extends Component {
     render() {
         return(
             <div className={"m-2"}>
-                <Alert/>
+                <Alert name="editAlert"/>
                 <div className={"row"}>
                     <div className={"col"}>
                         <form className="form-inline" onSubmit={this.onSubmit}>
@@ -198,7 +198,7 @@ export class EventEdit extends Component {
                     })
                 }
             })
-            .catch((error: Error) => Alert.danger(error.message));
+            .catch((error: Error) => Alert.danger("editAlert", error.message));
         /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
     }
 
