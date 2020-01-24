@@ -105,7 +105,7 @@ test("get ended events by a user from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
         data = data[0];
-        expect(data.length).toBe(1);
+        expect(data.length).toBe(3);
         done();
     }
     eventDao.getEndedEventsByUser(1, callback);
