@@ -40,7 +40,7 @@ test("Get all events", done => {
            `Test callback: status=${status}, data=${data}`
        );
        data = data[0];
-       expect(data.length).toBe(4);
+       expect(data.length).toBe(5);
        done();
    }
    eventDao.getAllEvents(callback);
@@ -52,7 +52,7 @@ test("Get frontpage events", done => {
             `Test callback: status=${status}, data=${data}`
         );
         data = data[0];
-        expect(data.length).toBe(3);
+        expect(data.length).toBe(4);
 
         done();
     }
@@ -65,7 +65,7 @@ test("get not-cancelled events from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
         data = data[0];
-        expect(data.length).toBe(3);
+        expect(data.length).toBe(4);
         done();
     }
     eventDao.getEventsByCancelled(false, callback);
@@ -93,7 +93,7 @@ test("get events on a user from db", done => {
             "Test callback: status = " + status + ", data = " + JSON.stringify(data)
         );
         data = data[0];
-        expect(data.length).toBe(3);
+        expect(data.length).toBe(4);
         done();
     }
     eventDao.getEventByUser(1, callback);
@@ -155,7 +155,7 @@ test("get new event details by id", done => {
     function callback(status, data) {
         console.log(`Test callback: status=${status}, data=${data}`);
         data = data[0];
-        expect(data.length).toBe(5);
+        expect(data.length).toBe(6);
         expect(data[3].title).toBe("Test00");
         expect(data[3].description).toBe("Test00description");
         done();
@@ -238,12 +238,105 @@ test('get events made by user', done => {
             `Test callback: status=${status}, data=${data}`
         );
         data = data[0];
-        expect(data.length).toBe(4);
+        expect(data.length).toBe(5);
         expect(data[0].title).toBe('EM Håndball');
         expect(data[1].title).toBe('Konsert');
         expect(data[2].title).toBe('Test00');
-        expect(data[3].title).toBe('test.js');
+        expect(data[3].title).toBe('Party');
+        expect(data[4].title).toBe('test.js');
         done();
     }
     eventDao.getEventsByUsername('Mario', callback);
+});
+
+test('get event by id', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].title).toBe('Party');
+        done();
+    }
+    eventDao.getEventById(5, callback);
+});
+/*
+test('get event by name', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].description).toBe('beskrivelse yo');
+        expect(data[0].location).toBe('Trondheim');
+        done();
+    }
+    eventDao.getEventByName('Party', callback());
+});*/
+
+test('get document by event', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].name).toBe('lmao');
+        done();
+    }
+    eventDao.getDocumentByEvent(5, callback);
+});
+
+test('update event title', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.updateEventTitle({title: 'Porty'}, 5, callback)
+});
+
+test('update event description', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.updateEventDescription({description: 'yo beskrivelse'}, 5, callback);
+});
+
+test('update event', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.updateEventLocation({location: 'Oslo'}, 5, callback);
+});
+
+test('update event category', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.updateEventCategory({category: 'Karneval'}, 5, callback);
+});
+
+test('update event capacity', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1)
+        done();
+    }
+    eventDao.updateEventCapacity({capacity: 69}, 5, callback);
 });
