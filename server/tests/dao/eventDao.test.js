@@ -353,3 +353,14 @@ test('Get events bound to an artist', done => {
     }
     eventDao.getEventsByArtist(1, callback);
 })
+
+test('post image to event', done => {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        expect(data.affectedRows).toBe(1);
+        done();
+    }
+    eventDao.postImageToEvent({image: '123.png', eventId: 5}, callback)
+});
