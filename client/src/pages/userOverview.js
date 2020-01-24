@@ -91,7 +91,7 @@ export default class UserOverview extends Component {
                         <EventViewHeader label="Artist"/>
                         <div className="list-group" className="">
                             <li className="list-group-item">
-                                <h6>Artist avn:</h6>
+                                <h6>Artist navn</h6>
                                 {userService.getArtistName()}
                             </li>
                         </div>
@@ -108,16 +108,16 @@ export default class UserOverview extends Component {
                         <EventViewHeader label="Profil"/>
                         <div className="list-group" className="">
                             <li className="list-group-item">
-                                <h6>Brukernavn:</h6>{userService.getUsername()}
+                                <h6>Brukernavn</h6>{userService.getUsername()}
                             </li>
                             <li className="list-group-item">
-                                <h6>Navn:</h6> {userService.getFirstName() + " " + userService.getLastName()}
+                                <h6>Navn</h6> {userService.getFirstName() + " " + userService.getLastName()}
                             </li>
                             <li className="list-group-item">
-                                <h6>Epost:</h6> {userService.getEmail()}
+                                <h6>Epost</h6> {userService.getEmail()}
                             </li>
                             <li className="list-group-item">
-                                <h6>Telefon:</h6> {userService.getPhone()}
+                                <h6>Telefon</h6> {userService.getPhone()}
                             </li>
                             <br></br>
                             <button type="button" className="btn btn-outline-primary" onClick={(e) => {
