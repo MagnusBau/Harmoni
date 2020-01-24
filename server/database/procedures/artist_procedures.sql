@@ -1,4 +1,8 @@
 /**
+  Creates procedures related to the artist table
+ */
+
+/**
   Delete all procedures for recreation
  */
 DROP PROCEDURE IF EXISTS add_artist_to_event;

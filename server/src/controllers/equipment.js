@@ -4,7 +4,6 @@ import { EquipmentDAO } from "../dao/equipmentDao.js";
 
 /**
  * Controller for receiving HTTP requests through the equipment endpoint
- * @type {{listen?: *}}
  */
 
 const pool = require("../server.js");
