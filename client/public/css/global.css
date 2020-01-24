@@ -8,6 +8,7 @@
     --color-x-light-beige: #f5f1e8;
     --color-light-beige: #E0DCD3;
     --color-medium-beige: #CCBE9F;
+    --color-medium-dark-beige: #736654;
     --color-brown-black: #331920;
     --color-icon: var(--color-light-beige);
     font-family: 'Source Sans Pro', sans-serif;
@@ -108,19 +109,22 @@ a:hover{
 }
 
 /*input field*/
-
-input{
-
-}
-
 .form-control{
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    background-color: var(--color-x-light-beige);
-    color: var(--color-medium-beige);
-    border-bottom: 10px var(--color-brown-black) !important;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid var(--color-medium-dark-beige) !important;
+    border-radius: 0;
 }
+
+.form-control :focus{
+    border-color: var(--color-brown-black) !important;
+}
+
+input:invalid{
+    border: none;
+}
+
 
 /*table*/
 

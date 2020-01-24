@@ -21,64 +21,76 @@ export class UserRegister extends Component {
         return (<div className="container justify-content-center">
             <div className="m-5"><PageHeader label="Registrer deg"/>
                 <form ref={e => (this.form = e)}>
-                    <div className="form-group"><label for="email">Email:</label> <input id="email" type="email"
-                                                                                         className="form-control"
-                                                                                         value={this.email}
-                                                                                         placeholder="its@m.e"
-                                                                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.email = event.target.value)}
-                                                                                         required maxLength={50}/></div>
-                    <div className="form-group"><label for="username">Fornavn:</label> <input id="username" type="text"
-                                                                                              className="form-control"
-                                                                                              value={this.firstName}
-                                                                                              placeholder="Mario"
-                                                                                              onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
-                                                                                              required maxLength={50}/>
+                    <div className="form-group">
+                        <label for="email">Email:</label>
+                        <input id="email" type="email"
+                             className="form-control"
+                             value={this.email}
+                             placeholder="eksempel@email.com"
+                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.email = event.target.value)}
+                             required maxLength={50}/>
                     </div>
-                    <div className="form-group"><label for="username">Etternavn:</label> <input id="surname" type="text"
-                                                                                                className="form-control"
-                                                                                                value={this.lastName}
-                                                                                                placeholder="Bros"
-                                                                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastName = event.target.value)}
-                                                                                                required
-                                                                                                maxLength={50}/></div>
-                    <div className="form-group"><label for="phoneNo">Telefonnummer:</label> <input id="phoneNo"
-                                                                                                   type="text"
-                                                                                                   className="form-control"
-                                                                                                   value={this.phone}
-                                                                                                   placeholder=""
-                                                                                                   onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.phone = event.target.value)}
-                                                                                                   required
-                                                                                                   minLength={8}
-                                                                                                   maxLength={12}/>
+                    <div className="form-group">
+                        <label for="username">Fornavn:</label>
+                        <input id="username" type="text"
+                              className="form-control"
+                              value={this.firstName}
+                              placeholder="Fornavn"
+                              onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
+                              required maxLength={50}/>
                     </div>
-                    <div className="form-group"><label htmlFor="username">Brukernavn:</label> <input id="username"
-                                                                                                     type="text"
-                                                                                                     className="form-control"
-                                                                                                     value={this.username}
-                                                                                                     placeholder="Mario"
-                                                                                                     onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
-                                                                                                     required
-                                                                                                     minLength={1}
-                                                                                                     maxLength={50}/>
+                    <div className="form-group">
+                        <label for="username">Etternavn:</label>
+                        <input id="surname" type="text"
+                                className="form-control"
+                                value={this.lastName}
+                                placeholder="Etternavn"
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastName = event.target.value)}
+                                required
+                                maxLength={50}/>
+                    </div>
+                    <div className="form-group">
+                        <label for="phoneNo">Telefonnummer:</label>
+                        <input id="phoneNo"
+                               type="text"
+                               className="form-control"
+                               value={this.phone}
+                               placeholder="Telefonnummer"
+                               onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.phone = event.target.value)}
+                               required
+                               minLength={8}
+                               maxLength={12}/>
+                    </div>
+                    <div className="form-group"><label htmlFor="username">Brukernavn:</label>
+                        <input id="username"
+                             type="text"
+                             className="form-control"
+                             value={this.username}
+                             placeholder="Brukernavn"
+                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
+                             required
+                             minLength={1}
+                             maxLength={50}/>
                     </div>
                     <div className="form-group"><label for="password">Passord:</label> <input id="password"
-                                                                                              type="password"
-                                                                                              className="form-control"
-                                                                                              value={this.password}
-                                                                                              placeholder="Passord"
-                                                                                              onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
-                                                                                              required minLength={1}
-                                                                                              maxLength={256}/></div>
+                              type="password"
+                              className="form-control"
+                              value={this.password}
+                              placeholder="Passord"
+                              onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.password = event.target.value)}
+                              required minLength={1}
+                              maxLength={256}/></div>
                 </form>
                 <br/>
                 <div className="btn-toolbar">
                     <button type="button" className="btn btn-outline-primary my-2 mr-4"
                             onClick={this.attemptRegister}>Registrer deg
                     </button>
-                    <p>{this.errorMessage}</p>                         <a type="button"
-                                                                          className="btn btn-outline-primary my-2"
-                                                                          href="/#">Avbryt</a></div>
-                <br/>                     <p style={{color: "red"}}>{this.errorMessage}</p></div>
+                    <a type="button"
+                          className="btn btn-outline-primary my-2"
+                          href="/#">Avbryt</a>
+                </div>
+                <br/>                     <p style={{color: "dark-blue"}}>{this.errorMessage}</p></div>
         </div>)
     }
 

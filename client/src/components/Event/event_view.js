@@ -73,7 +73,7 @@ export default class EventView extends Component {
                 </div>
 
                 <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Lukk</button>
+                    <button type="button" className="btn btn-outline-primary" data-dismiss="modal">Lukk</button>
                     <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
                 </ModalWidget>
             </div>
