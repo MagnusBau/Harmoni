@@ -12,14 +12,13 @@ import { EventSearch, eventService} from "../../services/eventService";
 import {createHashHistory} from "history";
 const history = createHashHistory();
 
-//TODO legge til egen søk side, slik at når trykker enter så kommer siden opp
 export class SearchBar extends Component {
     events: EventSearch[] = [];
     input: string = "";
 
     render() {
         return (
-            <div className="dropdown show">
+            <div className="form-inline dropdown show">
                 <input className="form-control mr-sm-2 dropdown-toggle" type="text" value={this.input} placeholder="Søk" id="search"
                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
                     if(event.target.value.trim() === '') {
@@ -37,7 +36,7 @@ export class SearchBar extends Component {
                         ))}
                     </div>
                 </div>
-                <button className="btn btn-outline-success my-2 my-sm-0" type="button" onClick={() => this.buttonSearch()}>Søk</button>
+                <button className="btn btn-outline-dark my-2 my-sm-0" type="button" onClick={() => this.buttonSearch()}>Søk</button>
             </div>
         );
     }

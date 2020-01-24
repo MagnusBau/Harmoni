@@ -32,7 +32,8 @@ class NavBar extends Component {
         this.state = {
             userId: 0,
             username: '',
-            fullName: ''
+            fullName: '',
+            isLoggedIn: false
         };
     }
 
@@ -45,6 +46,7 @@ class NavBar extends Component {
     login() {
         if(this.form && this.form.checkValidity()) {
             userService.attemptLogin(this.username, this.password, this.mounted);
+            this.setState({isLoggedIn: true});
         }
     }
 
@@ -61,6 +63,9 @@ class NavBar extends Component {
             this.username = userService.getUsername();
             this.firstName = userService.getFirstName();
             this.lastName = userService.getLastName();
+            this.setState({isLoggedIn: true});
+        }else{
+            this.setState({isLoggedIn: false});
         }
          let id = userService.getUserId();
          let username = userService.getUsername();
@@ -74,7 +79,7 @@ class NavBar extends Component {
         if (userService.getUserId() > 0) {
             userIcon = (
                 <div className="form-inline">
-                    <div className="dropdown m-1">
+                    <div className="dropdown">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
                             <img  className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
@@ -112,28 +117,30 @@ class NavBar extends Component {
         } else {
             userIcon = (
                 <div>
-                    <div className="dropdown m-1">
+                    <div className="dropdown">
                         <button type="button" className="btn btn-outline-dark" data-toggle="dropdown" data-html="true"
                                 data-content=''>
                             <img className="icon" src="./img/icons/person.svg" alt="login" width="22" height="22"/>
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="m-2">
-                                <form ref={e => (this.form = e)}>
-                                    <p>Brukernavn:</p>
+                                <form className="form-inline" ref={e => (this.form = e)}>
+                                    <label for="username">Brukernavn:</label>
                                     <input
+                                        id="username"
                                         type="text"
-                                        className="form-control"
+                                        className="form-control form-control-event-overview"
                                         value={this.username}
                                         placeholder="Brukernavn"
                                         required
                                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.username = event.target.value)}
                                         maxLength={50}
                                     />
-                                    <br/>
+                                    <label className="mt-2" for="password">Passord:</label>
                                     <input
+                                        id="password"
                                         type="password"
-                                        className="form-control"
+                                        className="form-control form-control-event-overview"
                                         value={this.password}
                                         required
                                         placeholder="Passord"
@@ -142,8 +149,8 @@ class NavBar extends Component {
                                     />
 
                                     <button
-                                        type="button"
-                                        className="btn btn-dark"
+                                        type="submit"
+                                        className="btn btn-outline-primary my-2"
                                         style={{}}
                                         onClick={this.login}>
                                         Logg inn
@@ -159,35 +166,40 @@ class NavBar extends Component {
                         </div>
                     </div>
                 </div>
-            );
+            )
         }
 
-        //TODO flytte user popup til høyre når movil view
         return(
-           <nav className="navbar navbar-light navbar-default navbar-expand-md sticky-top border-bottom border-light " >
-               <a className="navbar-brand"  href="#">
-                   <img src="./img/logo/harmoni-logo-black-brown.png" height="50px" width="50px"/>
-                   Harmoni</a>
-               <button className="navbar-toggler" type="button" data-toggle="collapse"
-                       data-target="#navbarContent" aria-controls="navbarContent"
-                       aria-expanded="false" aria-label="Toggle navigation">
-                   <span className="navbar-toggler-icon"/>
-               </button>
+            <nav className="navbar navbar-light navbar-default navbar-expand-lg sticky-top border-bottom border-light" >
+                <a className="navbar-brand"  href="#">
+                    <img className="mr-2" src="./img/logo/harmoni-logo-black-brown.png" alt="" height="50px" width="50px"/>
+                    Harmoni
+                </a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarContent" aria-controls="navbarContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"/>
+                </button>
 
-               <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
-                   <div className="nav form-group form-inline mr-auto">
-                       <SearchBar>
-
-                       </SearchBar>
-                   </div>
-                   <div className="nav-item">
+                <div className="collapse navbar-collapse justify-content-lg-end mr-auto" id="navbarContent">
+                    <div className="nav-item">
+                        <SearchBar>
+                        </SearchBar>
+                    </div>
+                    <div className="nav-item p-lg-1 p-md-1 p-lg-0">
                         {userIcon}
-                   </div>
-               </div>
-           </nav>
+                    </div>
+                    {this.state.isLoggedIn ?
+                        <div className="nav-item">
+                                <button type="button" className="btn btn-outline-primary" onClick={this.viewMyPage}>
+                                    Min Side
+                                </button>
+                        </div> : null
+                    }
+                </div>
+            </nav>
         )
     }
-
 }
 
 

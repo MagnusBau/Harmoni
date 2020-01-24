@@ -4,6 +4,7 @@ import * as React from 'react';
 import {Component} from "react-simplified";
 import { createHashHistory } from 'history';
 import {ticketService, Ticket, Ticket_ID} from '../../services/ticketService'
+import {EventViewHeader} from "../Header/headers";
 
 
 
@@ -24,13 +25,15 @@ export class TicketEdit extends Component {
     render() {
         if (!this.ticket) return null;
         return (
-
+            <div>
+            <EventViewHeader label="Title"/>
             <form ref={e => (this.userForm = e)}>
-                <div>title</div>
-                <div>
+                <div className="form-group">
+                    <label for="title">Title</label>
                     <input
                         required
-                        className="form-control"
+                        id="title"
+                        className="form-control form-control-event-overview"
                         type="text"
                         value={this.ticket.title}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -39,12 +42,12 @@ export class TicketEdit extends Component {
                     />
                 </div>
 
-
-                <div>info</div>
-                <div>
+                <div className="form-group">
+                    <label for="info">Info</label>
                     <input
                         required
-                        className="form-control"
+                        id="info"
+                        className="form-control form-control-event-overview"
                         type="text"
                         value={this.ticket.info}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -53,12 +56,11 @@ export class TicketEdit extends Component {
                     />
                 </div>
 
-
-                <div>price</div>
-                <div>
+                <div className="form-group">
+                    <label for="price">Price</label>
                     <input
                         required
-                        className="form-control"
+                        className="form-control form-control-event-overview"
                         type="number"
                         value={this.ticket.price}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -67,11 +69,13 @@ export class TicketEdit extends Component {
                     />
                 </div>
 
-                <div>count</div>
-                <div>
+
+                <div className="form-group">
+                    <label for="count">Count</label>
                     <input
                         required
-                        className="form-control"
+                        id="count"
+                        className="form-control form-control-event-overview"
                         type="number"
                         value={this.ticket.count}
                         onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -79,23 +83,23 @@ export class TicketEdit extends Component {
                         }}
                     />
                 </div>
-                <button
-                    className="btn btn-outline-success"
-                    onClick={() => {this.save(); }}
-                    type={"submit"}>
-                    Lagre
-                </button>
-                <button className="btn btn-outline-danger"
-                        onClick={() => {this.delete();}}
-                        type={"button"}>Slett
-                </button>
-                <button
-                    className="btn btn-outline-danger"
-                    onClick={this.props.handleCancel}
-                    type={"button"}>
-                    Avbryt
-                </button>
+
+                <div className="btn-toolbar">
+                    <button type="button" className="btn btn-outline-primary my-2 mr-4"
+                            onClick={() => {this.save(); }}>
+                        Lagre
+                    </button>
+
+                    <button type="button" className="btn btn-outline-primary my-2 mr-4" onClick={() => {this.delete();}} data-toggle="modal" data-target="#showModal">
+                        Slett
+                    </button>
+
+                    <button type="button" className="btn btn-outline-primary my-2" onClick={this.props.handleCancel} data-toggle="modal" data-target="#showModal">
+                        Avbryt
+                    </button>
+                </div>
             </form>
+            </div>
         );
     }
 

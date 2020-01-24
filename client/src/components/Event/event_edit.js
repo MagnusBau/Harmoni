@@ -48,13 +48,13 @@ export class EventEdit extends Component {
             <div className={"m-2"}>
                 <Alert name="editAlert"/>
                 <div className={"row"}>
-                    <div className={"col"}>
-                        <form className="form-inline" onSubmit={this.onSubmit}>
+                    <div className="col pr-0">
+                        <form className="form-group" onSubmit={this.onSubmit}>
                             <div className={"form-group m-2"}>
                                 <label>Navn på arrangement:</label>
                                 <br/>
                                 <input type={"text"}
-                                       className={"form-control"}
+                                       className="form-control form-control-event-overview"
                                        id={"event-title"}
                                        defaultValue={this.event.title}
                                        required
@@ -65,7 +65,7 @@ export class EventEdit extends Component {
                                 <label>Beskrivelse:</label>
                                 <br/>
                                 <textarea rows={4} cols={50}
-                                          className={"form-control"}
+                                          className="form-control form-control-event-overview"
                                           id={"event-description"}
                                           defaultValue={this.event.description}
                                           required
@@ -119,9 +119,9 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Total kapasitet:</label>
-                                <br/>
+                                <br></br>
                                 <input type={"number"}
-                                       className={"form-control"}
+                                       className="form-control form-control-event-overview"
                                        id={"ticket-amount"}
                                        defaultValue={this.event.capacity}
                                        required
@@ -141,14 +141,15 @@ export class EventEdit extends Component {
                                 />
                             </div>
                             <div className="text-center">
+                            <div className="btn-toolbar my-2 ml-2">
                                 <button type="submit"
-                                    className="btn btn-outline-dark center-block"
-                                >
+                                        className="btn btn-outline-primary mr-4"
+                                        onClick ={() => {this.props.onClick(); this.update()}}>
                                     {' '}Lagre{' '}
                                 </button>
                                 <button
                                     size="sm"
-                                    className="m btn btn-outline-dark center-block"
+                                    className="m btn btn-outline-primary"
                                     variant="outline-secondary"
                                     onClick={this.props.handleClickCancel}>
                                     Avbryt

@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "flow": "^0.2.3",
     "google-map-react": "^1.1.5",
@@ -30,7 +30,7 @@
     "jsdom": "^15.2.1",
     "leaflet": "^1.6.0",
     "moment": "^2.24.0",
-    "popper.js": "^1.14.3",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-autosuggest": "^9.4.3",
@@ -49,12 +49,12 @@
     "recompose": "^0.30.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-flow": "^7.8.3",
+    "@babel/preset-react": "^7.8.3",
     "@babel/runtime": "^7.8.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",

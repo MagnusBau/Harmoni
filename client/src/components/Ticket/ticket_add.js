@@ -4,12 +4,13 @@ import * as React from 'react';
 import {Component} from "react-simplified/lib/index";
 import { createHashHistory } from 'history';
 import {ticketService, Ticket, Ticket_ID} from '../../services/ticketService'
+import {EventViewHeader} from "../Header/headers";
 
 
 
 const history = createHashHistory();
 
-
+//TODO fjern?? ikkebrukt
 export class listTicketType extends Component <{match: {params: {eventId: number, id : number}}}> {
     id_temp : number = 0;
     ticket = new Ticket_ID(
@@ -94,79 +95,80 @@ export class TicketAdd extends Component{
 
         if (!this.ticket) return null;
         return(
-            <form ref={e => {this.form = e}} className="form-group">
-                <h2>
-                    Opprett en billettype
-                </h2>
-                <div>
-                    <div>Title</div>
-                    <div>
-                        <input
-                            required
-                            className="form-control"
-                            type="text"
-                            value={this.ticket.title}
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                                if (this.ticket) this.ticket.title = event.target.value;
+            <div>
+                <EventViewHeader label="Opprett en billettype"/>
+                <form ref={e => {this.form = e}} className="form-group">
+                        <div className="form-group">
+                            <label for="title">Tittel</label>
+                            <input
+                                id="title"
+                                required
+                                className="form-control form-control-event-overview"
+                                type="text"
+                                value={this.ticket.title}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                                    if (this.ticket) this.ticket.title = event.target.value;
 
-                            }}
-                        />
-                    </div>
+                                }}
+                            />
+                        </div>
 
-                    <div>info</div>
-                    <div>
-                        <input
-                            required
-                            className="form-control"
-                            type="text"
-                            value={this.ticket.info}
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                                if (this.ticket) this.ticket.info = event.target.value;
-                            }}
-                        />
-                    </div>
+                        <div className="form-group">
+                            <label for="info">Info</label>
+                            <input
+                                id="info"
+                                required
+                                className="form-control form-control-event-overview"
+                                type="text"
+                                value={this.ticket.info}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                                    if (this.ticket) this.ticket.info = event.target.value;
+                                }}
+                            />
+                        </div>
 
-                    <div>price</div>
-                    <div>
-                        <input
-                            required
-                            className="form-control"
-                            type="number"
-                            value={this.ticket.price}
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                                if (this.ticket) this.ticket.price = event.target.value;
-                            }}
-                        />
-                    </div>
+                        <div className="form-group">
+                            <label for="price">Pris</label>
+                            <input
+                                id="price"
+                                required
+                                className="form-control form-control-event-overview"
+                                type="number"
+                                value={this.ticket.price}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                                    if (this.ticket) this.ticket.price = event.target.value;
+                                }}
+                            />
+                        </div>
 
-                    <div>count</div>
-                    <div>
-                        <input
-                            required
-                            className="form-control"
-                            type="number"
-                            value={this.ticket.count}
-                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                                if (this.ticket) this.ticket.count = event.target.value;
-                            }}
-                        />
-                    </div>
-
-
-                    <button type="submit" className="btn btn-outline-success" onClick={this.send} >Legg til billett type</button>
-
+                        <div className="form-group">
+                            <label for="count">Antall</label>
+                            <input
+                                id="count"
+                                required
+                                className="form-control form-control-event-overview"
+                                type="number"
+                                value={this.ticket.count}
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
+                                    if (this.ticket) this.ticket.count = event.target.value;
+                                }}
+                            />
+                        </div>
+                </form>
+                <div className="btn-toolbar">
+                    <button type="submit" className="btn btn-outline-primary mr-4" onClick={this.send}>
+                        Legg til billett type
+                    </button>
                     <button
                         type="button"
-                        size="sm"
-                        className="btn btn-outline-danger"
+                        className="btn btn-outline-primary"
                         variant="outline-secondary"
                         onClick={this.props.handleCancel}>
                         Avbryt
                     </button>
                 </div>
-            </form>
+            </div>
         );}
-//TODO avbryt her
         mounted(){
             this.currentEvent = this.props.eventId;
             this.ticket.event = this.currentEvent;
