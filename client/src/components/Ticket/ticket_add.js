@@ -97,7 +97,7 @@ export class TicketAdd extends Component{
         return(
             <div>
                 <EventViewHeader label="Opprett en billettype"/>
-                <form ref={e => {this.form = e}} className="form-group">
+                <form ref={e => {this.form = e}} className="form-group" onSubmit={this.send}>
                         <div className="form-group">
                             <label for="title">Tittel</label>
                             <input
@@ -154,11 +154,12 @@ export class TicketAdd extends Component{
                                 }}
                             />
                         </div>
-                </form>
-                <div className="btn-toolbar">
-                    <button type="submit" className="btn btn-outline-primary mr-4" onClick={this.send}>
+                    <button type="submit" className="btn btn-outline-primary mr-4" >
                         Legg til billett type
                     </button>
+                </form>
+                <div className="btn-toolbar">
+
                     <button
                         type="button"
                         className="btn btn-outline-primary"

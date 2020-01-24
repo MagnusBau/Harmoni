@@ -195,7 +195,6 @@ export class AddEvent extends Component {
     }
 
     onSubmit(e) {
-        e.preventDefault();
 
         let file = this.state.file;
         let formData = new FormData();
@@ -204,35 +203,50 @@ export class AddEvent extends Component {
 
         const myNewFile = new File([file], this.props.eventId + this.nameAddOn + this.name, {type: file.type});
 
-        eventService
-            .createEvent(this.createEvent)
-            .then(() => {
-                console.log(userService.getUserId());
-                eventService
-                    .getLastEventByUser(userService.getUserId())
-                    .then((response) => {
 
-                        console.log("DETTE ER EN VIKTIG EVENT ID!!!" + response[0].event_id);
-                        const myNewFile = new File([file], response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+        if (typeof this.createEvent.start_time === typeof this.createEvent.end_time && this.createEvent.start_time + 100 < this.createEvent.end_time) {
+            e.preventDefault();
 
-                        formData.append('file', myNewFile);
-                        formData.append('image', ".\/files\/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
-                        console.log("./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
-                        fileInfoService.postImage(response[0].event_id, formData).then(response => {
-                            if (response.data === "error") {
-                                this.errorMessage = "Denne filtypen kan ikke lastes opp"
-                            }
+            eventService
+                .createEvent(this.createEvent)
+                .then(() => {
+                    console.log(userService.getUserId());
+                    eventService
+                        .getLastEventByUser(userService.getUserId())
+                        .then((response) => {
 
-                            Alert.success('You have created a new event!!!!');
-                            history.push('/user/' + userService.getUserId() + '/overview');
+                            console.log("DETTE ER EN VIKTIG EVENT ID!!!" + response[0].event_id);
+                            const myNewFile = new File([file], response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+
+                            formData.append('file', myNewFile);
+                            formData.append('image', ".\/files\/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                            console.log("./files/" + response[0].event_id + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                            fileInfoService.postImage(response[0].event_id, formData).then(response => {
+                                if (response.data === "error") {
+                                    this.errorMessage = "Denne filtypen kan ikke lastes opp"
+                                }
+
+                                Alert.success('You have created a new event!!!!');
+                                history.push('/user/' + userService.getUserId() + '/overview');
+                            })
                         })
-                    })
-                    .catch((error: Error) => Alert.danger(error.message));
-            })
-            .catch((error: Error) => Alert.danger(error.message));
+                        .catch((error: Error) => Alert.danger(error.message));
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+        } else {
+            e.preventDefault();
+            if (this.createEvent.start_time + 100 >= this.createEvent.end_time) {
+                return alert("start må være før slutt!");
+            } else {
+                e.preventDefault();
+                return alert("Du må fylle ut event start og slutt!");
+            }
+
+        }
     }
 
-    handleFile(e) {
+
+        handleFile(e) {
         let file = e.target.files[0];
         this.setState({file: file});
         this.createEvent.image = file.name;

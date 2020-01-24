@@ -143,8 +143,7 @@ export class EventEdit extends Component {
                             </div>
                             <div className="btn-toolbar my-2 ml-2">
                                 <button type="submit"
-                                        className="btn btn-outline-primary mr-4"
-                                        onClick ={() => {this.props.onClick(); this.update()}}>
+                                        className="btn btn-outline-primary mr-4">
                                     {' '}Lagre{' '}
                                 </button>
                                 <button
@@ -177,30 +176,41 @@ export class EventEdit extends Component {
     }
 
     onSubmit(e) {
-        e.preventDefault();
         let file = this.state.file;
         let formData = new FormData();
         this.event.start_time = this.state.start_time;
         this.event.end_time = this.state.end_time;
 
-        eventService
-            .updateEvent(this.currentEvent, this.event)
-            .then(() => {
-                if(this.state.file !== null){
-                    const myNewFile = new File([file], this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
-                    formData.append('file', myNewFile);
-                    formData.append('image', "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
-                    fileInfoService.deleteFile(btoa(this.event.image)).then(res => {
-                        fileInfoService.postImage(this.currentEvent, formData).then(res => {
-                            Alert.success('You have updated your event');
-                            window.location.reload();
+        if (typeof  this.event.start_time  === typeof this.event.end_time &&  this.state.start_time + 100 < this.event.end_time) {
+            eventService
+                .updateEvent(this.currentEvent, this.event)
+                .then(() => {
+                    if (this.state.file !== null) {
+                        const myNewFile = new File([file], this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1), {type: file.type});
+                        formData.append('file', myNewFile);
+                        formData.append('image', "./files/" + this.currentEvent + "." + file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1));
+                        fileInfoService.deleteFile(btoa(this.event.image)).then(res => {
+                            fileInfoService.postImage(this.currentEvent, formData).then(res => {
+                                Alert.success("editAlert", 'You have updated your event');
+                                window.location.reload();
+                            })
                         })
-                    })
-                }
-            })
-            .catch((error: Error) => Alert.danger("editAlert", error.message));
-        /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+                    }
+                })
+                .catch((error: Error) => alert("editAlert", error.message));
+            /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        } else {
+            e.preventDefault();
+            if ( this.state.start_time + 100 >= this.event.end_time) {
+                return alert("start må være før slutt!");
+            } else {
+                e.preventDefault();
+                return alert("Du må fylle ut event start og slutt!");
+            }
+        }
+
     }
+
 
     handleFile(e) {
         let file = e.target.files[0];
