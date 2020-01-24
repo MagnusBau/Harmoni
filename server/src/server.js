@@ -130,9 +130,20 @@ app.use("/auth/id/:id", (req, res, next) => {
 
 
 app.use("/auth/id/:id", (req, res, next) => {
-    //check body
-    next();
-
+    if(req.body.event) {
+        eventDao.getEventById(req.body.event, (err, data) => {
+            userDao.getContact(req.params.id, (err2, data2) => {
+                if(data[0][0].organizer === data2[0][0].contact_id) {
+                    next();
+                } else {
+                    console.log("Eier ikke event");
+                    res.json({ error: "Event" });
+                }
+            });
+        });
+    } else {
+        next();
+    }
 });
 
 /*
