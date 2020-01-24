@@ -80,7 +80,7 @@ export class EventEdit extends Component {
                                         id={"start_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        defaultValue={this.event.start_time}
+                                        value={this.state.start_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleStartTime}
@@ -95,7 +95,7 @@ export class EventEdit extends Component {
                                         id={"end_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        defaultValue={this.event.end_time}
+                                        value={this.state.end_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleEndTime}
@@ -188,12 +188,12 @@ export class EventEdit extends Component {
             .then(event =>  {
                 this.event = event[0][0];
                 this.event.start_time = moment(this.event.start_time).format('YYYY-MM-DD HH:mm');
-                this.state.start_time = this.event.start_time;
                 this.event.end_time = moment(this.event.end_time).format('YYYY-MM-DD HH:mm');
-                this.state.end_time = this.event.end_time;
                 console.log(this.event.start_time);
                 console.log(this.event.end_time);
-                this.setState({location: this.event.location});
+                this.setState({location: this.event.location,
+                                     start_time: this.event.start_time,
+                                     end_time: this.event.end_time});
             })
             .catch((error: Error) => alert(error.message));
         eventService
