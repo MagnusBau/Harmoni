@@ -55,6 +55,18 @@ export default class EventView extends Component {
                 <EventViewHeader label="Sted:"/>
                 <p>{this.eventOverview[0].location}</p>
 
+                <div className={"col"}>
+                    <Map
+                        google={this.props.google}
+                        center={{lat: 63.4154, lng: 10.4055}}
+                        height='300px'
+                        zoom={15}
+                        currentAddress={this.state.location}
+                        onChange={() => this.empty()}
+                        readonly={true}
+                    />
+                </div>
+
                 <div className="btn-toolbar">
                     {!this.props.isArtist ?
                         <button type="button" className="btn btn-outline-dark my-2 mr-4" onClick={this.props.handleClick}>Rediger arrangement
@@ -62,20 +74,9 @@ export default class EventView extends Component {
                     : null}
 
                     {!this.props.isArtist ?
-                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlyst arrangement
+                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlys arrangement
                         </button>
                     : null}
-                    <div className={"col"}>
-                        <Map
-                            google={this.props.google}
-                            center={{lat: 63.4154, lng: 10.4055}}
-                            height='300px'
-                            zoom={15}
-                            currentAddress={this.state.location}
-                            onChange={() => this.empty()}
-                            readonly={true}
-                        />
-                    </div>
                 </div>
                 <ModalWidget
                     show={this.state.setShowModal}

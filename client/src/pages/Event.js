@@ -229,7 +229,6 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             }
         }
 
-         */
         return (
             <div className="container">
                 {cancelled}

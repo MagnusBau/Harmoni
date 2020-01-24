@@ -140,7 +140,6 @@ export class EventEdit extends Component {
                                     accept=".png,.jpg,.jpeg,.gif"
                                 />
                             </div>
-                            <div className="text-center">
                             <div className="btn-toolbar my-2 ml-2">
                                 <button type="submit"
                                         className="btn btn-outline-primary mr-4"
@@ -155,7 +154,6 @@ export class EventEdit extends Component {
                                     Avbryt
                                 </button>
                             </div>
-
                         </form>
                     </div>
                     <div className={"col"}>
