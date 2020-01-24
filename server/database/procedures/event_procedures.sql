@@ -114,7 +114,7 @@ BEGIN
   DECLARE contact_id_in INT;
   SET contact_id_in = (SELECT contact_id FROM contact LEFT JOIN user u on contact.contact_id = u.contact
                        WHERE u.user_id=event_organizer_in LIMIT 1);
-  INSERT INTO event (event_id, title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
+  INSERT INTO event (event_id, title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
   VALUES (DEFAULT, event_title_in, event_description_in, event_location_in, event_start_time_in, event_end_time_in,
           event_category_in, event_capacity_in, contact_id_in, DEFAULT, event_image_in);
 end;
