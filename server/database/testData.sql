@@ -15,7 +15,6 @@ INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(defa
 INSERT INTO user(user_id, username, password, image, contact) VALUES(DEFAULT, 'cheezDoodles', '$2a$10$58.k1W9JZcldkAaL8RHYx.xBcg7CCFFLUej4BXTxlVYgMHAOQz.2C', '', 2);
 INSERT INTO contact (first_name, last_name, email, phone) VALUES ('Mia', 'Fornes', 'mia@test.com', 12345678);
 INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'passord', 'bilde', 3);
-
 INSERT INTO contact(first_name, last_name, email, phone)
 VALUES ('Geir', 'Lippestad', 'geir@lips.no', '12345678');
 

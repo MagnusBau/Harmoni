@@ -52,7 +52,7 @@ test("Get all artists from database", done => {
    artistDao.getAllArtists(callback);
 });
 
-test("Get one newArtist from database by id", done => {
+test("Get one new Artist from database by id", done => {
     function callback(status, data) {
         console.log(
             `Test callback: status=${status}, data=${data}`
@@ -186,14 +186,14 @@ test("Create artist on Contact", done => {
         expect(data.affectedRows).toBe(1);
         done();
     }
-    artistDao.createArtistOnContact("Mario", 1, callback);
+    artistDao.createArtistOnContact('Mario', 1, callback);
 });
 
 
 test("getArtistByPreviousContract", done => {
     function callback(status, data) {
         console.log(
-            `Test callback: status=${status}, data=${data}`
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
         );
 
         data = data[0];
@@ -217,27 +217,28 @@ test("update artist from db", done => {
     artistDao.updateArtist({artistId: 3,artistName: 'Svein Blipp', firstName: 'Mia', email:  'mia@test.com', phone: 12345678}, callback);
 });
 
-
+/*
 test("get artist by contract", done => {
     function callback(status, data) {
         console.log(
-            `Test callback: status=${status}, data=${data}`
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
         );
 
         data = data[0];
         expect(data.length).toBe(1);
-        expect(data[0].artist_name).toBe("Geir Lippestad");
         done();
     }
     artistDao.getArtistByContact(1, callback);
 });
+
+ */
 
 
 
 test("get artist by user", done => {
     function callback(status, data) {
         console.log(
-            `Test callback: status=${status}, data=${data}`
+            "Test callback: status=" + status + ", data.length=" + JSON.stringify(data)
         );
 
         data = data[0];
