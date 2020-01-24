@@ -9,11 +9,21 @@
   },
   "jest": {
     "verbose": true,
+    "moduleFileExtensions": [
+      "js"
+    ],
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./**/*.js",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ],
     "coverageReporters": [
-      "json",
-      "html"
-    ]
+      "text",
+      "html",
+      "json"
+    ],
+    "coverageDirectory": "./coverage/"
   },
   "keywords": [],
   "author": "",
@@ -54,6 +64,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.9.0",
     "fs": "^0.0.1-security",
+    "handlebars": "^4.5.0",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
     "reload": "^3.0.3"
