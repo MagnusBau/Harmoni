@@ -1,5 +1,14 @@
 // @flow
+
+/**
+ * Sets up Nodemailer - a module for Node.js application for email sending
+ */
+
 const nodemailer = require("nodemailer");
+
+/**
+ * Creates a reusable transporter object using a default SMTP transport
+ */
 
 let transporter = nodemailer.createTransport({
 
@@ -14,6 +23,18 @@ let transporter = nodemailer.createTransport({
 const url = `http://localhost:4000`;
 
 export class Email {
+
+    /**
+     *
+     * Sends an email to a contact when an event is cancelled
+     *
+     * @param mailList - the contact's email
+     * @param eventId - the id of the cancelled event
+     * @param title - the title of the cancelled event
+     * @param name - first and last name of the contact
+     * @param location - the location of the event
+     * @param startTime - the start time of the event
+     */
 
     cancelledNotification(mailList: Array, eventId: number, title: string, name: string, location: string, startTime: string) {
 
@@ -42,6 +63,17 @@ export class Email {
         });
     }
 
+    /**
+     *
+     * Sends an email when inserting a new artist on an existing contact
+     *
+     * @param recipient - the artist's email
+     * @param artistName - the name of the artist
+     * @param username - the artist's given username
+     * @param password - the artist's gived password
+     * @param organizer - the organizer of the event
+     */
+
     artistUserNotification(recipient: string, artistName: string, username: string, password: string, organizer: string) {
         let mailOption = {
             from: `Harmoni <harmoni.team3@gmail.com>`,
@@ -68,6 +100,16 @@ export class Email {
             }
         });
     }
+
+    /**
+     *
+     * Sends an email to the operators of the website
+     *
+     * @param fromMail - submitter's email
+     * @param name - submitter's first and last name
+     * @param subject - subject of the email
+     * @param content - content of the email
+     */
 
     contactUs(fromMail: string, name: string, subject: string, content: string) {
 

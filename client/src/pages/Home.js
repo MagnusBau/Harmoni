@@ -1,16 +1,13 @@
 // @flow
 
+/**
+ * Renders the frontpage view
+ */
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import {Event, eventService, FrontpageEvent} from "../services/eventService";
 import {createHashHistory} from "history";
 import "../../public/css/home.css";
-
-/**
- * Class for the view of Home-page
- *
- * @author Victoria Blichfeldt
- */
 
 const history = createHashHistory();
 

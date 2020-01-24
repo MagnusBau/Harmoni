@@ -13,6 +13,10 @@ import {Alert} from '../components/Alert/alert';
 import {fileInfoService} from "../services/fileService";
 import {EventViewHeader} from "../components/Header/headers";
 
+/**
+ * Renders the page for adding an artist to an event, and deleting an artist from an event
+ */
+
 const getSuggestionValue = suggestion => suggestion.artist_name;
 
 const renderSuggestion = suggestion => (

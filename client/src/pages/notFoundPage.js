@@ -1,5 +1,8 @@
 // @flow
 
+/**
+ * Renders the 404 - page not found page
+ */
 import * as React from 'react';
 import { Component } from 'react-simplified';
 

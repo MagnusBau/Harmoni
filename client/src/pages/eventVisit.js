@@ -1,5 +1,8 @@
 // @flow
 
+/**
+ * Renders the main view of an event
+ */
 import * as React from 'react';
 import {Component} from "react-simplified";
 import {createHashHistory} from "history";
