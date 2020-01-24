@@ -5,3 +5,4 @@ client/public/bundle.js
 server/files
 !server/files/default.png
 .env
+**/coverage
