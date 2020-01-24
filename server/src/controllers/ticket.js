@@ -5,14 +5,16 @@ import {TicketDAO} from '../dao/ticketDao.js';
 
 const ticketDao = new TicketDAO(pool);
 
+const TAG = '[TicketController]';
+
 exports.insertTicket = (req, res, next) => {
-    console.log("Fikk POST-request fra klienten");
+    console.log(TAG, "POST-request: /ticket");
     ticketDao.getAll(req.body.event, (status, tickets) => {
-        console.log(tickets[0]);
+        console.log(TAG, tickets[0]);
         let unique = true;
         if(tickets[0]) {
             tickets[0].map(t => {
-                console.log(req.body.title);
+                console.log(TAG, req.body.title);
                 if(t.title === req.body.title) {
                     unique = false;
                 }
@@ -23,7 +25,7 @@ exports.insertTicket = (req, res, next) => {
                     res.json(data);
                 });
             } else {
-                console.log("duplicate ticket");
+                console.log(TAG, "duplicate ticket");
                 res.json({error: "Duplicate ticket"});
             }
         } else {
@@ -33,28 +35,28 @@ exports.insertTicket = (req, res, next) => {
 };
 
 exports.getAllTickets = (req, res, next) => {
-    console.log(`Got request from client: /ticket`);
+    console.log(TAG, `GET-request: /ticket`);
     ticketDao.getAll(req.params.eventId,(err, rows) => {
         res.json(rows);
     })
 };
 
 exports.getTicketById = (req, res, next) => {
-    console.log(`Got request from client: /ticket`);
+    console.log(TAG, `GET-request: /ticket/${req.params.ticketId}`);
     ticketDao.getOne(req.params.ticketId,(err, rows) => {
         res.json(rows);
     });
 };
 
 exports.updateTicket = (req, res, next) => {
-    console.log("Fikk POST-request fra /ticket/:id");
+    console.log(TAG, "PUT-request: /ticket/:id");
     ticketDao.updateOneTicket(req.body, (err, rows) => {
         res.json(rows);
     });
 };
 
 exports.deleteTicket = (req, res, next) => {
-    console.log("/person: fikk /ticket/:id request fra klient");
+    console.log(TAG, `DELETE-request: /ticket/${req.params.ticketId}`);
     ticketDao.removeOneTicket(Number.parseInt(req.params.ticketId),(status, data) => {
         res.status(status);
         res.json(data);

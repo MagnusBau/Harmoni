@@ -13,6 +13,8 @@ const public_path = path.join(__dirname, '/../../client/public');
 const config = require("./controllers/configuration.js");
 const multer = require('multer');
 
+const TAG = '[Server]';
+
 let jwt = require("jsonwebtoken");
 
 let app = express();
@@ -63,7 +65,7 @@ app.use("/auth/id/:id", (req, res, next) => {
     let token = req.headers["x-access-token"];
     jwt.verify(token, publicKey, verifyOptions, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok 1");
+            console.log(TAG, "Token Error #1");
             res.json({ error: "Token" });
         } else {
             userDao.getUsername(paramsId, (err, rows) => {
@@ -72,40 +74,40 @@ app.use("/auth/id/:id", (req, res, next) => {
                 if(rows[0][0].username.toString().toUpperCase() === decoded.username.toString().toUpperCase()) {
                     if(req.body.username) {
                         if(req.body.username.toUpperCase() === decoded.username.toUpperCase()) {
-                            console.log("Token ok: " + decoded.username);
+                            //console.log(TAG, "Token ok: " + decoded.username);
                             if(req.body.user_id) {
                                 if(req.body.user_id === paramsId) {
-                                    console.log("Token ok: " + decoded.username);
+                                    //console.log(TAG, "Token ok: " + decoded.username);
                                     next();
                                 } else {
-                                    console.log("Token IKKE ok 4");
+                                    console.log(TAG, "Token #4");
                                     res.json({ error: "Token" });
                                 }
                             } else {
-                                console.log("Token ok: " + decoded.username);
+                                //console.log(TAG, "Token ok: " + decoded.username);
                                 next();
                             }
                         } else {
-                            console.log("Token IKKE ok 2");
+                            console.log(TAG, "Token Error #2");
                             res.json({ error: "Token" });
                         }
                     } else {
-                        console.log("Token ok: " + decoded.username);
+                        //console.log(TAG, "Token ok: " + decoded.username);
                         if(req.body.user_id) {
                             if(req.body.user_id === paramsId) {
-                                console.log("Token ok: " + decoded.username);
+                                //console.log(TAG, "Token ok: " + decoded.username);
                                 next();
                             } else {
-                                console.log("Token IKKE ok 5");
+                                console.log(TAG, "Token Error #5");
                                 res.json({ error: "Token" });
                             }
                         } else {
-                            console.log("Token ok: " + decoded.username);
+                            //console.log(TAG, "Token ok: " + decoded.username);
                             next();
                         }
                     }
                 } else {
-                    console.log("Token IKKE ok 3");
+                    console.log(TAG, "Token Error #3");
                     res.json({ error: "Token" });
                 }
             });
@@ -126,7 +128,7 @@ const ticketDao = new TicketDAO(pool);
 
 /*
 app.use("/ticket/:ticket", (req, res, next) => {
-    console.log("auth ticket 1");
+    console.log(TAG, "auth ticket 1");
     userDao.getContact(req.params.id, (err, rows) => {
         if(rows[0][0].contact_id) {
             let id = rows[0][0].contact_id;
@@ -139,20 +141,20 @@ app.use("/ticket/:ticket", (req, res, next) => {
                                     if(rows2[0][0].organizer === id) {
                                         next();
                                     } else {
-                                        console.log("not authorized ticket id1");
+                                        console.log(TAG, "not authorized ticket id1");
                                         res.json({ error: "Not authorized" });
                                     }
                                 } else {
-                                    console.log("not authorized ticket id2");
+                                    console.log(TAG, "not authorized ticket id2");
                                     res.json({ error: "Not authorized" });
                                 }
                             });
                         } else {
-                            console.log("not authorized ticket id3");
+                            console.log(TAG, "not authorized ticket id3");
                             res.json({ error: "Not authorized" });
                         }
                     } else {
-                        console.log("not authorized ticket id4");
+                        console.log(TAG, "not authorized ticket id4");
                         res.json({ error: "Not authorized" });
                     }
                 });
@@ -182,22 +184,22 @@ app.use("/ticket/:ticket", (req, res, next) => {
                                     if (rows[0].map(artist => artist.user_id).includes(id)) {
                                         next();
                                     } else {
-                                        console.log("not authorized event id1");
+                                        console.log(TAG, "not authorized event id1");
                                         res.json({error: "Not authorized"});
                                     }
                                 } else {
-                                    console.log("not authorized event id2");
+                                    console.log(TAG, "not authorized event id2");
                                     res.json({error: "Not authorized"});
                                 }
                             });
                         }
                     } else {
-                        console.log("not authorized event id3");
+                        console.log(TAG, "not authorized event id3");
                         res.json({error: "Not authorized"});
                     }
                 });
             } else {
-                console.log("not authorized event id4");
+                console.log(TAG, "not authorized event id4");
                 res.json({error: "Not authorized"});
             }
         } else {
@@ -273,8 +275,8 @@ const upload = multer({
 const uploadImg = multer({
     fileFilter: function (req, file, callback) {
         let ext = path.extname(file.originalname);
-        console.log(ext);
-        console.log(ext === '.jpg');
+        console.log(TAG, ext);
+        console.log(TAG, ext === '.jpg');
         if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
             req.fileValidationError = 'error';
             return callback(null, false, new Error('goes wrong on the mimetype'));
@@ -286,7 +288,7 @@ const uploadImg = multer({
 });
 
 app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
-    console.log('Got request from client: GET /api/single/' + req.params.eventId);
+    console.log(TAG, 'Got request from client: GET /api/single/' + req.params.eventId);
     if(req.fileValidationError) {
         return res.end(req.fileValidationError);
     }
@@ -296,7 +298,7 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
         "path": req.body.path
     };
     let result = res;
-    console.log(req.file);
+    console.log(TAG, req.file);
     fileInfoDao.postFileInfo(data, (err, res) => {
         try {
             result.send(req.file);
@@ -307,9 +309,9 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
-    console.log('Got request from client: GET /api/image/' + req.params.eventId);
+    console.log(TAG, 'Got request from client: GET /api/image/' + req.params.eventId);
     if(req.fileValidationError) {
-        console.log("FRICKK");
+        console.log(TAG, "FRICKK");
         return res.end(req.fileValidationError);
     }
     let data = {
@@ -317,8 +319,8 @@ app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
         "image": req.body.image
     };
     let result = res;
-    console.log(req.file);
-    console.log(data.image);
+    console.log(TAG, req.file);
+    console.log(TAG, data.image);
     eventDao.postImageToEvent(data, (err, res) => {
         try {
             result.send(req.file);
@@ -329,7 +331,7 @@ app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
 });
 
 app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
-    console.log('Got request from client: GET /api/single/artist/' + req.params.eventId);
+    console.log(TAG, 'Got request from client: GET /api/single/artist/' + req.params.eventId);
     let data = {
         "name": req.body.name,
         "eventId": req.params.eventId,
@@ -341,7 +343,7 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
         "phone": req.body.phone
     };
     let result = res;
-    console.log(req.file);
+    console.log(TAG, req.file);
     artistDao.addArtistWithNewContract(data, (err, res) => {
         try {
             result.send(req.file);
@@ -352,7 +354,7 @@ app.post('/api/single/artist/:eventId', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/single/update', upload.single('file'), (req, res) => {
-    console.log('Got request from client: GET /api/single/update');
+    console.log(TAG, 'Got request from client: GET /api/single/update');
     try {
         result.send(req.file);
     }catch(err) {
@@ -361,7 +363,7 @@ app.post('/api/single/update', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/image/edit/update', uploadImg.single('file'), (req, res) => {
-    console.log('Got request from client: GET /api/image/update');
+    console.log(TAG, 'Got request from client: GET /api/image/update');
     try {
         result.send(req.file);
     }catch(err) {
@@ -385,7 +387,7 @@ export let listen = new Promise<void>((resolve, reject) => {
     reload(app).then(reloader => {
         app.listen(PORT, (error: ?Error) => {
             if (error) reject(error.message);
-            console.log('Express server started');
+            console.log(TAG, 'Express server started');
             // Start hot reload (refresh web page on client changes)
             reloader.reload(); // Reload application on server restart
             fs.watch(public_path, () => reloader.reload());
