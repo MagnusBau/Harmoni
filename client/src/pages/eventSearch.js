@@ -39,18 +39,20 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
                     <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
                 </div>
                 <div className="container mt-4">
-                    <div className="card-columns">
-                        {this.events.map(events => (
-                            <div className="card" onClick={() => this.viewEvent(events.event_id)}>
-                                <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
-                                <div className="card-body">
-                                    <h5>
-                                        {events.title} {events.start_time}
-                                    </h5>
-                                </div>
+                    {this.events.map(events => (
+                        <a href={'#/event/' + events.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard" style={{width: '70%', height: '70%', margin: 'auto', marginBottom: 20}}>
+                            <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                            <div className="card-body" style={{backgroundColor: "white"}}>
+                                <h5 className="card-title">
+                                    {events.title}
+                                </h5>
+                                <h6 className="card-subtitle mb-2 text-muted">
+                                    {events.time}
+                                </h6>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                        </a>
+                    ))}
                 </div>
             </div>
         )

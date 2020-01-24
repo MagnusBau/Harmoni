@@ -7,13 +7,11 @@ export class UserDAO extends Dao {
         super(pool);
     }
 
-//     register(data: Object, callback: (status: string, data: string) => void){
-//         let values = [data.username, data.password, data.email, data.first_name, data.last_name, data.phone];
-//         super.query("CALL register_user(?,?,?,?,?,?)",
-//             values,
-//             callback);
-// }
-
+    /**
+     * Gets username by id
+     * @param userId
+     * @param callback
+     */
     getUsername(userId: number, callback: (status: string, data: string) => void){
         let values = [userId];
         super.query("CALL get_username(?)",
@@ -21,6 +19,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Check if username is already registered
+     * @param username
+     * @param callback
+     */
     checkUsername(username: string, callback: (status: string, data: string) => void){
         let values = [username];
         super.query("CALL check_username(?)",
@@ -28,6 +31,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Gets password by username
+     * @param username
+     * @param callback
+     */
     getPassword(username: string, callback: (status: string, data: string) => void){
         let values = [username];
         super.query("CALL get_password(?)",
@@ -35,6 +43,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Gets user by username
+     * @param username
+     * @param callback
+     */
     getUser(username: string, callback: (status: string, data: string) => void){
         let values = [username];
         super.query("CALL get_user(?)",
@@ -42,6 +55,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Check and verify username
+     * @param username
+     * @param callback
+     */
     checkAndVerifyArtistUsername(username: string, callback: (status: string, data: string) => void) {
         let values = [username];
         super.query("CALL check_and_verify_artist_username(?)",
@@ -49,6 +67,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Get a user by id
+     * @param userId
+     * @param callback
+     */
     getUserById(userId: number, callback: (status: string, data: string) => void){
         let values = [userId];
         super.query("CALL get_user_by_id(?)",
@@ -56,6 +79,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Get contact by id
+     * @param user_id
+     * @param callback
+     */
     getContact(user_id: number, callback: (status: string, data: string) => void){
         let values = [user_id];
         super.query("CALL get_contact(?)",
@@ -63,6 +91,11 @@ export class UserDAO extends Dao {
             callback);
     }
 
+    /**
+     * Get user by artist Id
+     * @param artistId
+     * @param callback
+     */
     getUserByArtist(artistId: number, callback: (status: string, data: string) => void) {
         let values = [artistId];
         super.query("CALL get_user_by_artist(?)",
@@ -70,13 +103,12 @@ export class UserDAO extends Dao {
             callback);
     }
 
-    /*    postContact(data: Object, callback: (status: string, data: string) => void){
-            let values = [data.email, data.first_name, data.last_name, data.phone];
-            super.query("CALL post_contact(?,?,?,?)",
-                values,
-                callback);
-        }*/
-
+    /**
+     * Inserts a new user
+     * @param data
+     * @param contactId
+     * @param callback
+     */
     postUser(data: Object, contactId: number, callback: (status: string, data: string) => void){
         let values = [data.username, data.password, contactId];
         super.query("CALL post_user(?,?,?)",
@@ -98,13 +130,12 @@ export class UserDAO extends Dao {
     }
     //</DO NOT TOUCH>
 
-    /*    updateUser(contactId: numberdata: Object, callback: (status: string, data: string) => void){
-        let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
-        super.query("CALL put_contact(?,?,?,?)",
-            values,
-            callback);
-    }*/
-
+    /**
+     * Update contact on id
+     * @param contactId
+     * @param data
+     * @param callback
+     */
     updateContact(contactId: number, data: Object, callback: (status: string, data: string) => void){
         let values = [contactId, data.first_name, data.last_name, data.email, data.phone];
         super.query("CALL put_contact(?,?,?,?,?)",
@@ -112,19 +143,24 @@ export class UserDAO extends Dao {
             callback);
     }
 
-    /*    updatePassword(contactId: number, hash: string, callback: (status: string, data: string) => void){
-        let values = [contactId, hash];
-        super.query("CALL post_contact(?,?)",
-            values,
-            callback);
-    }*/
-
+    /**
+     * Update password on id
+     * @param userId
+     * @param hash
+     * @param callback
+     */
     updatePassword(userId: number, hash: string, callback: (status: string, data: string) => void){
         let values = [userId, hash];
         super.query("CALL put_password(?,?)",
             values,
             callback);
     }
+
+    /**
+     * Get username by contact id
+     * @param contactId
+     * @param callback
+     */
     getOrganizerUsername(contactId: number, callback: (status: string, data: string) => void){
         let value = [contactId];
         super.query("CALL get_organizer_username(?)", value, callback);

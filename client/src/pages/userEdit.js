@@ -13,6 +13,7 @@ import TicketView from "../components/Ticket/ticket_types";
 import EventView from "../components/Event/event_view";
 import {EventEdit} from "../components/Event/event_edit";
 import {artistService} from "../services/artistService";
+import {EventViewHeader, PageHeader} from "../components/Header/headers";
 /**
  * Class for the view of one event
  *
@@ -25,7 +26,6 @@ export default class UserEdit extends Component {
     lastName: string = userService.getLastName();
     email: string = userService.getEmail();
     phone: string = userService.getPhone();
-    contactId: number = userService.getContactId();
     oldPassword: string = "";
     newPassword: string = "";
     confirmNewPassword: string = "";
@@ -62,7 +62,7 @@ export default class UserEdit extends Component {
             artistBox = (
                 <div className="list-group" className="">
                     <li className="list-group-item">
-                        <h5>Artist Navn:</h5>
+                        <h6>Artist navn:</h6>
                         {this.artistName}
                     </li>
                 </div>
@@ -72,7 +72,7 @@ export default class UserEdit extends Component {
                 <div className="list-group">
                     <form ref={e => (this.artistForm = e)}>
                         <li className="list-group-item">
-                            <h5>Artist Navn:</h5>
+                            <h6>Artist navn:</h6>
                             <input
                                 type="text"
                                 className="form-control"
@@ -82,11 +82,12 @@ export default class UserEdit extends Component {
                                 maxLength={50}
                             />
                         </li>
-                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
+                        <br></br>
+                        <button type="button" className="btn btn-outline-primary" onClick={(e) => {
                             this.registerArtist();
                         }}>
                             Registrer deg som artist
-                        </li>
+                        </button>
                     </form>
                 </div>
             );
@@ -94,163 +95,138 @@ export default class UserEdit extends Component {
 
         return (
             //TODO en eller annen header for hvilken user som er logget inn
-            <div className="container">
-                <br/>
+            <div className="container mt-4" id="userOverview">
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Profil</h5>
-                                <div className="list-group" className="">
-                                    <form ref={e => (this.userForm = e)}>
-                                        <li className="list-group-item">
-                                            <h5>Username:</h5>
-                                            {userService.getUsername()}
-                                        </li>
-                                        <li className="list-group-item">
-                                            <h5>Name:</h5>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={this.firstName}
-                                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
-                                                        required
-                                                        maxLength={50}
-                                                    />
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={this.lastName}
-                                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastName  = event.target.value)}
-                                                        required
-                                                        maxLength={50}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <h5>Email:</h5>
+                    <div className="col-md-12">
+                        <EventViewHeader label="Profil"/>
+                        <div className="list-group" className="">
+                            <form ref={e => (this.userForm = e)} onSubmit={this.saveChanges}>
+                                <li className="list-group-item">
+                                    <h6>Brukernavn</h6>
+                                    {userService.getUsername()}
+                                </li>
+                                <li className="list-group-item">
+                                    <h6>Navn</h6>
+                                    <div className="row">
+                                        <div className="col-md-6">
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={this.email}
-                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.email= event.target.value)}
+                                                value={this.firstName}
+                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.firstName = event.target.value)}
                                                 required
                                                 maxLength={50}
                                             />
-                                        </li>
-                                        <li className="list-group-item">
-                                            <h5>Phone:</h5>
+                                        </div>
+                                        <div className="col-md-6">
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={this.phone}
-                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.phone= event.target.value)}
+                                                value={this.lastName}
+                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.lastName  = event.target.value)}
                                                 required
                                                 maxLength={50}
                                             />
-                                        </li>
-                                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                            this.saveChanges();
-                                        }}>
-                                            Lagre Endringer
-                                        </li>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h5>Artist</h5>
-                                {artistBox}
-                            </div>
-                        </div>
-                        <p>{this.errorMessage}</p>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="list-group">
-                                    <li className="list-group-item list-group-item-action list-group-item-dark"
-                                        style={{marginTop: "20px"}}
-                                        onClick={(e) => {
-                                            history.push("/user/" + userService.getUserId() + "/overview");
-                                        }}>
-                                        Tilbake
-                                    </li>
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li className="list-group-item">
+                                    <h6>Epost</h6>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={this.email}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.email= event.target.value)}
+                                        required
+                                        maxLength={50}
+                                    />
+                                </li>
+                                <li className="list-group-item">
+                                    <h6>Telefon</h6>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={this.phone}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.phone= event.target.value)}
+                                        required
+                                        maxLength={50}
+                                    />
+                                </li>
+                                <br></br>
+                                <button type="submit" className="btn btn-outline-primary" >
+                                    Lagre Endringer
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
+                </div>
+                <div className="row">
+                    <div className="col-lg-12">
+                        <br/>
+                        <EventViewHeader label="Passord"/>
+                        <div className="list-group">
+                            <form ref={e => (this.passwordForm = e)} onSubmit={this.changePassword}>
+                                <li className="list-group-item">
+                                    <h6>Gammelt passord</h6>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={this.oldPassword}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.oldPassword = event.target.value)}
+                                        required
+                                        maxLength={256}
+                                    />
+                                </li>
+                                <li className="list-group-item">
+                                    <h6>Nytt passord</h6>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={this.newPassword}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.newPassword = event.target.value)}
+                                        required
+                                        maxLength={256}
+                                    />
+                                </li>
+                                <li className="list-group-item">
+                                    <h6>Gjenta nytt passord</h6>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={this.confirmNewPassword}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.confirmNewPassword= event.target.value)}
+                                        required
+                                        maxLength={256}
+                                    />
+                                </li>
                                 <br/>
-                                <h5>Profilbilde</h5>
-                                <div className="list-group" className="">
-                                    <form ref={e => (this.artistForm = e)}>
-                                        <li className="list-group-item">
-                                            <h5>Bilde</h5>
-
-                                        </li>
-                                        <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                            this.saveImageChanges();
-                                        }}>
-                                            Lagre Endringer
-                                        </li>
-                                    </form>
-                                </div>
-                            </div>
+                                <button type="submit" className="btn btn-outline-primary">
+                                    Oppdater passord
+                                </button>
+                            </form>
                         </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <br/>
-                                <h5>Passord</h5>
-                                <div className="list-group">
-                                    <form ref={e => (this.passwordForm = e)}>
-                                        <li className="list-group-item">
-                                            <h5>Gammelt Passord:</h5>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={this.oldPassword}
-                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.oldPassword = event.target.value)}
-                                                required
-                                                maxLength={256}
-                                            />
-                                        </li>
-                                        <li className="list-group-item">
-                                            <h5>Nytt Passord:</h5>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={this.newPassword}
-                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.newPassword = event.target.value)}
-                                                required
-                                                maxLength={256}
-                                            />
-                                        </li>
-                                        <li className="list-group-item">
-                                            <h5>Gjenta Nytt Passord:</h5>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={this.confirmNewPassword}
-                                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.confirmNewPassword= event.target.value)}
-                                                required
-                                                maxLength={256}
-                                            />
-                                        </li>
-                                    </form>
-                                    <li className="list-group-item list-group-item-action list-group-item-primary" onClick={(e) => {
-                                        this.changePassword();
-                                    }}>
-                                        Oppdater Passord
-                                    </li>
-                                </div>
-                            </div>
+                        <br></br>
+
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <EventViewHeader label="Artist"/>
+                        {artistBox}
+                    </div>
+                </div>
+                <p>{this.errorMessage}</p>
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="list-group">
+                            <button type="button" className="btn btn-outline-primary"
+                                style={{marginTop: "20px"}}
+                                onClick={(e) => {
+                                    history.push("/user/" + userService.getUserId() + "/overview");
+                                }}>
+                                Tilbake
+                            </button>
+                           <br/>
                         </div>
                     </div>
                 </div>
@@ -258,12 +234,13 @@ export default class UserEdit extends Component {
         )
     }
 
-    saveChanges() {
+    saveChanges(e) {
         if(!this.userForm || !this.userForm.checkValidity()) {
             this.errorMessage = "Brukerinformasjon error";
             return;
         }
         userService.updateUser(this.email, this.firstName, this.lastName, this.phone).then(response => {
+            history.push("/user/" + userService.getUserId() + "/overview");
             if(response.error) {
                 this.errorMessage = response.error;
                 return;
@@ -276,7 +253,7 @@ export default class UserEdit extends Component {
         })
     }
 
-    changePassword() {
+    changePassword(e) {
         if(!this.passwordForm || !this.passwordForm.checkValidity()) {
             this.errorMessage = "Passord error";
             return;
@@ -299,7 +276,7 @@ export default class UserEdit extends Component {
     }
 
     registerArtist() {
-        artistService.createArtistOnContact(this.artistName, this.contactId).then(response => {
+        artistService.createArtistOnContact(this.artistName, userService.getUserId()).then(response => {
             artistService.getArtistByUser(userService.getUserId()).then(response => {
                 console.log(response);
                 console.log("yo");

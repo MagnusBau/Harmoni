@@ -15,22 +15,24 @@ INSERT INTO contact(contact_id, first_name, last_name, email, phone) VALUES(defa
 INSERT INTO user(user_id, username, password, image, contact) VALUES(DEFAULT, 'cheezDoodles', '$2a$10$58.k1W9JZcldkAaL8RHYx.xBcg7CCFFLUej4BXTxlVYgMHAOQz.2C', '', 2);
 INSERT INTO contact (first_name, last_name, email, phone) VALUES ('Mia', 'Fornes', 'mia@test.com', 12345678);
 INSERT INTO user (username, password, image, contact) VALUES ('miafornes', 'passord', 'bilde', 3);
-
 INSERT INTO contact(first_name, last_name, email, phone)
 VALUES ('Geir', 'Lippestad', 'geir@lips.no', '12345678');
+
 INSERT INTO artist(artist_id, artist_name, contact)
 VALUES (DEFAULT, 'Geir Lippestad', 4);
 INSERT INTO artist(artist_id, artist_name, contact)
 VALUES (DEFAULT, 'Svein Blipp', 3);
 
-INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-09 12:06:00', '2020-01-09 12:06:00', 'Sport', 7000, 1, 0);
-INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
-INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 3, 1);
-INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled)
-VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0);
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
+VALUES ('EM Håndball', 'EM i håndball 2020', 'Trondheim Spektrum', '2020-01-09 12:06:00', '2020-01-09 12:06:00', 'Sport', 7000, 1, 0, 'ah ye');
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
+VALUES ('Konsert', 'Konsertbeskrivelse', 'Samfundet', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0, DEFAULT);
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
+VALUES ('Konsert m/ ballonger', 'Konsertbeskrivelse', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 3, 1, 'hola');
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
+VALUES ('Loppemarked', 'Loppemarked for inntekt til klassetur', 'Trondheim', '2020-01-16 09:00:27', '2020-01-16 09:00:27', 'Kategori', 200, 1, 0, 'yeye');
+INSERT INTO event (title, description, location, start_time, end_time, category, capacity, organizer, cancelled, image)
+VALUES ('Party', 'beskrivelse yo', 'Trondheim', '2020-05-10 02:12:54', '2020-05-21 20:43:19', 'Party', 50, 1,0, DEFAULT);
 
 INSERT INTO equipment (item, organizer)
 VALUES ('Trommesett',1);
@@ -67,6 +69,8 @@ INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'thrud', 'thrud', 1);
 INSERT INTO document (document_id, name, path, event)
 VALUES (DEFAULT, 'faor', 'faor', 1);
+INSERT INTO document (document_id, name, path, event)
+VALUES (DEFAULT, 'lmao', 'lmao', 5);
 
 INSERT INTO contract (artist, document)
 VALUES (1, 1);

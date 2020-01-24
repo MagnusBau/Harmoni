@@ -2,6 +2,7 @@
 **/node_modules/
 server/config.json
 client/public/bundle.js
-server/files
-!server/files/.gitkeep
+server/files/**
+!server/files/default.png
 .env
+server/coverage/

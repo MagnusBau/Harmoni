@@ -16,6 +16,8 @@ END;
 
 /**
   Returns staff currently assigned to event
+
+  IN event_in: Id of the event
  */
 
 CREATE PROCEDURE get_roles_in_event(IN event_in INT)

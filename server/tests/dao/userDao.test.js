@@ -119,3 +119,14 @@ test("Add new user", done => {
         3, callback);
 });
 
+test('get organizer username', done =>  {
+    function callback(status, data) {
+        console.log(
+            `Test callback: status=${status}, data=${data}`
+        );
+        data = data[0];
+        expect(data[0].username).toBe('Mario');
+        done();
+    }
+    userDao.getOrganizerUsername(1, callback)
+});

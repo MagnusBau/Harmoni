@@ -117,6 +117,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             .getEventById(this.currentEvent)
             .then(eventOverview => {
                 this.eventOverview = eventOverview[0];
+                this.loadArtist();
                 if(eventOverview.body.error) {
                     this.errorMessage = eventOverview.body.error;
                 }
@@ -152,12 +153,9 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         artistService
             .getArtistByUser(userService.getUserId())
             .then(artists => {
-                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview[0].organizer)});
-                if(artists.body.error) {
-                    this.errorMessage = artists.body.error;
-                }
+                this.setState({isArtist: (artists[0].length > 0 && userService.getContactId() != this.eventOverview.organizer)});
             })
-            .catch((error: Error) => error.message);
+            .catch((error: Error) => console.log(error.message));
     }
 
     mounted(){
@@ -165,7 +163,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         this.loadEvent();
         this.loadTicket();
         this.loadEquipment();
-        this.loadArtist();
+        //this.loadArtist();
     }
 
     render() {
@@ -178,6 +176,18 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
         let eventContent;
         let ticketContent;
         let artistContent;
+        let cancelled;
+
+        if(this.eventOverview) {
+            if(this.eventOverview.cancelled ) {
+                console.log(this.eventOverview.cancelled);
+                cancelled = <div style={{backgroundColor: "red", height: "25vh"}}><p style={{color: "white", fontSize: "15vh"}} className="justify-content-center row">Avlyst</p></div>
+            } else {
+                cancelled = <div></div>;
+            }
+        } else {
+            cancelled = <div></div>;
+        }
 
         if (!this.eventOverview || !this.tickets || !this.eventEquipment) return null;
 
@@ -210,18 +220,18 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
             }
 
         }
-        /*
-        if(isEditingRiders){
+
+        if(isEditingRiders) {
             riderContent =  <RiderEdit onClick={this.handleRiderEdit}/>
-        }else{
+        } else {
             if (!this.state.isArtist) {
                 riderContent = <AddRiderType onClick={this.handleRiderView}/>
             }
         }
 
-         */
         return (
             <div className="container">
+                {cancelled}
                 <div className="card">
                     <div>
                         <h3 id="overview-title">{this.eventOverview.title}</h3>
@@ -263,12 +273,7 @@ class EventOverview extends Component<{ match: { params: { eventId: number } } }
                                     {ticketContent}
                                 </div>
                                 <div className="tab-pane" id="riders" role="tabpanel">
-                                    <h5>Riders</h5>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">role.type</li>
-
-                                    </ul>
-                                    {riderContent}
+                                    <RiderEdit eventId={this.currentEvent}></RiderEdit>
                                 </div>
                                 <div className="tab-pane" id="equipment" role="tabpanel">
                                     <AddEquipment eventId={this.currentEvent}

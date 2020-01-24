@@ -70,8 +70,18 @@ export default class AddRole extends Component {
 
     remove() {
         roleService.removeRole(this.state.selected.role_id).then(response => {
-            this.setState({selected: null, showConfirmDelete: false});
-            this.load();
+            if (response.error) {
+                if (response.error.errno === 1451) {
+                    Alert.danger("staffAlert", "Rollen kan ikke slettes for den tilhører et arrangement!");
+                    this.setState({selected: null, showConfirmDelete: false});
+                } else {
+                    Alert.danger("staffAlert", `En feil har oppstått! (Feilkode: ${response.error.errno})`);
+                    this.setState({selected: null, showConfirmDelete: false});
+                }
+            } else {
+                this.setState({selected: null, showConfirmDelete: false});
+                this.load();
+            }
         });
 
         //window.location.reload();

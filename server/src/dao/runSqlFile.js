@@ -1,7 +1,11 @@
 // @flow
 
-var mysql = require("mysql");
-var fs = require("fs");
+/**
+ * Class for running SQL scripts
+ */
+
+const mysql = require("mysql");
+const fs = require("fs");
 
 module.exports = function run(filename, pool, done) {
     console.log("runsqlfile: reading file " + filename);
@@ -11,14 +15,12 @@ module.exports = function run(filename, pool, done) {
             console.log("runsqlfile: error connecting");
             done();
         } else {
-            console.log("runsqlfile: connected");
             connection.query(sql, (err, rows) => {
                 connection.release();
                 if (err) {
                     console.log(err);
                     done();
                 } else {
-                    console.log("runsqlfile: run ok");
                     done();
                 }
             });

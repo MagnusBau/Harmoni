@@ -14,7 +14,6 @@ const history = createHashHistory();
 
 export class SearchBar extends Component {
     events: EventSearch[] = [];
-
     input: string = "";
 
     render() {
@@ -22,8 +21,13 @@ export class SearchBar extends Component {
             <div className="form-inline dropdown show">
                 <input className="form-control mr-sm-2 dropdown-toggle" type="text" value={this.input} placeholder="Søk" id="search"
                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => {
-                    this.input = event.target.value;
-                    this.mounted();
+                    if(event.target.value.trim() === '') {
+                        this.input = event.target.value.trim();
+                        this.mounted();
+                    }else{
+                        this.input = event.target.value;
+                        this.mounted();
+                    }
                 }} minLength={1} maxLength={40} data-toggle="dropdown" onKeyPress={this.ifEnter}/>
                 <div className="dropdown-menu">
                     <div className="list-group list-group-flush">
@@ -32,7 +36,7 @@ export class SearchBar extends Component {
                         ))}
                     </div>
                 </div>
-                <button className="btn btn-outline-dark my-2 my-sm-0" type="button" onClick={() => history.push("/event/search/" + this.input)}>Søk</button>
+                <button className="btn btn-outline-dark my-2 my-sm-0" type="button" onClick={() => this.buttonSearch()}>Søk</button>
             </div>
         );
     }
@@ -53,26 +57,21 @@ export class SearchBar extends Component {
         history.push("/event/" + e + "/view")
     }
     ifEnter = (event) => {
+        if(this.input !== '')
         if(event.key === 'Enter'){
             console.log("enter");
             history.push("/event/search/" + this.input);
+            this.input = '';
         }
     };
-
+    buttonSearch() {
+        if(this.input !== '')
+            history.push("/event/search/" + this.input);
+    }
     ifEnterInList = (event) => {
         if(event.key === 'Enter'){
             console.log("enter");
             history.push("/event/" + event.event_id + "/view");
         }
-    };
-
-    view = (event) => {
-        let id = event.target.getAttribute('event_id');
-        history.push("/event/" + id)
-    };
-
-    search = (event) => {
-        this.input = event.target.getAttribute('author');
-        this.mounted();
     };
 }

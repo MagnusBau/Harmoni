@@ -24,9 +24,8 @@ class Home extends Component {
     render(){
         return (
             <div>
-                <div className="image-header" id="wrap">
                     <img id="test" src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
-                </div>
+
                 <div className="container mt-4" id="frontpage">
                     <div className="card" id="frontpage-card-container">
                         <div className="card-header">KOMMENDE ARRANGEMENTER</div>
@@ -34,7 +33,7 @@ class Home extends Component {
                         <div className="card-columns">
                             {this.events.map(event => (
                                 <a href={'#/event/' + event.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard">
-                                    <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                                    <img className="card-img-top img-fluid" src={"http://localhost:4000/api/file/download/" + btoa(event.image)} alt="happy faces"/>
                                     <div className="card-body">
                                         <h5 className="card-title">
                                             {event.title}
@@ -56,7 +55,10 @@ class Home extends Component {
 
     mounted(){
         eventService.getAllEvents()
-            .then(events => (this.events = events))
+            .then(events => {
+                this.events = events;
+                console.log(events[0]);
+            })
             .catch((error: Error) => console.log(error.message));
     }
 }

@@ -12,6 +12,7 @@ const history = createHashHistory();
 export class TicketEdit extends Component {
     currentTicketID = 0;
     ticketTypeList: Ticket[] = [];
+    userForm: any = null;
     ticket = new Ticket(
         '',
         '',
@@ -26,10 +27,11 @@ export class TicketEdit extends Component {
         return (
             <div>
             <EventViewHeader label="Title"/>
-            <form>
+            <form ref={e => (this.userForm = e)}>
                 <div className="form-group">
                     <label for="title">Title</label>
                     <input
+                        required
                         id="title"
                         className="form-control form-control-event-overview"
                         type="text"
@@ -43,6 +45,7 @@ export class TicketEdit extends Component {
                 <div className="form-group">
                     <label for="info">Info</label>
                     <input
+                        required
                         id="info"
                         className="form-control form-control-event-overview"
                         type="text"
@@ -56,6 +59,7 @@ export class TicketEdit extends Component {
                 <div className="form-group">
                     <label for="price">Price</label>
                     <input
+                        required
                         className="form-control form-control-event-overview"
                         type="number"
                         value={this.ticket.price}
@@ -69,6 +73,7 @@ export class TicketEdit extends Component {
                 <div className="form-group">
                     <label for="count">Count</label>
                     <input
+                        required
                         id="count"
                         className="form-control form-control-event-overview"
                         type="number"
@@ -119,7 +124,7 @@ export class TicketEdit extends Component {
     }
 
     save() {
-        if (!this.ticket) return null;
+        if (!this.ticket|| !this.userForm.checkValidity()) return null;
         if(this.ticket.count < 0 || this.ticket.price < 0 ) {
             alert('pris eller antall kan ikke være under 0!');
             return;

@@ -5,9 +5,10 @@ import {Component} from "react-simplified";
 import {Event, eventService} from "../../services/eventService";
 import {Ticket} from "../../services/ticketService";
 import {EventEquipment} from "../../services/equipmentService";
-import {ModalWidget} from "../Modal/modal";
+import {ModalWidget} from "../widgets";
 import {Button} from "../Buttons/buttons";
 import {Alert} from "../Alert/alert";
+import {Modal} from "react-bootstrap";
 import Map from "../map";
 import {EventViewHeader} from "../Header/headers";
 
@@ -19,19 +20,22 @@ export default class EventView extends Component {
     tickets: Ticket[] = [];
     eventEquipment: EventEquipment[] =[];
 
-    state = {
-        showModal: false,
-        setShowModal: false,
-        location: ''
-    };
+    constructor(props) {
+        super(props);
 
-    show = () => {
-        this.setState({ setShowModal: true });
-    };
+        this.state = {
+            setShowModal: false,
+            location: ''
+        }
+    }
 
-    close = () => {
-        this.setState({ setShowModal: false });
-    };
+    show(e) {
+        if (e.target.id === "showWarning") {
+            this.setState({setShowModal: true});
+        } else if (e.target.id === 'closeWarning') {
+            this.setState({setShowModal: false});
+        }
+    }
 
     render(){
         //TODO legge til error melding hvis eventen ikke kommer opp/finnes
@@ -51,6 +55,18 @@ export default class EventView extends Component {
                 <EventViewHeader label="Sted:"/>
                 <p>{this.eventOverview[0].location}</p>
 
+                <div className={"col"}>
+                    <Map
+                        google={this.props.google}
+                        center={{lat: 63.4154, lng: 10.4055}}
+                        height='300px'
+                        zoom={15}
+                        currentAddress={this.state.location}
+                        onChange={() => this.empty()}
+                        readonly={true}
+                    />
+                </div>
+
                 <div className="btn-toolbar">
                     {!this.props.isArtist ?
                         <button type="button" className="btn btn-outline-dark my-2 mr-4" onClick={this.props.handleClick}>Rediger arrangement
@@ -58,14 +74,18 @@ export default class EventView extends Component {
                     : null}
 
                     {!this.props.isArtist ?
-                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlyst arrangement
+                        <button type="button" className="btn btn-outline-dark my-2" data-toggle="modal" data-target="#showModal">Avlys arrangement
                         </button>
                     : null}
                 </div>
-
-                <ModalWidget title="Advarsel" body="Er du sikker på at du vil avlyse dette arrangementet?">
-                    <button type="button" className="btn btn-outline-primary" data-dismiss="modal">Lukk</button>
-                    <button type="button" className="btn btn-outline-danger" onClick={this.cancelEvent}>Avlys</button>
+                <ModalWidget
+                    show={this.state.setShowModal}
+                    onHide={() => this.setState({setShowModal: false})}
+                    title='Advarsel'
+                    body="Er du sikker på at du vil avlyse dette arrangementet?"
+                >
+                    <button id="closeWarning" type="button" className="btn btn-outline-primary" onClick={() => this.setState({setShowModal: false})}>Lukk</button>
+                    <button className="btn btn-outline-danger" type="button" onClick={this.cancelEvent}>Avlys</button>
                 </ModalWidget>
             </div>
         )
@@ -95,11 +115,10 @@ export default class EventView extends Component {
         if (this.eventOverview[0].cancelled === 0) {
 
             this.currentEvent = this.props.eventId;
-
             eventService
                 .cancelEvent(this.currentEvent)
-                .then(window.location.reload())
                 .then(console.log("Arrangementet er avlyst!"))
+                .then(this.setState({setShowModal: false}))
                 //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
                 .catch((error: Error) => Alert.danger(error));
 

@@ -18,10 +18,13 @@ build_client:
 test_server:
   stage: test
   script:
-    - cd server/
+    - cd server
     - npm install
-    - npm run test
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+    - npm test
+    - cd ..
+  artifacts:
+    paths:
+      - server/coverage/
 
 # Publish coverage report on gitlab-pages
 server_pages:
@@ -29,6 +32,7 @@ server_pages:
   dependencies:
     - test_server
   script:
+    - cd server/
     - mkdir .public
     - cp -r coverage/* .public
     - mv .public ../public

@@ -160,7 +160,6 @@ export class TicketAdd extends Component{
                         Legg til billett type
                     </button>
                     <button
-                        required
                         type="button"
                         className="btn btn-outline-primary"
                         variant="outline-secondary"

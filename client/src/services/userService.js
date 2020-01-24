@@ -9,6 +9,7 @@ let ip = "localhost";
 
 class UserService {
     mountDropdown: Function = () => {};
+    mountMap: Function = () => {};
 
     attemptLogin(username: string, password: string, next) {
         userService.postLogin(username, password).then(response => {
@@ -29,6 +30,7 @@ class UserService {
                 localStorage.setItem("artist_name", response.artist.artist_name);
                 this.mountDropdown();
                 next();
+                return response;
             }
         });
     }
@@ -40,7 +42,8 @@ class UserService {
         let username: string = artistName.replace(/\s/g, '').toLowerCase();
         // TODO: Send email to artist
         return this.attemptRegisterArtist(username, this.generateRandomPassword(10), firstName, lastName, phone,
-                                            email, contactId, organizer, artistName);
+                                            email, contactId, organizer, artistName)
+            .then(response => response.data);
     }
 
     // TODO: Move to utility class?
@@ -67,7 +70,7 @@ class UserService {
             "last_name": lastName,
             "phone": phone
         };
-        this
+        return this
             .postArtistUser(data)
             .then(response => {
                 if(this.error(response)){
@@ -232,7 +235,7 @@ class UserService {
     }
 
     postArtistUser(data: Object) {
-        return axios.post(`http://${ip}:4000/auth/id/${userService.getUserId()}/user/artist`, data, {
+        return axios.post(`http://${ip}:4000/auth/register`, data, {
             'headers': {
                 'x-access-token': this.getToken()
             }}).then(response => {
@@ -324,6 +327,16 @@ class UserService {
     mountDropdown() {
         this.mountDropdown();
     }
+
+    setMountMap(mountMap: Function) {
+        this.mountMap = mountMap;
+    }
+
+    mountMap() {
+        this.mountMap();
+    }
+
+
     getOrganizerUsername(contactId: number) {
         return axios.get('http://localhost:4000/api/event/organizer/' + contactId)
             .then(response => {

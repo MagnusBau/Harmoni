@@ -45,6 +45,11 @@ export class FileInfoDAO extends Dao {
             callback);
     }
 
+    /**
+     * Fetches all contracts by an artist id
+     * @param artistId
+     * @param callback
+     */
     getContractByArtistId(artistId: number, callback: (status: string, data: string) => void){
         let values = [artistId];
         super.query("CALL get_contract_by_artist_id(?)",
