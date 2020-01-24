@@ -40,7 +40,7 @@ export class ArtistDAO extends Dao {
     updateArtist(artistId: string, artistName: string, firstName: string, lastName: string, email: string, phone: string,
                  callback: (status: string, data: string) => void) {
         let values = [artistId, artistName, firstName, lastName, email, phone];
-        super.query("CALL update_artist(?, ?, ?, ?, ?, ?, ?)",
+        super.query("CALL update_artist(?, ?, ?, ?, ?, ?)",
             values,
             callback);
     }
