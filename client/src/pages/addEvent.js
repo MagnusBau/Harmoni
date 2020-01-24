@@ -154,7 +154,8 @@ export class AddEvent extends Component {
                         <select
                             required
                             name={"category"}
-                            className="custom-select w-25"
+                            className="custom-select"
+                            style={{width: "300px"}}
                             onChange={event => this.createEvent.category = event.target.value}
                             value={this.createEvent.category}>
                             <option selected value="">Velg kategori...</option>
