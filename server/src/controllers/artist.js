@@ -26,7 +26,7 @@ exports.insertArtist = (req, res, next) => {
 exports.deleteArtist = (req, res, next) => {
     console.log(`Got request from client: DELETE /api/artist/${req.params.artistId}`);
 
-    artistDao.deleteArtist(req.params.artistId, (err, rows) => {
+    artistDao.deleteArtist(req.params.artistId,(err, rows) => {
         res.send(rows);
     });
 };
