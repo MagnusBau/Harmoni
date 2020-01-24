@@ -4,6 +4,7 @@ import * as React from "react";
 import {Component} from "react-simplified";
 import {Event, eventService} from "../services/eventService";
 import {createHashHistory} from "history";
+import {EventViewHeader} from "../components/Header/headers";
 
 const history = createHashHistory();
 
@@ -39,6 +40,7 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
                     <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
                 </div>
                 <div className="container mt-4">
+                    <EventViewHeader label="Search results"/>
                     {this.events.map(events => (
                         <a href={'#/event/' + events.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard" style={{width: '70%', height: '70%', margin: 'auto', marginBottom: 20}}>
                             <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
