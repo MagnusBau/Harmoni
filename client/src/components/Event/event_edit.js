@@ -164,7 +164,7 @@ export class EventEdit extends Component {
                             height='300px'
                             zoom={15}
                             onChange={this.onChangeAddress}
-                            getAddress={this.getAddress}
+                            currentAddress={this.state.location}
                         />
                     </div>
                 </div>
