@@ -73,7 +73,7 @@ export default class UserEdit extends Component {
                 <div className="list-group">
                     <form ref={e => (this.artistForm = e)}>
                         <li className="list-group-item">
-                            <h6>Artist Navn:</h6>
+                            <h6>Artist navn:</h6>
                             <input
                                 type="text"
                                 className="form-control"
@@ -103,11 +103,11 @@ export default class UserEdit extends Component {
                         <div className="list-group" className="">
                             <form ref={e => (this.userForm = e)} onSubmit={this.saveChanges}>
                                 <li className="list-group-item">
-                                    <h6>Username:</h6>
+                                    <h6>Brukernavn</h6>
                                     {userService.getUsername()}
                                 </li>
                                 <li className="list-group-item">
-                                    <h6>Name:</h6>
+                                    <h6>Navn</h6>
                                     <div className="row">
                                         <div className="col-md-6">
                                             <input
@@ -132,7 +132,7 @@ export default class UserEdit extends Component {
                                     </div>
                                 </li>
                                 <li className="list-group-item">
-                                    <h6>Email:</h6>
+                                    <h6>Epost</h6>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -143,7 +143,7 @@ export default class UserEdit extends Component {
                                     />
                                 </li>
                                 <li className="list-group-item">
-                                    <h6>Phone:</h6>
+                                    <h6>Telefon</h6>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -168,7 +168,7 @@ export default class UserEdit extends Component {
                         <div className="list-group">
                             <form ref={e => (this.passwordForm = e)} onSubmit={this.changePassword}>
                                 <li className="list-group-item">
-                                    <h6>Gammelt Passord:</h6>
+                                    <h6>Gammelt passord</h6>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -179,7 +179,7 @@ export default class UserEdit extends Component {
                                     />
                                 </li>
                                 <li className="list-group-item">
-                                    <h6>Nytt Passord:</h6>
+                                    <h6>Nytt passord</h6>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -190,7 +190,7 @@ export default class UserEdit extends Component {
                                     />
                                 </li>
                                 <li className="list-group-item">
-                                    <h6>Gjenta Nytt Passord:</h6>
+                                    <h6>Gjenta nytt passord</h6>
                                     <input
                                         type="password"
                                         className="form-control"

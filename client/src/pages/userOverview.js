@@ -88,10 +88,10 @@ export default class UserOverview extends Component {
 
                 <div className="row">
                     <div className="col-md-12">
-                        <h5>Artist</h5>
+                        <EventViewHeader label="Artist"/>
                         <div className="list-group" className="">
                             <li className="list-group-item">
-                                <h5>Artist Navn:</h5>
+                                <h6>Artist avn:</h6>
                                 {userService.getArtistName()}
                             </li>
                         </div>
