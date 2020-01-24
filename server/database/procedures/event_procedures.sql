@@ -304,7 +304,7 @@ END;
 
 CREATE PROCEDURE get_all_events_by_input(IN input_in VARCHAR(40))
 BEGIN
-  SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time
+  SELECT event_id, title, DATE_FORMAT(start_time, '%e.%m.%Y %H:%i') as start_time, image
   FROM event
   WHERE UPPER(title) LIKE CONCAT('%', input_in, '%');
 END;

@@ -41,7 +41,7 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
                 <div className="container mt-4">
                     {this.events.map(events => (
                         <a href={'#/event/' + events.event_id + "/view"} style={{textDecoration: 'none'}}><div className="card" id="frontpageCard" style={{width: '70%', height: '70%', margin: 'auto', marginBottom: 20}}>
-                            <img className="card-img-top img-fluid" src="./img/happy-faces-2231989.jpg" alt="happy faces"/>
+                            <img className="card-img-top img-fluid" src={"http://localhost:4000/api/file/download/" + btoa(events.image)} alt=""/>
                             <div className="card-body" style={{backgroundColor: "white"}}>
                                 <h5 className="card-title">
                                     {events.title}
