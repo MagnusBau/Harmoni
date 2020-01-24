@@ -40,7 +40,7 @@ export class ArtistDAO extends Dao {
 
 
     deleteArtist(artistId: string, callback: (status: string, data: string) => void) {
-        let values= [artistId, result];
+        let values= [artistId];
         super.query("CALL delete_artist(?)",
             values,
             callback);
