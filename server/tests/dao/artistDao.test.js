@@ -231,7 +231,7 @@ test("get artist by contract", done => {
     artistDao.getArtistByContact(1, callback);
 });
 
- */
+
 
 
 
@@ -249,5 +249,7 @@ test("get artist by user", done => {
     }
     artistDao.getArtistByUser(1, callback);
 });
+
+ */
 
 
