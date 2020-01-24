@@ -51,7 +51,7 @@ export class EventEdit extends Component {
                         <form className="form-inline" onSubmit={this.onSubmit}>
                             <div className={"form-group m-2"}>
                                 <label>Navn på arrangement:</label>
-                                <br></br>
+                                <br/>
                                 <input type={"text"}
                                        className={"form-control"}
                                        id={"event-title"}
@@ -62,7 +62,7 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Beskrivelse:</label>
-                                <br></br>
+                                <br/>
                                 <textarea rows={4} cols={50}
                                           className={"form-control"}
                                           id={"event-description"}
@@ -74,13 +74,13 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Start tidspunkt:</label>
-                                <br></br>
+                                <br/>
                                 <div>
                                     <DateTime
                                         id={"start_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        value={this.event.start_time}
+                                        defaultValue={this.event.start_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleStartTime}
@@ -89,13 +89,13 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Slutt tidspunkt:</label>
-                                <br></br>
+                                <br/>
                                 <div>
                                     <DateTime
                                         id={"end_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        value={this.event.end_time}
+                                        defaultValue={this.event.end_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleEndTime}
@@ -104,7 +104,7 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Type arrangement:</label>
-                                <br></br>
+                                <br/>
                                 <select
                                     required
                                     name={"category"} className="custom-select w-25"
@@ -118,7 +118,7 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Total kapasitet:</label>
-                                <br></br>
+                                <br/>
                                 <input type={"number"}
                                        className={"form-control"}
                                        id={"ticket-amount"}
@@ -167,17 +167,26 @@ export class EventEdit extends Component {
         this.event.location = address;
     }
 
-    onSubmit() {
+    onSubmit(e) {
         this.event.start_time = this.state.start_time;
         this.event.end_time = this.state.end_time;
-        eventService
-            .updateEvent(this.currentEvent, this.event)
-            .then(() => {
-                window.location.reload();
-
-            })
-            .catch((error: Error) => alert(error.message));
-        /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        if (typeof  this.event.start_time  === typeof this.event.end_time &&  this.state.start_time + 100 < this.event.end_time) {
+            eventService
+                .updateEvent(this.currentEvent, this.event)
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch((error: Error) => alert(error.message));
+            /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        } else {
+            e.preventDefault();
+            if ( this.state.start_time + 100 >= this.event.end_time) {
+                return alert("start må være før slutt!");
+            } else {
+                e.preventDefault();
+                return alert("Du må fylle ut event start og slutt!");
+            }
+        }
     }
 
     mounted() {
