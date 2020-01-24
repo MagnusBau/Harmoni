@@ -29,13 +29,7 @@ exports.insertArtist = (req, res, next) => {
     }
 };
 
-exports.updateArtist = (req, res, next) => {
-    console.log(TAG, `Got request from client: PUT /api/artist/${req.params.artistId}`);
 
-    artistDao.updateArtist(req.params.artistId, req.body.artistName, req.body.firstName, req.body.lastName, req.body.email, req.body.phone, (err, rows) => {
-        res.send(rows);
-    });
-};
 
 exports.deleteArtist = (req, res, next) => {
     console.log(TAG, `DELETE-request: /api/artist/${req.params.artistId}`);

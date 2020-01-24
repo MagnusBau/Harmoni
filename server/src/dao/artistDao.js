@@ -48,23 +48,6 @@ export class ArtistDAO extends Dao {
             callback);
     }
 
-    /**
-     * Updates an existing artist on artist ID
-     * @param artistId
-     * @param artistName
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param phone
-     * @param callback
-     */
-    updateArtist(artistId: string, artistName: string, firstName: string, lastName: string, email: string, phone: string,
-                 callback: (status: string, data: string) => void) {
-        let values = [artistId, artistName, firstName, lastName, email, phone];
-        super.query("CALL update_artist(?, ?, ?, ?, ?, ?, ?)",
-            values,
-            callback);
-    }
 
     /**
      * Deletes an existing artist on artist Id
