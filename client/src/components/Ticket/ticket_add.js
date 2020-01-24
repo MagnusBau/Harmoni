@@ -156,7 +156,6 @@ export class TicketAdd extends Component{
                     <button type="submit" className="btn btn-outline-success" onClick={this.send} >Legg til billett type</button>
 
                     <button
-                        required
                         type="button"
                         size="sm"
                         className="btn btn-outline-danger"

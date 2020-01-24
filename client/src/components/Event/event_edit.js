@@ -48,39 +48,39 @@ export class EventEdit extends Component {
                 <Alert/>
                 <div className={"row"}>
                     <div className={"col"}>
-                        <form className="form-group">
+                        <form className="form-inline" onSubmit={this.onSubmit}>
                             <div className={"form-group m-2"}>
                                 <label>Navn på arrangement:</label>
-                                <br></br>
+                                <br/>
                                 <input type={"text"}
                                        className={"form-control"}
                                        id={"event-title"}
                                        defaultValue={this.event.title}
-                                       required={true}
+                                       required
                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                            (this.event.title = event.target.value)}/>
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Beskrivelse:</label>
-                                <br></br>
+                                <br/>
                                 <textarea rows={4} cols={50}
                                           className={"form-control"}
                                           id={"event-description"}
                                           defaultValue={this.event.description}
-                                          required={true}
+                                          required
                                           onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                               (this.event.description = event.target.value)}
                                 />
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Start tidspunkt:</label>
-                                <br></br>
+                                <br/>
                                 <div>
                                     <DateTime
                                         id={"start_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        value={this.event.start_time}
+                                        defaultValue={this.event.start_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleStartTime}
@@ -89,13 +89,13 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Slutt tidspunkt:</label>
-                                <br></br>
+                                <br/>
                                 <div>
                                     <DateTime
                                         id={"end_time"}
                                         dateFormat={"YYYY-MM-DD"}
                                         timeFormat={"HH:mm"}
-                                        value={this.event.end_time}
+                                        defaultValue={this.event.end_time}
                                         locale={"no"}
                                         inputProps={{readOnly: true}}
                                         onChange={this.handleEndTime}
@@ -104,10 +104,12 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Type arrangement:</label>
-                                <br></br>
-                                <select name={"category"} className="custom-select w-25"
-                                        onChange={event => this.event.category = event.target.value}
-                                        value={this.event.category}>
+                                <br/>
+                                <select
+                                    required
+                                    name={"category"} className="custom-select w-25"
+                                    onChange={event => this.event.category = event.target.value}
+                                    value={this.event.category}>
                                     <option selected value="">Velg kategori...</option>
                                     {this.categories.map(category =>
                                         <option value={category.name}>{category.name}</option>
@@ -116,12 +118,12 @@ export class EventEdit extends Component {
                             </div>
                             <div className={"form-group m-2"}>
                                 <label>Total kapasitet:</label>
-                                <br></br>
-                                <input type={"text"}
+                                <br/>
+                                <input type={"number"}
                                        className={"form-control"}
                                        id={"ticket-amount"}
                                        defaultValue={this.event.capacity}
-                                       required={true}
+                                       required
                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
                                            (this.event.capacity = event.target.value)}
                                 />
@@ -129,7 +131,7 @@ export class EventEdit extends Component {
                             <div className="text-center">
                                 <button type="submit"
                                         className="btn btn-outline-dark center-block"
-                                        onClick ={() => {this.props.onClick(); this.update()}}>
+                                >
                                     {' '}Lagre{' '}
                                 </button>
                                 <button
@@ -145,14 +147,7 @@ export class EventEdit extends Component {
                     <div className={"col"}>
                         <form className="form-group">
                             <div className={"form-group m-2"}>
-                                <Map
-                                    google={this.props.google}
-                                    center={{lat: 63.4154, lng: 10.4055}}
-                                    height='300px'
-                                    zoom={15}
-                                    onChange={this.onChangeAddress}
-                                    currentAddress={this.state.location}
-                                />
+
                             </div>
                         </form>
                     </div>
@@ -165,17 +160,25 @@ export class EventEdit extends Component {
         this.event.location = address;
     }
 
-    update() {
+    onSubmit(e) {
+        e.preventDefault();
         this.event.start_time = this.state.start_time;
         this.event.end_time = this.state.end_time;
-        eventService
-            .updateEvent(this.currentEvent, this.event)
-            .then(() => {
-                this.props.reload();
-                Alert.success('You have updated your event');
-            })
-            .catch((error: Error) => Alert.danger(error.message));
-        /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        if (typeof  this.event.start_time  === typeof this.event.end_time &&  this.state.start_time + 100 < this.event.end_time) {
+            eventService
+                .updateEvent(this.currentEvent, this.event)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch((error: Error) => alert(error.message));
+            /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
+        } else {
+            if ( this.state.start_time + 100 >= this.event.end_time) {
+                return alert("start må være før slutt!");
+            } else {
+                return alert("Du må fylle ut event start og slutt!");
+            }
+        }
     }
 
     mounted() {
@@ -192,10 +195,10 @@ export class EventEdit extends Component {
                 console.log(this.event.end_time);
                 this.setState({location: this.event.location});
             })
-            .catch((error: Error) => Alert.danger(error.message));
+            .catch((error: Error) => alert(error.message));
         eventService
             .getCategories()
             .then(categories => this.categories = categories[0])
-            .catch((error: Error) => Alert.danger(error.message));
+            .catch((error: Error) => alert(error.message));
     }
 }
