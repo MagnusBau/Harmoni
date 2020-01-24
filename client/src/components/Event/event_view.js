@@ -117,6 +117,7 @@ export default class EventView extends Component {
             eventService
                 .cancelEvent(this.currentEvent)
                 .then(console.log("Arrangementet er avlyst!"))
+                .then(this.setState({setShowModal: false}))
                 //.then(Alert.success("Arrangementet er avlyst! Varsel er sendt på epost."))
                 .catch((error: Error) => Alert.danger(error));
 

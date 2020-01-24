@@ -220,15 +220,15 @@ export class EventService {
     }
 
     cancelEvent(eventId: number) {
-        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/cancel', {
+        return axios.put('http://localhost:4000/auth/id/' + userService.getUserId() + '/event/' + eventId + '/cancel', "",{
             'headers': {
                 'x-access-token': userService.getToken()
             }}).then(response => {
-            if(userService.error(response)){
-                return userService.error(response);
-            }
-            return response.data;
-        })
+                if(userService.error(response)){
+                    return userService.error(response);
+                }
+                return response.data;
+            })
             .catch(error => console.log("error" + error));
     }
 

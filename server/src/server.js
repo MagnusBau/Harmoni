@@ -3,6 +3,7 @@
 import {ArtistDAO} from "./dao/artistDao.js";
 import {FileInfoDAO} from './dao/fileInfoDao.js';
 import {UserDAO} from "./dao/userDao.js";
+import {EventDAO} from "./dao/eventDao";
 
 /**
  * Overhead server class. Here, server properties are declared, along with a few app uses
@@ -48,7 +49,7 @@ const pool = mysql.createPool({
 const artistDao = new ArtistDAO(pool);
 const fileInfoDao = new FileInfoDAO(pool);
 const userDao = new UserDAO(pool);
-
+const eventDao = new EventDAO(pool);
 
 module.exports = pool;
 

@@ -10,6 +10,7 @@ import DateTime from 'react-datetime';
 import moment from "moment";
 import {userService} from "../services/userService";
 import Map from "../components/map";
+import {BigHeader} from "../components/Header/headers";
 
 const history = createHashHistory();
 
@@ -59,129 +60,133 @@ export class AddEvent extends Component {
 
     render() {
 
-
         return (
-            <div className={"m-2"}>
-                <form className="form-inline" onSubmit={this.onSubmit}>
+            <div>
+                <div className="container mt-4">
+                    <BigHeader label="Opprett arrangement"/>
                     <div className="row">
-                        <div classname="col">
-                            <div className="text-center">
-                                <div className={"form-group m-2"}>
-                                    <label>Navn på arrangement:</label>
-                                    <br></br>
-                                    <input
-                                        required
-                                        type={"text"}
-                                        className={"form-control"}
-                                        id={"event-title"}
-                                        placeholder={"Navn på arrangement"}
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                            (this.createEvent.title = event.target.value)}/>
-                                </div>
-                                <div className={"form-group m-2"}>
-                                    <label>Beskrivelse:</label>
-                                    <br></br>
-                                    <textarea
-                                        required
-                                        rows={4} cols={50}
-                                        className={"form-control"}
-                                        id={"event-description"}
-                                        placeholder={"Beskrivelse av arrangement"}
+                        <form className="col" onSubmit={this.onSubmit}>
+                            <div className={"form-group m-2"}>
+                                <h6>Tittel</h6>
+                                <input
+                                    required
+                                    type={"text"}
+                                    className={"form-control"}
+                                    id={"event-title"}
+                                    placeholder={"Tittel på arrangement"}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                        (this.createEvent.title = event.target.value)}/>
+                            </div>
+                            <p/>
+                            <div className={"form-group m-2"}>
+                                <h6>Beskrivelse</h6>
+                                <textarea
+                                    required
+                                    rows={4} cols={50}
+                                    className={"form-control"}
+                                    id={"event-description"}
+                                    placeholder={"Beskrivelse av arrangement"}
 
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                            (this.createEvent.description = event.target.value)}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                        (this.createEvent.description = event.target.value)}
+                                />
+                            </div>
+                            <p/>
+                            <div className={"form-group m-2"}>
+                                <h6>Starttidspunkt:</h6>
+                                <div>
+                                    <DateTime
+
+                                        type={'text'}
+                                        id={"start_time"}
+                                        dateFormat={"YYYY-MM-DD"}
+                                        timeFormat={"HH:mm"}
+                                        locale={"no"}
+                                        inputProps={{readOnly: true}}
+                                        onChange={this.handleStartTime}
+                                        closeOnSelect={true}
+
                                     />
                                 </div>
-                                <div className={"form-group m-2"}>
-                                    <label>Start tidspunkt:</label>
-                                    <br></br>
-                                    <div>
-                                        <DateTime
+                            </div>
+                            <p/>
+                            <div className={"form-group m-2"}>
+                                <h6>Sluttidspunkt:</h6>
+                                <div>
+                                    <DateTime
 
-                                            type={'text'}
-                                            id={"start_time"}
-                                            dateFormat={"YYYY-MM-DD"}
-                                            timeFormat={"HH:mm"}
-                                            locale={"no"}
-                                            inputProps={{readOnly: true}}
-                                            onChange={this.handleStartTime}
-                                            closeOnSelect={true}
+                                        id={"end_time"}
+                                        dateFormat={"YYYY-MM-DD"}
+                                        timeFormat={"HH:mm"}
+                                        locale={"no"}
+                                        inputProps={{readOnly: true}}
+                                        onChange={this.handleEndTime}
+                                        closeOnSelect={true}
 
-                                        />
-                                    </div>
-                                </div>
-                                <div className={"form-group m-2"}>
-                                    <label>Slutt tidspunkt:</label>
-                                    <br></br>
-                                    <div>
-                                        <DateTime
-
-                                            id={"end_time"}
-                                            dateFormat={"YYYY-MM-DD"}
-                                            timeFormat={"HH:mm"}
-                                            locale={"no"}
-                                            inputProps={{readOnly: true}}
-                                            onChange={this.handleEndTime}
-                                            closeOnSelect={true}
-
-                                        />
-                                    </div>
-                                </div>
-                                <div className={"form-group m-2"}>
-                                    <label>Type arrangement:</label>
-                                    <br></br>
-                                    <select
-                                        required
-                                        name={"category"}
-                                        className="custom-select w-25"
-                                        onChange={event => this.createEvent.category = event.target.value}
-                                        value={this.createEvent.category}>
-                                        <option selected value="">Velg kategori...</option>
-                                        {this.categories.map(category =>
-                                            <option value={category.name}>{category.name}</option>
-                                        )}
-                                    </select>
-                                </div>
-                                <div className={"form-group m-2"}>
-                                    <label>Total kapasitet:</label>
-                                    <br></br>
-                                    <input
-                                        required
-                                        type="number"
-                                        className={"form-control"}
-                                        id={"ticket-amount"}
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
-                                            (this.createEvent.capacity = event.target.value)}
                                     />
                                 </div>
-                                <div className="form-group m-2">
-                                    <label>Bilde: </label>
-                                    <input
-                                        type="file"
-                                        className="form-control"
-                                        value={this.file}
-                                        placeholder="Fil"
-                                        onChange={(e) => this.handleFile(e)}
-                                        accept=".png,.jpg,.jpeg,.gif"
-                                    />
-                                </div>
-                                <button type="submit" className="btn btn-primary">Registrer</button>
+                            </div>
+                            <div className={"form-group m-2"}>
+                                <h6> Type arrangement:</h6>
+                                <select
+                                    required
+                                    name={"category"}
+                                    className="custom-select"
+                                    style={
+                                        {
+                                            width: "300px"
+                                        }
+                                    }
+                                    onChange={event => this.createEvent.category = event.target.value}
+                                    value={this.createEvent.category}>
+                                    <option selectedvalue="">Velg kategori...</option>
+                                    {this.categories.map(category =>
+                                        <option value={category.name}>{category.name}</option>
+                                    )}
+                                </select>
+                            </div>
+                            <p/>
+                            <div className={"form-group m-2"}>
+                                <h6> Total kapasitet:</h6>
+                                <input
+                                    required
+                                    type="number"
+                                    className={"form-control"}
+                                    id={"ticket-amount"}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.createEvent.capacity = event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group m-2">
+                                <label>Bilde: </label>
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    value={this.file}
+                                    placeholder="Fil"
+                                    onChange={(e) => this.handleFile(e)}
+                                    accept=".png,.jpg,.jpeg,.gif"
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary">Registrer</button>
+                        </form>
+                        <div className={"col"}>
+                            <div className="form-group m-2">
+                                <h6>Lokasjon</h6>
+                                <Map
+                                    center={
+                                        {lat: 63.4154, lng: 10.4055}
+                                    }
+                                    google={this.props.google}
+                                    height='300px'
+                                    zoom={15}
+                                    onChange={this.onChangeAddress}
+                                    getAddress={this.getAddress}
+                                />
                             </div>
                         </div>
-                        <div className={"col"}>
-                            <Map
-                                center={{lat: 63.4154, lng: 10.4055}}
-                                google={this.props.google}
-                                height='300px'
-                                zoom={15}
-                                onChange={this.onChangeAddress}
-                                getAddress={this.getAddress}
-                            />
-                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-
         )
     }
 
@@ -232,7 +237,6 @@ export class AddEvent extends Component {
         this.setState({file: file});
         this.createEvent.image = file.name;
     }
-
 
     mounted() {
         this.createEvent.organizer = userService.getUserId();
