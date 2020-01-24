@@ -260,7 +260,22 @@ var storage = multer.diskStorage({
 const upload = multer({
     fileFilter: function (req, file, callback) {
         var ext = path.extname(file.originalname);
-        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx'&& ext !== '.odt' && ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
+        if(ext !== '.txt' && ext !== '.doc' && ext !== '.pdf' && ext !== '.docx'&& ext !== '.odt') {
+            req.fileValidationError = 'error';
+            return callback(null, false, new Error('goes wrong on the mimetype'));
+        }
+        callback(null, true)
+    },
+    storage,
+    limits: 1024 * 1024 * 5
+});
+
+const uploadImg = multer({
+    fileFilter: function (req, file, callback) {
+        let ext = path.extname(file.originalname);
+        console.log(ext);
+        console.log(ext === '.jpg');
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
             req.fileValidationError = 'error';
             return callback(null, false, new Error('goes wrong on the mimetype'));
         }
@@ -291,9 +306,10 @@ app.post('/api/single/:eventId', upload.single('file'), (req, res) => {
     });
 });
 
-app.post('/api/image/:eventId', upload.single('file'), (req, res) => {
+app.post('/api/image/:eventId', uploadImg.single('file'), (req, res) => {
     console.log('Got request from client: GET /api/image/' + req.params.eventId);
     if(req.fileValidationError) {
+        console.log("FRICKK");
         return res.end(req.fileValidationError);
     }
     let data = {
@@ -302,6 +318,7 @@ app.post('/api/image/:eventId', upload.single('file'), (req, res) => {
     };
     let result = res;
     console.log(req.file);
+    console.log(data.image);
     eventDao.postImageToEvent(data, (err, res) => {
         try {
             result.send(req.file);

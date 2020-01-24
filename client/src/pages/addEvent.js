@@ -175,8 +175,6 @@ export class AddEvent extends Component {
 
         const myNewFile = new File([file], this.props.eventId + this.nameAddOn + this.name, {type: file.type});
 
-        formData.append('file', myNewFile);
-
         eventService
             .createEvent(this.createEvent)
             .then(() => {
