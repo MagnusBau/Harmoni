@@ -8,6 +8,8 @@ import Modal from 'react-bootstrap/Modal';
 import { riderService, Rider} from "../../services/riderService";
 import { Row, Column} from "../Grid/grid";
 import Autosuggest from 'react-autosuggest';
+import {fileInfoService} from "../../services/fileService";
+import {eventService} from "../../services/eventService";
 
 
 export class RiderCard extends Component <{rider_id: React.Node, description: React.Node}> {
@@ -99,68 +101,169 @@ export class RiderList extends Component<{documentId: number}>{
 }
 
 
-export class RiderEdit extends Component<{match : {params: {riderId: number, eventId: number, documentId: number}}}>{
-    errorMessage: string = "";
-    rider: Rider = new Rider(
-        '',
-        ''
-    );
-render(){
+export class RiderEdit extends Component<{match: {params: {eventId: number}}}>{
+    documentId: number = 1;
+    eventDocuments: Document[] = [];
+    newRider: Rider = new Rider("", null);
+    fileList: Document[] = [];
+    selectedFile: Document = new Document("", null);
+    riderList: Rider[] = [];
 
+
+    mounted() {
+        this.fetch();
+    }
+
+    fetch() {
+        fileInfoService.getFileInfo(this.props.eventId).then(response => {
+            this.fileList = response[0];
+            if(response.error) {
+                this.errorMessage = response.error;
+            }
+        })
+    }
+
+    onChange() {
+
+    }
+
+    addRider() {
+        riderService.addRider(this.newRider).then(response => {
+            this.mounted();
+            this.select(this.selectedFile);
+            this.newRider.description = "";
+        });
+    }
+
+    select(f: File) {
+        this.selectedFile = f;
+        this.newRider.document = f.document_id;
+        riderService.getAllRiders(f.document_id).then(response => {
+            this.riderList = [];
+            if(!response.error && response[0]) {
+                this.riderList = response[0];
+            }
+        });
+    }
+    download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    deleteRider(r: Rider) {
+        riderService.deleteRider(r.rider_id).then(response => {
+            this.mounted();
+            this.select(this.selectedFile);
+        });
+    }
+
+    render(){
         return(
-            <div className="row justify-content-center">
-                <div className="mb-4 border-0 " style={{width: '75%'}}>
-                    <div className="card-body">
-                        <form ref={e => (this.form = e)}>
-                            <label htmlFor="basic-url">Tekst: </label>
-                            <div className="input-group">
-                                <div className="input-group-prepend">
-                                </div>
-
-                                <textarea
-                                    className="form-control"
-                                    required
-                                    minLength={1}
-                                    maxLength={100}
-                                    aria-label="tekst"
-                                    rows="10"
-                                    value={this.rider.description}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>{
-                                        (this.rider.description = event.target.value);
-                                        this.rider.document = this.props.documentId;}}>
-                                </textarea>
+            <div>
+                <div className="row">
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <div className="row">
+                            <div className="col-9">
+                                <h5 className="m-12">Kontrakter</h5>
                             </div>
-                        </form>
-
+                            <div className="col-3">
+                                <button
+                                    type="button"
+                                    className="btn btn-success m-2"
+                                    style={{}}
+                                    onClick={this.mounted}
+                                >Oppdater</button>
+                            </div>
+                        </div>
+                        <table className="table">
+                            <tbody>
+                                {this.fileList.map(f => (
+                                    <tr className="d-flex">
+                                        <td className="col-10">{f.name}</td>
+                                        {!this.props.isArtist ?
+                                            <div>
+                                                <td className="col-2">
+                                                    <button type="button" className="btn btn-success"
+                                                            style={{width: "100%"}}
+                                                            onClick={(e) => {
+                                                                this.select(f);
+                                                            }}>Velg
+                                                    </button>
+                                                </td>
+                                            </div>
+                                            : null}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="button" className="btn btn-info" onClick={this.update}>
-                        Rediger
-                    </button>
-                    <p style={{color: "red"}}>{this.errorMessage}</p>
-                    <button onClick={this.toBack} type={"button"}>go toBack</button>
+                    <div className="col-6">
+                        <div className="row">
+                            <div className="col-12">
+                                <h5 className="m-12">Riders</h5>
+                                <textarea
+                                    required
+                                    rows={4} cols={50}
+                                    value={this.newRider.description}
+                                    className={"form-control"}
+                                    id={"rider-description"}
+                                    placeholder={"Beskrivelse av rider"}
+
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) =>
+                                        (this.newRider.description = event.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-8">
+                                <h4>{this.selectedFile.name}</h4>
+                            </div>
+                            <div className="col-4">
+                                <button
+                                    type="button"
+                                    className="btn btn-success m-2"
+                                    style={{}}
+                                    onClick={this.addRider}
+                                >Legg til</button>
+                            </div>
+                            <div className="col-12">
+                                <table className="table">
+                                    <tbody>
+                                    {this.riderList.map(r => (
+                                        <tr className="d-flex">
+                                            <td className="col-10">{r.description}</td>
+                                            {!this.props.isArtist ?
+                                                <div>
+                                                    <td className="col-2">
+                                                        <button type="button" className="btn btn-danger"
+                                                                style={{width: "100%"}}
+                                                                onClick={(e) => {
+                                                                    this.deleteRider(r);
+                                                                }}>Fjern
+                                                        </button>
+                                                    </td>
+                                                </div>
+                                                : null}
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
-    }
-    update(){
-        if(!this.form || !this.form.checkValidity()){
-            this.errorMessage = "Fyll ut de røde feltene";
-            this.mounted();
-        }else{
-            riderService
-                .updateRider(this.rider, this.props.match.params.riderId)
-                .then((response) => {
-                    window.location.reload()
-                }, console.log("Rider oppdatert"))
-                .then(history.push('/event/edit/' + this.props.match.params.eventId + '/document/' + this.props.match.params.documentId + '/riders'))
-                .catch((error: Error) => console.error(error.message));
-        }
-    }
-    mounted() {
-        riderService.getRider(this.props.match.params.riderId).then(t => (this.rider = t[0][0])).catch((error: Error) => console.log(error.message));
-    }
-    toBack(){
-    history.goBack();
     }
 }
 
