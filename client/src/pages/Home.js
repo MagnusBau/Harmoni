@@ -24,7 +24,7 @@ class Home extends Component {
     render(){
         return (
             <div>
-                    <img id="test" src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
+                    <img id="test" src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" style={{height: "20vh", objectFit: "cover", objectPosition: "0% 0%"}} height="auto"/>
 
                 <div className="container mt-4" id="frontpage">
                     <div className="card" id="frontpage-card-container">

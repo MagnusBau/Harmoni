@@ -197,7 +197,7 @@ export class EventEdit extends Component {
                         })
                     }
                 })
-                .catch((error: Error) => alert("editAlert", error.message));
+                .catch((error: Error) => alert("Fyll ut alle felt (last også opp bilde)", error.message));
             /*history.push('/event/' + JSON.parse(this.updateEvent.event_id));*/
         } else {
             e.preventDefault();

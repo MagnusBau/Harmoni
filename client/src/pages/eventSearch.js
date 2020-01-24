@@ -36,7 +36,7 @@ export class EventSearch extends Component<{match: {params: {input: string}}}> {
         return (
             <div>
                 <div className="image-header">
-                    <img src="./img/several-people-at-a-party-1540338.jpg" alt="" width="100%" height="auto"/>
+                    <img src="./img/several-people-at-a-party-1540338.jpg"  style={{height: "20vh", objectFit: "cover", objectPosition: "0% 0%"}} alt="" width="100%" height="auto"/>
                 </div>
                 <div className="container mt-4">
                     {this.events.map(events => (

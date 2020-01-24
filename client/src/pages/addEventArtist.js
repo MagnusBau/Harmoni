@@ -218,6 +218,7 @@ export class AddEventArtist extends Component {
      * @param e
      */
     addArtistUser(e) {
+        console.log("test");
         userService
             .generateArtistUser(this.seeArtist.artist_name, this.seeArtist.first_name, this.seeArtist.last_name,
                                 this.seeArtist.phone, this.seeArtist.email, this.seeArtist.contact_id)
