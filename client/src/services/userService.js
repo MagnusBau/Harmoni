@@ -9,6 +9,7 @@ let ip = "localhost";
 
 class UserService {
     mountDropdown: Function = () => {};
+    mountMap: Function = () => {};
 
     attemptLogin(username: string, password: string, next) {
         userService.postLogin(username, password).then(response => {
@@ -326,6 +327,16 @@ class UserService {
     mountDropdown() {
         this.mountDropdown();
     }
+
+    setMountMap(mountMap: Function) {
+        this.mountMap = mountMap;
+    }
+
+    mountMap() {
+        this.mountMap();
+    }
+
+
     getOrganizerUsername(contactId: number) {
         return axios.get('http://localhost:4000/api/event/organizer/' + contactId)
             .then(response => {
